@@ -713,24 +713,24 @@ def print_formatted_trip_schedule(response: FormattedResponse) -> str:
         output.append("\nCheck back later for updated schedules!")
         
     output_text="\n".join(output)    
-    # # Save to file
-    # try:
-    #     # Create 'logs' directory if it doesn't exist
-    #     log_dir = os.path.join(os.path.dirname(__file__), 'logs')
-    #     os.makedirs(log_dir, exist_ok=True)
+    # Save to file
+    try:
+        # Create 'logs' directory if it doesn't exist
+        log_dir = os.path.join(os.path.dirname(__file__), 'logs')
+        os.makedirs(log_dir, exist_ok=True)
         
-    #     # Generate filename with timestamp
-    #     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    #     filename = f"trip_schedule_{timestamp}.txt"
-    #     filepath = os.path.join(log_dir, filename)
+        # Generate filename with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"trip_schedule_{timestamp}.txt"
+        filepath = os.path.join(log_dir, filename)
         
-    #     # Write to file
-    #     with open(filepath, 'w', encoding='utf-8') as f:
-    #         f.write(output_text)
+        # Write to file
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(output_text)
             
-    #     print(f"Trip schedule saved to {filepath}")
-    # except Exception as e:
-    #     print(f"Error saving trip schedule to file: {e}")
+        print(f"Trip schedule saved to {filepath}")
+    except Exception as e:
+        print(f"Error saving trip schedule to file: {e}")
     
     print(output_text)
     return output_text
