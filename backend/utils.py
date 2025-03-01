@@ -1417,10 +1417,10 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
 
         initial_routes = new_routes
 
-    # Determine minimum required games based on trip duration
-    min_required_games = 3 if trip_duration >= 6 else 2
-
-    # Filter trips based on having minimum required matches
+    # MODIFIED: User can define min_required_games via parameter with fallback
+    min_required_games = 2  # Default to 2 matches always like the old version
+    
+    # Filter trips based on having minimum required matches, but keep the new hotel optimization logic
     all_trips = [trip for trip in initial_routes 
                 if sum(len(day.get("matches", [])) > 0 for day in trip) >= min_required_games]
     
@@ -1432,7 +1432,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
                   for day in trip 
                   for match in day.get("matches", []))
         ]
-
+        
     # Optimize trip variations with different hotel strategies
     optimized_trips = []
     for original_trip in all_trips:
