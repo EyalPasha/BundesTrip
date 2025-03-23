@@ -1,0 +1,54 @@
+/* Hero Section */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../assets/stadium-background.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    margin-bottom: 30px;
+}
+
+/* Search Form Card */
+.search-card {
+    border-radius: 10px;
+    border: none;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.search-card .card-body {
+    padding: 1.5rem;
+}
+
+/* Filter Section */
+.filter-card {
+    border-radius: 8px;
+}
+
+.filter-card-sticky {
+    top: 20px;
+}
+
+/* Features section */
+.feature-icon {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero {
+        padding: 60px 0;
+    }
+    
+    .search-card {
+        margin-top: 30px;
+    }
+    
+    .filter-card-sticky {
+        position: static !important;
+    }
+}

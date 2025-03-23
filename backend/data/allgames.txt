@@ -1,0 +1,242 @@
+League, Date, Time, Day, Home Team, Away Team
+2bundesliga, 28 March, 18:30, Friday, SSV Ulm 1846, SV Darmstadt 98
+2bundesliga, 28 March, 18:30, Friday, Hamburger SV, SV Elversberg
+3-liga, 28 March, 20:00, Friday, SC Verl, Rot-Weiss Essen
+bundesliga, 28 March, 20:30, Friday, Bayer Leverkusen, VfL Bochum
+2bundesliga, 29 March, 13:00, Saturday, Hertha BSC, Karlsruher SC
+2bundesliga, 29 March, 13:00, Saturday, SC Paderborn 07, 1. FC Köln
+2bundesliga, 29 March, 13:00, Saturday, Hannover 96, 1. FC Magdeburg
+3-liga, 29 March, 15:00, Saturday, VfL Osnabrück, TSV 1860 Munich
+3-liga, 29 March, 15:00, Saturday, Waldhof Mannheim, Borussia Dortmund II
+3-liga, 29 March, 15:00, Saturday, Hansa Rostock, FC Saarbrücken
+3-liga, 29 March, 15:00, Saturday, SpVgg Unterhaching, Alemannia Aachen
+3-liga, 29 March, 15:00, Saturday, Energie Cottbus, Erzgebirge Aue
+bundesliga, 29 March, 15:30, Saturday, Holstein Kiel, Werder Bremen
+bundesliga, 29 March, 15:30, Saturday, Borussia Mönchengladbach, RB Leipzig
+bundesliga, 29 March, 15:30, Saturday, VfL Wolfsburg, 1. FC Heidenheim
+bundesliga, 29 March, 15:30, Saturday, TSG Hoffenheim, FC Augsburg
+bundesliga, 29 March, 15:30, Saturday, Bayern Munich, FC St. Pauli
+3-liga, 29 March, 17:30, Saturday, Arminia Bielefeld, Hannover 96 II
+bundesliga, 29 March, 18:30, Saturday, Eintracht Frankfurt, VfB Stuttgart
+2bundesliga, 29 March, 20:30, Saturday, 1. FC Kaiserslautern, Fortuna Düsseldorf
+2bundesliga, 30 March, 12:30, Sunday, SSV Jahn Regensburg, 1. FC Nürnberg
+2bundesliga, 30 March, 12:30, Sunday, Preußen Münster, Eintracht Braunschweig
+2bundesliga, 30 March, 12:30, Sunday, SpVgg Greuther Fürth, FC Schalke 04
+bundesliga, 30 March, 14:30, Sunday, SC Freiburg, 1. FC Union Berlin
+3-liga, 30 March, 14:30, Sunday, FC Ingolstadt 04, Viktoria Köln
+bundesliga, 30 March, 16:30, Sunday, Borussia Dortmund, 1. FSV Mainz 05
+3-liga, 30 March, 17:30, Sunday, Dynamo Dresden, SV Wehen Wiesbaden
+3-liga, 30 March, 20:30, Sunday, VfB Stuttgart II, SV Sandhausen
+DFB-Pokal, 01 April, 21:45, Tuesday, Arminia Bielefeld, Bayer Leverkusen
+DFB-Pokal, 02 April, 21:45, Wednesday, VfB Stuttgart, RB Leipzig
+2bundesliga, 04 April, 17:30, Friday, Eintracht Braunschweig, SC Paderborn 07
+2bundesliga, 04 April, 17:30, Friday, Karlsruher SC, Hannover 96
+bundesliga, 04 April, 19:30, Friday, FC Augsburg, Bayern Munich
+3-liga, 04 April, 20:00, Friday, Hannover 96 II, Dynamo Dresden
+2bundesliga, 05 April, 12:00, Saturday, 1. FC Nürnberg, Hamburger SV
+2bundesliga, 05 April, 12:00, Saturday, Fortuna Düsseldorf, Preußen Münster
+2bundesliga, 05 April, 12:00, Saturday, SV Darmstadt 98, SpVgg Greuther Fürth
+bundesliga, 05 April, 14:30, Saturday, VfL Bochum, VfB Stuttgart
+bundesliga, 05 April, 14:30, Saturday, 1. FSV Mainz 05, Holstein Kiel
+bundesliga, 05 April, 14:30, Saturday, SC Freiburg, Borussia Dortmund
+bundesliga, 05 April, 14:30, Saturday, 1. FC Heidenheim, Bayer Leverkusen
+bundesliga, 05 April, 14:30, Saturday, RB Leipzig, TSG Hoffenheim
+3-liga, 05 April, 15:00, Saturday, Viktoria Köln, SpVgg Unterhaching
+3-liga, 05 April, 15:00, Saturday, Erzgebirge Aue, VfB Stuttgart II
+3-liga, 05 April, 15:00, Saturday, SV Wehen Wiesbaden, Waldhof Mannheim
+3-liga, 05 April, 15:00, Saturday, TSV 1860 Munich, Energie Cottbus
+3-liga, 05 April, 15:00, Saturday, FC Saarbrücken, VfL Osnabrück
+bundesliga, 05 April, 17:30, Saturday, Werder Bremen, Eintracht Frankfurt
+3-liga, 05 April, 17:30, Saturday, Alemannia Aachen, Arminia Bielefeld
+2bundesliga, 05 April, 19:30, Saturday, 1. FC Köln, Hertha BSC
+2bundesliga, 06 April, 12:30, Sunday, 1. FC Magdeburg, 1. FC Kaiserslautern
+2bundesliga, 06 April, 12:30, Sunday, SV Elversberg, SSV Jahn Regensburg
+2bundesliga, 06 April, 12:30, Sunday, FC Schalke 04, SSV Ulm 1846
+bundesliga, 06 April, 14:30, Sunday, FC St. Pauli, Borussia Mönchengladbach
+3-liga, 06 April, 14:30, Sunday, Borussia Dortmund II, FC Ingolstadt 04
+bundesliga, 06 April, 16:30, Sunday, 1. FC Union Berlin, VfL Wolfsburg
+3-liga, 06 April, 17:30, Sunday, SV Sandhausen, SC Verl
+3-liga, 06 April, 20:30, Sunday, Rot-Weiss Essen, Hansa Rostock
+3-liga, 08 April, TBD, Tuesday, Waldhof Mannheim, SpVgg Unterhaching
+3-liga, 08 April, TBD, Tuesday, VfB Stuttgart II, Viktoria Köln
+3-liga, 08 April, TBD, Tuesday, Arminia Bielefeld, SV Wehen Wiesbaden
+3-liga, 08 April, TBD, Tuesday, FC Saarbrücken, Erzgebirge Aue
+3-liga, 08 April, TBD, Tuesday, Hannover 96 II, Alemannia Aachen
+Champions League, 08 April, 22:00, Tuesday, Bayern Munich, inter
+3-liga, 09 April, TBD, Wednesday, Energie Cottbus, Rot-Weiss Essen
+3-liga, 09 April, TBD, Wednesday, TSV 1860 Munich, SV Sandhausen
+3-liga, 09 April, TBD, Wednesday, VfL Osnabrück, Hansa Rostock
+3-liga, 09 April, TBD, Wednesday, Dynamo Dresden, FC Ingolstadt 04
+3-liga, 09 April, TBD, Wednesday, SC Verl, Borussia Dortmund II
+2bundesliga, 11 April, 17:30, Friday, SpVgg Greuther Fürth, 1. FC Köln
+2bundesliga, 11 April, 17:30, Friday, Hamburger SV, Eintracht Braunschweig
+bundesliga, 11 April, 19:30, Friday, VfL Wolfsburg, RB Leipzig
+3-liga, 11 April, 20:00, Friday, SV Wehen Wiesbaden, FC Saarbrücken
+2bundesliga, 12 April, 12:00, Saturday, SSV Ulm 1846, 1. FC Magdeburg
+2bundesliga, 12 April, 12:00, Saturday, Hertha BSC, SV Darmstadt 98
+2bundesliga, 12 April, 12:00, Saturday, Hannover 96, SV Elversberg
+bundesliga, 12 April, 14:30, Saturday, Holstein Kiel, FC St. Pauli
+bundesliga, 12 April, 14:30, Saturday, VfL Bochum, FC Augsburg
+bundesliga, 12 April, 14:30, Saturday, Borussia Mönchengladbach, SC Freiburg
+bundesliga, 12 April, 14:30, Saturday, TSG Hoffenheim, 1. FSV Mainz 05
+bundesliga, 12 April, 14:30, Saturday, Bayer Leverkusen, 1. FC Union Berlin
+3-liga, 12 April, 15:00, Saturday, FC Ingolstadt 04, Hannover 96 II
+3-liga, 12 April, 15:00, Saturday, SpVgg Unterhaching, VfB Stuttgart II
+3-liga, 12 April, 15:00, Saturday, Rot-Weiss Essen, Erzgebirge Aue
+3-liga, 12 April, 15:00, Saturday, Hansa Rostock, SC Verl
+3-liga, 12 April, 15:00, Saturday, Dynamo Dresden, VfL Osnabrück
+bundesliga, 12 April, 17:30, Saturday, Bayern Munich, Borussia Dortmund
+3-liga, 12 April, 17:30, Saturday, Alemannia Aachen, SV Sandhausen
+2bundesliga, 12 April, 19:30, Saturday, 1. FC Kaiserslautern, 1. FC Nürnberg
+2bundesliga, 13 April, 12:30, Sunday, SSV Jahn Regensburg, FC Schalke 04
+2bundesliga, 13 April, 12:30, Sunday, Preußen Münster, Karlsruher SC
+2bundesliga, 13 April, 12:30, Sunday, SC Paderborn 07, Fortuna Düsseldorf
+bundesliga, 13 April, 14:30, Sunday, VfB Stuttgart, Werder Bremen
+3-liga, 13 April, 14:30, Sunday, Waldhof Mannheim, TSV 1860 Munich
+bundesliga, 13 April, 16:30, Sunday, Eintracht Frankfurt, 1. FC Heidenheim
+3-liga, 13 April, 17:30, Sunday, Borussia Dortmund II, Energie Cottbus
+3-liga, 13 April, 20:30, Sunday, Viktoria Köln, Arminia Bielefeld
+Champions League, 15 April, 22:00, Tuesday, Borussia Dortmund, barcelona
+Europa League, 17 April, 22:00, Thursday, Eintracht Frankfurt, tottenham
+2bundesliga, 19 April, 12:00, Saturday, Eintracht Braunschweig, 1. FC Kaiserslautern
+2bundesliga, 19 April, 12:00, Saturday, 1. FC Nürnberg, SC Paderborn 07
+2bundesliga, 19 April, 12:00, Saturday, SV Elversberg, Fortuna Düsseldorf
+bundesliga, 19 April, 14:30, Saturday, 1. FSV Mainz 05, VfL Wolfsburg
+bundesliga, 19 April, 14:30, Saturday, SC Freiburg, TSG Hoffenheim
+bundesliga, 19 April, 14:30, Saturday, Werder Bremen, VfL Bochum
+bundesliga, 19 April, 14:30, Saturday, 1. FC Heidenheim, Bayern Munich
+bundesliga, 19 April, 14:30, Saturday, RB Leipzig, Holstein Kiel
+3-liga, 19 April, 15:00, Saturday, TSV 1860 Munich, Alemannia Aachen
+3-liga, 19 April, 15:00, Saturday, SV Sandhausen, Rot-Weiss Essen
+3-liga, 19 April, 15:00, Saturday, Energie Cottbus, Viktoria Köln
+3-liga, 19 April, 15:00, Saturday, SV Wehen Wiesbaden, SpVgg Unterhaching
+3-liga, 19 April, 15:00, Saturday, Arminia Bielefeld, Hansa Rostock
+bundesliga, 19 April, 17:30, Saturday, 1. FC Union Berlin, VfB Stuttgart
+3-liga, 19 April, 17:30, Saturday, VfB Stuttgart II, SC Verl
+3-liga, 19 April, 17:30, Saturday, VfL Osnabrück, FC Ingolstadt 04
+2bundesliga, 19 April, 19:30, Saturday, FC Schalke 04, Hamburger SV
+2bundesliga, 20 April, 12:30, Sunday, SSV Ulm 1846, Hertha BSC
+2bundesliga, 20 April, 12:30, Sunday, 1. FC Magdeburg, SSV Jahn Regensburg
+2bundesliga, 20 April, 12:30, Sunday, Karlsruher SC, SpVgg Greuther Fürth
+2bundesliga, 20 April, 12:30, Sunday, SV Darmstadt 98, Hannover 96
+2bundesliga, 20 April, 12:30, Sunday, 1. FC Köln, Preußen Münster
+bundesliga, 20 April, 14:30, Sunday, FC Augsburg, Eintracht Frankfurt
+3-liga, 20 April, 14:30, Sunday, FC Saarbrücken, Dynamo Dresden
+bundesliga, 20 April, 16:30, Sunday, Borussia Dortmund, Borussia Mönchengladbach
+3-liga, 20 April, 17:30, Sunday, Hannover 96 II, Waldhof Mannheim
+bundesliga, 20 April, 18:30, Sunday, FC St. Pauli, Bayer Leverkusen
+3-liga, 20 April, 20:30, Sunday, Erzgebirge Aue, Borussia Dortmund II
+bundesliga, 26 April, TBD, Saturday, Holstein Kiel, Borussia Mönchengladbach
+bundesliga, 26 April, TBD, Saturday, VfL Bochum, 1. FC Union Berlin
+bundesliga, 26 April, TBD, Saturday, VfL Wolfsburg, SC Freiburg
+bundesliga, 26 April, TBD, Saturday, Werder Bremen, FC St. Pauli
+bundesliga, 26 April, TBD, Saturday, TSG Hoffenheim, Borussia Dortmund
+bundesliga, 26 April, TBD, Saturday, Eintracht Frankfurt, RB Leipzig
+bundesliga, 26 April, TBD, Saturday, Bayern Munich, 1. FSV Mainz 05
+bundesliga, 26 April, TBD, Saturday, VfB Stuttgart, 1. FC Heidenheim
+bundesliga, 26 April, TBD, Saturday, Bayer Leverkusen, FC Augsburg
+3-liga, 26 April, TBD, Saturday, Hansa Rostock, TSV 1860 Munich
+3-liga, 26 April, TBD, Saturday, Viktoria Köln, SV Wehen Wiesbaden
+3-liga, 26 April, TBD, Saturday, Dynamo Dresden, SV Sandhausen
+3-liga, 26 April, TBD, Saturday, Borussia Dortmund II, Hannover 96 II
+3-liga, 26 April, TBD, Saturday, SpVgg Unterhaching, Energie Cottbus
+3-liga, 26 April, TBD, Saturday, Rot-Weiss Essen, FC Saarbrücken
+3-liga, 26 April, TBD, Saturday, SC Verl, Erzgebirge Aue
+3-liga, 26 April, TBD, Saturday, Waldhof Mannheim, VfB Stuttgart II
+3-liga, 26 April, TBD, Saturday, FC Ingolstadt 04, Arminia Bielefeld
+3-liga, 26 April, TBD, Saturday, Alemannia Aachen, VfL Osnabrück
+2bundesliga, 27 April, TBD, Sunday, SSV Jahn Regensburg, Eintracht Braunschweig
+2bundesliga, 27 April, TBD, Sunday, Preußen Münster, SV Darmstadt 98
+2bundesliga, 27 April, TBD, Sunday, 1. FC Kaiserslautern, FC Schalke 04
+2bundesliga, 27 April, TBD, Sunday, Hertha BSC, 1. FC Magdeburg
+2bundesliga, 27 April, TBD, Sunday, SpVgg Greuther Fürth, SSV Ulm 1846
+2bundesliga, 27 April, TBD, Sunday, SC Paderborn 07, SV Elversberg
+2bundesliga, 27 April, TBD, Sunday, Hannover 96, 1. FC Köln
+2bundesliga, 27 April, TBD, Sunday, Hamburger SV, Karlsruher SC
+2bundesliga, 27 April, TBD, Sunday, Fortuna Düsseldorf, 1. FC Nürnberg
+bundesliga, 03 May, TBD, Saturday, FC St. Pauli, VfB Stuttgart
+bundesliga, 03 May, TBD, Saturday, 1. FC Union Berlin, Werder Bremen
+bundesliga, 03 May, TBD, Saturday, Borussia Mönchengladbach, TSG Hoffenheim
+bundesliga, 03 May, TBD, Saturday, 1. FSV Mainz 05, Eintracht Frankfurt
+bundesliga, 03 May, TBD, Saturday, FC Augsburg, Holstein Kiel
+bundesliga, 03 May, TBD, Saturday, SC Freiburg, Bayer Leverkusen
+bundesliga, 03 May, TBD, Saturday, 1. FC Heidenheim, VfL Bochum
+bundesliga, 03 May, TBD, Saturday, Borussia Dortmund, VfL Wolfsburg
+bundesliga, 03 May, TBD, Saturday, RB Leipzig, Bayern Munich
+3-liga, 03 May, TBD, Saturday, TSV 1860 Munich, Rot-Weiss Essen
+3-liga, 03 May, TBD, Saturday, FC Saarbrücken, SC Verl
+3-liga, 03 May, TBD, Saturday, VfB Stuttgart II, Alemannia Aachen
+3-liga, 03 May, TBD, Saturday, Erzgebirge Aue, FC Ingolstadt 04
+3-liga, 03 May, TBD, Saturday, SV Wehen Wiesbaden, Borussia Dortmund II
+3-liga, 03 May, TBD, Saturday, Arminia Bielefeld, Dynamo Dresden
+3-liga, 03 May, TBD, Saturday, SV Sandhausen, Hansa Rostock
+3-liga, 03 May, TBD, Saturday, Hannover 96 II, SpVgg Unterhaching
+3-liga, 03 May, TBD, Saturday, VfL Osnabrück, Viktoria Köln
+3-liga, 03 May, TBD, Saturday, Energie Cottbus, Waldhof Mannheim
+2bundesliga, 04 May, TBD, Sunday, SSV Ulm 1846, Hannover 96
+2bundesliga, 04 May, TBD, Sunday, Eintracht Braunschweig, Fortuna Düsseldorf
+2bundesliga, 04 May, TBD, Sunday, 1. FC Magdeburg, Preußen Münster
+2bundesliga, 04 May, TBD, Sunday, 1. FC Nürnberg, SV Elversberg
+2bundesliga, 04 May, TBD, Sunday, FC Schalke 04, SC Paderborn 07
+2bundesliga, 04 May, TBD, Sunday, Hertha BSC, SpVgg Greuther Fürth
+2bundesliga, 04 May, TBD, Sunday, Karlsruher SC, 1. FC Kaiserslautern
+2bundesliga, 04 May, TBD, Sunday, SV Darmstadt 98, Hamburger SV
+2bundesliga, 04 May, TBD, Sunday, 1. FC Köln, SSV Jahn Regensburg
+bundesliga, 10 May, TBD, Saturday, Holstein Kiel, SC Freiburg
+bundesliga, 10 May, TBD, Saturday, VfL Bochum, 1. FSV Mainz 05
+bundesliga, 10 May, TBD, Saturday, 1. FC Union Berlin, 1. FC Heidenheim
+bundesliga, 10 May, TBD, Saturday, VfL Wolfsburg, TSG Hoffenheim
+bundesliga, 10 May, TBD, Saturday, Werder Bremen, RB Leipzig
+bundesliga, 10 May, TBD, Saturday, Eintracht Frankfurt, FC St. Pauli
+bundesliga, 10 May, TBD, Saturday, Bayern Munich, Borussia Mönchengladbach
+bundesliga, 10 May, TBD, Saturday, VfB Stuttgart, FC Augsburg
+bundesliga, 10 May, TBD, Saturday, Bayer Leverkusen, Borussia Dortmund
+3-liga, 10 May, TBD, Saturday, Alemannia Aachen, FC Saarbrücken
+3-liga, 10 May, TBD, Saturday, FC Ingolstadt 04, SV Wehen Wiesbaden
+3-liga, 10 May, TBD, Saturday, Viktoria Köln, Hannover 96 II
+3-liga, 10 May, TBD, Saturday, Hansa Rostock, Energie Cottbus
+3-liga, 10 May, TBD, Saturday, SpVgg Unterhaching, Arminia Bielefeld
+3-liga, 10 May, TBD, Saturday, Rot-Weiss Essen, VfL Osnabrück
+3-liga, 10 May, TBD, Saturday, SC Verl, TSV 1860 Munich
+3-liga, 10 May, TBD, Saturday, Waldhof Mannheim, Dynamo Dresden
+3-liga, 10 May, TBD, Saturday, Erzgebirge Aue, SV Sandhausen
+3-liga, 10 May, TBD, Saturday, Borussia Dortmund II, VfB Stuttgart II
+2bundesliga, 11 May, TBD, Sunday, SSV Jahn Regensburg, Karlsruher SC
+2bundesliga, 11 May, TBD, Sunday, Preußen Münster, Hertha BSC
+2bundesliga, 11 May, TBD, Sunday, 1. FC Kaiserslautern, SV Darmstadt 98
+2bundesliga, 11 May, TBD, Sunday, 1. FC Nürnberg, 1. FC Köln
+2bundesliga, 11 May, TBD, Sunday, SV Elversberg, Eintracht Braunschweig
+2bundesliga, 11 May, TBD, Sunday, SC Paderborn 07, 1. FC Magdeburg
+2bundesliga, 11 May, TBD, Sunday, Hannover 96, SpVgg Greuther Fürth
+2bundesliga, 11 May, TBD, Sunday, Hamburger SV, SSV Ulm 1846
+2bundesliga, 11 May, TBD, Sunday, Fortuna Düsseldorf, FC Schalke 04
+bundesliga, 17 May, TBD, Saturday, FC St. Pauli, VfL Bochum
+bundesliga, 17 May, TBD, Saturday, Borussia Mönchengladbach, VfL Wolfsburg
+bundesliga, 17 May, TBD, Saturday, 1. FSV Mainz 05, Bayer Leverkusen
+bundesliga, 17 May, TBD, Saturday, FC Augsburg, 1. FC Union Berlin
+bundesliga, 17 May, TBD, Saturday, SC Freiburg, Eintracht Frankfurt
+bundesliga, 17 May, TBD, Saturday, 1. FC Heidenheim, Werder Bremen
+bundesliga, 17 May, TBD, Saturday, TSG Hoffenheim, Bayern Munich
+bundesliga, 17 May, TBD, Saturday, Borussia Dortmund, Holstein Kiel
+bundesliga, 17 May, TBD, Saturday, RB Leipzig, VfB Stuttgart
+3-liga, 17 May, TBD, Saturday, FC Saarbrücken, Borussia Dortmund II
+3-liga, 17 May, TBD, Saturday, VfB Stuttgart II, Rot-Weiss Essen
+3-liga, 17 May, TBD, Saturday, Hannover 96 II, Hansa Rostock
+3-liga, 17 May, TBD, Saturday, VfL Osnabrück, SC Verl
+3-liga, 17 May, TBD, Saturday, Energie Cottbus, FC Ingolstadt 04
+3-liga, 17 May, TBD, Saturday, SV Wehen Wiesbaden, Alemannia Aachen
+3-liga, 17 May, TBD, Saturday, Dynamo Dresden, SpVgg Unterhaching
+3-liga, 17 May, TBD, Saturday, TSV 1860 Munich, Erzgebirge Aue
+3-liga, 17 May, TBD, Saturday, Arminia Bielefeld, Waldhof Mannheim
+3-liga, 17 May, TBD, Saturday, SV Sandhausen, Viktoria Köln
+2bundesliga, 18 May, TBD, Sunday, SSV Ulm 1846, Preußen Münster
+2bundesliga, 18 May, TBD, Sunday, Eintracht Braunschweig, 1. FC Nürnberg
+2bundesliga, 18 May, TBD, Sunday, 1. FC Magdeburg, Fortuna Düsseldorf
+2bundesliga, 18 May, TBD, Sunday, FC Schalke 04, SV Elversberg
+2bundesliga, 18 May, TBD, Sunday, Hertha BSC, Hannover 96
+2bundesliga, 18 May, TBD, Sunday, SpVgg Greuther Fürth, Hamburger SV
+2bundesliga, 18 May, TBD, Sunday, Karlsruher SC, SC Paderborn 07
+2bundesliga, 18 May, TBD, Sunday, SV Darmstadt 98, SSV Jahn Regensburg
+2bundesliga, 18 May, TBD, Sunday, 1. FC Köln, 1. FC Kaiserslautern
+DFB-Pokal, 24 May, 21:00, Saturday, 1. FC Union Berlin, tbd
+Champions League, 31 May, 21:00, Saturday, Bayern Munich, tbd

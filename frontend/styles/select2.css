@@ -1,0 +1,257 @@
+/* ======== MODERNIZED SELECT2 STYLING - CLEAN AND MINIMAL ======== */
+.select2-container {
+    width: 100% !important;
+    margin-bottom: 0 !important; /* Remove default bottom margin */
+}
+/* Main container styling */
+.select2-selection {
+    border-radius: 8px !important;
+    border: 1px solid #dee2e6 !important;
+    background-color: #fff !important;
+    min-height: 40px !important;
+    transition: all 0.2s ease;
+}
+
+/* Focused state */
+.select2-container--default.select2-container--focus .select2-selection {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(4, 61, 124, 0.15) !important;
+}
+
+/* Add this rule to fix form groups spacing */
+.form-group .select2-container,
+.mb-3 .select2-container {
+    margin-bottom: 0 !important; 
+}
+
+/* Add appropriate spacing to the form field container instead */
+.select2-container + .form-text {
+    margin-top: 0.25rem !important;
+}
+
+/* Fix padding in the selection container */
+.select2-container--default .select2-selection--multiple {
+    padding: 6px 8px 3px 8px !important; /* Reduced bottom padding */
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 4px !important; /* Slightly tighter spacing for better proportion */
+    min-height: 42px !important; /* Adjust height for better proportion */
+}
+
+/* Selected option pills - SIMPLIFIED & IMPROVED ALIGNMENT */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #f1f5f9;
+    color: #333;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 4px 6px 4px 6px; /* Reduced padding to balance with increased X button margin */
+    font-size: 0.9rem;
+    margin: 0 !important; /* Remove default margins that cause alignment issues */
+    box-shadow: none;
+    display: flex !important;
+    align-items: center !important;
+    height: auto !important;
+    line-height: normal !important;
+}
+
+/* Remove the league-specific styling to keep consistent look */
+.select2-container--default .select2-selection--multiple .select2-selection__choice:hover {
+    background-color: #e9ecef;
+}
+
+/* Improve the display of selection text */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Correctly style the selected item text */
+.selected-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    line-height: 1.5 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    white-space: nowrap; /* Prevent wrapping inside pills */
+}
+
+/* ===== IMPROVED X BUTTON STYLING WITH PERFECT VERTICAL ALIGNMENT ===== */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #6c757d;
+    margin-right: 8px !important; /* Space between X and text */
+    font-size: 16px;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    position: relative !important;
+    top: -2px !important; /* Move it up by 2px to center it with the text */
+    transform: translateY(0) !important; /* Ensure no transform is applied */
+    height: 20px !important; /* Fixed height for better control */
+    width: 20px !important; /* Fixed width to make it a perfect square */
+    vertical-align: middle !important; /* Force vertical alignment */
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #343a40;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+/* Fix alignment of the select all button */
+.select2-container--default .select2-selection--multiple .select2-selection__clear {
+    margin: 0 10px 0 0 !important;
+    padding: 1px 5px !important;
+    height: auto !important;
+    line-height: 1.2 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Fix the rendering of the input field */
+.select2-container--default .select2-selection--multiple .select2-search--inline {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: normal !important;
+    min-height: 30px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100% !important;
+    min-height: 30px !important;
+    line-height: normal !important;
+}
+
+/* Fix list rendering */
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+}
+
+/* Dropdown panel */
+.select2-dropdown {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    overflow: hidden;
+    animation: dropdownFade 0.2s ease-out;
+}
+
+/* Dropdown options */
+.select2-results__option {
+    padding: 8px 12px !important;
+    transition: all 0.15s ease;
+    font-size: 0.95rem;
+    line-height: 1.5 !important;
+    display: flex !important;
+    align-items: center !important;
+    min-height: 36px !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #f1f5f9 !important;
+    color: var(--primary-color) !important;
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Search field */
+.select2-search--dropdown {
+    padding: 8px !important;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.select2-search--dropdown .select2-search__field {
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    padding: 6px 10px;
+    height: 36px;
+    width: 100% !important;
+}
+
+/* Placeholder style */
+.select2-container--default .select2-selection--multiple .select2-selection__placeholder {
+    color: #6c757d;
+    font-weight: 400;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    line-height: normal !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    left: 8px !important;
+}
+
+/* Fix single selection placeholder as well */
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+/* Enhanced Select2 option styling - SIMPLIFIED */
+.select-option {
+    display: flex !important;
+    align-items: center !important;
+    padding: 2px 0 !important;
+    line-height: 1.5 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Fix padding for the dropdown container */
+.select2-container--open .select2-dropdown {
+    margin-top: 4px;
+}
+
+/* Fix single selection mode as well */
+.select2-container--default .select2-selection--single {
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding: 0 8px !important;
+    line-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Reset bootstrap-5 theme conflicts */
+.select2-container--bootstrap-5 .select2-selection,
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered,
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice,
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove,
+.select2-container--bootstrap-5 .select2-dropdown,
+.select2-container--bootstrap-5 .select2-results__option--highlighted[aria-selected] {
+    /* Reset styles to avoid conflicts */
+    border: inherit;
+    border-radius: inherit;
+    padding: inherit;
+    margin: inherit;
+    background-color: inherit;
+    color: inherit;
+}
+
+/* Validation for Select2 */
+.select2-container--default.is-invalid .select2-selection {
+    border-color: #dc3545 !important;
+}

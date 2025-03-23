@@ -1,0 +1,2257 @@
+From,To,Fastest Train Time
+München hbf,Dortmund hbf,5 h 38m
+Dortmund hbf,München hbf,5 h 38m
+München hbf,Leverkusen Mitte,4 h 47m
+Leverkusen Mitte,München hbf,4 h 47m
+München hbf,Leipzig hbf,3 h 7m
+Leipzig hbf,München hbf,3 h 7m
+München hbf,Stuttgart hbf,1 h 56m
+Stuttgart hbf,München hbf,1 h 56m
+München hbf,Frankfurt hbf,3 h 13m
+Frankfurt hbf,München hbf,3 h 13m
+München hbf,Freiburg (Breisgau) hbf,3 h 59m
+Freiburg (Breisgau) hbf,München hbf,3 h 59m
+München hbf,Berlin hbf,4 h 10m
+Berlin hbf,München hbf,4 h 10m
+München hbf,Sinsheim (Elsenz) hbf,3 h 36m
+Sinsheim (Elsenz) hbf,München hbf,3 h 36m
+München hbf,Mainz hbf,3 h 41m
+Mainz hbf,München hbf,3 h 41m
+München hbf,Wolfsburg hbf,4 h 59m
+Wolfsburg hbf,München hbf,4 h 59m
+München hbf,Mönchengladbach hbf,5 h 20m
+Mönchengladbach hbf,München hbf,5 h 20m
+München hbf,Bremen hbf,5 h 28m
+Bremen hbf,München hbf,5 h 28m
+München hbf,Augsburg hbf,25m
+Augsburg hbf,München hbf,25m
+München hbf,Bochum hbf,5 h 44m
+Bochum hbf,München hbf,5 h 44m
+München hbf,Hamburg hbf,5 h 32m
+Hamburg hbf,München hbf,5 h 32m
+München hbf,Kiel hbf,7 h
+Kiel hbf,München hbf,7 h
+München hbf,Köln hbf,4 h 30m
+Köln hbf,München hbf,4 h 30m
+München hbf,Darmstadt hbf,3 h 34m
+Darmstadt hbf,München hbf,3 h 34m
+München hbf,Düsseldorf hbf,4 h 41m
+Düsseldorf hbf,München hbf,4 h 41m
+München hbf,Karlsruhe hbf,2 h 50m
+Karlsruhe hbf,München hbf,2 h 50m
+München hbf,Hannover hbf,4 h 11m
+Hannover hbf,München hbf,4 h 11m
+München hbf,Paderborn hbf,4 h 50m
+Paderborn hbf,München hbf,4 h 50m
+München hbf,Fürth hbf,1 h 18m
+Fürth hbf,München hbf,1 h 18m
+München hbf,Gelsenkirchen hbf,5 h 18m
+Gelsenkirchen hbf,München hbf,5 h 18m
+München hbf,Neunkirchen hbf,4 h 22m
+Neunkirchen hbf,München hbf,4 h 22m
+München hbf,Nürnberg hbf,1 h 5m
+Nürnberg hbf,München hbf,1 h 5m
+München hbf,Kaiserslautern hbf,3 h 31m
+Kaiserslautern hbf,München hbf,3 h 31m
+München hbf,Magdeburg hbf,4 h 3m
+Magdeburg hbf,München hbf,4 h 3m
+München hbf,Braunschweig hbf,4 h 41m
+Braunschweig hbf,München hbf,4 h 41m
+München hbf,Ulm hbf,1 h 10m
+Ulm hbf,München hbf,1 h 10m
+München hbf,Münster (Westf) hbf,6 h 2m
+Münster (Westf) hbf,München hbf,6 h 2m
+München hbf,Rostock hbf,6 h 45m
+Rostock hbf,München hbf,6 h 45m
+Dortmund hbf,Leverkusen Mitte,1 h 14m
+Leverkusen Mitte,Dortmund hbf,1 h 14m
+Dortmund hbf,Leipzig hbf,4 h 28m
+Leipzig hbf,Dortmund hbf,4 h 28m
+Dortmund hbf,Stuttgart hbf,3 h 35m
+Stuttgart hbf,Dortmund hbf,3 h 35m
+Dortmund hbf,Frankfurt hbf,2 h 28m
+Frankfurt hbf,Dortmund hbf,2 h 28m
+Dortmund hbf,Freiburg (Breisgau) hbf,4 h 25m
+Freiburg (Breisgau) hbf,Dortmund hbf,4 h 25m
+Dortmund hbf,Berlin hbf,3 h 29m
+Berlin hbf,Dortmund hbf,3 h 29m
+Dortmund hbf,Sinsheim (Elsenz) hbf,3 h 58m
+Sinsheim (Elsenz) hbf,Dortmund hbf,3 h 58m
+Dortmund hbf,Mainz hbf,2 h 39m
+Mainz hbf,Dortmund hbf,2 h 39m
+Dortmund hbf,Wolfsburg hbf,2 h 15m
+Wolfsburg hbf,Dortmund hbf,2 h 15m
+Dortmund hbf,Mönchengladbach hbf,1 h 17m
+Mönchengladbach hbf,Dortmund hbf,1 h 17m
+Dortmund hbf,Bremen hbf,1 h 49m
+Bremen hbf,Dortmund hbf,1 h 49m
+Dortmund hbf,Augsburg hbf,5 h 8m
+Augsburg hbf,Dortmund hbf,5 h 8m
+Dortmund hbf,Bochum hbf,23m
+Bochum hbf,Dortmund hbf,23m
+Dortmund hbf,Hamburg hbf,2 h 48m
+Hamburg hbf,Dortmund hbf,2 h 48m
+Dortmund hbf,Kiel hbf,4 h 3m
+Kiel hbf,Dortmund hbf,4 h 3m
+Dortmund hbf,Köln hbf,1 h 10m
+Köln hbf,Dortmund hbf,1 h 10m
+Dortmund hbf,Darmstadt hbf,3 h 5m
+Darmstadt hbf,Dortmund hbf,3 h 5m
+Dortmund hbf,Düsseldorf hbf,39m
+Düsseldorf hbf,Dortmund hbf,39m
+Dortmund hbf,Karlsruhe hbf,3 h 21m
+Karlsruhe hbf,Dortmund hbf,3 h 21m
+Dortmund hbf,Hannover hbf,1 h 41m
+Hannover hbf,Dortmund hbf,1 h 41m
+Dortmund hbf,Paderborn hbf,1 h 2m
+Paderborn hbf,Dortmund hbf,1 h 2m
+Dortmund hbf,Fürth hbf,4 h 34m
+Fürth hbf,Dortmund hbf,4 h 34m
+Dortmund hbf,Gelsenkirchen hbf,25m
+Gelsenkirchen hbf,Dortmund hbf,25m
+Dortmund hbf,Neunkirchen hbf,4 h 30m
+Neunkirchen hbf,Dortmund hbf,4 h 30m
+Dortmund hbf,Nürnberg hbf,4 h 23m
+Nürnberg hbf,Dortmund hbf,4 h 23m
+Dortmund hbf,Kaiserslautern hbf,3 h 45m
+Kaiserslautern hbf,Dortmund hbf,3 h 45m
+Dortmund hbf,Magdeburg hbf,3 h 9m
+Magdeburg hbf,Dortmund hbf,3 h 9m
+Dortmund hbf,Braunschweig hbf,2 h 21m
+Braunschweig hbf,Dortmund hbf,2 h 21m
+Dortmund hbf,Ulm hbf,4 h 24m
+Ulm hbf,Dortmund hbf,4 h 24m
+Dortmund hbf,Münster (Westf) hbf,51m
+Münster (Westf) hbf,Dortmund hbf,51m
+Dortmund hbf,Rostock hbf,5 h 49m
+Rostock hbf,Dortmund hbf,5 h 49m
+Leverkusen Mitte,Leipzig hbf,4 h 57m
+Leipzig hbf,Leverkusen Mitte,4 h 57m
+Leverkusen Mitte,Stuttgart hbf,2 h 25m
+Stuttgart hbf,Leverkusen Mitte,2 h 25m
+Leverkusen Mitte,Frankfurt hbf,1 h 35m
+Frankfurt hbf,Leverkusen Mitte,1 h 35m
+Leverkusen Mitte,Freiburg (Breisgau) hbf,3 h 17m
+Freiburg (Breisgau) hbf,Leverkusen Mitte,3 h 17m
+Leverkusen Mitte,Berlin hbf,4 h 38m
+Berlin hbf,Leverkusen Mitte,4 h 38m
+Leverkusen Mitte,Sinsheim (Elsenz) hbf,3 h 11m
+Sinsheim (Elsenz) hbf,Leverkusen Mitte,3 h 11m
+Leverkusen Mitte,Mainz hbf,1 h 52m
+Mainz hbf,Leverkusen Mitte,1 h 52m
+Leverkusen Mitte,Wolfsburg hbf,3 h 49m
+Wolfsburg hbf,Leverkusen Mitte,3 h 49m
+Leverkusen Mitte,Mönchengladbach hbf,52m
+Mönchengladbach hbf,Leverkusen Mitte,52m
+Leverkusen Mitte,Bremen hbf,3 h 4m
+Bremen hbf,Leverkusen Mitte,3 h 4m
+Leverkusen Mitte,Augsburg hbf,3 h 58m
+Augsburg hbf,Leverkusen Mitte,3 h 58m
+Leverkusen Mitte,Bochum hbf,1 h 9m
+Bochum hbf,Leverkusen Mitte,1 h 9m
+Leverkusen Mitte,Hamburg hbf,3 h 45m
+Hamburg hbf,Leverkusen Mitte,3 h 45m
+Leverkusen Mitte,Kiel hbf,5 h 19m
+Kiel hbf,Leverkusen Mitte,5 h 19m
+Leverkusen Mitte,Köln hbf,16m
+Köln hbf,Leverkusen Mitte,16m
+Leverkusen Mitte,Darmstadt hbf,2 h 5m
+Darmstadt hbf,Leverkusen Mitte,2 h 5m
+Leverkusen Mitte,Düsseldorf hbf,15m
+Düsseldorf hbf,Leverkusen Mitte,15m
+Leverkusen Mitte,Karlsruhe hbf,2 h 14m
+Karlsruhe hbf,Leverkusen Mitte,2 h 14m
+Leverkusen Mitte,Hannover hbf,3 h 5m
+Hannover hbf,Leverkusen Mitte,3 h 5m
+Leverkusen Mitte,Paderborn hbf,2 h 33m
+Paderborn hbf,Leverkusen Mitte,2 h 33m
+Leverkusen Mitte,Fürth hbf,3 h 57m
+Fürth hbf,Leverkusen Mitte,3 h 57m
+Leverkusen Mitte,Gelsenkirchen hbf,1 h 4m
+Gelsenkirchen hbf,Leverkusen Mitte,1 h 4m
+Leverkusen Mitte,Neunkirchen hbf,3 h 43m
+Neunkirchen hbf,Leverkusen Mitte,3 h 43m
+Leverkusen Mitte,Nürnberg hbf,3 h 43m
+Nürnberg hbf,Leverkusen Mitte,3 h 43m
+Leverkusen Mitte,Kaiserslautern hbf,2 h 48m
+Kaiserslautern hbf,Leverkusen Mitte,2 h 48m
+Leverkusen Mitte,Magdeburg hbf,4 h 41m
+Magdeburg hbf,Leverkusen Mitte,4 h 41m
+Leverkusen Mitte,Braunschweig hbf,3 h 55m
+Braunschweig hbf,Leverkusen Mitte,3 h 55m
+Leverkusen Mitte,Ulm hbf,3 h 14m
+Ulm hbf,Leverkusen Mitte,3 h 14m
+Leverkusen Mitte,Münster (Westf) hbf,1 h 34m
+Münster (Westf) hbf,Leverkusen Mitte,1 h 34m
+Leverkusen Mitte,Rostock hbf,6 h 46m
+Rostock hbf,Leverkusen Mitte,6 h 46m
+Leipzig hbf,Stuttgart hbf,4 h 37m
+Stuttgart hbf,Leipzig hbf,4 h 37m
+Leipzig hbf,Frankfurt hbf,2 h 56m
+Frankfurt hbf,Leipzig hbf,2 h 56m
+Leipzig hbf,Freiburg (Breisgau) hbf,5 h 10m
+Freiburg (Breisgau) hbf,Leipzig hbf,5 h 10m
+Leipzig hbf,Berlin hbf,1 h 13m
+Berlin hbf,Leipzig hbf,1 h 13m
+Leipzig hbf,Sinsheim (Elsenz) hbf,4 h 49m
+Sinsheim (Elsenz) hbf,Leipzig hbf,4 h 49m
+Leipzig hbf,Mainz hbf,3 h 42m
+Mainz hbf,Leipzig hbf,3 h 42m
+Leipzig hbf,Wolfsburg hbf,2 h 35m
+Wolfsburg hbf,Leipzig hbf,2 h 35m
+Leipzig hbf,Mönchengladbach hbf,5 h 9m
+Mönchengladbach hbf,Leipzig hbf,5 h 9m
+Leipzig hbf,Bremen hbf,4 h 7m
+Bremen hbf,Leipzig hbf,4 h 7m
+Leipzig hbf,Augsburg hbf,3 h 44m
+Augsburg hbf,Leipzig hbf,3 h 44m
+Leipzig hbf,Bochum hbf,4 h 58m
+Bochum hbf,Leipzig hbf,4 h 58m
+Leipzig hbf,Hamburg hbf,3 h 8m
+Hamburg hbf,Leipzig hbf,3 h 8m
+Leipzig hbf,Kiel hbf,4 h 41m
+Kiel hbf,Leipzig hbf,4 h 41m
+Leipzig hbf,Köln hbf,4 h 27m
+Köln hbf,Leipzig hbf,4 h 27m
+Leipzig hbf,Darmstadt hbf,3 h 23m
+Darmstadt hbf,Leipzig hbf,3 h 23m
+Leipzig hbf,Düsseldorf hbf,4 h 42m
+Düsseldorf hbf,Leipzig hbf,4 h 42m
+Leipzig hbf,Karlsruhe hbf,4 h 7m
+Karlsruhe hbf,Leipzig hbf,4 h 7m
+Leipzig hbf,Hannover hbf,2 h 41m
+Hannover hbf,Leipzig hbf,2 h 41m
+Leipzig hbf,Paderborn hbf,3 h 22m
+Paderborn hbf,Leipzig hbf,3 h 22m
+Leipzig hbf,Fürth hbf,2 h 7m
+Fürth hbf,Leipzig hbf,2 h 7m
+Leipzig hbf,Gelsenkirchen hbf,4 h 59m
+Gelsenkirchen hbf,Leipzig hbf,4 h 59m
+Leipzig hbf,Neunkirchen hbf,5 h 22m
+Neunkirchen hbf,Leipzig hbf,5 h 22m
+Leipzig hbf,Nürnberg hbf,2 h 4m
+Nürnberg hbf,Leipzig hbf,2 h 4m
+Leipzig hbf,Kaiserslautern hbf,4 h 35m
+Kaiserslautern hbf,Leipzig hbf,4 h 35m
+Leipzig hbf,Magdeburg hbf,1 h 12m
+Magdeburg hbf,Leipzig hbf,1 h 12m
+Leipzig hbf,Braunschweig hbf,2 h 6m
+Braunschweig hbf,Leipzig hbf,2 h 6m
+Leipzig hbf,Ulm hbf,4 h 38m
+Ulm hbf,Leipzig hbf,4 h 38m
+Leipzig hbf,Münster (Westf) hbf,4 h 34m
+Münster (Westf) hbf,Leipzig hbf,4 h 34m
+Leipzig hbf,Rostock hbf,3 h 32m
+Rostock hbf,Leipzig hbf,3 h 32m
+Stuttgart hbf,Frankfurt hbf,1 h 27m
+Frankfurt hbf,Stuttgart hbf,1 h 27m
+Stuttgart hbf,Freiburg (Breisgau) hbf,2 h 7m
+Freiburg (Breisgau) hbf,Stuttgart hbf,2 h 7m
+Stuttgart hbf,Berlin hbf,5 h 59m
+Berlin hbf,Stuttgart hbf,5 h 59m
+Stuttgart hbf,Sinsheim (Elsenz) hbf,1 h 52m
+Sinsheim (Elsenz) hbf,Stuttgart hbf,1 h 52m
+Stuttgart hbf,Mainz hbf,1 h 38m
+Mainz hbf,Stuttgart hbf,1 h 38m
+Stuttgart hbf,Wolfsburg hbf,4 h 43m
+Wolfsburg hbf,Stuttgart hbf,4 h 43m
+Stuttgart hbf,Mönchengladbach hbf,3 h 11m
+Mönchengladbach hbf,Stuttgart hbf,3 h 11m
+Stuttgart hbf,Bremen hbf,5 h 31m
+Bremen hbf,Stuttgart hbf,5 h 31m
+Stuttgart hbf,Augsburg hbf,1 h 21m
+Augsburg hbf,Stuttgart hbf,1 h 21m
+Stuttgart hbf,Bochum hbf,3 h 35m
+Bochum hbf,Stuttgart hbf,3 h 35m
+Stuttgart hbf,Hamburg hbf,5 h 24m
+Hamburg hbf,Stuttgart hbf,5 h 24m
+Stuttgart hbf,Kiel hbf,6 h 45m
+Kiel hbf,Stuttgart hbf,6 h 45m
+Stuttgart hbf,Köln hbf,2 h 21m
+Köln hbf,Stuttgart hbf,2 h 21m
+Stuttgart hbf,Darmstadt hbf,1 h 30m
+Darmstadt hbf,Stuttgart hbf,1 h 30m
+Stuttgart hbf,Düsseldorf hbf,2 h 31m
+Düsseldorf hbf,Stuttgart hbf,2 h 31m
+Stuttgart hbf,Karlsruhe hbf,1 h 10m
+Karlsruhe hbf,Stuttgart hbf,1 h 10m
+Stuttgart hbf,Hannover hbf,4 h 5m
+Hannover hbf,Stuttgart hbf,4 h 5m
+Stuttgart hbf,Paderborn hbf,4 h 17m
+Paderborn hbf,Stuttgart hbf,4 h 17m
+Stuttgart hbf,Fürth hbf,2 h 34m
+Fürth hbf,Stuttgart hbf,2 h 34m
+Stuttgart hbf,Gelsenkirchen hbf,3 h 8m
+Gelsenkirchen hbf,Stuttgart hbf,3 h 8m
+Stuttgart hbf,Neunkirchen hbf,2 h 28m
+Neunkirchen hbf,Stuttgart hbf,2 h 28m
+Stuttgart hbf,Nürnberg hbf,2 h 7m
+Nürnberg hbf,Stuttgart hbf,2 h 7m
+Stuttgart hbf,Kaiserslautern hbf,1 h 37m
+Kaiserslautern hbf,Stuttgart hbf,1 h 37m
+Stuttgart hbf,Magdeburg hbf,5 h 18m
+Magdeburg hbf,Stuttgart hbf,5 h 18m
+Stuttgart hbf,Braunschweig hbf,4 h 25m
+Braunschweig hbf,Stuttgart hbf,4 h 25m
+Stuttgart hbf,Ulm hbf,39m
+Ulm hbf,Stuttgart hbf,39m
+Stuttgart hbf,Münster (Westf) hbf,4 h 2m
+Münster (Westf) hbf,Stuttgart hbf,4 h 2m
+Stuttgart hbf,Rostock hbf,8 h 14m
+Rostock hbf,Stuttgart hbf,8 h 14m
+Frankfurt hbf,Freiburg (Breisgau) hbf,2 h 7m
+Freiburg (Breisgau) hbf,Frankfurt hbf,2 h 7m
+Frankfurt hbf,Berlin hbf,3 h 59m
+Berlin hbf,Frankfurt hbf,3 h 59m
+Frankfurt hbf,Sinsheim (Elsenz) hbf,1 h 44m
+Sinsheim (Elsenz) hbf,Frankfurt hbf,1 h 44m
+Frankfurt hbf,Mainz hbf,35m
+Mainz hbf,Frankfurt hbf,35m
+Frankfurt hbf,Wolfsburg hbf,3 h 4m
+Wolfsburg hbf,Frankfurt hbf,3 h 4m
+Frankfurt hbf,Mönchengladbach hbf,2 h 2m
+Mönchengladbach hbf,Frankfurt hbf,2 h 2m
+Frankfurt hbf,Bremen hbf,3 h 29m
+Bremen hbf,Frankfurt hbf,3 h 29m
+Frankfurt hbf,Augsburg hbf,2 h 51m
+Augsburg hbf,Frankfurt hbf,2 h 51m
+Frankfurt hbf,Bochum hbf,2 h 34m
+Bochum hbf,Frankfurt hbf,2 h 34m
+Frankfurt hbf,Hamburg hbf,3 h 32m
+Hamburg hbf,Frankfurt hbf,3 h 32m
+Frankfurt hbf,Kiel hbf,4 h 46m
+Kiel hbf,Frankfurt hbf,4 h 46m
+Frankfurt hbf,Köln hbf,1 h 6m
+Köln hbf,Frankfurt hbf,1 h 6m
+Frankfurt hbf,Darmstadt hbf,17m
+Darmstadt hbf,Frankfurt hbf,17m
+Frankfurt hbf,Düsseldorf hbf,1 h 27m
+Düsseldorf hbf,Frankfurt hbf,1 h 27m
+Frankfurt hbf,Karlsruhe hbf,1 h 3m
+Karlsruhe hbf,Frankfurt hbf,1 h 3m
+Frankfurt hbf,Hannover hbf,2 h 14m
+Hannover hbf,Frankfurt hbf,2 h 14m
+Frankfurt hbf,Paderborn hbf,2 h 42m
+Paderborn hbf,Frankfurt hbf,2 h 42m
+Frankfurt hbf,Fürth hbf,2 h 16m
+Fürth hbf,Frankfurt hbf,2 h 16m
+Frankfurt hbf,Gelsenkirchen hbf,2 h 13m
+Gelsenkirchen hbf,Frankfurt hbf,2 h 13m
+Frankfurt hbf,Neunkirchen hbf,2 h 5m
+Neunkirchen hbf,Frankfurt hbf,2 h 5m
+Frankfurt hbf,Nürnberg hbf,2 h 2m
+Nürnberg hbf,Frankfurt hbf,2 h 2m
+Frankfurt hbf,Kaiserslautern hbf,1 h 25m
+Kaiserslautern hbf,Frankfurt hbf,1 h 25m
+Frankfurt hbf,Magdeburg hbf,3 h 43m
+Magdeburg hbf,Frankfurt hbf,3 h 43m
+Frankfurt hbf,Braunschweig hbf,2 h 45m
+Braunschweig hbf,Frankfurt hbf,2 h 45m
+Frankfurt hbf,Ulm hbf,2 h 7m
+Ulm hbf,Frankfurt hbf,2 h 7m
+Frankfurt hbf,Münster (Westf) hbf,3 h 1m
+Münster (Westf) hbf,Frankfurt hbf,3 h 1m
+Frankfurt hbf,Rostock hbf,6 h 32m
+Rostock hbf,Frankfurt hbf,6 h 32m
+Freiburg (Breisgau) hbf,Berlin hbf,6 h 15m
+Berlin hbf,Freiburg (Breisgau) hbf,6 h 15m
+Freiburg (Breisgau) hbf,Sinsheim (Elsenz) hbf,2 h 26m
+Sinsheim (Elsenz) hbf,Freiburg (Breisgau) hbf,2 h 26m
+Freiburg (Breisgau) hbf,Mainz hbf,2 h 12m
+Mainz hbf,Freiburg (Breisgau) hbf,2 h 12m
+Freiburg (Breisgau) hbf,Wolfsburg hbf,5 h 15m
+Wolfsburg hbf,Freiburg (Breisgau) hbf,5 h 15m
+Freiburg (Breisgau) hbf,Mönchengladbach hbf,4 h 1m
+Mönchengladbach hbf,Freiburg (Breisgau) hbf,4 h 1m
+Freiburg (Breisgau) hbf,Bremen hbf,5 h 52m
+Bremen hbf,Freiburg (Breisgau) hbf,5 h 52m
+Freiburg (Breisgau) hbf,Augsburg hbf,3 h 22m
+Augsburg hbf,Freiburg (Breisgau) hbf,3 h 22m
+Freiburg (Breisgau) hbf,Bochum hbf,4 h 26m
+Bochum hbf,Freiburg (Breisgau) hbf,4 h 26m
+Freiburg (Breisgau) hbf,Hamburg hbf,5 h 48m
+Hamburg hbf,Freiburg (Breisgau) hbf,5 h 48m
+Freiburg (Breisgau) hbf,Kiel hbf,7 h 3m
+Kiel hbf,Freiburg (Breisgau) hbf,7 h 3m
+Freiburg (Breisgau) hbf,Köln hbf,3 h 9m
+Köln hbf,Freiburg (Breisgau) hbf,3 h 9m
+Freiburg (Breisgau) hbf,Darmstadt hbf,2 h 26m
+Darmstadt hbf,Freiburg (Breisgau) hbf,2 h 26m
+Freiburg (Breisgau) hbf,Düsseldorf hbf,3 h 22m
+Düsseldorf hbf,Freiburg (Breisgau) hbf,3 h 22m
+Freiburg (Breisgau) hbf,Karlsruhe hbf,1 h 1m
+Karlsruhe hbf,Freiburg (Breisgau) hbf,1 h 1m
+Freiburg (Breisgau) hbf,Hannover hbf,4 h 29m
+Hannover hbf,Freiburg (Breisgau) hbf,4 h 29m
+Freiburg (Breisgau) hbf,Paderborn hbf,5 h 14m
+Paderborn hbf,Freiburg (Breisgau) hbf,5 h 14m
+Freiburg (Breisgau) hbf,Fürth hbf,4 h 46m
+Fürth hbf,Freiburg (Breisgau) hbf,4 h 46m
+Freiburg (Breisgau) hbf,Gelsenkirchen hbf,3 h 58m
+Gelsenkirchen hbf,Freiburg (Breisgau) hbf,3 h 58m
+Freiburg (Breisgau) hbf,Neunkirchen hbf,3 h 10m
+Neunkirchen hbf,Freiburg (Breisgau) hbf,3 h 10m
+Freiburg (Breisgau) hbf,Nürnberg hbf,4 h 36m
+Nürnberg hbf,Freiburg (Breisgau) hbf,4 h 36m
+Freiburg (Breisgau) hbf,Kaiserslautern hbf,2 h 20m
+Kaiserslautern hbf,Freiburg (Breisgau) hbf,2 h 20m
+Freiburg (Breisgau) hbf,Magdeburg hbf,6 h 2m
+Magdeburg hbf,Freiburg (Breisgau) hbf,6 h 2m
+Freiburg (Breisgau) hbf,Braunschweig hbf,5 h 4m
+Braunschweig hbf,Freiburg (Breisgau) hbf,5 h 4m
+Freiburg (Breisgau) hbf,Ulm hbf,2 h 39m
+Ulm hbf,Freiburg (Breisgau) hbf,2 h 39m
+Freiburg (Breisgau) hbf,Münster (Westf) hbf,4 h 48m
+Münster (Westf) hbf,Freiburg (Breisgau) hbf,4 h 48m
+Freiburg (Breisgau) hbf,Rostock hbf,9 h
+Rostock hbf,Freiburg (Breisgau) hbf,9 h
+Berlin hbf,Sinsheim (Elsenz) hbf,6 h 4m
+Sinsheim (Elsenz) hbf,Berlin hbf,6 h 4m
+Berlin hbf,Mainz hbf,4 h 52m
+Mainz hbf,Berlin hbf,4 h 52m
+Berlin hbf,Wolfsburg hbf,1 h 5m
+Wolfsburg hbf,Berlin hbf,1 h 5m
+Berlin hbf,Mönchengladbach hbf,4 h 52m
+Mönchengladbach hbf,Berlin hbf,4 h 52m
+Berlin hbf,Bremen hbf,2 h 48m
+Bremen hbf,Berlin hbf,2 h 48m
+Berlin hbf,Augsburg hbf,4 h 15m
+Augsburg hbf,Berlin hbf,4 h 15m
+Berlin hbf,Bochum hbf,4 h
+Bochum hbf,Berlin hbf,4 h
+Berlin hbf,Hamburg hbf,1 h 46m
+Hamburg hbf,Berlin hbf,1 h 46m
+Berlin hbf,Kiel hbf,3 h 14m
+Kiel hbf,Berlin hbf,3 h 14m
+Berlin hbf,Köln hbf,4 h 7m
+Köln hbf,Berlin hbf,4 h 7m
+Berlin hbf,Darmstadt hbf,4 h 21m
+Darmstadt hbf,Berlin hbf,4 h 21m
+Berlin hbf,Düsseldorf hbf,4 h 21m
+Düsseldorf hbf,Berlin hbf,4 h 21m
+Berlin hbf,Karlsruhe hbf,5 h 12m
+Karlsruhe hbf,Berlin hbf,5 h 12m
+Berlin hbf,Hannover hbf,1 h 40m
+Hannover hbf,Berlin hbf,1 h 40m
+Berlin hbf,Paderborn hbf,3 h 49m
+Paderborn hbf,Berlin hbf,3 h 49m
+Berlin hbf,Fürth hbf,3 h 9m
+Fürth hbf,Berlin hbf,3 h 9m
+Berlin hbf,Gelsenkirchen hbf,3 h 55m
+Gelsenkirchen hbf,Berlin hbf,3 h 55m
+Berlin hbf,Neunkirchen hbf,6 h 24m
+Neunkirchen hbf,Berlin hbf,6 h 24m
+Berlin hbf,Nürnberg hbf,2 h 55m
+Nürnberg hbf,Berlin hbf,2 h 55m
+Berlin hbf,Kaiserslautern hbf,5 h 35m
+Kaiserslautern hbf,Berlin hbf,5 h 35m
+Berlin hbf,Magdeburg hbf,1 h 24m
+Magdeburg hbf,Berlin hbf,1 h 24m
+Berlin hbf,Braunschweig hbf,1 h 23m
+Braunschweig hbf,Berlin hbf,1 h 23m
+Berlin hbf,Ulm hbf,5 h 43m
+Ulm hbf,Berlin hbf,5 h 43m
+Berlin hbf,Münster (Westf) hbf,3 h 21m
+Münster (Westf) hbf,Berlin hbf,3 h 21m
+Berlin hbf,Rostock hbf,2 h 5m
+Rostock hbf,Berlin hbf,2 h 5m
+Sinsheim (Elsenz) hbf,Mainz hbf,1 h 48m
+Mainz hbf,Sinsheim (Elsenz) hbf,1 h 48m
+Sinsheim (Elsenz) hbf,Wolfsburg hbf,4 h 54m
+Wolfsburg hbf,Sinsheim (Elsenz) hbf,4 h 54m
+Sinsheim (Elsenz) hbf,Mönchengladbach hbf,3 h 47m
+Mönchengladbach hbf,Sinsheim (Elsenz) hbf,3 h 47m
+Sinsheim (Elsenz) hbf,Bremen hbf,5 h 30m
+Bremen hbf,Sinsheim (Elsenz) hbf,5 h 30m
+Sinsheim (Elsenz) hbf,Augsburg hbf,3 h 23m
+Augsburg hbf,Sinsheim (Elsenz) hbf,3 h 23m
+Sinsheim (Elsenz) hbf,Bochum hbf,4 h 19m
+Bochum hbf,Sinsheim (Elsenz) hbf,4 h 19m
+Sinsheim (Elsenz) hbf,Hamburg hbf,5 h 43m
+Hamburg hbf,Sinsheim (Elsenz) hbf,5 h 43m
+Sinsheim (Elsenz) hbf,Kiel hbf,6 h 55m
+Kiel hbf,Sinsheim (Elsenz) hbf,6 h 55m
+Sinsheim (Elsenz) hbf,Köln hbf,2 h 41m
+Köln hbf,Sinsheim (Elsenz) hbf,2 h 41m
+Sinsheim (Elsenz) hbf,Darmstadt hbf,1 h 27m
+Darmstadt hbf,Sinsheim (Elsenz) hbf,1 h 27m
+Sinsheim (Elsenz) hbf,Düsseldorf hbf,3 h 14m
+Düsseldorf hbf,Sinsheim (Elsenz) hbf,3 h 14m
+Sinsheim (Elsenz) hbf,Karlsruhe hbf,1 h 12m
+Karlsruhe hbf,Sinsheim (Elsenz) hbf,1 h 12m
+Sinsheim (Elsenz) hbf,Hannover hbf,4 h 24m
+Hannover hbf,Sinsheim (Elsenz) hbf,4 h 24m
+Sinsheim (Elsenz) hbf,Paderborn hbf,4 h 45m
+Paderborn hbf,Sinsheim (Elsenz) hbf,4 h 45m
+Sinsheim (Elsenz) hbf,Fürth hbf,4 h 7m
+Fürth hbf,Sinsheim (Elsenz) hbf,4 h 7m
+Sinsheim (Elsenz) hbf,Gelsenkirchen hbf,3 h 57m
+Gelsenkirchen hbf,Sinsheim (Elsenz) hbf,3 h 57m
+Sinsheim (Elsenz) hbf,Neunkirchen hbf,2 h 42m
+Neunkirchen hbf,Sinsheim (Elsenz) hbf,2 h 42m
+Sinsheim (Elsenz) hbf,Nürnberg hbf,3 h 42m
+Nürnberg hbf,Sinsheim (Elsenz) hbf,3 h 42m
+Sinsheim (Elsenz) hbf,Kaiserslautern hbf,2 h
+Kaiserslautern hbf,Sinsheim (Elsenz) hbf,2 h
+Sinsheim (Elsenz) hbf,Magdeburg hbf,5 h 30m
+Magdeburg hbf,Sinsheim (Elsenz) hbf,5 h 30m
+Sinsheim (Elsenz) hbf,Braunschweig hbf,4 h 35m
+Braunschweig hbf,Sinsheim (Elsenz) hbf,4 h 35m
+Sinsheim (Elsenz) hbf,Ulm hbf,2 h 37m
+Ulm hbf,Sinsheim (Elsenz) hbf,2 h 37m
+Sinsheim (Elsenz) hbf,Münster (Westf) hbf,4 h 33m
+Münster (Westf) hbf,Sinsheim (Elsenz) hbf,4 h 33m
+Sinsheim (Elsenz) hbf,Rostock hbf,8 h 13m
+Rostock hbf,Sinsheim (Elsenz) hbf,8 h 13m
+Mainz hbf,Wolfsburg hbf,3 h 37m
+Wolfsburg hbf,Mainz hbf,3 h 37m
+Mainz hbf,Mönchengladbach hbf,2 h 28m
+Mönchengladbach hbf,Mainz hbf,2 h 28m
+Mainz hbf,Bremen hbf,4 h 4m
+Bremen hbf,Mainz hbf,4 h 4m
+Mainz hbf,Augsburg hbf,3 h 11m
+Augsburg hbf,Mainz hbf,3 h 11m
+Mainz hbf,Bochum hbf,3 h
+Bochum hbf,Mainz hbf,3 h
+Mainz hbf,Hamburg hbf,4 h 20m
+Hamburg hbf,Mainz hbf,4 h 20m
+Mainz hbf,Kiel hbf,5 h 42m
+Kiel hbf,Mainz hbf,5 h 42m
+Mainz hbf,Köln hbf,1 h 22m
+Köln hbf,Mainz hbf,1 h 22m
+Mainz hbf,Darmstadt hbf,32m
+Darmstadt hbf,Mainz hbf,32m
+Mainz hbf,Düsseldorf hbf,1 h 50m
+Düsseldorf hbf,Mainz hbf,1 h 50m
+Mainz hbf,Karlsruhe hbf,1 h 5m
+Karlsruhe hbf,Mainz hbf,1 h 5m
+Mainz hbf,Hannover hbf,3 h 2m
+Hannover hbf,Mainz hbf,3 h 2m
+Mainz hbf,Paderborn hbf,3 h 26m
+Paderborn hbf,Mainz hbf,3 h 26m
+Mainz hbf,Fürth hbf,2 h 59m
+Fürth hbf,Mainz hbf,2 h 59m
+Mainz hbf,Gelsenkirchen hbf,2 h 32m
+Gelsenkirchen hbf,Mainz hbf,2 h 32m
+Mainz hbf,Neunkirchen hbf,1 h 53m
+Neunkirchen hbf,Mainz hbf,1 h 53m
+Mainz hbf,Nürnberg hbf,2 h 42m
+Nürnberg hbf,Mainz hbf,2 h 42m
+Mainz hbf,Kaiserslautern hbf,1 h 30m
+Kaiserslautern hbf,Mainz hbf,1 h 30m
+Mainz hbf,Magdeburg hbf,4 h 12m
+Magdeburg hbf,Mainz hbf,4 h 12m
+Mainz hbf,Braunschweig hbf,3 h 19m
+Braunschweig hbf,Mainz hbf,3 h 19m
+Mainz hbf,Ulm hbf,2 h 27m
+Ulm hbf,Mainz hbf,2 h 27m
+Mainz hbf,Münster (Westf) hbf,3 h 11m
+Münster (Westf) hbf,Mainz hbf,3 h 11m
+Mainz hbf,Rostock hbf,7 h 20m
+Rostock hbf,Mainz hbf,7 h 20m
+Wolfsburg hbf,Mönchengladbach hbf,3 h 49m
+Mönchengladbach hbf,Wolfsburg hbf,3 h 49m
+Wolfsburg hbf,Bremen hbf,1 h 43m
+Bremen hbf,Wolfsburg hbf,1 h 43m
+Wolfsburg hbf,Augsburg hbf,5 h 8m
+Augsburg hbf,Wolfsburg hbf,5 h 8m
+Wolfsburg hbf,Bochum hbf,2 h 53m
+Bochum hbf,Wolfsburg hbf,2 h 53m
+Wolfsburg hbf,Hamburg hbf,2 h 1m
+Hamburg hbf,Wolfsburg hbf,2 h 1m
+Wolfsburg hbf,Kiel hbf,3 h 16m
+Kiel hbf,Wolfsburg hbf,3 h 16m
+Wolfsburg hbf,Köln hbf,3 h 19m
+Köln hbf,Wolfsburg hbf,3 h 19m
+Wolfsburg hbf,Darmstadt hbf,3 h 38m
+Darmstadt hbf,Wolfsburg hbf,3 h 38m
+Wolfsburg hbf,Düsseldorf hbf,3 h 16m
+Düsseldorf hbf,Wolfsburg hbf,3 h 16m
+Wolfsburg hbf,Karlsruhe hbf,4 h 16m
+Karlsruhe hbf,Wolfsburg hbf,4 h 16m
+Wolfsburg hbf,Hannover hbf,31m
+Hannover hbf,Wolfsburg hbf,31m
+Wolfsburg hbf,Paderborn hbf,2 h 38m
+Paderborn hbf,Wolfsburg hbf,2 h 38m
+Wolfsburg hbf,Fürth hbf,3 h 56m
+Fürth hbf,Wolfsburg hbf,3 h 56m
+Wolfsburg hbf,Gelsenkirchen hbf,2 h 48m
+Gelsenkirchen hbf,Wolfsburg hbf,2 h 48m
+Wolfsburg hbf,Neunkirchen hbf,5 h 17m
+Neunkirchen hbf,Wolfsburg hbf,5 h 17m
+Wolfsburg hbf,Nürnberg hbf,3 h 38m
+Nürnberg hbf,Wolfsburg hbf,3 h 38m
+Wolfsburg hbf,Kaiserslautern hbf,4 h 39m
+Kaiserslautern hbf,Wolfsburg hbf,4 h 39m
+Wolfsburg hbf,Magdeburg hbf,1 h 23m
+Magdeburg hbf,Wolfsburg hbf,1 h 23m
+Wolfsburg hbf,Braunschweig hbf,21m
+Braunschweig hbf,Wolfsburg hbf,21m
+Wolfsburg hbf,Ulm hbf,5 h 30m
+Ulm hbf,Wolfsburg hbf,5 h 30m
+Wolfsburg hbf,Münster (Westf) hbf,2 h 29m
+Münster (Westf) hbf,Wolfsburg hbf,2 h 29m
+Wolfsburg hbf,Rostock hbf,3 h 33m
+Rostock hbf,Wolfsburg hbf,3 h 33m
+Mönchengladbach hbf,Bremen hbf,3 h 17m
+Bremen hbf,Mönchengladbach hbf,3 h 17m
+Mönchengladbach hbf,Augsburg hbf,4 h 41m
+Augsburg hbf,Mönchengladbach hbf,4 h 41m
+Mönchengladbach hbf,Bochum hbf,1 h 35m
+Bochum hbf,Mönchengladbach hbf,1 h 35m
+Mönchengladbach hbf,Hamburg hbf,3 h 57m
+Hamburg hbf,Mönchengladbach hbf,3 h 57m
+Mönchengladbach hbf,Kiel hbf,5 h 36m
+Kiel hbf,Mönchengladbach hbf,5 h 36m
+Mönchengladbach hbf,Köln hbf,54m
+Köln hbf,Mönchengladbach hbf,54m
+Mönchengladbach hbf,Darmstadt hbf,2 h 39m
+Darmstadt hbf,Mönchengladbach hbf,2 h 39m
+Mönchengladbach hbf,Düsseldorf hbf,34m
+Düsseldorf hbf,Mönchengladbach hbf,34m
+Mönchengladbach hbf,Karlsruhe hbf,2 h 57m
+Karlsruhe hbf,Mönchengladbach hbf,2 h 57m
+Mönchengladbach hbf,Hannover hbf,3 h 3m
+Hannover hbf,Mönchengladbach hbf,3 h 3m
+Mönchengladbach hbf,Paderborn hbf,2 h 34m
+Paderborn hbf,Mönchengladbach hbf,2 h 34m
+Mönchengladbach hbf,Fürth hbf,4 h 25m
+Fürth hbf,Mönchengladbach hbf,4 h 25m
+Mönchengladbach hbf,Gelsenkirchen hbf,1 h 34m
+Gelsenkirchen hbf,Mönchengladbach hbf,1 h 34m
+Mönchengladbach hbf,Neunkirchen hbf,4 h 21m
+Neunkirchen hbf,Mönchengladbach hbf,4 h 21m
+Mönchengladbach hbf,Nürnberg hbf,4 h 11m
+Nürnberg hbf,Mönchengladbach hbf,4 h 11m
+Mönchengladbach hbf,Kaiserslautern hbf,3 h 36m
+Kaiserslautern hbf,Mönchengladbach hbf,3 h 36m
+Mönchengladbach hbf,Magdeburg hbf,4 h 32m
+Magdeburg hbf,Mönchengladbach hbf,4 h 32m
+Mönchengladbach hbf,Braunschweig hbf,3 h 46m
+Braunschweig hbf,Mönchengladbach hbf,3 h 46m
+Mönchengladbach hbf,Ulm hbf,3 h 57m
+Ulm hbf,Mönchengladbach hbf,3 h 57m
+Mönchengladbach hbf,Münster (Westf) hbf,1 h 53m
+Münster (Westf) hbf,Mönchengladbach hbf,1 h 53m
+Mönchengladbach hbf,Rostock hbf,7 h 5m
+Rostock hbf,Mönchengladbach hbf,7 h 5m
+Bremen hbf,Augsburg hbf,5 h 31m
+Augsburg hbf,Bremen hbf,5 h 31m
+Bremen hbf,Bochum hbf,2 h 29m
+Bochum hbf,Bremen hbf,2 h 29m
+Bremen hbf,Hamburg hbf,56m
+Hamburg hbf,Bremen hbf,56m
+Bremen hbf,Kiel hbf,2 h 5m
+Kiel hbf,Bremen hbf,2 h 5m
+Bremen hbf,Köln hbf,3 h 2m
+Köln hbf,Bremen hbf,3 h 2m
+Bremen hbf,Darmstadt hbf,4 h 16m
+Darmstadt hbf,Bremen hbf,4 h 16m
+Bremen hbf,Düsseldorf hbf,2 h 33m
+Düsseldorf hbf,Bremen hbf,2 h 33m
+Bremen hbf,Karlsruhe hbf,5 h
+Karlsruhe hbf,Bremen hbf,5 h
+Bremen hbf,Hannover hbf,59m
+Hannover hbf,Bremen hbf,59m
+Bremen hbf,Paderborn hbf,2 h 48m
+Paderborn hbf,Bremen hbf,2 h 48m
+Bremen hbf,Fürth hbf,4 h 28m
+Fürth hbf,Bremen hbf,4 h 28m
+Bremen hbf,Gelsenkirchen hbf,1 h 55m
+Gelsenkirchen hbf,Bremen hbf,1 h 55m
+Bremen hbf,Neunkirchen hbf,6 h 2m
+Neunkirchen hbf,Bremen hbf,6 h 2m
+Bremen hbf,Nürnberg hbf,4 h 10m
+Nürnberg hbf,Bremen hbf,4 h 10m
+Bremen hbf,Kaiserslautern hbf,5 h 24m
+Kaiserslautern hbf,Bremen hbf,5 h 24m
+Bremen hbf,Magdeburg hbf,2 h 39m
+Magdeburg hbf,Bremen hbf,2 h 39m
+Bremen hbf,Braunschweig hbf,1 h 53m
+Braunschweig hbf,Bremen hbf,1 h 53m
+Bremen hbf,Ulm hbf,6 h 21m
+Ulm hbf,Bremen hbf,6 h 21m
+Bremen hbf,Münster (Westf) hbf,1 h 15m
+Münster (Westf) hbf,Bremen hbf,1 h 15m
+Bremen hbf,Rostock hbf,3 h 32m
+Rostock hbf,Bremen hbf,3 h 32m
+Augsburg hbf,Bochum hbf,5 h 12m
+Bochum hbf,Augsburg hbf,5 h 12m
+Augsburg hbf,Hamburg hbf,5 h 42m
+Hamburg hbf,Augsburg hbf,5 h 42m
+Augsburg hbf,Kiel hbf,7 h 21m
+Kiel hbf,Augsburg hbf,7 h 21m
+Augsburg hbf,Köln hbf,3 h 58m
+Köln hbf,Augsburg hbf,3 h 58m
+Augsburg hbf,Darmstadt hbf,3 h 6m
+Darmstadt hbf,Augsburg hbf,3 h 6m
+Augsburg hbf,Düsseldorf hbf,4 h 8m
+Düsseldorf hbf,Augsburg hbf,4 h 8m
+Augsburg hbf,Karlsruhe hbf,2 h 17m
+Karlsruhe hbf,Augsburg hbf,2 h 17m
+Augsburg hbf,Hannover hbf,4 h 1m
+Hannover hbf,Augsburg hbf,4 h 1m
+Augsburg hbf,Paderborn hbf,4 h 40m
+Paderborn hbf,Augsburg hbf,4 h 40m
+Augsburg hbf,Fürth hbf,1 h 25m
+Fürth hbf,Augsburg hbf,1 h 25m
+Augsburg hbf,Gelsenkirchen hbf,4 h 44m
+Gelsenkirchen hbf,Augsburg hbf,4 h 44m
+Augsburg hbf,Neunkirchen hbf,3 h 49m
+Neunkirchen hbf,Augsburg hbf,3 h 49m
+Augsburg hbf,Nürnberg hbf,1 h 10m
+Nürnberg hbf,Augsburg hbf,1 h 10m
+Augsburg hbf,Kaiserslautern hbf,2 h 58m
+Kaiserslautern hbf,Augsburg hbf,2 h 58m
+Augsburg hbf,Magdeburg hbf,4 h 37m
+Magdeburg hbf,Augsburg hbf,4 h 37m
+Augsburg hbf,Braunschweig hbf,4 h 46m
+Braunschweig hbf,Augsburg hbf,4 h 46m
+Augsburg hbf,Ulm hbf,39m
+Ulm hbf,Augsburg hbf,39m
+Augsburg hbf,Münster (Westf) hbf,5 h 34m
+Münster (Westf) hbf,Augsburg hbf,5 h 34m
+Augsburg hbf,Rostock hbf,7 h 19m
+Rostock hbf,Augsburg hbf,7 h 19m
+Bochum hbf,Hamburg hbf,3 h 30m
+Hamburg hbf,Bochum hbf,3 h 30m
+Bochum hbf,Kiel hbf,4 h 44m
+Kiel hbf,Bochum hbf,4 h 44m
+Bochum hbf,Köln hbf,1 h 31m
+Köln hbf,Bochum hbf,1 h 31m
+Bochum hbf,Darmstadt hbf,3 h 8m
+Darmstadt hbf,Bochum hbf,3 h 8m
+Bochum hbf,Düsseldorf hbf,1 h 1m 
+Düsseldorf hbf,Bochum hbf,1 h 1m
+Bochum hbf,Karlsruhe hbf,3 h 22m
+Karlsruhe hbf,Bochum hbf,3 h 22m
+Bochum hbf,Hannover hbf,2 h 14m
+Hannover hbf,Bochum hbf,2 h 14m
+Bochum hbf,Paderborn hbf,1 h 32m
+Paderborn hbf,Bochum hbf,1 h 32m
+Bochum hbf,Fürth hbf,4 h 53m
+Fürth hbf,Bochum hbf,4 h 53m
+Bochum hbf,Gelsenkirchen hbf,31m
+Gelsenkirchen hbf,Bochum hbf,31m
+Bochum hbf,Neunkirchen hbf,4 h 49m
+Neunkirchen hbf,Bochum hbf,4 h 49m
+Bochum hbf,Nürnberg hbf,4 h 39m
+Nürnberg hbf,Bochum hbf,4 h 39m
+Bochum hbf,Kaiserslautern hbf,4 h 3m
+Kaiserslautern hbf,Bochum hbf,4 h 3m
+Bochum hbf,Magdeburg hbf,3 h 40m
+Magdeburg hbf,Bochum hbf,3 h 40m
+Bochum hbf,Braunschweig hbf,2 h 54m
+Braunschweig hbf,Bochum hbf,2 h 54m
+Bochum hbf,Ulm hbf,4 h 22m
+Ulm hbf,Bochum hbf,4 h 22m
+Bochum hbf,Münster (Westf) hbf,58m
+Münster (Westf) hbf,Bochum hbf,58m
+Bochum hbf,Rostock hbf,6 h 16m
+Rostock hbf,Bochum hbf,6 h 16m
+Hamburg hbf,Kiel hbf,1 h 5m
+Kiel hbf,Hamburg hbf,1 h 5m
+Hamburg hbf,Köln hbf,3 h 49m
+Köln hbf,Hamburg hbf,3 h 49m
+Hamburg hbf,Darmstadt hbf,4 h 7m
+Darmstadt hbf,Hamburg hbf,4 h 7m
+Hamburg hbf,Düsseldorf hbf,3 h 15m
+Düsseldorf hbf,Hamburg hbf,3 h 15m
+Hamburg hbf,Karlsruhe hbf,4 h 45m
+Karlsruhe hbf,Hamburg hbf,4 h 45m
+Hamburg hbf,Hannover hbf,1 h 14m
+Hannover hbf,Hamburg hbf,1 h 14m
+Hamburg hbf,Paderborn hbf,3 h 17m
+Paderborn hbf,Hamburg hbf,3 h 17m
+Hamburg hbf,Fürth hbf,4 h 41m
+Fürth hbf,Hamburg hbf,4 h 41m
+Hamburg hbf,Gelsenkirchen hbf,2 h 53m
+Gelsenkirchen hbf,Hamburg hbf,2 h 53m
+Hamburg hbf,Neunkirchen hbf,5 h 46m
+Neunkirchen hbf,Hamburg hbf,5 h 46m
+Hamburg hbf,Nürnberg hbf,4 h 22m
+Nürnberg hbf,Hamburg hbf,4 h 22m
+Hamburg hbf,Kaiserslautern hbf,5 h 8m
+Kaiserslautern hbf,Hamburg hbf,5 h 8m
+Hamburg hbf,Magdeburg hbf,2 h 47m
+Magdeburg hbf,Hamburg hbf,2 h 47m
+Hamburg hbf,Braunschweig hbf,2 h 6m
+Braunschweig hbf,Hamburg hbf,2 h 6m
+Hamburg hbf,Ulm hbf,6 h 20m
+Ulm hbf,Hamburg hbf,6 h 20m
+Hamburg hbf,Münster (Westf) hbf,2 h 13m
+Münster (Westf) hbf,Hamburg hbf,2 h 13m
+Hamburg hbf,Rostock hbf,2 h 7m
+Rostock hbf,Hamburg hbf,2 h 7m
+Kiel hbf,Köln hbf,5 h 45m
+Köln hbf,Kiel hbf,5 h 45m
+Kiel hbf,Darmstadt hbf,5 h 23m
+Darmstadt hbf,Kiel hbf,5 h 23m
+Kiel hbf,Düsseldorf hbf,4 h 52m
+Düsseldorf hbf,Kiel hbf,4 h 52m
+Kiel hbf,Karlsruhe hbf,5 h 57m
+Karlsruhe hbf,Kiel hbf,5 h 57m
+Kiel hbf,Hannover hbf,2 h 26m
+Hannover hbf,Kiel hbf,2 h 26m
+Kiel hbf,Paderborn hbf,4 h 34m
+Paderborn hbf,Kiel hbf,4 h 34m
+Kiel hbf,Fürth hbf,6 h 6m
+Fürth hbf,Kiel hbf,6 h 6m
+Kiel hbf,Gelsenkirchen hbf,4 h 23m
+Gelsenkirchen hbf,Kiel hbf,4 h 23m
+Kiel hbf,Neunkirchen hbf,6 h 58m
+Neunkirchen hbf,Kiel hbf,6 h 58m
+Kiel hbf,Nürnberg hbf,5 h 46m
+Nürnberg hbf,Kiel hbf,5 h 46m
+Kiel hbf,Kaiserslautern hbf,6 h 20m
+Kaiserslautern hbf,Kiel hbf,6 h 20m
+Kiel hbf,Magdeburg hbf,4 h 20m
+Magdeburg hbf,Kiel hbf,4 h 20m
+Kiel hbf,Braunschweig hbf,3 h 31m
+Braunschweig hbf,Kiel hbf,3 h 31m
+Kiel hbf,Ulm hbf,7 h 43m
+Ulm hbf,Kiel hbf,7 h 43m
+Kiel hbf,Münster (Westf) hbf,3 h 23m
+Münster (Westf) hbf,Kiel hbf,3 h 23m
+Kiel hbf,Rostock hbf,3 h 44m
+Rostock hbf,Kiel hbf,3 h 44m
+Köln hbf,Darmstadt hbf,1 h 40m
+Darmstadt hbf,Köln hbf,1 h 40m
+Köln hbf,Düsseldorf hbf,21m
+Düsseldorf hbf,Köln hbf,21m
+Köln hbf,Karlsruhe hbf,2 h 2m
+Karlsruhe hbf,Köln hbf,2 h 2m
+Köln hbf,Hannover hbf,2 h 33m
+Hannover hbf,Köln hbf,2 h 33m
+Köln hbf,Paderborn hbf,2 h
+Paderborn hbf,Köln hbf,2 h
+Köln hbf,Fürth hbf,3 h 37m
+Fürth hbf,Köln hbf,3 h 37m
+Köln hbf,Gelsenkirchen hbf,1 h 19m
+Gelsenkirchen hbf,Köln hbf,1 h 19m
+Köln hbf,Neunkirchen hbf,3 h 11m
+Neunkirchen hbf,Köln hbf,3 h 11m
+Köln hbf,Nürnberg hbf,3 h 24m
+Nürnberg hbf,Köln hbf,3 h 24m
+Köln hbf,Kaiserslautern hbf,2 h 26m
+Kaiserslautern hbf,Köln hbf,2 h 26m
+Köln hbf,Magdeburg hbf,4 h 9m
+Magdeburg hbf,Köln hbf,4 h 9m
+Köln hbf,Braunschweig hbf,3 h 23m
+Braunschweig hbf,Köln hbf,3 h 23m
+Köln hbf,Ulm hbf,3 h 6m
+Ulm hbf,Köln hbf,3 h 6m
+Köln hbf,Münster (Westf) hbf,1 h 40m
+Münster (Westf) hbf,Köln hbf,1 h 40m
+Köln hbf,Rostock hbf,6 h 39m
+Rostock hbf,Köln hbf,6 h 39m
+Darmstadt hbf,Düsseldorf hbf,1 h 57m
+Düsseldorf hbf,Darmstadt hbf,1 h 57m
+Darmstadt hbf,Karlsruhe hbf,1 h 14m
+Karlsruhe hbf,Darmstadt hbf,1 h 14m
+Darmstadt hbf,Hannover hbf,2 h 42m
+Hannover hbf,Darmstadt hbf,2 h 42m
+Darmstadt hbf,Paderborn hbf,3 h 16m
+Paderborn hbf,Darmstadt hbf,3 h 16m
+Darmstadt hbf,Fürth hbf,2 h 39m
+Fürth hbf,Darmstadt hbf,2 h 39m
+Darmstadt hbf,Gelsenkirchen hbf,2 h 38m
+Gelsenkirchen hbf,Darmstadt hbf,2 h 38m
+Darmstadt hbf,Neunkirchen hbf,2 h 27m
+Neunkirchen hbf,Darmstadt hbf,2 h 27m
+Darmstadt hbf,Nürnberg hbf,2 h 25m
+Nürnberg hbf,Darmstadt hbf,2 h 25m
+Darmstadt hbf,Kaiserslautern hbf,1 h 23m
+Kaiserslautern hbf,Darmstadt hbf,1 h 23m
+Darmstadt hbf,Magdeburg hbf,4 h 1m
+Magdeburg hbf,Darmstadt hbf,4 h 1m
+Darmstadt hbf,Braunschweig hbf,3 h 6m
+Braunschweig hbf,Darmstadt hbf,3 h 6m
+Darmstadt hbf,Ulm hbf,2 h 14m
+Ulm hbf,Darmstadt hbf,2 h 14m
+Darmstadt hbf,Münster (Westf) hbf,3 h 30m
+Münster (Westf) hbf,Darmstadt hbf,3 h 30m
+Darmstadt hbf,Rostock hbf,6 h 43m
+Rostock hbf,Darmstadt hbf,6 h 43m
+Düsseldorf hbf,Karlsruhe hbf,2 h 16m
+Karlsruhe hbf,Düsseldorf hbf,2 h 16m
+Düsseldorf hbf,Hannover hbf,2 h 36m
+Hannover hbf,Düsseldorf hbf,2 h 36m
+Düsseldorf hbf,Paderborn hbf,1 h 58m
+Paderborn hbf,Düsseldorf hbf,1 h 58m
+Düsseldorf hbf,Fürth hbf,3 h 49m
+Fürth hbf,Düsseldorf hbf,3 h 49m
+Düsseldorf hbf,Gelsenkirchen hbf,36m
+Gelsenkirchen hbf,Düsseldorf hbf,36m
+Düsseldorf hbf,Neunkirchen hbf,3 h 27m
+Neunkirchen hbf,Düsseldorf hbf,3 h 27m
+Düsseldorf hbf,Nürnberg hbf,3 h 35m
+Nürnberg hbf,Düsseldorf hbf,3 h 35m
+Düsseldorf hbf,Kaiserslautern hbf,2 h 49m
+Kaiserslautern hbf,Düsseldorf hbf,2 h 49m
+Düsseldorf hbf,Magdeburg hbf,4 h 4m
+Magdeburg hbf,Düsseldorf hbf,4 h 4m
+Düsseldorf hbf,Braunschweig hbf,3 h 17m
+Braunschweig hbf,Düsseldorf hbf,3 h 17m
+Düsseldorf hbf,Ulm hbf,3 h 16m
+Ulm hbf,Düsseldorf hbf,3 h 16m
+Düsseldorf hbf,Münster (Westf) hbf,1 h 11m
+Münster (Westf) hbf,Düsseldorf hbf,1 h 11m
+Düsseldorf hbf,Rostock hbf,6 h 16m
+Rostock hbf,Düsseldorf hbf,6 h 16m
+Karlsruhe hbf,Hannover hbf,3 h 26m
+Hannover hbf,Karlsruhe hbf,3 h 26m
+Karlsruhe hbf,Paderborn hbf,4 h 7m
+Paderborn hbf,Karlsruhe hbf,4 h 7m
+Karlsruhe hbf,Fürth hbf,3 h 39m
+Fürth hbf,Karlsruhe hbf,3 h 39m
+Karlsruhe hbf,Gelsenkirchen hbf,2 h 52m
+Gelsenkirchen hbf,Karlsruhe hbf,2 h 52m
+Karlsruhe hbf,Neunkirchen hbf,2 h 1m
+Neunkirchen hbf,Karlsruhe hbf,2 h 1m
+Karlsruhe hbf,Nürnberg hbf,3 h 29m
+Nürnberg hbf,Karlsruhe hbf,3 h 29m
+Karlsruhe hbf,Kaiserslautern hbf,2 h 2m
+Kaiserslautern hbf,Karlsruhe hbf,2 h 2m
+Karlsruhe hbf,Magdeburg hbf,4 h 57m
+Magdeburg hbf,Karlsruhe hbf,4 h 57m
+Karlsruhe hbf,Braunschweig hbf,3 h 59m
+Braunschweig hbf,Karlsruhe hbf,3 h 59m
+Karlsruhe hbf,Ulm hbf,1 h 29m
+Ulm hbf,Karlsruhe hbf,1 h 29m
+Karlsruhe hbf,Münster (Westf) hbf,3 h 37m
+Münster (Westf) hbf,Karlsruhe hbf,3 h 37m
+Karlsruhe hbf,Rostock hbf,7 h 50m
+Rostock hbf,Karlsruhe hbf,7 h 50m
+Hannover hbf,Paderborn hbf,1 h 51m
+Paderborn hbf,Hannover hbf,1 h 51m
+Hannover hbf,Fürth hbf,3 h 17m
+Fürth hbf,Hannover hbf,3 h 17m
+Hannover hbf,Gelsenkirchen hbf,2 h 10m
+Gelsenkirchen hbf,Hannover hbf,2 h 10m
+Hannover hbf,Neunkirchen hbf,4 h 29m
+Neunkirchen hbf,Hannover hbf,4 h 29m
+Hannover hbf,Nürnberg hbf,2 h 57m
+Nürnberg hbf,Hannover hbf,2 h 57m
+Hannover hbf,Kaiserslautern hbf,3 h 51m
+Kaiserslautern hbf,Hannover hbf,3 h 51m
+Hannover hbf,Magdeburg hbf,1 h 17m
+Magdeburg hbf,Hannover hbf,1 h 17m
+Hannover hbf,Braunschweig hbf,34m
+Braunschweig hbf,Hannover hbf,34m
+Hannover hbf,Ulm hbf,4 h 50m
+Ulm hbf,Hannover hbf,4 h 50m
+Hannover hbf,Münster (Westf) hbf,1 h 34m
+Münster (Westf) hbf,Hannover hbf,1 h 34m
+Hannover hbf,Rostock hbf,3 h 51m
+Rostock hbf,Hannover hbf,3 h 51m
+Paderborn hbf,Fürth hbf,3 h 26m
+Fürth hbf,Paderborn hbf,3 h 26m
+Paderborn hbf,Gelsenkirchen hbf,1 h 31m
+Gelsenkirchen hbf,Paderborn hbf,1 h 31m
+Paderborn hbf,Neunkirchen hbf,5 h 18m
+Neunkirchen hbf,Paderborn hbf,5 h 18m
+Paderborn hbf,Nürnberg hbf,3 h 15m
+Nürnberg hbf,Paderborn hbf,3 h 15m
+Paderborn hbf,Kaiserslautern hbf,4 h 33m
+Kaiserslautern hbf,Paderborn hbf,4 h 33m
+Paderborn hbf,Magdeburg hbf,3 h 31m
+Magdeburg hbf,Paderborn hbf,3 h 31m
+Paderborn hbf,Braunschweig hbf,2 h 45m
+Braunschweig hbf,Paderborn hbf,2 h 45m
+Paderborn hbf,Ulm hbf,5 h 21m
+Ulm hbf,Paderborn hbf,5 h 21m
+Paderborn hbf,Münster (Westf) hbf,1 h 8m
+Münster (Westf) hbf,Paderborn hbf,1 h 8m
+Paderborn hbf,Rostock hbf,6 h 7m
+Rostock hbf,Paderborn hbf,6 h 7m
+Fürth hbf,Gelsenkirchen hbf,4 h 39m
+Gelsenkirchen hbf,Fürth hbf,4 h 39m
+Fürth hbf,Neunkirchen hbf,4 h 55m
+Neunkirchen hbf,Fürth hbf,4 h 55m
+Fürth hbf,Nürnberg hbf,7m
+Nürnberg hbf,Fürth hbf,7m
+Fürth hbf,Kaiserslautern hbf,4 h 12m
+Kaiserslautern hbf,Fürth hbf,4 h 12m
+Fürth hbf,Magdeburg hbf,3 h 7m
+Magdeburg hbf,Fürth hbf,3 h 7m
+Fürth hbf,Braunschweig hbf,3 h 46m
+Braunschweig hbf,Fürth hbf,3 h 46m
+Fürth hbf,Ulm hbf,2 h 14m
+Ulm hbf,Fürth hbf,2 h 14m
+Fürth hbf,Münster (Westf) hbf,5 h 9m
+Münster (Westf) hbf,Fürth hbf,5 h 9m
+Fürth hbf,Rostock hbf,5 h 49m
+Rostock hbf,Fürth hbf,5 h 49m
+Gelsenkirchen hbf,Neunkirchen hbf,4 h 33m
+Neunkirchen hbf,Gelsenkirchen hbf,4 h 33m
+Gelsenkirchen hbf,Nürnberg hbf,4 h 23m
+Nürnberg hbf,Gelsenkirchen hbf,4 h 23m
+Gelsenkirchen hbf,Kaiserslautern hbf,3 h 40m
+Kaiserslautern hbf,Gelsenkirchen hbf,3 h 40m
+Gelsenkirchen hbf,Magdeburg hbf,3 h 47m
+Magdeburg hbf,Gelsenkirchen hbf,3 h 47m
+Gelsenkirchen hbf,Braunschweig hbf,3 h 1m
+Braunschweig hbf,Gelsenkirchen hbf,3 h 1m
+Gelsenkirchen hbf,Ulm hbf,3 h 59m
+Ulm hbf,Gelsenkirchen hbf,3 h 59m
+Gelsenkirchen hbf,Münster (Westf) hbf,40m
+Münster (Westf) hbf,Gelsenkirchen hbf,40m
+Gelsenkirchen hbf,Rostock hbf,5 h 45m
+Rostock hbf,Gelsenkirchen hbf,5 h 45m
+Neunkirchen hbf,Nürnberg hbf,4 h 45m
+Nürnberg hbf,Neunkirchen hbf,4 h 45m
+Neunkirchen hbf,Kaiserslautern hbf,48m
+Kaiserslautern hbf,Neunkirchen hbf,48m
+Neunkirchen hbf,Magdeburg hbf,6 h 24m
+Magdeburg hbf,Neunkirchen hbf,6 h 24m
+Neunkirchen hbf,Braunschweig hbf,5 h 26m
+Braunschweig hbf,Neunkirchen hbf,5 h 26m
+Neunkirchen hbf,Ulm hbf,3 h 3m
+Ulm hbf,Neunkirchen hbf,3 h 3m
+Neunkirchen hbf,Münster (Westf) hbf,5 h 2m
+Münster (Westf) hbf,Neunkirchen hbf,5 h 2m
+Neunkirchen hbf,Rostock hbf,9 h 20m
+Rostock hbf,Neunkirchen hbf,9 h 20m
+Nürnberg hbf,Kaiserslautern hbf,3 h 54m
+Kaiserslautern hbf,Nürnberg hbf,3 h 54m
+Nürnberg hbf,Magdeburg hbf,2 h 53m
+Magdeburg hbf,Nürnberg hbf,2 h 53m
+Nürnberg hbf,Braunschweig hbf,3 h 25m
+Braunschweig hbf,Nürnberg hbf,3 h 25m
+Nürnberg hbf,Ulm hbf,2 h 14m
+Ulm hbf,Nürnberg hbf,2 h 14m
+Nürnberg hbf,Münster (Westf) hbf,4 h 46m
+Münster (Westf) hbf,Nürnberg hbf,4 h 46m
+Nürnberg hbf,Rostock hbf,5 h 35m
+Rostock hbf,Nürnberg hbf,5 h 35m
+Kaiserslautern hbf,Magdeburg hbf,5 h 20m
+Magdeburg hbf,Kaiserslautern hbf,5 h 20m
+Kaiserslautern hbf,Braunschweig hbf,4 h 22m
+Braunschweig hbf,Kaiserslautern hbf,4 h 22m
+Kaiserslautern hbf,Ulm hbf,2 h 23m
+Ulm hbf,Kaiserslautern hbf,2 h 23m
+Kaiserslautern hbf,Münster (Westf) hbf,4 h 18m
+Münster (Westf) hbf,Kaiserslautern hbf,4 h 18m
+Kaiserslautern hbf,Rostock hbf,8 h 20m
+Rostock hbf,Kaiserslautern hbf,8 h 20m
+Magdeburg hbf,Braunschweig hbf,43m
+Braunschweig hbf,Magdeburg hbf,43m
+Magdeburg hbf,Ulm hbf,5 h 27m
+Ulm hbf,Magdeburg hbf,5 h 27m
+Magdeburg hbf,Münster (Westf) hbf,3 h 18m
+Münster (Westf) hbf,Magdeburg hbf,3 h 18m
+Magdeburg hbf,Rostock hbf,3 h 30m
+Rostock hbf,Magdeburg hbf,3 h 30m
+Braunschweig hbf,Ulm hbf,5 h 10m
+Ulm hbf,Braunschweig hbf,5 h 10m
+Braunschweig hbf,Münster (Westf) hbf,2 h 33m
+Münster (Westf) hbf,Braunschweig hbf,2 h 33m
+Braunschweig hbf,Rostock hbf,4 h 8m
+Rostock hbf,Braunschweig hbf,4 h 8m
+Ulm hbf,Münster (Westf) hbf,4 h 49m
+Münster (Westf) hbf,Ulm hbf,4 h 49m
+Ulm hbf,Rostock hbf,8 h 9m
+Rostock hbf,Ulm hbf,8 h 9m
+Münster (Westf) hbf,Rostock hbf,4 h 53m
+Rostock hbf,Münster (Westf) hbf,4 h 53m
+München hbf,Aachen hbf,5 h 29m
+Aachen hbf,München hbf,5 h 29m
+München hbf,Bielefeld hbf,5 h 22m
+Bielefeld hbf,München hbf,5 h 22m
+München hbf,Dresden hbf,4 h 42m
+Dresden hbf,München hbf,4 h 42m
+München hbf,Cottbus hbf,5 h 59m
+Cottbus hbf,München hbf,5 h 59m
+München hbf,Aue (Sachs) Bahnhof,5 h 18m
+Aue (Sachs) Bahnhof,München hbf,5 h 18m
+München hbf,Ingolstadt hbf,34m
+Ingolstadt hbf,München hbf,34m
+München hbf,Osnabrück hbf,5 h 46m
+Osnabrück hbf,München hbf,5 h 46m
+München hbf,Essen hbf,5 h 15m
+Essen hbf,München hbf,5 h 15m
+München hbf,Saarbrücken hbf,4 h 15m
+Saarbrücken hbf,München hbf,4 h 15m
+München hbf,Heidelberg hbf,2 h 51m
+Heidelberg hbf,München hbf,2 h 51m
+München hbf,Gütersloh hbf,5 h 32m
+Gütersloh hbf,München hbf,5 h 32m
+München hbf,Mannheim hbf,2 h 44m
+Mannheim hbf,München hbf,2 h 44m
+München hbf,Wiesbaden hbf,4 h
+Wiesbaden hbf,München hbf,4 h
+Dortmund hbf,Aachen hbf,1 h 57m
+Aachen hbf,Dortmund hbf,1 h 57m
+Dortmund hbf,Bielefeld hbf,47m
+Bielefeld hbf,Dortmund hbf,47m
+Dortmund hbf,Dresden hbf,5 h 52m
+Dresden hbf,Dortmund hbf,5 h 52m
+Dortmund hbf,Cottbus hbf,5 h 8m
+Cottbus hbf,Dortmund hbf,5 h 8m
+Dortmund hbf,Aue (Sachs) Bahnhof,7 h 29m
+Aue (Sachs) Bahnhof,Dortmund hbf,7 h 29m
+Dortmund hbf,Ingolstadt hbf,5 h 11m
+Ingolstadt hbf,Dortmund hbf,5 h 11m
+Dortmund hbf,Osnabrück hbf,55m
+Osnabrück hbf,Dortmund hbf,55m
+Dortmund hbf,Essen hbf,30m
+Essen hbf,Dortmund hbf,30m
+Dortmund hbf,Saarbrücken hbf,4 h 23m
+Saarbrücken hbf,Dortmund hbf,4 h 23m
+Dortmund hbf,Heidelberg hbf,3 h 7m
+Heidelberg hbf,Dortmund hbf,3 h 7m
+Dortmund hbf,Gütersloh hbf,38m
+Gütersloh hbf,Dortmund hbf,38m
+Dortmund hbf,Mannheim hbf,2 h 47m
+Mannheim hbf,Dortmund hbf,2 h 47m
+Dortmund hbf,Wiesbaden hbf,2 h 50m
+Wiesbaden hbf,Dortmund hbf,2 h 50m
+Leverkusen Mitte,Aachen hbf,1 h 5m
+Aachen hbf,Leverkusen Mitte,1 h 5m
+Leverkusen Mitte,Bielefeld hbf,2 h 13m
+Bielefeld hbf,Leverkusen Mitte,2 h 13m
+Leverkusen Mitte,Dresden hbf,6 h 15m
+Dresden hbf,Leverkusen Mitte,6 h 15m
+Leverkusen Mitte,Cottbus hbf,6 h 42m
+Cottbus hbf,Leverkusen Mitte,6 h 42m
+Leverkusen Mitte,Aue (Sachs) Bahnhof,8 h 3m
+Aue (Sachs) Bahnhof,Leverkusen Mitte,8 h 3m
+Leverkusen Mitte,Ingolstadt hbf,4 h 18m
+Ingolstadt hbf,Leverkusen Mitte,4 h 18m
+Leverkusen Mitte,Osnabrück hbf,2 h 5m
+Osnabrück hbf,Leverkusen Mitte,2 h 5m
+Leverkusen Mitte,Essen hbf,45m
+Essen hbf,Leverkusen Mitte,45m
+Leverkusen Mitte,Saarbrücken hbf,3 h 36m
+Saarbrücken hbf,Leverkusen Mitte,3 h 36m
+Leverkusen Mitte,Heidelberg hbf,2 h 20m
+Heidelberg hbf,Leverkusen Mitte,2 h 20m
+Leverkusen Mitte,Gütersloh hbf,2 h 2m
+Gütersloh hbf,Leverkusen Mitte,2 h 2m
+Leverkusen Mitte,Mannheim hbf,1 h 44m
+Mannheim hbf,Leverkusen Mitte,1 h 44m
+Leverkusen Mitte,Wiesbaden hbf,1 h 53m
+Wiesbaden hbf,Leverkusen Mitte,1 h 53m
+Leipzig hbf,Aachen hbf,5 h 14m
+Aachen hbf,Leipzig hbf,5 h 14m
+Leipzig hbf,Bielefeld hbf,3 h 44m
+Bielefeld hbf,Leipzig hbf,3 h 44m
+Leipzig hbf,Dresden hbf,1 h 7m
+Dresden hbf,Leipzig hbf,1 h 7m
+Leipzig hbf,Cottbus hbf,1 h 43m
+Cottbus hbf,Leipzig hbf,1 h 43m
+Leipzig hbf,Aue (Sachs) Bahnhof,2 h 55m
+Aue (Sachs) Bahnhof,Leipzig hbf,2 h 55m
+Leipzig hbf,Ingolstadt hbf,2 h 41m
+Ingolstadt hbf,Leipzig hbf,2 h 41m
+Leipzig hbf,Osnabrück hbf,4 h 22m
+Osnabrück hbf,Leipzig hbf,4 h 22m
+Leipzig hbf,Essen hbf,5 h 3m
+Essen hbf,Leipzig hbf,5 h 3m
+Leipzig hbf,Saarbrücken hbf,5 h 26m
+Saarbrücken hbf,Leipzig hbf,5 h 26m
+Leipzig hbf,Heidelberg hbf,4 h 5m
+Heidelberg hbf,Leipzig hbf,4 h 5m
+Leipzig hbf,Gütersloh hbf,4 h 11m
+Gütersloh hbf,Leipzig hbf,4 h 11m
+Leipzig hbf,Mannheim hbf,3 h 39m
+Mannheim hbf,Leipzig hbf,3 h 39m
+Leipzig hbf,Wiesbaden hbf,3 h 39m
+Wiesbaden hbf,Leipzig hbf,3 h 39m
+Stuttgart hbf,Aachen hbf,3 h 27m
+Aachen hbf,Stuttgart hbf,3 h 27m
+Stuttgart hbf,Bielefeld hbf,4 h 35m
+Bielefeld hbf,Stuttgart hbf,4 h 35m
+Stuttgart hbf,Dresden hbf,5 h 47m
+Dresden hbf,Stuttgart hbf,5 h 47m
+Stuttgart hbf,Cottbus hbf,7 h 5m
+Cottbus hbf,Stuttgart hbf,7 h 5m
+Stuttgart hbf,Aue (Sachs) Bahnhof,6 h 26m
+Aue (Sachs) Bahnhof,Stuttgart hbf,6 h 26m
+Stuttgart hbf,Ingolstadt hbf,2 h 49m
+Ingolstadt hbf,Stuttgart hbf,2 h 49m
+Stuttgart hbf,Osnabrück hbf,4 h 37m
+Osnabrück hbf,Stuttgart hbf,4 h 37m
+Stuttgart hbf,Essen hbf,3 h 12m
+Essen hbf,Stuttgart hbf,3 h 12m
+Stuttgart hbf,Saarbrücken hbf,2 h 15m
+Saarbrücken hbf,Stuttgart hbf,2 h 15m
+Stuttgart hbf,Heidelberg hbf,51m
+Heidelberg hbf,Stuttgart hbf,51m
+Stuttgart hbf,Gütersloh hbf,4 h 56m
+Gütersloh hbf,Stuttgart hbf,4 h 56m
+Stuttgart hbf,Mannheim hbf,40m
+Mannheim hbf,Stuttgart hbf,40m
+Stuttgart hbf,Wiesbaden hbf,2 h 6m
+Wiesbaden hbf,Stuttgart hbf,2 h 6m
+Frankfurt hbf,Aachen hbf,1 h 49m
+Aachen hbf,Frankfurt hbf,1 h 49m
+Frankfurt hbf,Bielefeld hbf,2 h 59m
+Bielefeld hbf,Frankfurt hbf,2 h 59m
+Frankfurt hbf,Dresden hbf,4 h 12m
+Dresden hbf,Frankfurt hbf,4 h 12m
+Frankfurt hbf,Cottbus hbf,5 h 29m
+Cottbus hbf,Frankfurt hbf,5 h 29m
+Frankfurt hbf,Aue (Sachs) Bahnhof,5 h 55m
+Aue (Sachs) Bahnhof,Frankfurt hbf,5 h 55m
+Frankfurt hbf,Ingolstadt hbf,2 h 37m
+Ingolstadt hbf,Frankfurt hbf,2 h 37m
+Frankfurt hbf,Osnabrück hbf,3 h 29m
+Osnabrück hbf,Frankfurt hbf,3 h 29m
+Frankfurt hbf,Essen hbf,1 h 53m
+Essen hbf,Frankfurt hbf,1 h 53m
+Frankfurt hbf,Saarbrücken hbf,2 h 3m
+Saarbrücken hbf,Frankfurt hbf,2 h 3m
+Frankfurt hbf,Heidelberg hbf,50m
+Heidelberg hbf,Frankfurt hbf,50m
+Frankfurt hbf,Gütersloh hbf,3 h 18m
+Gütersloh hbf,Frankfurt hbf,3 h 18m
+Frankfurt hbf,Mannheim hbf,35m
+Mannheim hbf,Frankfurt hbf,35m
+Frankfurt hbf,Wiesbaden hbf,35m
+Wiesbaden hbf,Frankfurt hbf,35m
+Freiburg (Breisgau) hbf,Aachen hbf,4 h 11m
+Aachen hbf,Freiburg (Breisgau) hbf,4 h 11m
+Freiburg (Breisgau) hbf,Bielefeld hbf,5 h 31m
+Bielefeld hbf,Freiburg (Breisgau) hbf,5 h 31m
+Freiburg (Breisgau) hbf,Dresden hbf,6 h 42m
+Dresden hbf,Freiburg (Breisgau) hbf,6 h 42m
+Freiburg (Breisgau) hbf,Cottbus hbf,8 h
+Cottbus hbf,Freiburg (Breisgau) hbf,8 h
+Freiburg (Breisgau) hbf,Aue (Sachs) Bahnhof,8 h 35m
+Aue (Sachs) Bahnhof,Freiburg (Breisgau) hbf,8 h 35m
+Freiburg (Breisgau) hbf,Ingolstadt hbf,4 h 51m
+Ingolstadt hbf,Freiburg (Breisgau) hbf,4 h 51m
+Freiburg (Breisgau) hbf,Osnabrück hbf,5 h 25m
+Osnabrück hbf,Freiburg (Breisgau) hbf,5 h 25m
+Freiburg (Breisgau) hbf,Essen hbf,4 h 1m
+Essen hbf,Freiburg (Breisgau) hbf,4 h 1m
+Freiburg (Breisgau) hbf,Saarbrücken hbf,3 h 3m
+Saarbrücken hbf,Freiburg (Breisgau) hbf,3 h 3m
+Freiburg (Breisgau) hbf,Heidelberg hbf,1 h 47m
+Heidelberg hbf,Freiburg (Breisgau) hbf,1 h 47m
+Freiburg (Breisgau) hbf,Gütersloh hbf,5 h 19m
+Gütersloh hbf,Freiburg (Breisgau) hbf,5 h 19m
+Freiburg (Breisgau) hbf,Mannheim hbf,1 h 27m
+Mannheim hbf,Freiburg (Breisgau) hbf,1 h 27m
+Freiburg (Breisgau) hbf,Wiesbaden hbf,2 h 37m
+Wiesbaden hbf,Freiburg (Breisgau) hbf,2 h 37m
+Berlin hbf,Aachen hbf,5 h 19m
+Aachen hbf,Berlin hbf,5 h 19m
+Berlin hbf,Bielefeld hbf,2 h 40m
+Bielefeld hbf,Berlin hbf,2 h 40m
+Berlin hbf,Dresden hbf,1 h 55m
+Dresden hbf,Berlin hbf,1 h 55m
+Berlin hbf,Cottbus hbf,1 h 32m
+Cottbus hbf,Berlin hbf,1 h 32m
+Berlin hbf,Aue (Sachs) Bahnhof,4 h 22m
+Aue (Sachs) Bahnhof,Berlin hbf,4 h 22m
+Berlin hbf,Ingolstadt hbf,3 h 56m
+Ingolstadt hbf,Berlin hbf,3 h 56m
+Berlin hbf,Osnabrück hbf,2 h 55m
+Osnabrück hbf,Berlin hbf,2 h 55m
+Berlin hbf,Essen hbf,3 h 59m
+Essen hbf,Berlin hbf,3 h 59m
+Berlin hbf,Saarbrücken hbf,6 h 19m
+Saarbrücken hbf,Berlin hbf,6 h 19m
+Berlin hbf,Heidelberg hbf,5 h 14m
+Heidelberg hbf,Berlin hbf,5 h 14m
+Berlin hbf,Gütersloh hbf,2 h 55m
+Gütersloh hbf,Berlin hbf,2 h 55m
+Berlin hbf,Mannheim hbf,4 h 47m
+Mannheim hbf,Berlin hbf,4 h 47m
+Berlin hbf,Wiesbaden hbf,4 h 51m
+Wiesbaden hbf,Berlin hbf,4 h 51m
+Sinsheim (Elsenz) hbf,Aachen hbf,3 h 43m
+Aachen hbf,Sinsheim (Elsenz) hbf,3 h 43m
+Sinsheim (Elsenz) hbf,Bielefeld hbf,5 h 2m
+Bielefeld hbf,Sinsheim (Elsenz) hbf,5 h 2m
+Sinsheim (Elsenz) hbf,Dresden hbf,6 h 15m
+Dresden hbf,Sinsheim (Elsenz) hbf,6 h 15m
+Sinsheim (Elsenz) hbf,Cottbus hbf,7 h 31m
+Cottbus hbf,Sinsheim (Elsenz) hbf,7 h 31m
+Sinsheim (Elsenz) hbf,Aue (Sachs) Bahnhof,7 h 52m
+Aue (Sachs) Bahnhof,Sinsheim (Elsenz) hbf,7 h 52m
+Sinsheim (Elsenz) hbf,Ingolstadt hbf,4 h 22m
+Ingolstadt hbf,Sinsheim (Elsenz) hbf,4 h 22m
+Sinsheim (Elsenz) hbf,Osnabrück hbf,4 h 57m
+Osnabrück hbf,Sinsheim (Elsenz) hbf,4 h 57m
+Sinsheim (Elsenz) hbf,Essen hbf,3 h 38m
+Essen hbf,Sinsheim (Elsenz) hbf,3 h 38m
+Sinsheim (Elsenz) hbf,Saarbrücken hbf,2 h 42m
+Saarbrücken hbf,Sinsheim (Elsenz) hbf,2 h 42m
+Sinsheim (Elsenz) hbf,Heidelberg hbf,40m
+Heidelberg hbf,Sinsheim (Elsenz) hbf,40m
+Sinsheim (Elsenz) hbf,Gütersloh hbf,5 h 18m
+Gütersloh hbf,Sinsheim (Elsenz) hbf,5 h 18m
+Sinsheim (Elsenz) hbf,Mannheim hbf,1 h 2m
+Mannheim hbf,Sinsheim (Elsenz) hbf,1 h 2m
+Sinsheim (Elsenz) hbf,Wiesbaden hbf,2 h 7m
+Wiesbaden hbf,Sinsheim (Elsenz) hbf,2 h 7m
+Mainz hbf,Aachen hbf,2 h 6m
+Aachen hbf,Mainz hbf,2 h 6m
+Mainz hbf,Bielefeld hbf,3 h 16m
+Bielefeld hbf,Mainz hbf,3 h 16m
+Mainz hbf,Dresden hbf,4 h 55m
+Dresden hbf,Mainz hbf,4 h 55m
+Mainz hbf,Cottbus hbf,6 h 12m
+Cottbus hbf,Mainz hbf,6 h 12m
+Mainz hbf,Aue (Sachs) Bahnhof,6 h 44m
+Aue (Sachs) Bahnhof,Mainz hbf,6 h 44m
+Mainz hbf,Ingolstadt hbf,3 h 17m
+Ingolstadt hbf,Mainz hbf,3 h 17m
+Mainz hbf,Osnabrück hbf,3 h 38m
+Osnabrück hbf,Mainz hbf,3 h 38m
+Mainz hbf,Essen hbf,2 h 16m
+Essen hbf,Mainz hbf,2 h 16m
+Mainz hbf,Saarbrücken hbf,2 h 14m
+Saarbrücken hbf,Mainz hbf,2 h 14m
+Mainz hbf,Heidelberg hbf,51m
+Heidelberg hbf,Mainz hbf,51m
+Mainz hbf,Gütersloh hbf,3 h 35m
+Gütersloh hbf,Mainz hbf,3 h 35m
+Mainz hbf,Mannheim hbf,39m
+Mannheim hbf,Mainz hbf,39m
+Mainz hbf,Wiesbaden hbf,10m
+Wiesbaden hbf,Mainz hbf,10m
+Wolfsburg hbf,Aachen hbf,4 h 15m
+Aachen hbf,Wolfsburg hbf,4 h 15m
+Wolfsburg hbf,Bielefeld hbf,1 h 33m
+Bielefeld hbf,Wolfsburg hbf,1 h 33m
+Wolfsburg hbf,Dresden hbf,3 h 26m
+Dresden hbf,Wolfsburg hbf,3 h 26m
+Wolfsburg hbf,Cottbus hbf,2 h 50m
+Cottbus hbf,Wolfsburg hbf,2 h 50m
+Wolfsburg hbf,Aue (Sachs) Bahnhof,5 h 38m
+Aue (Sachs) Bahnhof,Wolfsburg hbf,5 h 38m
+Wolfsburg hbf,Ingolstadt hbf,4 h 12m
+Ingolstadt hbf,Wolfsburg hbf,4 h 12m
+Wolfsburg hbf,Osnabrück hbf,2 h 11m
+Osnabrück hbf,Wolfsburg hbf,2 h 11m
+Wolfsburg hbf,Essen hbf,2 h 48m
+Essen hbf,Wolfsburg hbf,2 h 48m
+Wolfsburg hbf,Saarbrücken hbf,5 h 21m
+Saarbrücken hbf,Wolfsburg hbf,5 h 21m
+Wolfsburg hbf,Heidelberg hbf,4 h 16m
+Heidelberg hbf,Wolfsburg hbf,4 h 16m
+Wolfsburg hbf,Gütersloh hbf,1 h 55m
+Gütersloh hbf,Wolfsburg hbf,1 h 55m
+Wolfsburg hbf,Mannheim hbf,3 h 49m
+Mannheim hbf,Wolfsburg hbf,3 h 49m
+Wolfsburg hbf,Wiesbaden hbf,3 h 50m
+Wiesbaden hbf,Wolfsburg hbf,3 h 50m
+Mönchengladbach hbf,Aachen hbf,46m
+Aachen hbf,Mönchengladbach hbf,46m
+Mönchengladbach hbf,Bielefeld hbf,2 h 5m
+Bielefeld hbf,Mönchengladbach hbf,2 h 5m
+Mönchengladbach hbf,Dresden hbf,6 h 53m
+Dresden hbf,Mönchengladbach hbf,6 h 53m
+Mönchengladbach hbf,Cottbus hbf,6 h 33m
+Cottbus hbf,Mönchengladbach hbf,6 h 33m
+Mönchengladbach hbf,Aue (Sachs) Bahnhof,8 h 31m
+Aue (Sachs) Bahnhof,Mönchengladbach hbf,8 h 31m
+Mönchengladbach hbf,Ingolstadt hbf,4 h 46m
+Ingolstadt hbf,Mönchengladbach hbf,4 h 46m
+Mönchengladbach hbf,Osnabrück hbf,2 h 23m
+Osnabrück hbf,Mönchengladbach hbf,2 h 23m
+Mönchengladbach hbf,Essen hbf,53m
+Essen hbf,Mönchengladbach hbf,53m
+Mönchengladbach hbf,Saarbrücken hbf,4 h 14m
+Saarbrücken hbf,Mönchengladbach hbf,4 h 14m
+Mönchengladbach hbf,Heidelberg hbf,2 h 58m
+Heidelberg hbf,Mönchengladbach hbf,2 h 58m
+Mönchengladbach hbf,Gütersloh hbf,1 h 54m
+Gütersloh hbf,Mönchengladbach hbf,1 h 54m
+Mönchengladbach hbf,Mannheim hbf,2 h 27m
+Mannheim hbf,Mönchengladbach hbf,2 h 27m
+Mönchengladbach hbf,Wiesbaden hbf,2 h 33m
+Wiesbaden hbf,Mönchengladbach hbf,2 h 33m
+Bremen hbf,Aachen hbf,4 h 14m
+Aachen hbf,Bremen hbf,4 h 14m
+Bremen hbf,Bielefeld hbf,1 h 58m
+Bielefeld hbf,Bremen hbf,1 h 58m
+Bremen hbf,Dresden hbf,5 h 12m
+Dresden hbf,Bremen hbf,5 h 12m
+Bremen hbf,Cottbus hbf,4 h 40m
+Cottbus hbf,Bremen hbf,4 h 40m
+Bremen hbf,Aue (Sachs) Bahnhof,7 h 7m
+Aue (Sachs) Bahnhof,Bremen hbf,7 h 7m
+Bremen hbf,Ingolstadt hbf,4 h 44m
+Ingolstadt hbf,Bremen hbf,4 h 44m
+Bremen hbf,Osnabrück hbf,50m
+Osnabrück hbf,Bremen hbf,50m
+Bremen hbf,Essen hbf,2 h 6m
+Essen hbf,Bremen hbf,2 h 6m
+Bremen hbf,Saarbrücken hbf,6 h 8m
+Saarbrücken hbf,Bremen hbf,6 h 8m
+Bremen hbf,Heidelberg hbf,4 h 54m
+Heidelberg hbf,Bremen hbf,4 h 54m
+Bremen hbf,Gütersloh hbf,2 h 15m
+Gütersloh hbf,Bremen hbf,2 h 15m
+Bremen hbf,Mannheim hbf,4 h 35m
+Mannheim hbf,Bremen hbf,4 h 35m
+Bremen hbf,Wiesbaden hbf,4 h 39m
+Wiesbaden hbf,Bremen hbf,4 h 39m
+Augsburg hbf,Aachen hbf,5 h 3m
+Aachen hbf,Augsburg hbf,5 h 3m
+Augsburg hbf,Bielefeld hbf,5 h 26m
+Bielefeld hbf,Augsburg hbf,5 h 26m
+Augsburg hbf,Dresden hbf,4 h 52m
+Dresden hbf,Augsburg hbf,4 h 52m
+Augsburg hbf,Cottbus hbf,6 h 29m
+Cottbus hbf,Augsburg hbf,6 h 29m
+Augsburg hbf,Aue (Sachs) Bahnhof,5 h 22m
+Aue (Sachs) Bahnhof,Augsburg hbf,5 h 22m
+Augsburg hbf,Ingolstadt hbf,1 h
+Ingolstadt hbf,Augsburg hbf,1 h
+Augsburg hbf,Osnabrück hbf,5 h 51m
+Osnabrück hbf,Augsburg hbf,5 h 51m
+Augsburg hbf,Essen hbf,4 h 48m
+Essen hbf,Augsburg hbf,4 h 48m
+Augsburg hbf,Saarbrücken hbf,3 h 42m
+Saarbrücken hbf,Augsburg hbf,3 h 42m
+Augsburg hbf,Heidelberg hbf,2 h 18m
+Heidelberg hbf,Augsburg hbf,2 h 18m
+Augsburg hbf,Gütersloh hbf,5 h 36m
+Gütersloh hbf,Augsburg hbf,5 h 36m
+Augsburg hbf,Mannheim hbf,2 h 11m
+Mannheim hbf,Augsburg hbf,2 h 11m
+Augsburg hbf,Wiesbaden hbf,3 h 27m
+Wiesbaden hbf,Augsburg hbf,3 h 27m
+Bochum hbf,Aachen hbf,2 h 6m
+Aachen hbf,Bochum hbf,2 h 6m
+Bochum hbf,Bielefeld hbf,1 h 20m
+Bielefeld hbf,Bochum hbf,1 h 20m
+Bochum hbf,Dresden hbf,6 h 24m
+Dresden hbf,Bochum hbf,6 h 24m
+Bochum hbf,Cottbus hbf,5 h 41m
+Cottbus hbf,Bochum hbf,5 h 41m
+Bochum hbf,Aue (Sachs) Bahnhof,8 h 2m
+Aue (Sachs) Bahnhof,Bochum hbf,8 h 2m
+Bochum hbf,Ingolstadt hbf,5 h 14m
+Ingolstadt hbf,Bochum hbf,5 h 14m
+Bochum hbf,Osnabrück hbf,1 h 37m
+Osnabrück hbf,Bochum hbf,1 h 37m
+Bochum hbf,Essen hbf,18m
+Essen hbf,Bochum hbf,18m
+Bochum hbf,Saarbrücken hbf,4 h 42m
+Saarbrücken hbf,Bochum hbf,4 h 42m
+Bochum hbf,Heidelberg hbf,3 h 26m
+Heidelberg hbf,Bochum hbf,3 h 26m
+Bochum hbf,Gütersloh hbf,1 h 22m
+Gütersloh hbf,Bochum hbf,1 h 22m
+Bochum hbf,Mannheim hbf,2 h 52m
+Mannheim hbf,Bochum hbf,2 h 52m
+Bochum hbf,Wiesbaden hbf,3 h 1m
+Wiesbaden hbf,Bochum hbf,3 h 1m
+Hamburg hbf,Aachen hbf,4 h 57m
+Aachen hbf,Hamburg hbf,4 h 57m
+Hamburg hbf,Bielefeld hbf,2 h 23m
+Bielefeld hbf,Hamburg hbf,2 h 23m
+Hamburg hbf,Dresden hbf,4 h 2m
+Dresden hbf,Hamburg hbf,4 h 2m
+Hamburg hbf,Cottbus hbf,3 h 46m
+Cottbus hbf,Hamburg hbf,3 h 46m
+Hamburg hbf,Aue (Sachs) Bahnhof,6 h 24m
+Aue (Sachs) Bahnhof,Hamburg hbf,6 h 24m
+Hamburg hbf,Ingolstadt hbf,4 h 57m
+Ingolstadt hbf,Hamburg hbf,4 h 57m
+Hamburg hbf,Osnabrück hbf,1 h 49m
+Osnabrück hbf,Hamburg hbf,1 h 49m
+Hamburg hbf,Essen hbf,2 h 48m
+Essen hbf,Hamburg hbf,2 h 48m
+Hamburg hbf,Saarbrücken hbf,5 h 52m
+Saarbrücken hbf,Hamburg hbf,5 h 52m
+Hamburg hbf,Heidelberg hbf,4 h 45m
+Heidelberg hbf,Hamburg hbf,4 h 45m
+Hamburg hbf,Gütersloh hbf,2 h 33m
+Gütersloh hbf,Hamburg hbf,2 h 33m
+Hamburg hbf,Mannheim hbf,4 h 20m
+Mannheim hbf,Hamburg hbf,4 h 20m
+Hamburg hbf,Wiesbaden hbf,4 h 30m
+Wiesbaden hbf,Hamburg hbf,4 h 30m
+Kiel hbf,Aachen hbf,6 h 4m
+Aachen hbf,Kiel hbf,6 h 4m
+Kiel hbf,Bielefeld hbf,3 h 49m
+Bielefeld hbf,Kiel hbf,3 h 49m
+Kiel hbf,Dresden hbf,5 h 43m
+Dresden hbf,Kiel hbf,5 h 43m
+Kiel hbf,Cottbus hbf,5 h 18m
+Cottbus hbf,Kiel hbf,5 h 18m
+Kiel hbf,Aue (Sachs) Bahnhof,7 h 53m
+Aue (Sachs) Bahnhof,Kiel hbf,7 h 53m
+Kiel hbf,Ingolstadt hbf,6 h 24m
+Ingolstadt hbf,Kiel hbf,6 h 24m
+Kiel hbf,Osnabrück hbf,2 h 58m
+Osnabrück hbf,Kiel hbf,2 h 58m
+Kiel hbf,Essen hbf,4 h 22m
+Essen hbf,Kiel hbf,4 h 22m
+Kiel hbf,Saarbrücken hbf,7 h 4m
+Saarbrücken hbf,Kiel hbf,7 h 4m
+Kiel hbf,Heidelberg hbf,6 h
+Heidelberg hbf,Kiel hbf,6 h
+Kiel hbf,Gütersloh hbf,3 h 59m
+Gütersloh hbf,Kiel hbf,3 h 59m
+Kiel hbf,Mannheim hbf,5 h 32m
+Mannheim hbf,Kiel hbf,5 h 32m
+Kiel hbf,Wiesbaden hbf,5 h 42m
+Wiesbaden hbf,Kiel hbf,5 h 42m
+Köln hbf,Aachen hbf,1 h
+Aachen hbf,Köln hbf,1 h
+Köln hbf,Bielefeld hbf,1 h 41m
+Bielefeld hbf,Köln hbf,1 h 41m
+Köln hbf,Dresden hbf,5 h 43m
+Dresden hbf,Köln hbf,5 h 43m
+Köln hbf,Cottbus hbf,6 h 10m
+Cottbus hbf,Köln hbf,6 h 10m
+Köln hbf,Aue (Sachs) Bahnhof,7 h 21m
+Aue (Sachs) Bahnhof,Köln hbf,7 h 21m
+Köln hbf,Ingolstadt hbf,3 h 58m
+Ingolstadt hbf,Köln hbf,3 h 58m
+Köln hbf,Osnabrück hbf,2 h 10m
+Osnabrück hbf,Köln hbf,2 h 10m
+Köln hbf,Essen hbf,47m
+Essen hbf,Köln hbf,47m
+Köln hbf,Saarbrücken hbf,3 h 4m
+Saarbrücken hbf,Köln hbf,3 h 4m
+Köln hbf,Heidelberg hbf,1 h 48m
+Heidelberg hbf,Köln hbf,1 h 48m
+Köln hbf,Gütersloh hbf,1 h 55m
+Gütersloh hbf,Köln hbf,1 h 55m
+Köln hbf,Mannheim hbf,1 h 28m
+Mannheim hbf,Köln hbf,1 h 28m
+Köln hbf,Wiesbaden hbf,1 h 23m
+Wiesbaden hbf,Köln hbf,1 h 23m
+Darmstadt hbf,Aachen hbf,2 h 29m
+Aachen hbf,Darmstadt hbf,2 h 29m
+Darmstadt hbf,Bielefeld hbf,3 h 46m
+Bielefeld hbf,Darmstadt hbf,3 h 46m
+Darmstadt hbf,Dresden hbf,4 h 46m
+Dresden hbf,Darmstadt hbf,4 h 46m
+Darmstadt hbf,Cottbus hbf,6 h 2m
+Cottbus hbf,Darmstadt hbf,6 h 2m
+Darmstadt hbf,Aue (Sachs) Bahnhof,6 h 23m
+Aue (Sachs) Bahnhof,Darmstadt hbf,6 h 23m
+Darmstadt hbf,Ingolstadt hbf,3 h 2m
+Ingolstadt hbf,Darmstadt hbf,3 h 2m
+Darmstadt hbf,Osnabrück hbf,3 h 57m
+Osnabrück hbf,Darmstadt hbf,3 h 57m
+Darmstadt hbf,Essen hbf,2 h 23m
+Essen hbf,Darmstadt hbf,2 h 23m
+Darmstadt hbf,Saarbrücken hbf,2 h 9m
+Saarbrücken hbf,Darmstadt hbf,2 h 9m
+Darmstadt hbf,Heidelberg hbf,34m
+Heidelberg hbf,Darmstadt hbf,34m
+Darmstadt hbf,Gütersloh hbf,4 h
+Gütersloh hbf,Darmstadt hbf,4 h
+Darmstadt hbf,Mannheim hbf,52m
+Mannheim hbf,Darmstadt hbf,52m
+Darmstadt hbf,Wiesbaden hbf,47m
+Wiesbaden hbf,Darmstadt hbf,47m
+Düsseldorf hbf,Aachen hbf,1 h 4m
+Aachen hbf,Düsseldorf hbf,1 h 4m
+Düsseldorf hbf,Bielefeld hbf,1 h 43m
+Bielefeld hbf,Düsseldorf hbf,1 h 43m
+Düsseldorf hbf,Dresden hbf,6 h 11m
+Dresden hbf,Düsseldorf hbf,6 h 11m
+Düsseldorf hbf,Cottbus hbf,6 h 4m
+Cottbus hbf,Düsseldorf hbf,6 h 4m
+Düsseldorf hbf,Aue (Sachs) Bahnhof,7 h 54m
+Aue (Sachs) Bahnhof,Düsseldorf hbf,7 h 54m
+Düsseldorf hbf,Ingolstadt hbf,4 h 10m
+Ingolstadt hbf,Düsseldorf hbf,4 h 10m
+Düsseldorf hbf,Osnabrück hbf,1 h 44m
+Osnabrück hbf,Düsseldorf hbf,1 h 44m
+Düsseldorf hbf,Essen hbf,24m
+Essen hbf,Düsseldorf hbf,24m
+Düsseldorf hbf,Saarbrücken hbf,3 h 33m
+Saarbrücken hbf,Düsseldorf hbf,3 h 33m
+Düsseldorf hbf,Heidelberg hbf,2 h 16m
+Heidelberg hbf,Düsseldorf hbf,2 h 16m
+Düsseldorf hbf,Gütersloh hbf,1 h 34m
+Gütersloh hbf,Düsseldorf hbf,1 h 34m
+Düsseldorf hbf,Mannheim hbf,1 h 46m
+Mannheim hbf,Düsseldorf hbf,1 h 46m
+Düsseldorf hbf,Wiesbaden hbf,1 h 55m
+Wiesbaden hbf,Düsseldorf hbf,1 h 55m
+Karlsruhe hbf,Aachen hbf,3 h 5m
+Aachen hbf,Karlsruhe hbf,3 h 5m
+Karlsruhe hbf,Bielefeld hbf,4 h 26m
+Bielefeld hbf,Karlsruhe hbf,4 h 26m
+Karlsruhe hbf,Dresden hbf,5 h 37m
+Dresden hbf,Karlsruhe hbf,5 h 37m
+Karlsruhe hbf,Cottbus hbf,6 h 55m
+Cottbus hbf,Karlsruhe hbf,6 h 55m
+Karlsruhe hbf,Aue (Sachs) Bahnhof,7 h 15m
+Aue (Sachs) Bahnhof,Karlsruhe hbf,7 h 15m
+Karlsruhe hbf,Ingolstadt hbf,3 h 41m
+Ingolstadt hbf,Karlsruhe hbf,3 h 41m
+Karlsruhe hbf,Osnabrück hbf,4 h 20m
+Osnabrück hbf,Karlsruhe hbf,4 h 20m
+Karlsruhe hbf,Essen hbf,2 h 57m
+Essen hbf,Karlsruhe hbf,2 h 57m
+Karlsruhe hbf,Saarbrücken hbf,1 h 53m
+Saarbrücken hbf,Karlsruhe hbf,1 h 53m
+Karlsruhe hbf,Heidelberg hbf,34m
+Heidelberg hbf,Karlsruhe hbf,34m
+Karlsruhe hbf,Gütersloh hbf,4 h 16m
+Gütersloh hbf,Karlsruhe hbf,4 h 16m
+Karlsruhe hbf,Mannheim hbf,23m
+Mannheim hbf,Karlsruhe hbf,23m
+Karlsruhe hbf,Wiesbaden hbf,1 h 31m
+Wiesbaden hbf,Karlsruhe hbf,1 h 31m
+Hannover hbf,Aachen hbf,3 h 36m
+Aachen hbf,Hannover hbf,3 h 36m
+Hannover hbf,Bielefeld hbf,55m
+Bielefeld hbf,Hannover hbf,55m
+Hannover hbf,Dresden hbf,3 h 45m
+Dresden hbf,Hannover hbf,3 h 45m
+Hannover hbf,Cottbus hbf,3 h 24m
+Cottbus hbf,Hannover hbf,3 h 24m
+Hannover hbf,Aue (Sachs) Bahnhof,5 h 40m
+Aue (Sachs) Bahnhof,Hannover hbf,5 h 40m
+Hannover hbf,Ingolstadt hbf,3 h 32m
+Ingolstadt hbf,Hannover hbf,3 h 32m
+Hannover hbf,Osnabrück hbf,1 h 8m
+Osnabrück hbf,Hannover hbf,1 h 8m
+Hannover hbf,Essen hbf,2 h 10m
+Essen hbf,Hannover hbf,2 h 10m
+Hannover hbf,Saarbrücken hbf,4 h 35m
+Saarbrücken hbf,Hannover hbf,4 h 35m
+Hannover hbf,Heidelberg hbf,3 h 28m
+Heidelberg hbf,Hannover hbf,3 h 28m
+Hannover hbf,Gütersloh hbf,1 h 5m
+Gütersloh hbf,Hannover hbf,1 h 5m
+Hannover hbf,Mannheim hbf,3 h 3m
+Mannheim hbf,Hannover hbf,3 h 3m
+Hannover hbf,Wiesbaden hbf,3 h 9m
+Wiesbaden hbf,Hannover hbf,3 h 9m
+Paderborn hbf,Aachen hbf,3 h 11m
+Aachen hbf,Paderborn hbf,3 h 11m
+Paderborn hbf,Bielefeld hbf,54m
+Bielefeld hbf,Paderborn hbf,54m
+Paderborn hbf,Dresden hbf,4 h 50m
+Dresden hbf,Paderborn hbf,4 h 50m
+Paderborn hbf,Cottbus hbf,5 h 32m
+Cottbus hbf,Paderborn hbf,5 h 32m
+Paderborn hbf,Aue (Sachs) Bahnhof,6 h 47m
+Aue (Sachs) Bahnhof,Paderborn hbf,6 h 47m
+Paderborn hbf,Ingolstadt hbf,4 h
+Ingolstadt hbf,Paderborn hbf,4 h
+Paderborn hbf,Osnabrück hbf,1 h 39m
+Osnabrück hbf,Paderborn hbf,1 h 39m
+Paderborn hbf,Essen hbf,1 h 29m
+Essen hbf,Paderborn hbf,1 h 29m
+Paderborn hbf,Saarbrücken hbf,5 h 11m
+Saarbrücken hbf,Paderborn hbf,5 h 11m
+Paderborn hbf,Heidelberg hbf,4 h 5m
+Heidelberg hbf,Paderborn hbf,4 h 5m
+Paderborn hbf,Gütersloh hbf,1 h 17m
+Gütersloh hbf,Paderborn hbf,1 h 17m
+Paderborn hbf,Mannheim hbf,3 h 38m
+Mannheim hbf,Paderborn hbf,3 h 38m
+Paderborn hbf,Wiesbaden hbf,3 h 39m
+Wiesbaden hbf,Paderborn hbf,3 h 39m
+Fürth hbf,Aachen hbf,4 h 32m
+Aachen hbf,Fürth hbf,4 h 32m
+Fürth hbf,Bielefeld hbf,4 h 27m
+Bielefeld hbf,Fürth hbf,4 h 27m
+Fürth hbf,Dresden hbf,3 h 41m
+Dresden hbf,Fürth hbf,3 h 41m
+Fürth hbf,Cottbus hbf,4 h 58m
+Cottbus hbf,Fürth hbf,4 h 58m
+Fürth hbf,Aue (Sachs) Bahnhof,4 h 22m
+Aue (Sachs) Bahnhof,Fürth hbf,4 h 22m
+Fürth hbf,Ingolstadt hbf,41m
+Ingolstadt hbf,Fürth hbf,41m
+Fürth hbf,Osnabrück hbf,4 h 51m
+Osnabrück hbf,Fürth hbf,4 h 51m
+Fürth hbf,Essen hbf,4 h 18m
+Essen hbf,Fürth hbf,4 h 18m
+Fürth hbf,Saarbrücken hbf,5 h 3m
+Saarbrücken hbf,Fürth hbf,5 h 3m
+Fürth hbf,Heidelberg hbf,3 h 29m
+Heidelberg hbf,Fürth hbf,3 h 29m
+Fürth hbf,Gütersloh hbf,4 h 37m
+Gütersloh hbf,Fürth hbf,4 h 37m
+Fürth hbf,Mannheim hbf,3 h 15m
+Mannheim hbf,Fürth hbf,3 h 15m
+Fürth hbf,Wiesbaden hbf,3 h 10m
+Wiesbaden hbf,Fürth hbf,3 h 10m
+Gelsenkirchen hbf,Aachen hbf,1 h 51m
+Aachen hbf,Gelsenkirchen hbf,1 h 51m
+Gelsenkirchen hbf,Bielefeld hbf,1 h 25m
+Bielefeld hbf,Gelsenkirchen hbf,1 h 25m
+Gelsenkirchen hbf,Dresden hbf,6 h 32m
+Dresden hbf,Gelsenkirchen hbf,6 h 32m
+Gelsenkirchen hbf,Cottbus hbf,5 h 45m
+Cottbus hbf,Gelsenkirchen hbf,5 h 45m
+Gelsenkirchen hbf,Aue (Sachs) Bahnhof,8 h 6m
+Aue (Sachs) Bahnhof,Gelsenkirchen hbf,8 h 6m
+Gelsenkirchen hbf,Ingolstadt hbf,4 h 58m
+Ingolstadt hbf,Gelsenkirchen hbf,4 h 58m
+Gelsenkirchen hbf,Osnabrück hbf,1 h 7m
+Osnabrück hbf,Gelsenkirchen hbf,1 h 7m
+Gelsenkirchen hbf,Essen hbf,9m
+Essen hbf,Gelsenkirchen hbf,9m
+Gelsenkirchen hbf,Saarbrücken hbf,4 h 27m
+Saarbrücken hbf,Gelsenkirchen hbf,4 h 27m
+Gelsenkirchen hbf,Heidelberg hbf,3 h 6m
+Heidelberg hbf,Gelsenkirchen hbf,3 h 6m
+Gelsenkirchen hbf,Gütersloh hbf,1 h 23m
+Gütersloh hbf,Gelsenkirchen hbf,1 h 23m
+Gelsenkirchen hbf,Mannheim hbf,2 h 24m
+Mannheim hbf,Gelsenkirchen hbf,2 h 24m
+Gelsenkirchen hbf,Wiesbaden hbf,2 h 29m
+Wiesbaden hbf,Gelsenkirchen hbf,2 h 29m
+Neunkirchen hbf,Aachen hbf,4 h 6m
+Aachen hbf,Neunkirchen hbf,4 h 6m
+Neunkirchen hbf,Bielefeld hbf,5 h 15m
+Bielefeld hbf,Neunkirchen hbf,5 h 15m
+Neunkirchen hbf,Dresden hbf,7 h 5m
+Dresden hbf,Neunkirchen hbf,7 h 5m
+Neunkirchen hbf,Cottbus hbf,8 h 22m
+Cottbus hbf,Neunkirchen hbf,8 h 22m
+Neunkirchen hbf,Aue (Sachs) Bahnhof,8 h 43m
+Aue (Sachs) Bahnhof,Neunkirchen hbf,8 h 43m
+Neunkirchen hbf,Ingolstadt hbf,5 h 15m
+Ingolstadt hbf,Neunkirchen hbf,5 h 15m
+Neunkirchen hbf,Osnabrück hbf,5 h 29m
+Osnabrück hbf,Neunkirchen hbf,5 h 29m
+Neunkirchen hbf,Essen hbf,4 h 6m
+Essen hbf,Neunkirchen hbf,4 h 6m
+Neunkirchen hbf,Saarbrücken hbf,19m
+Saarbrücken hbf,Neunkirchen hbf,19m
+Neunkirchen hbf,Heidelberg hbf,1 h 52m
+Heidelberg hbf,Neunkirchen hbf,1 h 52m
+Neunkirchen hbf,Gütersloh hbf,5 h 35m
+Gütersloh hbf,Neunkirchen hbf,5 h 35m
+Neunkirchen hbf,Mannheim hbf,1 h 26m
+Mannheim hbf,Neunkirchen hbf,1 h 26m
+Neunkirchen hbf,Wiesbaden hbf,2 h 16m
+Wiesbaden hbf,Neunkirchen hbf,2 h 16m
+Nürnberg hbf,Aachen hbf,4 h 12m
+Aachen hbf,Nürnberg hbf,4 h 12m
+Nürnberg hbf,Bielefeld hbf,4 h 5m
+Bielefeld hbf,Nürnberg hbf,4 h 5m
+Nürnberg hbf,Dresden hbf,3 h 32m
+Dresden hbf,Nürnberg hbf,3 h 32m
+Nürnberg hbf,Cottbus hbf,4 h 49m
+Cottbus hbf,Nürnberg hbf,4 h 49m
+Nürnberg hbf,Aue (Sachs) Bahnhof,3 h 58m
+Aue (Sachs) Bahnhof,Nürnberg hbf,3 h 58m
+Nürnberg hbf,Ingolstadt hbf,27m
+Ingolstadt hbf,Nürnberg hbf,27m
+Nürnberg hbf,Osnabrück hbf,4 h 30m
+Osnabrück hbf,Nürnberg hbf,4 h 30m
+Nürnberg hbf,Essen hbf,3 h 58m
+Essen hbf,Nürnberg hbf,3 h 58m
+Nürnberg hbf,Saarbrücken hbf,4 h 40m
+Saarbrücken hbf,Nürnberg hbf,4 h 40m
+Nürnberg hbf,Heidelberg hbf,3 h 7m
+Heidelberg hbf,Nürnberg hbf,3 h 7m
+Nürnberg hbf,Gütersloh hbf,4 h 15m
+Gütersloh hbf,Nürnberg hbf,4 h 15m
+Nürnberg hbf,Mannheim hbf,2 h 51m
+Mannheim hbf,Nürnberg hbf,2 h 51m
+Nürnberg hbf,Wiesbaden hbf,2 h 50m
+Wiesbaden hbf,Nürnberg hbf,2 h 50m
+Kaiserslautern hbf,Aachen hbf,3 h 30m
+Aachen hbf,Kaiserslautern hbf,3 h 30m
+Kaiserslautern hbf,Bielefeld hbf,4 h 49m
+Bielefeld hbf,Kaiserslautern hbf,4 h 49m
+Kaiserslautern hbf,Dresden hbf,6 h 2m
+Dresden hbf,Kaiserslautern hbf,6 h 2m
+Kaiserslautern hbf,Cottbus hbf,7 h 18m
+Cottbus hbf,Kaiserslautern hbf,7 h 18m
+Kaiserslautern hbf,Aue (Sachs) Bahnhof,7 h 56m
+Aue (Sachs) Bahnhof,Kaiserslautern hbf,7 h 56m
+Kaiserslautern hbf,Ingolstadt hbf,4 h 26m
+Ingolstadt hbf,Kaiserslautern hbf,4 h 26m
+Kaiserslautern hbf,Osnabrück hbf,4 h 44m
+Osnabrück hbf,Kaiserslautern hbf,4 h 44m
+Kaiserslautern hbf,Essen hbf,3 h 24m
+Essen hbf,Kaiserslautern hbf,3 h 24m
+Kaiserslautern hbf,Saarbrücken hbf,37m
+Saarbrücken hbf,Kaiserslautern hbf,37m
+Kaiserslautern hbf,Heidelberg hbf,1 h 7m
+Heidelberg hbf,Kaiserslautern hbf,1 h 7m
+Kaiserslautern hbf,Gütersloh hbf,5 h 9m
+Gütersloh hbf,Kaiserslautern hbf,5 h 9m
+Kaiserslautern hbf,Mannheim hbf,39m
+Mannheim hbf,Kaiserslautern hbf,39m
+Kaiserslautern hbf,Wiesbaden hbf,1 h 53m
+Wiesbaden hbf,Kaiserslautern hbf,1 h 53m
+Magdeburg hbf,Aachen hbf,5 h 4m
+Aachen hbf,Magdeburg hbf,5 h 4m
+Magdeburg hbf,Bielefeld hbf,2 h 25m
+Bielefeld hbf,Magdeburg hbf,2 h 25m
+Magdeburg hbf,Dresden hbf,2 h 34m
+Dresden hbf,Magdeburg hbf,2 h 34m
+Magdeburg hbf,Cottbus hbf,3 h 34m
+Cottbus hbf,Magdeburg hbf,3 h 34m
+Magdeburg hbf,Aue (Sachs) Bahnhof,4 h 11m
+Aue (Sachs) Bahnhof,Magdeburg hbf,4 h 11m
+Magdeburg hbf,Ingolstadt hbf,3 h 28m
+Ingolstadt hbf,Magdeburg hbf,3 h 28m
+Magdeburg hbf,Osnabrück hbf,3 h
+Osnabrück hbf,Magdeburg hbf,3 h
+Magdeburg hbf,Essen hbf,3 h 38m
+Essen hbf,Magdeburg hbf,3 h 38m
+Magdeburg hbf,Saarbrücken hbf,5 h 57m
+Saarbrücken hbf,Magdeburg hbf,5 h 57m
+Magdeburg hbf,Heidelberg hbf,4 h 52m
+Heidelberg hbf,Magdeburg hbf,4 h 52m
+Magdeburg hbf,Gütersloh hbf,2 h 45m
+Gütersloh hbf,Magdeburg hbf,2 h 45m
+Magdeburg hbf,Mannheim hbf,4 h 25m
+Mannheim hbf,Magdeburg hbf,4 h 25m
+Magdeburg hbf,Wiesbaden hbf,4 h 25m
+Wiesbaden hbf,Magdeburg hbf,4 h 25m
+Braunschweig hbf,Aachen hbf,4 h 19m
+Aachen hbf,Braunschweig hbf,4 h 19m
+Braunschweig hbf,Bielefeld hbf,1 h 37m
+Bielefeld hbf,Braunschweig hbf,1 h 37m
+Braunschweig hbf,Dresden hbf,3 h 28m
+Dresden hbf,Braunschweig hbf,3 h 28m
+Braunschweig hbf,Cottbus hbf,3 h 39m
+Cottbus hbf,Braunschweig hbf,3 h 39m
+Braunschweig hbf,Aue (Sachs) Bahnhof,5 h 5m
+Aue (Sachs) Bahnhof,Braunschweig hbf,5 h 5m
+Braunschweig hbf,Ingolstadt hbf,3 h 59m
+Ingolstadt hbf,Braunschweig hbf,3 h 59m
+Braunschweig hbf,Osnabrück hbf,2 h 13m
+Osnabrück hbf,Braunschweig hbf,2 h 13m
+Braunschweig hbf,Essen hbf,2 h 52m
+Essen hbf,Braunschweig hbf,2 h 52m
+Braunschweig hbf,Saarbrücken hbf,5 h 2m
+Saarbrücken hbf,Braunschweig hbf,5 h 2m
+Braunschweig hbf,Heidelberg hbf,3 h 56m
+Heidelberg hbf,Braunschweig hbf,3 h 56m
+Braunschweig hbf,Gütersloh hbf,2 h
+Gütersloh hbf,Braunschweig hbf,2 h
+Braunschweig hbf,Mannheim hbf,3 h 30m
+Mannheim hbf,Braunschweig hbf,3 h 30m
+Braunschweig hbf,Wiesbaden hbf,3 h 31m
+Wiesbaden hbf,Braunschweig hbf,3 h 31m
+Ulm hbf,Aachen hbf,4 h 19m
+Aachen hbf,Ulm hbf,4 h 19m
+Ulm hbf,Bielefeld hbf,5 h 38m
+Bielefeld hbf,Ulm hbf,5 h 38m
+Ulm hbf,Dresden hbf,5 h 42m
+Dresden hbf,Ulm hbf,5 h 42m
+Ulm hbf,Cottbus hbf,7 h
+Cottbus hbf,Ulm hbf,7 h
+Ulm hbf,Aue (Sachs) Bahnhof,6 h 23m
+Aue (Sachs) Bahnhof,Ulm hbf,6 h 23m
+Ulm hbf,Ingolstadt hbf,1 h 50m
+Ingolstadt hbf,Ulm hbf,1 h 50m
+Ulm hbf,Osnabrück hbf,5 h 24m
+Osnabrück hbf,Ulm hbf,5 h 24m
+Ulm hbf,Essen hbf,4 h 3m
+Essen hbf,Ulm hbf,4 h 3m
+Ulm hbf,Saarbrücken hbf,2 h 58m
+Saarbrücken hbf,Ulm hbf,2 h 58m
+Ulm hbf,Heidelberg hbf,1 h 34m
+Heidelberg hbf,Ulm hbf,1 h 34m
+Ulm hbf,Gütersloh hbf,5 h 21m
+Gütersloh hbf,Ulm hbf,5 h 21m
+Ulm hbf,Mannheim hbf,1 h 27m
+Mannheim hbf,Ulm hbf,1 h 27m
+Ulm hbf,Wiesbaden hbf,2 h 43m
+Wiesbaden hbf,Ulm hbf,2 h 43m
+Münster (Westf) hbf,Aachen hbf,2 h 36m
+Aachen hbf,Münster (Westf) hbf,2 h 36m
+Münster (Westf) hbf,Bielefeld hbf,59m
+Bielefeld hbf,Münster (Westf) hbf,59m
+Münster (Westf) hbf,Dresden hbf,5 h 39m
+Dresden hbf,Münster (Westf) hbf,5 h 39m
+Münster (Westf) hbf,Cottbus hbf,5 h 20m
+Cottbus hbf,Münster (Westf) hbf,5 h 20m
+Münster (Westf) hbf,Aue (Sachs) Bahnhof,7 h 41m
+Aue (Sachs) Bahnhof,Münster (Westf) hbf,7 h 41m
+Münster (Westf) hbf,Ingolstadt hbf,5 h 23m
+Ingolstadt hbf,Münster (Westf) hbf,5 h 23m
+Münster (Westf) hbf,Osnabrück hbf,21m
+Osnabrück hbf,Münster (Westf) hbf,21m
+Münster (Westf) hbf,Essen hbf,49m
+Essen hbf,Münster (Westf) hbf,49m
+Münster (Westf) hbf,Saarbrücken hbf,4 h 47m
+Saarbrücken hbf,Münster (Westf) hbf,4 h 47m
+Münster (Westf) hbf,Heidelberg hbf,3 h 41m
+Heidelberg hbf,Münster (Westf) hbf,3 h 41m
+Münster (Westf) hbf,Gütersloh hbf,57m
+Gütersloh hbf,Münster (Westf) hbf,57m
+Münster (Westf) hbf,Mannheim hbf,3 h 10m
+Mannheim hbf,Münster (Westf) hbf,3 h 10m
+Münster (Westf) hbf,Wiesbaden hbf,3 h 13m
+Wiesbaden hbf,Münster (Westf) hbf,3 h 13m
+Rostock hbf,Aachen hbf,7 h 21m
+Aachen hbf,Rostock hbf,7 h 21m
+Rostock hbf,Bielefeld hbf,5 h 5m
+Bielefeld hbf,Rostock hbf,5 h 5m
+Rostock hbf,Dresden hbf,4 h 6m
+Dresden hbf,Rostock hbf,4 h 6m
+Rostock hbf,Cottbus hbf,3 h 34m
+Cottbus hbf,Rostock hbf,3 h 34m
+Rostock hbf,Aue (Sachs) Bahnhof,6 h 55m
+Aue (Sachs) Bahnhof,Rostock hbf,6 h 55m
+Rostock hbf,Ingolstadt hbf,6 h 18m
+Ingolstadt hbf,Rostock hbf,6 h 18m
+Rostock hbf,Osnabrück hbf,4 h 23m
+Osnabrück hbf,Rostock hbf,4 h 23m
+Rostock hbf,Essen hbf,5 h 12m
+Essen hbf,Rostock hbf,5 h 12m
+Rostock hbf,Saarbrücken hbf,8 h 22m
+Saarbrücken hbf,Rostock hbf,8 h 22m
+Rostock hbf,Heidelberg hbf,7 h 15m
+Heidelberg hbf,Rostock hbf,7 h 15m
+Rostock hbf,Gütersloh hbf,5 h 24m
+Gütersloh hbf,Rostock hbf,5 h 24m
+Rostock hbf,Mannheim hbf,6 h 48m
+Mannheim hbf,Rostock hbf,6 h 48m
+Rostock hbf,Wiesbaden hbf,6 h 58m
+Wiesbaden hbf,Rostock hbf,6 h 58m
+Aachen hbf,Bielefeld hbf,2 h 47m
+Bielefeld hbf,Aachen hbf,2 h 47m
+Aachen hbf,Dresden hbf,6 h 47m
+Dresden hbf,Aachen hbf,6 h 47m
+Aachen hbf,Cottbus hbf,7 h 7m
+Cottbus hbf,Aachen hbf,7 h 7m
+Aachen hbf,Aue (Sachs) Bahnhof,8 h 25m
+Aue (Sachs) Bahnhof,Aachen hbf,8 h 25m
+Aachen hbf,Ingolstadt hbf,5 h
+Ingolstadt hbf,Aachen hbf,5 h
+Aachen hbf,Osnabrück hbf,3 h 3m
+Osnabrück hbf,Aachen hbf,3 h 3m
+Aachen hbf,Essen hbf,1 h 38m
+Essen hbf,Aachen hbf,1 h 38m
+Aachen hbf,Saarbrücken hbf,4 h 8m
+Saarbrücken hbf,Aachen hbf,4 h 8m
+Aachen hbf,Heidelberg hbf,2 h 44m
+Heidelberg hbf,Aachen hbf,2 h 44m
+Aachen hbf,Gütersloh hbf,2 h 46m
+Gütersloh hbf,Aachen hbf,2 h 46m
+Aachen hbf,Mannheim hbf,2 h 16m
+Mannheim hbf,Aachen hbf,2 h 16m
+Aachen hbf,Wiesbaden hbf,2 h 32m
+Wiesbaden hbf,Aachen hbf,2 h 32m
+Bielefeld hbf,Dresden hbf,4 h 49m
+Dresden hbf,Bielefeld hbf,4 h 49m
+Bielefeld hbf,Cottbus hbf,4 h 17m
+Cottbus hbf,Bielefeld hbf,4 h 17m
+Bielefeld hbf,Aue (Sachs) Bahnhof,6 h 40m
+Aue (Sachs) Bahnhof,Bielefeld hbf,6 h 40m
+Bielefeld hbf,Ingolstadt hbf,4 h 30m
+Ingolstadt hbf,Bielefeld hbf,4 h 30m
+Bielefeld hbf,Osnabrück hbf,53m
+Osnabrück hbf,Bielefeld hbf,53m
+Bielefeld hbf,Essen hbf,1 h 17m
+Essen hbf,Bielefeld hbf,1 h 17m
+Bielefeld hbf,Saarbrücken hbf,5 h 31m
+Saarbrücken hbf,Bielefeld hbf,5 h 31m
+Bielefeld hbf,Heidelberg hbf,4 h 1m
+Heidelberg hbf,Bielefeld hbf,4 h 1m
+Bielefeld hbf,Gütersloh hbf,8m
+Gütersloh hbf,Bielefeld hbf,8m
+Bielefeld hbf,Mannheim hbf,3 h 41m
+Mannheim hbf,Bielefeld hbf,3 h 41m
+Bielefeld hbf,Wiesbaden hbf,3 h 50m
+Wiesbaden hbf,Bielefeld hbf,3 h 50m
+Dresden hbf,Cottbus hbf,2 h 1m
+Cottbus hbf,Dresden hbf,2 h 1m
+Dresden hbf,Aue (Sachs) Bahnhof,2 h 43m
+Aue (Sachs) Bahnhof,Dresden hbf,2 h 43m
+Dresden hbf,Ingolstadt hbf,4 h 29m
+Ingolstadt hbf,Dresden hbf,4 h 29m
+Dresden hbf,Osnabrück hbf,5 h 4m
+Osnabrück hbf,Dresden hbf,5 h 4m
+Dresden hbf,Essen hbf,6 h 23m
+Essen hbf,Dresden hbf,6 h 23m
+Dresden hbf,Saarbrücken hbf,6 h 49m
+Saarbrücken hbf,Dresden hbf,6 h 49m
+Dresden hbf,Heidelberg hbf,5 h 41m
+Heidelberg hbf,Dresden hbf,5 h 41m
+Dresden hbf,Gütersloh hbf,5 h 4m
+Gütersloh hbf,Dresden hbf,5 h 4m
+Dresden hbf,Mannheim hbf,5 h 15m
+Mannheim hbf,Dresden hbf,5 h 15m
+Dresden hbf,Wiesbaden hbf,5 h 14m
+Wiesbaden hbf,Dresden hbf,5 h 14m
+Cottbus hbf,Aue (Sachs) Bahnhof,4 h 13m
+Aue (Sachs) Bahnhof,Cottbus hbf,4 h 13m
+Cottbus hbf,Ingolstadt hbf,4 h 57m
+Ingolstadt hbf,Cottbus hbf,4 h 57m
+Cottbus hbf,Osnabrück hbf,4 h 57m
+Osnabrück hbf,Cottbus hbf,4 h 57m
+Cottbus hbf,Essen hbf,5 h 38m
+Essen hbf,Cottbus hbf,5 h 38m
+Cottbus hbf,Saarbrücken hbf,7 h 53m
+Saarbrücken hbf,Cottbus hbf,7 h 53m
+Cottbus hbf,Heidelberg hbf,6 h 8m
+Heidelberg hbf,Cottbus hbf,6 h 8m
+Cottbus hbf,Gütersloh hbf,4 h 44m
+Gütersloh hbf,Cottbus hbf,4 h 44m
+Cottbus hbf,Mannheim hbf,5 h 38m
+Mannheim hbf,Cottbus hbf,5 h 38m
+Cottbus hbf,Wiesbaden hbf,5 h 51m
+Wiesbaden hbf,Cottbus hbf,5 h 51m
+Aue (Sachs) Bahnhof,Ingolstadt hbf,4 h 51m
+Ingolstadt hbf,Aue (Sachs) Bahnhof,4 h 51m
+Aue (Sachs) Bahnhof,Osnabrück hbf,7 h 25m
+Osnabrück hbf,Aue (Sachs) Bahnhof,7 h 25m
+Aue (Sachs) Bahnhof,Essen hbf,8 h 6m
+Essen hbf,Aue (Sachs) Bahnhof,8 h 6m
+Aue (Sachs) Bahnhof,Saarbrücken hbf,8 h 36m
+Saarbrücken hbf,Aue (Sachs) Bahnhof,8 h 36m
+Aue (Sachs) Bahnhof,Heidelberg hbf,7 h 14m
+Heidelberg hbf,Aue (Sachs) Bahnhof,7 h 14m
+Aue (Sachs) Bahnhof,Gütersloh hbf,7 h 9m
+Gütersloh hbf,Aue (Sachs) Bahnhof,7 h 9m
+Aue (Sachs) Bahnhof,Mannheim hbf,6 h 48m
+Mannheim hbf,Aue (Sachs) Bahnhof,6 h 48m
+Aue (Sachs) Bahnhof,Wiesbaden hbf,6 h 49m
+Wiesbaden hbf,Aue (Sachs) Bahnhof,6 h 49m
+Ingolstadt hbf,Osnabrück hbf,5 h 5m
+Osnabrück hbf,Ingolstadt hbf,5 h 5m
+Ingolstadt hbf,Essen hbf,4 h 35m
+Essen hbf,Ingolstadt hbf,4 h 35m
+Ingolstadt hbf,Saarbrücken hbf,5 h 5m
+Saarbrücken hbf,Ingolstadt hbf,5 h 5m
+Ingolstadt hbf,Heidelberg hbf,3 h 36m
+Heidelberg hbf,Ingolstadt hbf,3 h 36m
+Ingolstadt hbf,Gütersloh hbf,4 h 53m
+Gütersloh hbf,Ingolstadt hbf,4 h 53m
+Ingolstadt hbf,Mannheim hbf,3 h 27m
+Mannheim hbf,Ingolstadt hbf,3 h 27m
+Ingolstadt hbf,Wiesbaden hbf,3 h 27m
+Wiesbaden hbf,Ingolstadt hbf,3 h 27m
+Osnabrück hbf,Essen hbf,1 h 14m
+Essen hbf,Osnabrück hbf,1 h 14m
+Osnabrück hbf,Saarbrücken hbf,5 h 22m
+Saarbrücken hbf,Osnabrück hbf,5 h 22m
+Osnabrück hbf,Heidelberg hbf,4 h 6m
+Heidelberg hbf,Osnabrück hbf,4 h 6m
+Osnabrück hbf,Gütersloh hbf,1 h 22m
+Gütersloh hbf,Osnabrück hbf,1 h 22m
+Osnabrück hbf,Mannheim hbf,3 h 46m
+Mannheim hbf,Osnabrück hbf,3 h 46m
+Osnabrück hbf,Wiesbaden hbf,3 h 56m
+Wiesbaden hbf,Osnabrück hbf,3 h 56m
+Essen hbf,Saarbrücken hbf,4 h 9m
+Saarbrücken hbf,Essen hbf,4 h 9m
+Essen hbf,Heidelberg hbf,2 h 44m
+Heidelberg hbf,Essen hbf,2 h 44m
+Essen hbf,Gütersloh hbf,1 h 9m
+Gütersloh hbf,Essen hbf,1 h 9m
+Essen hbf,Mannheim hbf,2 h 18m
+Mannheim hbf,Essen hbf,2 h 18m
+Essen hbf,Wiesbaden hbf,2 h 24m
+Wiesbaden hbf,Essen hbf,2 h 24m
+Saarbrücken hbf,Heidelberg hbf,1 h 44m
+Heidelberg hbf,Saarbrücken hbf,1 h 44m
+Saarbrücken hbf,Gütersloh hbf,5 h 47m
+Gütersloh hbf,Saarbrücken hbf,5 h 47m
+Saarbrücken hbf,Mannheim hbf,1 h 16m
+Mannheim hbf,Saarbrücken hbf,1 h 16m
+Saarbrücken hbf,Wiesbaden hbf,2 h 36m
+Wiesbaden hbf,Saarbrücken hbf,2 h 36m
+Heidelberg hbf,Gütersloh hbf,4 h 24m
+Gütersloh hbf,Heidelberg hbf,4 h 24m
+Heidelberg hbf,Mannheim hbf,16m
+Mannheim hbf,Heidelberg hbf,16m
+Heidelberg hbf,Wiesbaden hbf,1 h 7m
+Wiesbaden hbf,Heidelberg hbf,1 h 7m
+Gütersloh hbf,Mannheim hbf,3 h 30m
+Mannheim hbf,Gütersloh hbf,3 h 30m
+Gütersloh hbf,Wiesbaden hbf,3 h 50m
+Wiesbaden hbf,Gütersloh hbf,3 h 50m
+Mannheim hbf,Wiesbaden hbf,1 h 13m
+Wiesbaden hbf,Mannheim hbf,1 h 13m
+München hbf,Heidenheim hbf,1 h 47m
+Heidenheim hbf,München hbf,1 h 47m
+Dortmund hbf,Heidenheim hbf,5 h 22m
+Heidenheim hbf,Dortmund hbf,5 h 22m
+Leverkusen Mitte,Heidenheim hbf,4 h 39m
+Heidenheim hbf,Leverkusen Mitte,4 h 39m
+Leipzig hbf,Heidenheim hbf,5 h 5m
+Heidenheim hbf,Leipzig hbf,5 h 5m
+Stuttgart hbf,Heidenheim hbf,1 h 14m
+Heidenheim hbf,Stuttgart hbf,1 h 14m
+Frankfurt hbf,Heidenheim hbf,3 h 33m
+Heidenheim hbf,Frankfurt hbf,3 h 33m
+Freiburg (Breisgau) hbf,Heidenheim hbf,3 h 41m
+Heidenheim hbf,Freiburg (Breisgau) hbf,3 h 41m
+Berlin hbf,Heidenheim hbf,5 h 57m
+Heidenheim hbf,Berlin hbf,5 h 57m
+Sinsheim (Elsenz) hbf,Heidenheim hbf,3 h 44m
+Heidenheim hbf,Sinsheim (Elsenz) hbf,3 h 44m
+Mainz hbf,Heidenheim hbf,3 h 41m
+Heidenheim hbf,Mainz hbf,3 h 41m
+Wolfsburg hbf,Heidenheim hbf,5 h 45m
+Heidenheim hbf,Wolfsburg hbf,5 h 45m
+Mönchengladbach hbf,Heidenheim hbf,5 h 13m
+Heidenheim hbf,Mönchengladbach hbf,5 h 13m
+Bremen hbf,Heidenheim hbf,6 h 50m
+Heidenheim hbf,Bremen hbf,6 h 50m
+Augsburg hbf,Heidenheim hbf,1 h 15m
+Heidenheim hbf,Augsburg hbf,1 h 15m
+Bochum hbf,Heidenheim hbf,5 h 49m
+Heidenheim hbf,Bochum hbf,5 h 49m
+Heidenheim hbf,Hamburg hbf,7 h 22m
+Hamburg hbf,Heidenheim hbf,7 h 22m
+Heidenheim hbf,Kiel hbf,8 h 53m
+Kiel hbf,Heidenheim hbf,8 h 53m
+Heidenheim hbf,Köln hbf,4 h 25m
+Köln hbf,Heidenheim hbf,4 h 25m
+Heidenheim hbf,Darmstadt hbf,3 h 22m
+Darmstadt hbf,Heidenheim hbf,3 h 22m
+Heidenheim hbf,Düsseldorf hbf,4 h 35m
+Düsseldorf hbf,Heidenheim hbf,4 h 35m
+Heidenheim hbf,Karlsruhe hbf,2 h 28m
+Karlsruhe hbf,Heidenheim hbf,2 h 28m
+Heidenheim hbf,Hannover hbf,4 h 58m
+Hannover hbf,Heidenheim hbf,4 h 58m
+Heidenheim hbf,Paderborn hbf,5 h 36m
+Paderborn hbf,Heidenheim hbf,5 h 36m
+Heidenheim hbf,Fürth hbf,2 h 9m
+Fürth hbf,Heidenheim hbf,2 h 9m
+Heidenheim hbf,Gelsenkirchen hbf,5 h 12m
+Gelsenkirchen hbf,Heidenheim hbf,5 h 12m
+Heidenheim hbf,Neunkirchen hbf,4 h
+Neunkirchen hbf,Heidenheim hbf,4 h
+Heidenheim hbf,Nürnberg hbf,1 h 44m
+Nürnberg hbf,Heidenheim hbf,1 h 44m
+Heidenheim hbf,Kaiserslautern hbf,3 h 9m
+Kaiserslautern hbf,Heidenheim hbf,3 h 9m
+Heidenheim hbf,Magdeburg hbf,6 h
+Magdeburg hbf,Heidenheim hbf,6 h
+Heidenheim hbf,Braunschweig hbf,5 h 25m
+Braunschweig hbf,Heidenheim hbf,5 h 25m
+Heidenheim hbf,Ulm hbf,32m
+Ulm hbf,Heidenheim hbf,32m
+Heidenheim hbf,Münster (Westf) hbf,6 h 30m
+Münster (Westf) hbf,Heidenheim hbf,6 h 30m
+Heidenheim hbf,Aachen hbf,5 h 33m
+Aachen hbf,Heidenheim hbf,5 h 33m
+Heidenheim hbf,Bielefeld hbf,6 h 43m
+Bielefeld hbf,Heidenheim hbf,6 h 43m
+Heidenheim hbf,Dresden hbf,6 h 4m
+Dresden hbf,Heidenheim hbf,6 h 4m
+Heidenheim hbf,Cottbus hbf,7 h 9m
+Cottbus hbf,Heidenheim hbf,7 h 9m
+Heidenheim hbf,Aue (Sachs) Bahnhof,6 h 1m
+Aue (Sachs) Bahnhof,Heidenheim hbf,6 h 1m 
+Heidenheim hbf,Rostock hbf,8 h 37m
+Rostock hbf,Heidenheim hbf,8 h 37m
+Heidenheim hbf,Ingolstadt hbf,2 h 27m
+Ingolstadt hbf,Heidenheim hbf,2 h 27m
+Heidenheim hbf,Osnabrück hbf,6 h 57m
+Osnabrück hbf,Heidenheim hbf,6 h 57m
+Heidenheim hbf,Essen hbf,5 h 35m
+Essen hbf,Heidenheim hbf,5 h 35m
+Heidenheim hbf,Saarbrücken hbf,3 h 53m
+Saarbrücken hbf,Heidenheim hbf,3 h 53m
+Heidenheim hbf,Heidelberg hbf,2 h 44m
+Heidelberg hbf,Heidenheim hbf,2 h 44m
+Heidenheim hbf,Gütersloh hbf,7 h 13m
+Gütersloh hbf,Heidenheim hbf,7 h 13m
+München hbf,Regensburg hbf,1 h 23m
+Regensburg hbf,München hbf,1 h 23m
+Dortmund hbf,Regensburg hbf,5 h 42m
+Regensburg hbf,Dortmund hbf,5 h 42m
+Leverkusen Mitte,Regensburg hbf,5 h
+Regensburg hbf,Leverkusen Mitte,5 h
+Leipzig hbf,Regensburg hbf,3 h 19m
+Regensburg hbf,Leipzig hbf,3 h 19m
+Stuttgart hbf,Regensburg hbf,3 h 14m
+Regensburg hbf,Stuttgart hbf,3 h 14m
+Frankfurt hbf,Regensburg hbf,3 h 1m
+Regensburg hbf,Frankfurt hbf,3 h 1m
+Freiburg (Breisgau) hbf,Regensburg hbf,5 h 35m
+Regensburg hbf,Freiburg (Breisgau) hbf,5 h 35m
+Berlin hbf,Regensburg hbf,4 h 18m
+Regensburg hbf,Berlin hbf,4 h 18m
+Sinsheim (Elsenz) hbf,Regensburg hbf,4 h 47m
+Regensburg hbf,Sinsheim (Elsenz) hbf,4 h 47m
+Mainz hbf,Regensburg hbf,3 h 41m
+Regensburg hbf,Mainz hbf,3 h 41m
+Wolfsburg hbf,Regensburg hbf,4 h 44m
+Regensburg hbf,Wolfsburg hbf,4 h 44m
+Mönchengladbach hbf,Regensburg hbf,5 h 28m
+Regensburg hbf,Mönchengladbach hbf,5 h 28m
+Bremen hbf,Regensburg hbf,5 h 8m
+Regensburg hbf,Bremen hbf,5 h 8m
+Augsburg hbf,Regensburg hbf,2 h 8m
+Regensburg hbf,Augsburg hbf,2 h 8m
+Bochum hbf,Regensburg hbf,5 h 56m
+Regensburg hbf,Bochum hbf,5 h 56m
+Heidenheim hbf,Regensburg hbf,2 h 49m
+Regensburg hbf,Heidenheim hbf,2 h 49m
+Heidenheim hbf,Mannheim hbf,2 h 16m
+Mannheim hbf,Heidenheim hbf,2 h 16m
+Heidenheim hbf,Wiesbaden hbf,3 h 54m
+Wiesbaden hbf,Heidenheim hbf,3 h 54m
+Hamburg hbf,Regensburg hbf,5 h 21m
+Regensburg hbf,Hamburg hbf,5 h 21m
+Kiel hbf,Regensburg hbf,6 h 46m
+Regensburg hbf,Kiel hbf,6 h 46m
+Köln hbf,Regensburg hbf,4 h 28m
+Regensburg hbf,Köln hbf,4 h 28m
+Darmstadt hbf,Regensburg hbf,3 h 36m
+Regensburg hbf,Darmstadt hbf,3 h 36m
+Düsseldorf hbf,Regensburg hbf,4 h 52m
+Regensburg hbf,Düsseldorf hbf,4 h 52m
+Karlsruhe hbf,Regensburg hbf,4 h 32m
+Regensburg hbf,Karlsruhe hbf,4 h 32m
+Hannover hbf,Regensburg hbf,3 h 57m
+Regensburg hbf,Hannover hbf,3 h 57m
+Paderborn hbf,Regensburg hbf,4 h 25m
+Regensburg hbf,Paderborn hbf,4 h 25m
+Fürth hbf,Regensburg hbf,1 h 11m
+Regensburg hbf,Fürth hbf,1 h 11m
+Gelsenkirchen hbf,Regensburg hbf,5 h 40m
+Regensburg hbf,Gelsenkirchen hbf,5 h 40m
+Neunkirchen hbf,Regensburg hbf,6 h 2m
+Regensburg hbf,Neunkirchen hbf,6 h 2m
+Nürnberg hbf,Regensburg hbf,51m
+Regensburg hbf,Nürnberg hbf,51m
+Kaiserslautern hbf,Regensburg hbf,5 h 3m
+Regensburg hbf,Kaiserslautern hbf,5 h 3m
+Magdeburg hbf,Regensburg hbf,4 h 6m
+Regensburg hbf,Magdeburg hbf,4 h 6m
+Braunschweig hbf,Regensburg hbf,4 h 24m
+Regensburg hbf,Braunschweig hbf,4 h 24m
+Ulm hbf,Regensburg hbf,2 h 50m
+Regensburg hbf,Ulm hbf,2 h 50m
+Münster (Westf) hbf,Regensburg hbf,5 h 48m
+Regensburg hbf,Münster (Westf) hbf,5 h 48m
+Regensburg hbf,Aachen hbf,5 h 31m
+Aachen hbf,Regensburg hbf,5 h 31m
+Regensburg hbf,Bielefeld hbf,5 h 16m
+Bielefeld hbf,Regensburg hbf,5 h 16m
+Regensburg hbf,Dresden hbf,4 h 44m
+Dresden hbf,Regensburg hbf,4 h 44m
+Regensburg hbf,Cottbus hbf,6 h 10m
+Cottbus hbf,Regensburg hbf,6 h 10m
+Regensburg hbf,Aue (Sachs) Bahnhof,4 h 15m
+Aue (Sachs) Bahnhof,Regensburg hbf,4 h 15m
+Regensburg hbf,Rostock hbf,6 h 52m
+Rostock hbf,Regensburg hbf,6 h 52m
+Regensburg hbf,Ingolstadt hbf,56m
+Ingolstadt hbf,Regensburg hbf,56m
+Regensburg hbf,Osnabrück hbf,5 h 29m
+Osnabrück hbf,Regensburg hbf,5 h 29m
+Regensburg hbf,Essen hbf,5 h 17m
+Essen hbf,Regensburg hbf,5 h 17m
+Regensburg hbf,Saarbrücken hbf,5 h 40m
+Saarbrücken hbf,Regensburg hbf,5 h 40m
+Regensburg hbf,Heidelberg hbf,4 h 18m
+Heidelberg hbf,Regensburg hbf,4 h 18m
+Regensburg hbf,Gütersloh hbf,5 h 26m
+Gütersloh hbf,Regensburg hbf,5 h 26m
+Regensburg hbf,Mannheim hbf,3 h 52m
+Mannheim hbf,Regensburg hbf,3 h 52m
+Regensburg hbf,Wiesbaden hbf,3 h 49m
+Wiesbaden hbf,Regensburg hbf,3 h 49m

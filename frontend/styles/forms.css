@@ -1,0 +1,80 @@
+/* Form elements */
+.form-control:focus, 
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(4, 61, 124, 0.25);
+}
+
+/* Add subtle hover effect to form fields */
+.mb-3 {
+    position: relative;
+    transition: transform 0.15s ease;
+}
+
+.mb-3:hover .form-label {
+    color: var(--primary-color);
+}
+
+/* Form validation styling */
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+/* Flatpickr Customizations */
+.flatpickr-day.selected {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.flatpickr-day.today {
+    border-color: var(--primary-color);
+}
+
+.flatpickr-day:hover {
+    background: rgba(4, 61, 124, 0.1);
+}
+
+.flatpickr-months .flatpickr-month {
+    background: var(--primary-color);
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month .numInputWrapper {
+    color: white;
+}
+
+.flatpickr-weekdays {
+    background: var(--primary-color);
+}
+
+span.flatpickr-weekday {
+    color: white;
+    background: var(--primary-color);
+}
+
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+    fill: white;
+}
+
+/* Consistent form field spacing */
+.form-control, 
+.form-select {
+    margin-bottom: 0;
+}
+
+/* Form group spacing */
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+/* Last form group in a container */
+.card-body > .mb-3:last-child {
+    margin-bottom: 0 !important;
+}
