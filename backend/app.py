@@ -979,7 +979,6 @@ def get_available_dates(
     team: Optional[str] = Query(None, description="Filter dates by team"),
     days: int = Query(60, description="Number of days to look ahead")
 ):
-    """Get dates with available matches for the date picker."""
     start_date = datetime.now().date()
     end_date = start_date + timedelta(days=days)
     
