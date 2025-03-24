@@ -224,6 +224,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     tbd_games_in_period = []
     current_year = datetime.now().year
     actual_start_date = None  # Initialize variable
+    all_optimized_trips = []
     
     # Helper function for precise team matching
     def is_must_team_match(team_name, must_teams_set):
@@ -531,19 +532,23 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     valid_trip_routes = [trip for trip in initial_routes 
                          if any(len(day.get("matches", [])) > 0 for day in trip)]
     
-    # Filter trips that must include specified teams
-    if must_teams_lower and valid_trip_routes:
-        valid_trip_routes = [
-            trip for trip in valid_trip_routes
-            if any(match.get("contains_must_team", False) 
-                  for day in trip 
-                  for match in day.get("matches", []))
-        ]
-    
-        # Process each trip to generate ALL POSSIBLE hotel variations - no restrictions
-        all_optimized_trips = []
+    # Initialize all_optimized_trips outside any conditionals
+    all_optimized_trips = []
 
-        for base_trip in valid_trip_routes:
+    # Process valid routes regardless of must_teams
+    if valid_trip_routes:
+        # Only filter for must_teams if it's provided
+        filtered_trips = valid_trip_routes
+        if must_teams_lower:
+            filtered_trips = [
+                trip for trip in valid_trip_routes
+                if any(match.get("contains_must_team", False) 
+                      for day in trip 
+                      for match in day.get("matches", []))
+            ]
+        
+        # Process each trip to generate ALL POSSIBLE hotel variations
+        for base_trip in filtered_trips:
             # Always keep the base trip (usually staying at match locations)
             simplified_trip = []
             

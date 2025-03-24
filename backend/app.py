@@ -223,26 +223,26 @@ def print_formatted_trip_schedule(response):
                             location_by_day[day_str] = hotel
 
                     # Now generate travel segments in chronological order
-                    previous_day = None
                     for i, day in enumerate(group.variations[var_idx]["Itinerary"]):
                         if not "day" in day:
                             continue
                             
                         day_str = day["day"]
                         
-                        # Get starting location for this day (where they spent the previous night)
+                        # FIXED: Always use the actual hotel location from yesterday as starting point
                         if i == 0:
                             # First day - use the specified start location
-                            current_location = day["location"]
+                            current_location = day["hotel_location"]  # Use hotel_location for consistency
                         else:
-                            # Use the previous day's hotel location as today's starting point
-                            current_location = location_by_day.get(previous_day, current_location)
+                            # Get the ACTUAL hotel location from the previous day, not just the location field
+                            prev_day_info = group.variations[var_idx]["Itinerary"][i-1]
+                            current_location = prev_day_info["hotel_location"]
                         
                         # If there's a match today, add travel to the match
                         if day.get("matches"):
                             match_location = day["matches"][0]["location"]
                             if match_location != current_location:  # Only if we need to travel
-                                # Format travel time
+                                # Format travel time properly with correct locations
                                 travel_minutes = train_times.get((current_location, match_location), 0)
                                 hours = travel_minutes // 60
                                 mins = travel_minutes % 60
@@ -263,10 +263,10 @@ def print_formatted_trip_schedule(response):
                                 # Update current location
                                 current_location = match_location
                             
-                            # If returning to hotel after match, add that segment
-                            hotel_location = location_by_day.get(day_str, current_location)
+                            # If returning to hotel after match, add that segment with CORRECT TRAVEL TIME
+                            hotel_location = day["hotel_location"]  # Use the actual hotel location for this day
                             if hotel_location != current_location:
-                                # Format travel time
+                                # Format travel time with the CORRECT locations
                                 travel_minutes = train_times.get((current_location, hotel_location), 0)
                                 hours = travel_minutes // 60
                                 mins = travel_minutes % 60
