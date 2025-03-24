@@ -212,6 +212,46 @@ def filter_best_options_by_hotel_changes(all_trips, trip_duration):
     
     return filtered_trips
 
+def filter_pareto_optimal_trips(trips):
+    """
+    Filter trips to create a Pareto frontier based on travel time and hotel changes.
+    
+    For each trip option:
+    1. Keep the fastest option regardless of hotel changes
+    2. Only keep subsequent options if they have strictly fewer hotel changes than
+       any previously kept option
+    
+    Args:
+        trips: List of trips, each with hotel_summary stats
+        
+    Returns:
+        Filtered list containing only Pareto-optimal options
+    """
+    if not trips:
+        return []
+        
+    # Sort trips by total travel time (fastest first)
+    sorted_trips = sorted(trips, key=calculate_total_travel_time)
+    
+    # Always include the fastest option
+    pareto_optimal = [sorted_trips[0]]
+    min_hotel_changes_seen = sorted_trips[0][-1]["hotel_summary"]["total_hotel_changes"]
+    
+    # For each subsequent trip, only keep it if it has fewer hotel changes
+    for trip in sorted_trips[1:]:
+        current_changes = trip[-1]["hotel_summary"]["total_hotel_changes"]
+        
+        # Only keep this trip if it has strictly fewer hotel changes
+        if current_changes < min_hotel_changes_seen:
+            pareto_optimal.append(trip)
+            min_hotel_changes_seen = current_changes
+            
+            # If we've reached 0 hotel changes, we can stop (can't get better than that)
+            if min_hotel_changes_seen == 0:
+                break
+    
+    return pareto_optimal
+
 def get_reachable_games(locations: list, games: list, train_times: dict, max_travel_time: int, current_date: datetime):
     """
     Find games reachable within max_travel_time from any of the provided locations.
@@ -344,6 +384,11 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         is_valid = True
         
         for i, day in enumerate(variation):
+            # IMPORTANT CHANGE: Always preserve the first day's hotel as the start_location
+            if i == 0 and start_location.lower() != "any":
+                # Skip modifying first day's hotel - it should remain as start_location
+                continue
+                
             if i < start_idx:  # Skip days before start_idx
                 continue
                 
@@ -879,7 +924,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     #---------------------------------------------------------------------------
     # PHASE 5: FILTER TO BEST OPTIONS BY HOTEL CHANGES
     #---------------------------------------------------------------------------
-    
+
     if unique_variations:
         # Group by match combinations
         match_signatures = {}
@@ -890,13 +935,18 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
                 match_signatures[match_sig] = []
             match_signatures[match_sig].append(trip)
         
-        # Select best options for each match combination
-        filtered_trips = []
+        # Process each match combination separately
+        all_filtered_trips = []
         for match_group in match_signatures.values():
+            # First get the best option for each number of hotel changes
             best_options = filter_best_options_by_hotel_changes(match_group, trip_duration)
-            filtered_trips.extend(best_options)
+            
+            # Then apply the Pareto-optimal filter to get only meaningful choices
+            pareto_trips = filter_pareto_optimal_trips(best_options)
+            
+            all_filtered_trips.extend(pareto_trips)
         
-        all_optimized_trips = filtered_trips
+        all_optimized_trips = all_filtered_trips
     else:
         all_optimized_trips = []
     
