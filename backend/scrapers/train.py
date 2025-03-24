@@ -39,6 +39,7 @@ options.add_argument("--disable-extensions")
 options.add_argument("--disable-infobars")
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--no-sandbox")
+
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.2210.77",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.139 Safari/537.36",
@@ -50,15 +51,16 @@ user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36 Edg/121.0.2277.53",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6255.0 Safari/537.36"
 ]
+
+service = Service(EdgeChromiumDriverManager().install())
+driver = webdriver.Edge(service=service, options=options)
+
 def refresh_user_agent():
     """Randomly changes the user agent during execution to reduce detection risk."""
     new_agent = random.choice(user_agents)
     driver.execute_cdp_cmd("Network.setUserAgentOverride", {"userAgent": new_agent})
     print(f"🔄 Switched User-Agent to: {new_agent}")
 
-
-service = Service(EdgeChromiumDriverManager().install())
-driver = webdriver.Edge(service=service, options=options)
 
 def human_like_delay(short=True):
     """Mimic human-like delays with optional short or long wait times."""
@@ -82,9 +84,9 @@ def convert_time_format(time_str):
     time_str = re.sub(r"\s*m", "m", time_str)  # Remove unnecessary spaces before 'm'
     return time_str
 
+
 def extract_fastest_time():
     """Extract the fastest travel time, prioritizing jGDjJb.MBeuO.RES9jf."""
-
     def time_to_minutes(time_str):
         hours, minutes = 0, 0
         match = re.match(r'(?:(\d+)\s*h)?\s*(?:(\d+)\s*m)?', time_str.strip())
@@ -116,13 +118,12 @@ def extract_fastest_time():
         return "Not Found"
 
     converted_times = [convert_time_format(t) for t in time_elements]
-
     fastest_time = min(converted_times, key=lambda t: time_to_minutes(t))
-
     return fastest_time
 
 
 def get_fastest_train_time(home_city, away_city, retries=3):
+    """Scrapes Google for the fastest train time between two cities."""
     attempt = 0
     while attempt < retries:
         try:
@@ -137,6 +138,20 @@ def get_fastest_train_time(home_city, away_city, retries=3):
             attempt += 1
     return "Not Found"
 
+
+# ----------------------------
+#   NEW FUNCTION FOR SAME CITY
+# ----------------------------
+def add_same_city_time(city, csv_path):
+    """
+    Adds a same-city travel time record (0h 0m) to the CSV.
+    """
+    data = {"From": city, "To": city, "Fastest Train Time": "0h 0m"}
+    df_data = pd.DataFrame([data])
+
+    # Append to existing CSV (create if doesn't exist), with or without header
+    df_data.to_csv(csv_path, mode='a', header=not os.path.exists(csv_path), index=False)
+    print(f"Added same-city pair: {city} to {city} with 0h 0m.")
 
 
 csv_file = r"C:\Users\Eyalp\Desktop\Bundes\backend\data\fastest_train_times.csv"
@@ -164,48 +179,59 @@ all_teams = bundesliga_1_stadiums + bundesliga_2_stadiums + third_liga_stadiums
 # Extract unique city names from Hbf entries
 city_hbf_mapping = {team["hbf"]["name"]: team["hbf"]["name"] for team in all_teams}
 
-# Generate all unique city pairs (one-way only)
-city_pairs = list(itertools.combinations(city_hbf_mapping.keys(), 2))
+# If you want pairs (home != away), use combinations:
+#city_pairs = list(itertools.combinations(city_hbf_mapping.keys(), 2))
+
+# If you also want to include (home == away) calls, use product:
+city_pairs = list(itertools.product(city_hbf_mapping.keys(), repeat=2))
 
 train_times = []
-
 BATCH_SIZE = 1
 batch_entries = []
 
 for idx, (home, away) in enumerate(city_pairs):
+    # --------------------------------
+    #    Same-city scenario
+    # --------------------------------
     if home == away:
-        print(f"Skipping {home} to {away} (same city), assigning '0m'.")
-        travel_time = "0m"
-    elif (home, away) in existing_pairs or (away, home) in existing_pairs:
+        # Instead of skipping, call the function to add same-city time:
+        add_same_city_time(home, csv_file)
+        # Mark it in existing_pairs if you like:
+        existing_pairs.update([(home, away)])
+        continue
+
+    # --------------------------------
+    #    Different city scenario
+    # --------------------------------
+    if (home, away) in existing_pairs or (away, home) in existing_pairs:
         print(f"Skipping {home} to {away}, already in CSV.")
         continue
-    else:
-        # Change user agent every 20 requests
-        if idx % 20 == 0:
-            refresh_user_agent()
-        
-        # Restart the driver every 100 queries to prevent session issues
-        if idx % 200 == 0 and idx > 0:
-            print("🔄 Restarting browser to prevent detection...")
-            driver.quit()
-            time.sleep(random.uniform(10, 20))  # Longer delay after restart
-            driver = webdriver.Edge(service=service, options=options)
 
-        print(f"Fetching train time from {home} to {away}...")
-        human_like_delay()
-        travel_time = get_fastest_train_time(home, away)
-        print(f"✔️ {home} to {away}: {travel_time}")
+    # Change user agent every 20 requests
+    if idx % 20 == 0:
+        refresh_user_agent()
 
-    # Add both directions automatically
+    # Restart the driver every 100 queries to prevent session issues
+    if idx % 100 == 0 and idx > 0:
+        print("🔄 Restarting browser to prevent detection...")
+        driver.quit()
+        time.sleep(random.uniform(10, 20))  # Longer delay after restart
+        driver = webdriver.Edge(service=service, options=options)
+
+    print(f"Fetching train time from {home} to {away}...")
+    human_like_delay()
+    travel_time = get_fastest_train_time(home, away)
+    print(f"✔️ {home} to {away}: {travel_time}")
+
     new_entries = [
         {"From": home, "To": away, "Fastest Train Time": travel_time},
         {"From": away, "To": home, "Fastest Train Time": travel_time}
     ]
     batch_entries.extend(new_entries)
 
-    # Update existing pairs to avoid redundant future checks
     existing_pairs.update([(home, away), (away, home)])
 
+    # Save after each batch
     if len(batch_entries) >= BATCH_SIZE or (idx + 1) == len(city_pairs):
         df_new = pd.DataFrame(batch_entries)
         df_new.to_csv(csv_file, mode='a', header=not os.path.exists(csv_file), index=False)
@@ -214,6 +240,4 @@ for idx, (home, away) in enumerate(city_pairs):
 
 # Close the browser at the end
 driver.quit()
-
 print("✅ Train times fetching complete!")
-
