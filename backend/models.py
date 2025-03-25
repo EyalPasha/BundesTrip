@@ -22,20 +22,7 @@ class TravelSegment(BaseModel):
     context: Optional[str] = None
     travel_time: str
 
-# Add to TravelSegment or appropriate model for each day
-class TripDay(BaseModel):
-    day: str
-    location: Optional[str] = None
-    matches: Optional[List[Dict]] = None
-    note: Optional[str] = None
-    hotel_location: Optional[str] = None
-    hotel_change: Optional[bool] = None
-    hotel_note: Optional[str] = None
-    hotel_summary: Optional[Dict[str, Any]] = None
-
-# Update TripVariation to include hotel stats
 class TripVariation(BaseModel):
-    # Existing fields remain the same
     total_travel_time: int
     travel_hours: int
     travel_minutes: int
@@ -43,14 +30,9 @@ class TripVariation(BaseModel):
     cities: List[str] = []        
     teams: List[str] = []         
     num_games: int = 0
-    start_location: str = ""
-    end_location: str = ""
-    airport_distances: Dict[str, List[Dict[str, str]]] = {}
-    
-    # Add new fields for hotel information
-    total_hotel_changes: int = 0
-    unique_hotels: int = 0
-    hotel_cities: List[str] = []               
+    start_location: str = ""  # Add this field for the actual starting city
+    end_location: str = ""  # Final city of the trip
+    airport_distances: Dict[str, List[Dict[str, str]]] = {}  # Distances to/from airports                  
 
 class TripGroup(BaseModel):
     base_trip: Dict[str, Any]
@@ -75,7 +57,7 @@ class TripPlan(BaseModel):
     trip_duration: int
     preferred_leagues: Optional[List[str]]
     game_schedule: list
- 
+
 class TripRequest(BaseModel):
     start_location: Optional[str] = "Any"
     max_travel_time: int = 300
