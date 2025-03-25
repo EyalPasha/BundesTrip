@@ -22,6 +22,12 @@ class TravelSegment(BaseModel):
     context: Optional[str] = None
     travel_time: str
 
+class HotelStay(BaseModel):
+    location: str
+    check_in_date: str
+    check_out_date: Optional[str] = None
+    nights: int = 1
+
 class TripVariation(BaseModel):
     total_travel_time: int
     travel_hours: int
@@ -32,7 +38,11 @@ class TripVariation(BaseModel):
     num_games: int = 0
     start_location: str = ""  # Add this field for the actual starting city
     end_location: str = ""  # Final city of the trip
-    airport_distances: Dict[str, List[Dict[str, str]]] = {}  # Distances to/from airports                  
+    airport_distances: Dict[str, List[Dict[str, str]]] = {}  # Distances to/from airports
+    hotel_changes: int = 0  # Number of hotel changes during trip
+    unique_hotels: int = 0  # Number of unique hotels
+    hotel_locations: List[str] = []  # List of cities where hotels are located
+    hotel_stays: List[HotelStay] = []  # Detailed information about each hotel stay
 
 class TripGroup(BaseModel):
     base_trip: Dict[str, Any]
