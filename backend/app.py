@@ -775,7 +775,7 @@ def get_teams(league: Optional[str] = Query(None, description="Filter teams by l
         if hasattr(game, 'away_team'):
             teams.add(game.away_team)
     
-    # Sort teams alphabetically
+    # Sort teams alphabetically 
     sorted_teams = sorted(list(teams))
     
     return {"teams": sorted_teams}

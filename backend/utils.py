@@ -506,7 +506,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     
     # Further filter games by trip date range
     valid_games_in_period = [
-        g for g in valid_games
+        g for g in valid_games 
         if start_date.date() <= g.date.date() < trip_end_date.date()
     ]
     
