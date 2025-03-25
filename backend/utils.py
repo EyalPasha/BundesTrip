@@ -576,7 +576,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
                             "has_must_team": tbd_match_contains_must_team
                         })
                         break
-            except Exception:
+            except Exception: 
                 continue
     
     #---------------------------------------------------------------------------

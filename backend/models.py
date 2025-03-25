@@ -75,7 +75,7 @@ class TripPlan(BaseModel):
     trip_duration: int
     preferred_leagues: Optional[List[str]]
     game_schedule: list
-
+ 
 class TripRequest(BaseModel):
     start_location: Optional[str] = "Any"
     max_travel_time: int = 300

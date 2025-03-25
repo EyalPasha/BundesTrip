@@ -10,7 +10,10 @@ from backend.models import TripRequest, FormattedResponse, TravelSegment, TripVa
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
 from backend.config import BASE_DIR, GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
 
-# Initialize FastAPI with metadata
+#======================================================
+# APP INITIALIZATION
+#======================================================
+
 app = FastAPI(
     title="Multi-Game Trip Planner API",
     description="API for planning trips to multiple soccer/football games",
@@ -30,9 +33,366 @@ app.add_middleware(
 train_times = load_train_times(TRAIN_TIMES_FILE)
 games, tbd_games = load_games(GAMES_FILE)
 
-@app.get("/")
-def home():
-    return {"message": "Welcome to the Multi-Game Trip Planner API"}
+#======================================================
+# HELPER FUNCTIONS - TRIP PROCESSING
+#======================================================
+
+def determine_end_location(itinerary):
+    """Determine the true ending location of a trip"""
+    # First try to get the last night's hotel
+    for day in reversed(itinerary):
+        if "hotel_location" in day:
+            return day["hotel_location"]
+            
+    # Fall back to last location visited
+    for day in reversed(itinerary):
+        if "location" in day:
+            return day["location"]
+            
+    return "Unknown"
+
+def calculate_airport_distances(start_location, end_location, train_times):
+    """Calculate distances to airports from start and end locations"""
+    def format_travel_time(minutes):
+        if minutes is None:
+            return "Unknown"
+        hours = minutes // 60
+        mins = minutes % 60
+        return f"{hours}h {mins}m"
+    
+    airport_distances = {"start": [], "end": []}
+    
+    # Process start location airports
+    for airport in AIRPORT_CITIES:
+        if airport.lower() == start_location.lower():
+            travel_time = "0h 0m"
+        else:
+            minutes = train_times.get((start_location, airport), None)
+            travel_time = format_travel_time(minutes)
+            
+        airport_distances["start"].append({
+            "airport": airport.replace(" hbf", ""),
+            "travel_time": travel_time
+        })
+    
+    # Process end location airports
+    for airport in AIRPORT_CITIES:
+        if airport.lower() == end_location.lower():
+            travel_time = "0h 0m"
+        else:
+            minutes = train_times.get((end_location, airport), None)
+            travel_time = format_travel_time(minutes)
+            
+        airport_distances["end"].append({
+            "airport": airport.replace(" hbf", ""),
+            "travel_time": travel_time
+        })
+    
+    # Sort by travel time
+    def get_minutes(time_str):
+        if time_str == "0h 0m":
+            return 0
+        if time_str == "Unknown":
+            return float('inf')
+        parts = time_str.split('h ')
+        hours = int(parts[0])
+        minutes = int(parts[1].replace('m', ''))
+        return hours * 60 + minutes
+    
+    airport_distances["start"].sort(key=lambda x: get_minutes(x["travel_time"]))
+    airport_distances["end"].sort(key=lambda x: get_minutes(x["travel_time"]))
+    
+    return airport_distances
+
+def format_travel_time(minutes):
+    """Format minutes as hours and minutes string"""
+    hours = minutes // 60
+    mins = minutes % 60
+    return f"{hours}h {mins}m"
+
+def generate_travel_segments(itinerary, start_location, train_times):
+    """Generate travel segments for a trip"""
+    travel_segments = []
+    current_location = start_location
+    
+    for i, day in enumerate(itinerary):
+        if not day.get("day"):
+            continue
+            
+        # Update current location based on previous day
+        if i > 0:
+            prev_day = itinerary[i-1]
+            if "hotel_location" in prev_day:
+                current_location = prev_day["hotel_location"]
+        
+        day_str = day["day"]
+        day_parts = day_str.split()
+        day_formatted = f"{day_parts[0]} {day_parts[1]}" if len(day_parts) >= 2 else day_str
+        
+        # Process matches
+        for match in day.get("matches", []):
+            match_location = match["location"]
+            
+            # Add travel to match if needed
+            if match_location != current_location:
+                travel_segments.append(TravelSegment(
+                    from_location=current_location,
+                    to_location=match_location,
+                    day=day_formatted,
+                    travel_time=format_travel_time(train_times.get((current_location, match_location), 0))
+                ))
+                current_location = match_location
+                
+        # Add return to hotel if needed
+        if "hotel_location" in day and day["hotel_location"] != current_location:
+            travel_segments.append(TravelSegment(
+                from_location=current_location,
+                to_location=day["hotel_location"],
+                day=day_formatted,
+                context="After Game",
+                travel_time=format_travel_time(train_times.get((current_location, day["hotel_location"]), 0))
+            ))
+            current_location = day["hotel_location"]
+    
+    return travel_segments
+
+def build_variant_details(variant, start_location, train_times):
+    """Build detailed metadata for a trip variation"""
+    # Calculate total travel time
+    total_travel_time = calculate_total_travel_time(variant)
+    
+    # Determine actual start location
+    actual_start_location = start_location
+    if actual_start_location.lower() == "any":
+        # Find first match location
+        for day in variant["Itinerary"]:
+            if day.get("matches"):
+                actual_start_location = day["matches"][0]["location"]
+                break
+    
+    # Extract cities, teams, game count
+    cities = set()
+    teams = set()
+    num_games = 0
+    end_location = actual_start_location
+    
+    # Process itinerary to collect metadata
+    for day in variant["Itinerary"]:
+        # Track locations
+        if "location" in day and day["location"] != "Unknown" and not day["location"].startswith("Any"):
+            end_location = day["location"]
+            cities.add(end_location.replace(" hbf", ""))
+        
+        # Process matches
+        for match in day.get("matches", []):
+            num_games += 1
+            
+            # Extract teams from match string
+            if "match" in match:
+                match_parts = match["match"].split(" vs ")
+                if len(match_parts) == 2:
+                    home_team = match_parts[0].strip()
+                    away_team = match_parts[1].split(" (")[0].strip()
+                    teams.add(home_team)
+                    teams.add(away_team)
+    
+    # Get actual end location (where traveler ends up)
+    true_end_location = determine_end_location(variant["Itinerary"])
+    
+    # Calculate airport distances
+    airport_distances = calculate_airport_distances(actual_start_location, true_end_location, train_times)
+    
+    # Generate travel segments
+    travel_segments = generate_travel_segments(variant["Itinerary"], actual_start_location, train_times)
+    
+    return TripVariation(
+        total_travel_time=total_travel_time,
+        travel_hours=total_travel_time // 60,
+        travel_minutes=total_travel_time % 60,
+        travel_segments=travel_segments,
+        cities=sorted(list(cities)),
+        teams=sorted(list(teams)),
+        num_games=num_games,
+        start_location=actual_start_location.replace(" hbf", ""),
+        end_location=true_end_location.replace(" hbf", ""),
+        airport_distances=airport_distances
+    )
+
+def process_trip_groups(trip_groups, start_location, train_times):
+    """Process trip groups to add metadata like airport distances and travel times"""
+    structured_groups = []
+    
+    for group in trip_groups:
+        # Fix the base trip data when start_location is "Any"
+        if start_location.lower() == "any" and group["Base"]["Itinerary"]:
+            # Find the first match location
+            first_match_location = next((
+                day["matches"][0]["location"] 
+                for day in group["Base"]["Itinerary"] 
+                if day.get("matches")
+            ), None)
+                
+            # If we found a first match location, update the starting location
+            if first_match_location:
+                for day in group["Base"]["Itinerary"]:
+                    if day.get("note") == "Start":
+                        day["location"] = first_match_location
+                        break
+                        
+                # Fix travel_from fields in the first match
+                for day in group["Base"]["Itinerary"]:
+                    if day.get("matches"):
+                        for match in day["matches"]:
+                            if match.get("location") == first_match_location:
+                                match["travel_from"] = first_match_location
+                                match["travel_time"] = "0h 0m"
+                        break
+
+        # Process each variation to gather details
+        variation_details = []
+        
+        for variant in group["Variations"]:
+            # Calculate travel details
+            variation_details.append(build_variant_details(variant, start_location, train_times))
+        
+        # Add the processed group to results
+        structured_groups.append(TripGroup(
+            base_trip=group["Base"],
+            variations=group["Variations"],
+            variation_details=variation_details
+        ))
+    
+    return structured_groups
+
+#======================================================
+# HELPER FUNCTIONS - RESPONSE FORMATTING
+#======================================================
+
+def _get_hotel_summary(trip_data):
+    """Extract hotel summary from trip data"""
+    if isinstance(trip_data, dict) and "Itinerary" in trip_data:
+        trip_data = trip_data["Itinerary"]
+        
+    for day in trip_data:
+        if "hotel_summary" in day:
+            return day["hotel_summary"]
+    return None
+
+def _add_airport_info(output, variant_detail, indent=""):
+    """Add airport information to the output"""
+    if variant_detail.airport_distances and "end" in variant_detail.airport_distances:
+        top_airports = variant_detail.airport_distances["end"][:3]
+        if top_airports:
+            airport_text = ", ".join(
+                f"{a['airport']} ({a['travel_time']})"
+                for a in top_airports
+            )
+            output.append(
+                f"{indent}✈️  Nearest airports to {variant_detail.end_location}: {airport_text}"
+            )
+
+def _add_hotel_details(output, trip_data, indent=""):
+    """Add day-by-day hotel information"""
+    if isinstance(trip_data, dict) and "Itinerary" in trip_data:
+        trip_data = trip_data["Itinerary"]
+        
+    hotel_days = []
+    seen_days = set()
+    
+    for day in trip_data:
+        if "day" in day and "hotel_location" in day and day["day"] not in seen_days:
+            seen_days.add(day["day"])
+            hotel_days.append({
+                "day": day["day"],
+                "location": day["hotel_location"].replace(" hbf", ""),
+                "change": day.get("hotel_change", False),
+                "note": day.get("hotel_note", "")
+            })
+    
+    if hotel_days:
+        output.append(f"{indent}🏨 Hotel Details:")
+        for hday in hotel_days:
+            if hday["change"]:
+                output.append(f"{indent}  {hday['day']}: Change hotel to {hday['location']}")
+                if hday["note"]:
+                    output.append(f"{indent}    Note: {hday['note']}")
+            else:
+                output.append(f"{indent}  {hday['day']}: Stay in hotel in {hday['location']}")
+
+def _get_travel_segments(trip_data):
+    """Generate travel segments text for a trip variation"""
+    if isinstance(trip_data, dict) and "Itinerary" in trip_data:
+        trip_data = trip_data["Itinerary"]
+        
+    travel_segments = []
+    seen_segments = set()
+    current_location = None
+    
+    # First determine where the person actually stays each night
+    location_by_day = {}
+    for day in trip_data:
+        if "day" in day and "hotel_location" in day:
+            location_by_day[day["day"]] = day["hotel_location"]
+    
+    # Generate travel segments chronologically
+    for i, day in enumerate(trip_data):
+        if not "day" in day:
+            continue
+            
+        day_str = day["day"]
+        
+        # Get the actual location at the start of this day
+        if i == 0:
+            current_location = day["hotel_location"]
+        else:
+            prev_day = trip_data[i-1]
+            current_location = prev_day["hotel_location"]
+        
+        # If there's a match today, add travel to the match location
+        if day.get("matches"):
+            match_location = day["matches"][0]["location"]
+            if match_location != current_location:
+                # Format travel time with correct locations
+                travel_minutes = train_times.get((current_location, match_location), 0)
+                hours = travel_minutes // 60
+                mins = travel_minutes % 60
+                travel_time = f"{hours}h {mins}m"
+                
+                # Clean location names
+                from_clean = current_location.replace(' hbf', '')
+                to_clean = match_location.replace(' hbf', '')
+                
+                # Generate segment text
+                segment_key = (from_clean, to_clean, day_str)
+                if segment_key not in seen_segments:
+                    seen_segments.add(segment_key)
+                    travel_segments.append(f"{from_clean} → {to_clean} ({day_str}) - {travel_time}")
+                
+                current_location = match_location
+            
+            # If returning to hotel after match, add that segment
+            hotel_location = day["hotel_location"]
+            if hotel_location != current_location:
+                # Format travel time properly
+                travel_minutes = train_times.get((current_location, hotel_location), 0)
+                hours = travel_minutes // 60
+                mins = travel_minutes % 60
+                travel_time = f"{hours}h {mins}m"
+                
+                # Clean location names
+                from_clean = current_location.replace(' hbf', '')
+                to_clean = hotel_location.replace(' hbf', '')
+                
+                # Generate segment text with "After Game" context
+                context_text = f" ({day_str}, After Game)"
+                segment_key = (from_clean, to_clean, context_text)
+                if segment_key not in seen_segments:
+                    seen_segments.add(segment_key)
+                    travel_segments.append(f"{from_clean} → {to_clean}{context_text} - {travel_time}")
+                
+                current_location = hotel_location
+    
+    return travel_segments
 
 def print_formatted_trip_schedule(response):
     """
@@ -173,7 +533,6 @@ def print_formatted_trip_schedule(response):
                     )
 
                     # Add hotel summary
-                    # Add hotel summary
                     hotel_summary = _get_hotel_summary(group.base_trip)
                     if hotel_summary:
                         output.append(f"   🏨 Hotel Changes: {hotel_summary['total_hotel_changes']}")
@@ -225,358 +584,17 @@ def print_formatted_trip_schedule(response):
     print(formatted_output)  # Actually print to console
     return formatted_output
 
-def _get_hotel_summary(trip_data):
-    """Extract hotel summary from trip data"""
-    if isinstance(trip_data, dict) and "Itinerary" in trip_data:
-        trip_data = trip_data["Itinerary"]
-        
-    for day in trip_data:
-        if "hotel_summary" in day:
-            return day["hotel_summary"]
-    return None
+#======================================================
+# API ROUTES - HOME
+#======================================================
 
-def _add_airport_info(output, variant_detail, indent=""):
-    """Add airport information to the output"""
-    if variant_detail.airport_distances and "end" in variant_detail.airport_distances:
-        top_airports = variant_detail.airport_distances["end"][:3]
-        if top_airports:
-            airport_text = ", ".join(
-                f"{a['airport']} ({a['travel_time']})"
-                for a in top_airports
-            )
-            output.append(
-                f"{indent}✈️  Nearest airports to {variant_detail.end_location}: {airport_text}"
-            )
+@app.get("/")
+def home():
+    return {"message": "Welcome to the Multi-Game Trip Planner API"}
 
-def _add_hotel_details(output, trip_data, indent=""):
-    """Add day-by-day hotel information"""
-    if isinstance(trip_data, dict) and "Itinerary" in trip_data:
-        trip_data = trip_data["Itinerary"]
-        
-    hotel_days = []
-    seen_days = set()
-    
-    for day in trip_data:
-        if "day" in day and "hotel_location" in day and day["day"] not in seen_days:
-            seen_days.add(day["day"])
-            hotel_days.append({
-                "day": day["day"],
-                "location": day["hotel_location"].replace(" hbf", ""),
-                "change": day.get("hotel_change", False),
-                "note": day.get("hotel_note", "")
-            })
-    
-    if hotel_days:
-        output.append(f"{indent}🏨 Hotel Details:")
-        for hday in hotel_days:
-            if hday["change"]:
-                output.append(f"{indent}  {hday['day']}: Change hotel to {hday['location']}")
-                if hday["note"]:
-                    output.append(f"{indent}    Note: {hday['note']}")
-            else:
-                output.append(f"{indent}  {hday['day']}: Stay in hotel in {hday['location']}")
-
-def _get_travel_segments(trip_data):
-    """Generate travel segments text for a trip variation"""
-    if isinstance(trip_data, dict) and "Itinerary" in trip_data:
-        trip_data = trip_data["Itinerary"]
-        
-    travel_segments = []
-    seen_segments = set()
-    current_location = None
-    
-    # First determine where the person actually stays each night
-    location_by_day = {}
-    for day in trip_data:
-        if "day" in day and "hotel_location" in day:
-            location_by_day[day["day"]] = day["hotel_location"]
-    
-    # Generate travel segments chronologically
-    for i, day in enumerate(trip_data):
-        if not "day" in day:
-            continue
-            
-        day_str = day["day"]
-        
-        # Get the actual location at the start of this day
-        if i == 0:
-            current_location = day["hotel_location"]
-        else:
-            prev_day = trip_data[i-1]
-            current_location = prev_day["hotel_location"]
-        
-        # If there's a match today, add travel to the match location
-        if day.get("matches"):
-            match_location = day["matches"][0]["location"]
-            if match_location != current_location:
-                # Format travel time with correct locations
-                travel_minutes = train_times.get((current_location, match_location), 0)
-                hours = travel_minutes // 60
-                mins = travel_minutes % 60
-                travel_time = f"{hours}h {mins}m"
-                
-                # Clean location names
-                from_clean = current_location.replace(' hbf', '')
-                to_clean = match_location.replace(' hbf', '')
-                
-                # Generate segment text
-                segment_key = (from_clean, to_clean, day_str)
-                if segment_key not in seen_segments:
-                    seen_segments.add(segment_key)
-                    travel_segments.append(f"{from_clean} → {to_clean} ({day_str}) - {travel_time}")
-                
-                current_location = match_location
-            
-            # If returning to hotel after match, add that segment
-            hotel_location = day["hotel_location"]
-            if hotel_location != current_location:
-                # Format travel time properly
-                travel_minutes = train_times.get((current_location, hotel_location), 0)
-                hours = travel_minutes // 60
-                mins = travel_minutes % 60
-                travel_time = f"{hours}h {mins}m"
-                
-                # Clean location names
-                from_clean = current_location.replace(' hbf', '')
-                to_clean = hotel_location.replace(' hbf', '')
-                
-                # Generate segment text with "After Game" context
-                context_text = f" ({day_str}, After Game)"
-                segment_key = (from_clean, to_clean, context_text)
-                if segment_key not in seen_segments:
-                    seen_segments.add(segment_key)
-                    travel_segments.append(f"{from_clean} → {to_clean}{context_text} - {travel_time}")
-                
-                current_location = hotel_location
-    
-    return travel_segments
-
-def process_trip_groups(trip_groups, start_location, train_times):
-    """Process trip groups to add metadata like airport distances and travel times"""
-    structured_groups = []
-    
-    for group in trip_groups:
-        # Fix the base trip data when start_location is "Any"
-        if start_location.lower() == "any" and group["Base"]["Itinerary"]:
-            # Find the first match location
-            first_match_location = next((
-                day["matches"][0]["location"] 
-                for day in group["Base"]["Itinerary"] 
-                if day.get("matches")
-            ), None)
-                
-            # If we found a first match location, update the starting location
-            if first_match_location:
-                for day in group["Base"]["Itinerary"]:
-                    if day.get("note") == "Start":
-                        day["location"] = first_match_location
-                        break
-                        
-                # Fix travel_from fields in the first match
-                for day in group["Base"]["Itinerary"]:
-                    if day.get("matches"):
-                        for match in day["matches"]:
-                            if match.get("location") == first_match_location:
-                                match["travel_from"] = first_match_location
-                                match["travel_time"] = "0h 0m"
-                        break
-
-        # Process each variation to gather details
-        variation_details = []
-        
-        for variant in group["Variations"]:
-            # Calculate travel details
-            variation_details.append(build_variant_details(variant, start_location, train_times))
-        
-        # Add the processed group to results
-        structured_groups.append(TripGroup(
-            base_trip=group["Base"],
-            variations=group["Variations"],
-            variation_details=variation_details
-        ))
-    
-    return structured_groups
-
-def build_variant_details(variant, start_location, train_times):
-    """Build detailed metadata for a trip variation"""
-    # Calculate total travel time
-    total_travel_time = calculate_total_travel_time(variant)
-    
-    # Determine actual start location
-    actual_start_location = start_location
-    if actual_start_location.lower() == "any":
-        # Find first match location
-        for day in variant["Itinerary"]:
-            if day.get("matches"):
-                actual_start_location = day["matches"][0]["location"]
-                break
-    
-    # Extract cities, teams, game count
-    cities = set()
-    teams = set()
-    num_games = 0
-    end_location = actual_start_location
-    
-    # Process itinerary to collect metadata
-    for day in variant["Itinerary"]:
-        # Track locations
-        if "location" in day and day["location"] != "Unknown" and not day["location"].startswith("Any"):
-            end_location = day["location"]
-            cities.add(end_location.replace(" hbf", ""))
-        
-        # Process matches
-        for match in day.get("matches", []):
-            num_games += 1
-            
-            # Extract teams from match string
-            if "match" in match:
-                match_parts = match["match"].split(" vs ")
-                if len(match_parts) == 2:
-                    home_team = match_parts[0].strip()
-                    away_team = match_parts[1].split(" (")[0].strip()
-                    teams.add(home_team)
-                    teams.add(away_team)
-    
-    # Get actual end location (where traveler ends up)
-    true_end_location = determine_end_location(variant["Itinerary"])
-    
-    # Calculate airport distances
-    airport_distances = calculate_airport_distances(actual_start_location, true_end_location, train_times)
-    
-    # Generate travel segments
-    travel_segments = generate_travel_segments(variant["Itinerary"], actual_start_location, train_times)
-    
-    return TripVariation(
-        total_travel_time=total_travel_time,
-        travel_hours=total_travel_time // 60,
-        travel_minutes=total_travel_time % 60,
-        travel_segments=travel_segments,
-        cities=sorted(list(cities)),
-        teams=sorted(list(teams)),
-        num_games=num_games,
-        start_location=actual_start_location.replace(" hbf", ""),
-        end_location=true_end_location.replace(" hbf", ""),
-        airport_distances=airport_distances
-    )
-
-def determine_end_location(itinerary):
-    """Determine the true ending location of a trip"""
-    # First try to get the last night's hotel
-    for day in reversed(itinerary):
-        if "hotel_location" in day:
-            return day["hotel_location"]
-            
-    # Fall back to last location visited
-    for day in reversed(itinerary):
-        if "location" in day:
-            return day["location"]
-            
-    return "Unknown"
-
-def calculate_airport_distances(start_location, end_location, train_times):
-    """Calculate distances to airports from start and end locations"""
-    def format_travel_time(minutes):
-        if minutes is None:
-            return "Unknown"
-        hours = minutes // 60
-        mins = minutes % 60
-        return f"{hours}h {mins}m"
-    
-    airport_distances = {"start": [], "end": []}
-    
-    # Process start location airports
-    for airport in AIRPORT_CITIES:
-        if airport.lower() == start_location.lower():
-            travel_time = "0h 0m"
-        else:
-            minutes = train_times.get((start_location, airport), None)
-            travel_time = format_travel_time(minutes)
-            
-        airport_distances["start"].append({
-            "airport": airport.replace(" hbf", ""),
-            "travel_time": travel_time
-        })
-    
-    # Process end location airports
-    for airport in AIRPORT_CITIES:
-        if airport.lower() == end_location.lower():
-            travel_time = "0h 0m"
-        else:
-            minutes = train_times.get((end_location, airport), None)
-            travel_time = format_travel_time(minutes)
-            
-        airport_distances["end"].append({
-            "airport": airport.replace(" hbf", ""),
-            "travel_time": travel_time
-        })
-    
-    # Sort by travel time
-    def get_minutes(time_str):
-        if time_str == "0h 0m":
-            return 0
-        if time_str == "Unknown":
-            return float('inf')
-        parts = time_str.split('h ')
-        hours = int(parts[0])
-        minutes = int(parts[1].replace('m', ''))
-        return hours * 60 + minutes
-    
-    airport_distances["start"].sort(key=lambda x: get_minutes(x["travel_time"]))
-    airport_distances["end"].sort(key=lambda x: get_minutes(x["travel_time"]))
-    
-    return airport_distances
-
-def generate_travel_segments(itinerary, start_location, train_times):
-    """Generate travel segments for a trip"""
-    travel_segments = []
-    current_location = start_location
-    
-    for i, day in enumerate(itinerary):
-        if not day.get("day"):
-            continue
-            
-        # Update current location based on previous day
-        if i > 0:
-            prev_day = itinerary[i-1]
-            if "hotel_location" in prev_day:
-                current_location = prev_day["hotel_location"]
-        
-        day_str = day["day"]
-        day_parts = day_str.split()
-        day_formatted = f"{day_parts[0]} {day_parts[1]}" if len(day_parts) >= 2 else day_str
-        
-        # Process matches
-        for match in day.get("matches", []):
-            match_location = match["location"]
-            
-            # Add travel to match if needed
-            if match_location != current_location:
-                travel_segments.append(TravelSegment(
-                    from_location=current_location,
-                    to_location=match_location,
-                    day=day_formatted,
-                    travel_time=format_travel_time(train_times.get((current_location, match_location), 0))
-                ))
-                current_location = match_location
-                
-        # Add return to hotel if needed
-        if "hotel_location" in day and day["hotel_location"] != current_location:
-            travel_segments.append(TravelSegment(
-                from_location=current_location,
-                to_location=day["hotel_location"],
-                day=day_formatted,
-                context="After Game",
-                travel_time=format_travel_time(train_times.get((current_location, day["hotel_location"]), 0))
-            ))
-            current_location = day["hotel_location"]
-    
-    return travel_segments
-
-def format_travel_time(minutes):
-    """Format minutes as hours and minutes string"""
-    hours = minutes // 60
-    mins = minutes % 60
-    return f"{hours}h {mins}m"
+#======================================================
+# API ROUTES - TRIP PLANNING
+#======================================================
 
 @app.post("/plan-trip", summary="Plan a multi-game trip",
           description="Creates an optimized itinerary to watch multiple games based on preferences",
@@ -736,6 +754,10 @@ def get_trip(request: TripRequest):
             status_code=500
         )
 
+#======================================================
+# API ROUTES - REFERENCE DATA
+#======================================================
+
 @app.get("/available-leagues", 
          summary="Get all available leagues",
          description="Returns a list of all leagues available in the system",
@@ -870,6 +892,10 @@ def get_available_dates(
         ]
     }
 
+#======================================================
+# API ROUTES - TRAVEL DATA
+#======================================================
+
 @app.get("/city-connections/{city}",
          summary="Get cities reachable from a specific city",
          description="Returns a list of cities that are reachable within a given time from the specified city",
@@ -920,6 +946,10 @@ def get_city_connections(
         "connections": connections,
         "count": len(connections)
     }
+
+#======================================================
+# API ROUTES - TEAM DATA
+#======================================================
 
 @app.get("/team-schedule/{team}",
          summary="Get a team's schedule",
@@ -1012,18 +1042,9 @@ def get_team_schedule(
         "total_matches": len(upcoming_matches) + len(tbd_matches)
     }
 
-@app.get("/health", 
-         summary="Health check",
-         description="Simple endpoint to verify API is operational",
-         tags=["System"])
-def health_check():
-    """Health check endpoint."""
-    return {
-        "status": "ok",
-        "timestamp": datetime.now().isoformat(),
-        "games_loaded": len(games),
-        "tbd_games_loaded": len(tbd_games)
-    }
+#======================================================
+# API ROUTES - SEARCH & UTILITY
+#======================================================
 
 @app.get("/search",
          summary="Search for teams, cities, or leagues",
@@ -1083,4 +1104,17 @@ def search(
         "query": q,
         "results": results,
         "total_results": sum(len(results[t]) for t in results)
+    }
+
+@app.get("/health", 
+         summary="Health check",
+         description="Simple endpoint to verify API is operational",
+         tags=["System"])
+def health_check():
+    """Health check endpoint."""
+    return {
+        "status": "ok",
+        "timestamp": datetime.now().isoformat(),
+        "games_loaded": len(games),
+        "tbd_games_loaded": len(tbd_games)
     }
