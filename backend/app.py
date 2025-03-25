@@ -147,10 +147,7 @@ def print_formatted_trip_schedule(response):
                         match_prefix = "🌟 " if match.get("contains_must_team", False) else ""
                         output.append(f"      {match_prefix}🏟️  {match['match']}")
                         output.append(f"      📍 {clean_location}")
-                        output.append(
-                            f"      🚆 Train from {from_loc} to {clean_location} "
-                            f"takes {match.get('travel_time', 'Unknown')}"
-                        )
+                        
                 else:
                     # No matches => rest day
                     if day_info["locations"]:
@@ -161,12 +158,10 @@ def print_formatted_trip_schedule(response):
                             last_loc = group.variation_details[0].start_location
                         else:
                             last_loc = response.start_location.replace(' hbf', '')
-                    output.append(f"   💤 Rest Day in {last_loc}")
+                    output.append(f"   💤 Rest Day")
                 
                 # Display hotel information for each day
                 hotel_loc = day_info.get("hotel", "").replace(' hbf', '')
-                if hotel_loc:
-                    output.append(f"   🏨 Hotel: {hotel_loc}")
 
                 output.append("")
 
@@ -229,11 +224,6 @@ def print_formatted_trip_schedule(response):
 
                     # Display with correct locations
                     display_start = variant_detail.start_location if response.start_location.lower() == "any" else response.start_location.replace(' hbf', '')
-                    output.append(
-                        f"      🔄 Time to start location "
-                        f"({variant_detail.end_location} → {display_start}): "
-                        f"{return_travel_time}"
-                    )
 
                     # Each travel segment
                     travel_segments_text = []
@@ -697,30 +687,79 @@ def get_trip(request: TripRequest):
                 airport_distances["start"].sort(key=lambda x: get_minutes(x["travel_time"]))
                 airport_distances["end"].sort(key=lambda x: get_minutes(x["travel_time"]))
                 
+                 # Create date strings for each day of the trip
+                start_date_obj = datetime.strptime(display_start_date, "%d %B")
+                full_date_range = [start_date_obj + timedelta(days=i) for i in range(request.trip_duration)]
+                date_strings = [d.strftime("%d %B") for d in full_date_range]
+                
                 # Use actual start location for travel segments
                 travel_segments = []
-                
+
                 # Special handling for first segment to show journey to first match location
                 first_match_found = False
+
+                # Build a lookup of which hotel we're staying at each day
+                hotel_location_by_day = {}
                 
+                # Filter out any hotel stats dictionary from the itinerary first
+                # (This ensures we don't process data from previous iterations)
+                filtered_itinerary = [day for day in variant["Itinerary"] 
+                                     if isinstance(day, dict) and "day" in day]
+                
+                # Sort days by actual date to ensure we process them in chronological order
+                def get_date_sortkey(day_item):
+                    day_str = day_item.get("day", "Unknown")
+                    if day_str == "Unknown":
+                        return "9999-99-99"  # Sort Unknown to the end
+                    try:
+                        # Parse date like "28 March"
+                        parts = day_str.split()
+                        if len(parts) >= 2:
+                            month_names = ["January", "February", "March", "April", "May", "June", 
+                                         "July", "August", "September", "October", "November", "December"]
+                            day = int(parts[0])
+                            month = month_names.index(parts[1]) + 1
+                            return f"2025-{month:02d}-{day:02d}"  # Use fixed year for sorting
+                    except:
+                        pass
+                    return day_str  # Fallback to string sorting
+                
+                sorted_itinerary = sorted(filtered_itinerary, key=get_date_sortkey)
+                
+                # Now we can safely iterate over sorted_itinerary
+                for day in sorted_itinerary:
+                    day_str = day.get("day")
+                    hotel = day.get("hotel")
+                    if day_str and hotel:
+                        hotel_location_by_day[day_str] = hotel
+
                 # Pre-compute lookup tables for travel segments
                 location_to_day = {}
                 location_to_travel_time = {}
-                
+
                 for day in variant["Itinerary"]:
                     if day.get("matches"):
                         for match in day["matches"]:
                             location_to_day[match["location"]] = day["day"]
                             location_to_travel_time[match["location"]] = match.get("travel_time", "Unknown")
-                
+
                 # Use actual start location
                 current_location = actual_start_location
-                
+
                 # Calculate all travel segments in a single pass
                 for day in variant["Itinerary"]:
                     if not day.get("matches"):
                         continue
                         
+                    # Get the day string for hotel lookup
+                    day_str = day.get("day")
+                    
+                    # For match days, use the hotel we stayed in the previous night as our start point
+                    if day_str in hotel_location_by_day:
+                        # Only update if this is not our first day (since we start at actual_start_location)
+                        if day_str != date_strings[0]:  # assuming date_strings is accessible
+                            current_location = hotel_location_by_day[day_str]
+                    
                     for match in day["matches"]:
                         # Special handling for first match when using "Any" as start location
                         if not first_match_found:
@@ -736,11 +775,15 @@ def get_trip(request: TripRequest):
                                 current_location = match["location"]
                                 continue
                         
-                        # Regular travel segment handling (unchanged)
+                        # Regular travel segment handling
                         from_loc = match.get("travel_from", current_location)
                         to_loc = match["location"]
                         travel_time = match.get("travel_time", "Unknown")
                         
+                        # Skip adding segments with 0 travel time
+                        if from_loc == to_loc:
+                            continue
+                            
                         # Don't include "Any" in travel segments
                         if from_loc.lower() == "any":
                             from_loc = actual_start_location
@@ -749,25 +792,7 @@ def get_trip(request: TripRequest):
                         day_parts = day["day"].split()
                         day_formatted = f"{day_parts[0]} {day_parts[1]}" if len(day_parts) >= 2 else day["day"]
                         
-                        # Add implicit journey if needed
-                        if from_loc != current_location:
-                            # More efficient context generation
-                            prev_day = ""
-                            prev_time = travel_time
-                            
-                            if current_location in location_to_day:
-                                day_full = location_to_day[current_location]
-                                prev_day = " ".join(day_full.split()[:2]) if " " in day_full else day_full
-                                prev_time = location_to_travel_time.get(current_location, travel_time)
-                            
-                            travel_segments.append(TravelSegment(
-                                from_location=current_location,
-                                to_location=from_loc,
-                                context=f"({prev_day}, After Game)" if prev_day else None,
-                                travel_time=prev_time
-                            ))
-                        
-                        # Add explicit journey
+                        # Add explicit journey only if it's an actual journey
                         travel_segments.append(TravelSegment(
                             from_location=from_loc,
                             to_location=to_loc,
@@ -784,18 +809,27 @@ def get_trip(request: TripRequest):
                 hotel_stays = []
                 current_stay = None
                 
+                # Create a set to track days we've already processed
+                # This prevents duplicate hotel entries for the same day
+                processed_days = set()
+                
                 # Filter out any hotel stats dictionary from the itinerary
                 # (This ensures we don't process data from previous iterations)
                 filtered_itinerary = [day for day in variant["Itinerary"] 
                                      if isinstance(day, dict) and "day" in day]
                 
-                # Process hotel information from the itinerary
-                for i, day in enumerate(filtered_itinerary):
+                for day in sorted_itinerary:
                     current_day = day.get("day", "Unknown")
+                    
+                    # Skip if we've already processed this day (prevents duplicates)
+                    if current_day in processed_days:
+                        continue
+                    
+                    processed_days.add(current_day)
                     current_hotel = day.get("hotel", "Unknown")
                     
-                    # Skip if this is our added hotel stats (should be a dict without a "day" key)
-                    if isinstance(current_hotel, dict):
+                    # Skip if this is our added hotel stats or unknown hotel
+                    if isinstance(current_hotel, dict) or current_hotel == "Unknown":
                         continue
                         
                     if current_hotel:
