@@ -77,7 +77,8 @@ class TripPlan(BaseModel):
     game_schedule: list
 
 class TripRequest(BaseModel):
-    start_location: Optional[str] = "Any"
+    landing_airport: str  # Required field, no default
+    leaving_airport: Optional[str] = None  # Optional, can be same as landing
     max_travel_time: int = 300
     trip_duration: int = 5
     preferred_leagues: Optional[List[str]] = None

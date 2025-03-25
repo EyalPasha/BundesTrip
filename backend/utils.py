@@ -786,20 +786,32 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
                 new_routes.append(new_trip)
                 continue
             
-            # For each reachable location, create a new route
+            # For each reachable location, create routes based on different travel options
             for match_location, options in reachable_by_location.items():
+                # Group options by their travel_from location for better organization
+                options_by_starting_point = {}
                 for option in options:
+                    from_loc = option["travel_from"]
+                    if from_loc not in options_by_starting_point:
+                        options_by_starting_point[from_loc] = []
+                    options_by_starting_point[from_loc].append(option)
+                
+                # For each starting location, use the best option (shortest travel time)
+                for from_location, travel_options in options_by_starting_point.items():
+                    best_option = min(travel_options, key=lambda o: o["raw_travel_time"])
+                    
+                    # Create a new trip with this option
                     new_trip = copy.deepcopy(trip)
                     new_trip.append({
                         "day": current_date_str,
                         "location": match_location,
-                        "matches": [option],
+                        "matches": [best_option],
                         "note": "",
                         "hotel_location": match_location,  # Default: stay at match location
                         "outbound_travel": {
-                            "from": option["travel_from"],
+                            "from": from_location,
                             "to": match_location,
-                            "time": option["raw_travel_time"]
+                            "time": best_option["raw_travel_time"]
                         }
                     })
                     new_routes.append(new_trip)
