@@ -136,10 +136,6 @@ def print_formatted_trip_schedule(response):
                         match_prefix = "🌟 " if match.get("contains_must_team", False) else ""
                         output.append(f"      {match_prefix}🏟️  {match['match']}")
                         output.append(f"      📍 {clean_location}")
-                        output.append(
-                            f"      🚆 Train from {from_loc} to {clean_location} "
-                            f"takes {match.get('travel_time', 'Unknown')}"
-                        )
                 else:
                     # No matches => rest day
                     if day_info["locations"]:
@@ -196,11 +192,6 @@ def print_formatted_trip_schedule(response):
 
                     # Display with correct locations
                     display_start = variant_detail.start_location if response.start_location.lower() == "any" else response.start_location.replace(' hbf', '')
-                    output.append(
-                        f"      🔄 Time to start location "
-                        f"({variant_detail.end_location} → {display_start}): "
-                        f"{return_travel_time}"
-                    )
 
                     # Each travel segment
                     travel_segments_text = []
@@ -260,11 +251,6 @@ def print_formatted_trip_schedule(response):
 
                     # Display with correct locations
                     display_start = variant_detail.start_location if response.start_location.lower() == "any" else response.start_location.replace(' hbf', '')
-                    output.append(
-                        f"   🔄 Time to start location "
-                        f"({variant_detail.end_location} → {display_start}): "
-                        f"{return_travel_time}"
-                    )
 
                     # Segments
                     travel_segments_text = []
@@ -701,12 +687,20 @@ def get_trip(request: TripRequest):
                         if from_loc != current_location:
                             # More efficient context generation
                             prev_day = ""
-                            prev_time = travel_time
+                            
+                            # Look up the correct travel time between locations
+                            key = (current_location, from_loc)
+                            travel_minutes = train_times.get(key)
+                            if travel_minutes is not None:
+                                hours = travel_minutes // 60
+                                mins = travel_minutes % 60
+                                prev_time = f"{hours}h {mins}m"
+                            else:
+                                prev_time = "Unknown"
                             
                             if current_location in location_to_day:
                                 day_full = location_to_day[current_location]
                                 prev_day = " ".join(day_full.split()[:2]) if " " in day_full else day_full
-                                prev_time = location_to_travel_time.get(current_location, travel_time)
                             
                             travel_segments.append(TravelSegment(
                                 from_location=current_location,
