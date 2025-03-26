@@ -166,161 +166,72 @@ def process_travel_segments(sorted_days: List[Dict], variant_detail: TripVariati
     # Start from actual start location
     current_location = variant_detail.start_location
     
-    # CRITICAL FIX 1: Always show first journey to match location
-    sorted_match_days = sorted(match_by_day.keys(), key=sort_date_string)
+    # Build day-by-day travel itinerary based on hotels and match locations
+    previous_hotel = None
+    sorted_date_strings = sorted(set(day.get("day") for day in sorted_days if day.get("day")), key=sort_date_string)
     
-    if sorted_match_days:
-        first_day = sorted_match_days[0]
-        first_match_location = match_by_day[first_day]
-        
-        # Direct journey from start location to first match
-        if current_location != first_match_location:
-            from_loc_clean = current_location.replace(" hbf", "")
-            to_loc_clean = first_match_location.replace(" hbf", "")
-            
-            # Only append hbf if the location doesn't have a special suffix
-            from_with_hbf = from_loc_clean + " hbf" if not has_special_suffix(from_loc_clean) else from_loc_clean
-            to_with_hbf = to_loc_clean + " hbf" if not has_special_suffix(to_loc_clean) else to_loc_clean
-            
-            travel_minutes = get_travel_minutes(train_times, from_with_hbf, to_with_hbf)
-            
-            if travel_minutes and travel_minutes > 0:
-                travel_time = format_travel_time(travel_minutes)
-                segment_key = (from_loc_clean, to_loc_clean, first_day)
-                
-                if segment_key not in seen_segments:
-                    seen_segments.add(segment_key)
-                    travel_segments_text.append(
-                        f"{from_loc_clean} → {to_loc_clean} ({first_day}) - {travel_time}"
-                    )
-                    
-            # Update current location to first match location
-            current_location = first_match_location
-    
-    # CRITICAL FIX 2: Handle consecutive match days
-    for i in range(1, len(sorted_match_days)):
-        prev_day = sorted_match_days[i-1]
-        curr_day = sorted_match_days[i]
-        
-        prev_match_location = match_by_day[prev_day]
-        curr_match_location = match_by_day[curr_day]
-        
-        # If match locations differ, add a journey between them
-        if prev_match_location != curr_match_location:
-            from_loc_clean = prev_match_location.replace(" hbf", "")
-            to_loc_clean = curr_match_location.replace(" hbf", "")
-            
-            from_with_hbf = from_loc_clean + " hbf" if not has_special_suffix(from_loc_clean) else from_loc_clean
-            to_with_hbf = to_loc_clean + " hbf" if not has_special_suffix(to_loc_clean) else to_loc_clean
-            
-            travel_minutes = get_travel_minutes(train_times, from_with_hbf, to_with_hbf)
-            
-            if travel_minutes and travel_minutes > 0:
-                travel_time = format_travel_time(travel_minutes)
-                segment_key = (from_loc_clean, to_loc_clean, curr_day)
-                
-                if segment_key not in seen_segments:
-                    seen_segments.add(segment_key)
-                    travel_segments_text.append(
-                        f"{from_loc_clean} → {to_loc_clean} ({curr_day}) - {travel_time}"
-                    )
-            
-            current_location = curr_match_location
-    
-    # Process hotel returns and other day-by-day movements
-    for i, day in enumerate(sorted_days):
-        day_str = day.get("day")
-        
-        # Skip days without a defined date
-        if not day_str or day_str == "Unknown":
+    for date_str in sorted_date_strings:
+        # Get hotel for this day
+        current_hotel = hotel_by_day.get(date_str)
+        if not current_hotel:
             continue
-        
-        # Process hotel changes between days
-        if i > 0 and day.get("hotel") != sorted_days[i-1].get("hotel"):
-            prev_hotel = sorted_days[i-1].get("hotel")
-            curr_hotel = day.get("hotel")
             
-            if prev_hotel and curr_hotel and prev_hotel != curr_hotel:
-                from_loc_clean = prev_hotel.replace(" hbf", "")
-                to_loc_clean = curr_hotel.replace(" hbf", "")
-                
-                # Only add the journey if we're not already there
-                if from_loc_clean != to_loc_clean and current_location.replace(" hbf", "") != to_loc_clean:
-                    from_with_hbf = from_loc_clean + " hbf" if not has_special_suffix(from_loc_clean) else from_loc_clean
-                    to_with_hbf = to_loc_clean + " hbf" if not has_special_suffix(to_loc_clean) else to_loc_clean
-                    
-                    travel_minutes = get_travel_minutes(train_times, from_with_hbf, to_with_hbf)
-                    
-                    if travel_minutes and travel_minutes > 0:
-                        travel_time = format_travel_time(travel_minutes)
-                        segment_key = (from_loc_clean, to_loc_clean, day_str)
-                        
-                        if segment_key not in seen_segments:
-                            seen_segments.add(segment_key)
-                            travel_segments_text.append(
-                                f"{from_loc_clean} → {to_loc_clean} ({day_str}) - {travel_time}"
-                            )
-                    
-                    current_location = curr_hotel
-        
-        # Process match travel (but only if we haven't handled it with consecutive match logic)
-        if day.get("matches"):
-            match = day["matches"][0]
-            match_location = match["location"]
-            to_loc_clean = match_location.replace(" hbf", "")
-            current_loc_clean = current_location.replace(" hbf", "")
+        # Handle hotel changes
+        if previous_hotel and previous_hotel != current_hotel:
+            from_loc_clean = previous_hotel.replace(" hbf", "")
+            to_loc_clean = current_hotel.replace(" hbf", "")
             
-            # Don't add redundant journey if we already processed it via consecutive match logic
-            if to_loc_clean != current_loc_clean:
-                # Use has_special_suffix for current location too
-                from_with_hbf = current_loc_clean + " hbf" if not has_special_suffix(current_loc_clean) else current_loc_clean
+            if from_loc_clean != to_loc_clean:
+                from_with_hbf = from_loc_clean + " hbf" if not has_special_suffix(from_loc_clean) else from_loc_clean
                 to_with_hbf = to_loc_clean + " hbf" if not has_special_suffix(to_loc_clean) else to_loc_clean
                 
                 travel_minutes = get_travel_minutes(train_times, from_with_hbf, to_with_hbf)
                 
                 if travel_minutes and travel_minutes > 0:
                     travel_time = format_travel_time(travel_minutes)
-                    segment_key = (current_loc_clean, to_loc_clean, day_str)
+                    segment_key = (from_loc_clean, to_loc_clean, date_str)
                     
                     if segment_key not in seen_segments:
                         seen_segments.add(segment_key)
                         travel_segments_text.append(
-                            f"{current_loc_clean} → {to_loc_clean} ({day_str}) - {travel_time}"
+                            f"{from_loc_clean} → {to_loc_clean} ({date_str}) - {travel_time}"
+                        )
+            
+            current_location = current_hotel
+        
+        # Handle match travel (from hotel to match location)
+        match_location = match_by_day.get(date_str)
+        if match_location:
+            hotel_loc_clean = current_hotel.replace(" hbf", "")
+            match_loc_clean = match_location.replace(" hbf", "")
+            
+            # Add outbound journey from hotel to match
+            if hotel_loc_clean != match_loc_clean:
+                hotel_with_hbf = hotel_loc_clean + " hbf" if not has_special_suffix(hotel_loc_clean) else hotel_loc_clean
+                match_with_hbf = match_loc_clean + " hbf" if not has_special_suffix(match_loc_clean) else match_loc_clean
+                
+                travel_minutes = get_travel_minutes(train_times, hotel_with_hbf, match_with_hbf)
+                
+                if travel_minutes and travel_minutes > 0:
+                    travel_time = format_travel_time(travel_minutes)
+                    segment_key = (hotel_loc_clean, match_loc_clean, date_str)
+                    
+                    if segment_key not in seen_segments:
+                        seen_segments.add(segment_key)
+                        travel_segments_text.append(
+                            f"{hotel_loc_clean} → {match_loc_clean} ({date_str}) - {travel_time}"
                         )
                 
-                current_location = match_location
-            
-            # Check if we need to return to hotel after match
-            if day_str in hotel_by_day:
-                hotel_loc = hotel_by_day[day_str]
-                hotel_loc_clean = hotel_loc.replace(" hbf", "")
+                # Add return journey from match to hotel (after game)
+                return_segment_key = (match_loc_clean, hotel_loc_clean, f"{date_str}, After Game")
                 
-                # Skip return journey on the last day if we're ending at match location
-                is_last_match_day = not any(other_day.get("matches") for other_day in sorted_days[i+1:])
-                ends_at_match_location = variant_detail.end_location == to_loc_clean
-                
-                if is_last_match_day and ends_at_match_location:
-                    continue
-                
-                # Add travel to hotel if match location != hotel location
-                if hotel_loc_clean != to_loc_clean:
-                    # Use has_special_suffix here as well
-                    from_with_hbf = to_loc_clean + " hbf" if not has_special_suffix(to_loc_clean) else to_loc_clean
-                    to_with_hbf = hotel_loc_clean + " hbf" if not has_special_suffix(hotel_loc_clean) else hotel_loc_clean
-                    
-                    travel_minutes = get_travel_minutes(train_times, from_with_hbf, to_with_hbf)
-                    
-                    if travel_minutes and travel_minutes > 0:
-                        travel_time = format_travel_time(travel_minutes)
-                        segment_key = (to_loc_clean, hotel_loc_clean, f"{day_str}, After Game")
-                        
-                        if segment_key not in seen_segments:
-                            seen_segments.add(segment_key)
-                            travel_segments_text.append(
-                                f"{to_loc_clean} → {hotel_loc_clean} ({day_str}, After Game) - {travel_time}"
-                            )
-                    
-                    current_location = hotel_loc
+                if return_segment_key not in seen_segments:
+                    seen_segments.add(return_segment_key)
+                    travel_segments_text.append(
+                        f"{match_loc_clean} → {hotel_loc_clean} ({date_str}, After Game) - {travel_time}"
+                    )
+        
+        previous_hotel = current_hotel
     
     return travel_segments_text
 
@@ -590,10 +501,15 @@ def print_formatted_trip_schedule(response: FormattedResponse) -> str:
             if len(group.variations) > 1:
                 output.append("   🔄 Travel Options:")
                 for var_idx, variant_detail in enumerate(group.variation_details):
+                    # Calculate actual total travel time
+                    total_travel_time = calculate_total_travel_time(group.variations[var_idx])
+                    travel_hours = total_travel_time // 60
+                    travel_minutes = total_travel_time % 60
+                    
                     # Travel option header
                     output.append(
                         f"      🚆 Option {var_idx+1}: "
-                        f"{variant_detail.travel_hours}h {variant_detail.travel_minutes}m total travel, "
+                        f"{travel_hours}h {travel_minutes}m total travel, "
                         f"ending in {variant_detail.end_location}:"
                     )
                     
@@ -668,9 +584,14 @@ def print_formatted_trip_schedule(response: FormattedResponse) -> str:
                 # Single travel option - use the same enhanced travel segment logic
                 variant_detail = group.variation_details[0] if group.variation_details else None
                 if variant_detail:
+                    # Calculate actual total travel time
+                    total_travel_time = calculate_total_travel_time(group.variations[0])
+                    travel_hours = total_travel_time // 60
+                    travel_minutes = total_travel_time % 60
+                    
                     output.append(
                         f"   ℹ️  Only one travel option: "
-                        f"{variant_detail.travel_hours}h {variant_detail.travel_minutes}m total travel, "
+                        f"{travel_hours}h {travel_minutes}m total travel, "
                         f"ending in {variant_detail.end_location}"
                     )
 
