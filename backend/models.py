@@ -70,8 +70,8 @@ class TripPlan(BaseModel):
 
 class TripRequest(BaseModel):
     start_location: Optional[str] = "Any"
-    max_travel_time: int = 300
-    trip_duration: int = 5
+    max_travel_time: int
+    trip_duration: int
     preferred_leagues: Optional[List[str]] = None
     start_date: Optional[str] = None
     must_teams: Optional[List[str]] = None

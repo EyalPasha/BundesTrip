@@ -461,6 +461,10 @@ def create_single_base_variation(trip_days, central_location, train_times):
                         travel_mins = travel_time % 60
                         match["travel_from"] = central_location
                         match["travel_time"] = f"{travel_hours}h {travel_mins}m"
+                else:
+                    # Same location - set travel time to 0
+                    match["travel_from"] = central_location
+                    match["travel_time"] = f"0h 0m"
         
         variation.append(day_copy)
     
