@@ -105,36 +105,56 @@ def get_minutes(time_str: str) -> int:
     return hours * 60 + minutes
 
 
-def process_travel_segments(sorted_days: List[Dict], variant_detail: TripVariation, 
-                           start_location: str, match_by_day: Dict, hotel_by_day: Dict) -> List[str]:
-    """Process and generate travel segments for an itinerary"""
+def process_travel_segments(
+    sorted_days: List[Dict],
+    variant_detail: TripVariation,
+    start_location: str,
+    match_by_day: Dict[str, str],
+    hotel_by_day: Dict[str, str]
+) -> List[str]:
+    """
+    Process and generate travel segments for an itinerary. 
+    Includes the explicit handling for Day 1 travel from
+    the user's actual start_location to their first hotel.
+    """
     travel_segments_text = []
     seen_segments = set()  # Track unique segments
     
-    # Start from actual start location
+    # The user starts at variant_detail.start_location
     current_location = variant_detail.start_location
     
-    # Build day-by-day travel itinerary based on hotels and match locations
     previous_hotel = None
-    sorted_date_strings = sorted(set(day.get("day") for day in sorted_days if day.get("day")), key=sort_date_string)
+    
+    # Sort the days in chronological order
+    sorted_date_strings = sorted(
+        set(day.get("day") for day in sorted_days if day.get("day")),
+        key=sort_date_string
+    )
     
     for date_str in sorted_date_strings:
-        # Get hotel for this day
         current_hotel = hotel_by_day.get(date_str)
         if not current_hotel:
             continue
-            
-        # Handle hotel changes
-        if previous_hotel and previous_hotel != current_hotel:
-            from_loc_clean = previous_hotel.replace(" hbf", "")
+        
+        # -----------------------
+        # 1) If this is the first day (previous_hotel is None),
+        #    explicitly record travel from start_location -> hotel.
+        # -----------------------
+        if previous_hotel is None:
+            from_loc_clean = current_location.replace(" hbf", "")
             to_loc_clean = current_hotel.replace(" hbf", "")
             
-            if from_loc_clean != to_loc_clean:
-                from_with_hbf = from_loc_clean + " hbf" if not has_special_suffix(from_loc_clean) else from_loc_clean
-                to_with_hbf = to_loc_clean + " hbf" if not has_special_suffix(to_loc_clean) else to_loc_clean
+            if from_loc_clean.lower() != to_loc_clean.lower():
+                from_with_hbf = (
+                    from_loc_clean + " hbf"
+                    if not has_special_suffix(from_loc_clean) else from_loc_clean
+                )
+                to_with_hbf = (
+                    to_loc_clean + " hbf"
+                    if not has_special_suffix(to_loc_clean) else to_loc_clean
+                )
                 
                 travel_minutes = get_travel_minutes_utils(train_times, from_with_hbf, to_with_hbf)
-                
                 if travel_minutes and travel_minutes > 0:
                     travel_time = format_travel_time(travel_minutes)
                     segment_key = (from_loc_clean, to_loc_clean, date_str)
@@ -145,21 +165,63 @@ def process_travel_segments(sorted_days: List[Dict], variant_detail: TripVariati
                             f"{from_loc_clean} → {to_loc_clean} ({date_str}) - {travel_time}"
                         )
             
+            # Mark this hotel as the "previous" so subsequent days can compare
+            previous_hotel = current_hotel
             current_location = current_hotel
-        
-        # Handle match travel (from hotel to match location)
+
+        # -----------------------
+        # 2) Otherwise, if we have a prior hotel, check if it changed
+        #    and record that movement.
+        # -----------------------
+        else:
+            if previous_hotel != current_hotel:
+                from_loc_clean = previous_hotel.replace(" hbf", "")
+                to_loc_clean = current_hotel.replace(" hbf", "")
+                
+                if from_loc_clean.lower() != to_loc_clean.lower():
+                    from_with_hbf = (
+                        from_loc_clean + " hbf"
+                        if not has_special_suffix(from_loc_clean) else from_loc_clean
+                    )
+                    to_with_hbf = (
+                        to_loc_clean + " hbf"
+                        if not has_special_suffix(to_loc_clean) else to_loc_clean
+                    )
+                    
+                    travel_minutes = get_travel_minutes_utils(train_times, from_with_hbf, to_with_hbf)
+                    if travel_minutes and travel_minutes > 0:
+                        travel_time = format_travel_time(travel_minutes)
+                        segment_key = (from_loc_clean, to_loc_clean, date_str)
+                        
+                        if segment_key not in seen_segments:
+                            seen_segments.add(segment_key)
+                            travel_segments_text.append(
+                                f"{from_loc_clean} → {to_loc_clean} ({date_str}) - {travel_time}"
+                            )
+                
+                previous_hotel = current_hotel
+                current_location = current_hotel
+
+        # -----------------------
+        # 3) If this day has a match, record hotel->match->hotel.
+        # -----------------------
         match_location = match_by_day.get(date_str)
         if match_location:
             hotel_loc_clean = current_hotel.replace(" hbf", "")
             match_loc_clean = match_location.replace(" hbf", "")
             
-            # Add outbound journey from hotel to match
-            if hotel_loc_clean != match_loc_clean:
-                hotel_with_hbf = hotel_loc_clean + " hbf" if not has_special_suffix(hotel_loc_clean) else hotel_loc_clean
-                match_with_hbf = match_loc_clean + " hbf" if not has_special_suffix(match_loc_clean) else match_loc_clean
+            # Outbound: Hotel → Match
+            if hotel_loc_clean.lower() != match_loc_clean.lower():
+                hotel_with_hbf = (
+                    hotel_loc_clean + " hbf"
+                    if not has_special_suffix(hotel_loc_clean) else hotel_loc_clean
+                )
+                match_with_hbf = (
+                    match_loc_clean + " hbf"
+                    if not has_special_suffix(match_loc_clean) else match_loc_clean
+                )
                 
                 travel_minutes = get_travel_minutes_utils(train_times, hotel_with_hbf, match_with_hbf)
-                
                 if travel_minutes and travel_minutes > 0:
                     travel_time = format_travel_time(travel_minutes)
                     segment_key = (hotel_loc_clean, match_loc_clean, date_str)
@@ -169,17 +231,27 @@ def process_travel_segments(sorted_days: List[Dict], variant_detail: TripVariati
                         travel_segments_text.append(
                             f"{hotel_loc_clean} → {match_loc_clean} ({date_str}) - {travel_time}"
                         )
-                
-                # Add return journey from match to hotel (after game)
-                return_segment_key = (match_loc_clean, hotel_loc_clean, f"{date_str}, After Game")
-                
-                if return_segment_key not in seen_segments:
-                    seen_segments.add(return_segment_key)
-                    travel_segments_text.append(
-                        f"{match_loc_clean} → {hotel_loc_clean} ({date_str}, After Game) - {travel_time}"
-                    )
-        
-        previous_hotel = current_hotel
+            
+            # Return: Match → Hotel (after game)
+            return_segment_key = (match_loc_clean, hotel_loc_clean, f"{date_str}, After Game")
+            
+            # Compute a fresh travel time if the route is not symmetrical
+            hotel_with_hbf = (
+                hotel_loc_clean + " hbf"
+                if not has_special_suffix(hotel_loc_clean) else hotel_loc_clean
+            )
+            match_with_hbf = (
+                match_loc_clean + " hbf"
+                if not has_special_suffix(match_loc_clean) else match_loc_clean
+            )
+            return_minutes = get_travel_minutes_utils(train_times, match_with_hbf, hotel_with_hbf)
+            return_time = format_travel_time(return_minutes)
+            
+            if return_segment_key not in seen_segments:
+                seen_segments.add(return_segment_key)
+                travel_segments_text.append(
+                    f"{match_loc_clean} → {hotel_loc_clean} ({date_str}, After Game) - {return_time}"
+                )
     
     return travel_segments_text
 
