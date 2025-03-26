@@ -125,14 +125,20 @@ def process_travel_segments(
     
     previous_hotel = None
     
-    # Sort the days in chronological order
-    sorted_date_strings = sorted(
-        set(day.get("day") for day in sorted_days if day.get("day")),
-        key=sort_date_string
-    )
+    # Sort the days in chronological order and deduplicate by date
+    day_by_date = {}
+    for day in sorted_days:
+        if day.get("day"):
+            day_by_date[day.get("day")] = day
     
+    # Sort uniquely by date
+    sorted_date_strings = sorted(day_by_date.keys(), key=sort_date_string)
+    
+    # Process each day chronologically
     for date_str in sorted_date_strings:
-        current_hotel = hotel_by_day.get(date_str)
+        day = day_by_date[date_str]
+        current_hotel = day.get("hotel")
+        
         if not current_hotel:
             continue
         

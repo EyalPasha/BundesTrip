@@ -384,6 +384,12 @@ def create_hotel_variation(base_trip: list, hotel_base: str, start_idx=0,
     variation = copy.deepcopy(base_trip)
     is_valid = True
     
+    # First ensure every day has a hotel value, including the first day
+    if variation and isinstance(variation[0], dict):
+        if not variation[0].get("hotel"):
+            # Set the first day's hotel to its location or hotel_base
+            variation[0]["hotel"] = variation[0].get("location", hotel_base)
+    
     # First pass: Set hotel locations
     for i, day in enumerate(variation):
         # Skip days before start_idx or preserve first day if needed
@@ -984,6 +990,38 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     # Replace with optimized trips
     all_trips = optimized_trips
 
+    # Pre-process the trip to ensure hotel consistency
+    for trip in all_trips:
+        # Organize entries by day
+        entries_by_day = {}
+        for day in trip:
+            if isinstance(day, dict) and day.get("day"):
+                day_str = day.get("day")
+                if day_str not in entries_by_day:
+                    entries_by_day[day_str] = []
+                entries_by_day[day_str].append(day)
+        
+        # For each day with multiple entries, ensure only the last one has hotel info
+        for day_str, entries in entries_by_day.items():
+            if len(entries) > 1:
+                # Sort entries by their position in the original trip
+                sorted_entries = sorted(entries, key=lambda e: trip.index(e))
+                
+                # Get the final hotel location for this day
+                final_hotel = sorted_entries[-1].get("hotel")
+                
+                # Update the first entry for day marker, but without a hotel
+                if "hotel" in sorted_entries[0]:
+                    sorted_entries[0].pop("hotel")
+                
+                # Ensure only the last entry has the hotel
+                for i, entry in enumerate(sorted_entries[:-1]):
+                    if "hotel" in entry:
+                        entry.pop("hotel")
+                
+                if final_hotel:
+                    sorted_entries[-1]["hotel"] = final_hotel
+
     # Calculate hotel statistics for each trip
     for trip in all_trips:
         hotel_stays = []
@@ -991,25 +1029,37 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         previous_hotel = None
         hotel_changes = 0
         
-        for i, day in enumerate(trip):
-            current_date = day.get("day")
+        # First organize days by date, keeping only the last entry for each date
+        # (the last entry represents where the traveler actually stays that night)
+        days_by_date = {}
+        for day in trip:
+            if isinstance(day, dict) and day.get("day") and day.get("hotel"):
+                days_by_date[day.get("day")] = day
+        
+        # Sort days chronologically
+        sorted_dates = sorted(days_by_date.keys(), 
+                            key=lambda d: datetime.strptime(d + " 2025", "%d %B %Y"))
+        
+        # Now process days in chronological order using the final hotel for each day
+        for date_str in sorted_dates:
+            day = days_by_date[date_str]
             current_hotel = day.get("hotel")
             
             if current_hotel:
                 # Count hotel changes
                 if previous_hotel and current_hotel != previous_hotel:
                     hotel_changes += 1
-                    day["hotel_change"] = True 
+                    day["hotel_change"] = True
                 else:
                     day["hotel_change"] = False
                 
                 hotel_locations.add(current_hotel)
                 
-                # Track hotel stays
+                # Add to hotel stays
                 if not hotel_stays or hotel_stays[-1]["location"] != current_hotel:
                     hotel_stays.append({
                         "location": current_hotel,
-                        "check_in_date": current_date,
+                        "check_in_date": date_str,
                         "nights": 1
                     })
                 else:
@@ -1019,16 +1069,19 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         
         # Generate detailed hotel info
         hotel_details = []
-        for i, day in enumerate(trip):
-            day_date = day.get("day")
-            hotel_location = day.get("hotel", "Unknown")
+        previous_hotel = None
+        
+        for date_str in sorted_dates:
+            day = days_by_date[date_str]
+            current_hotel = day.get("hotel")
             
             hotel_detail_entry = {
-                "date": day_date,
-                "location": hotel_location,
-                "is_change": i > 0 and hotel_location != trip[i-1].get("hotel", None)
+                "date": date_str,
+                "location": current_hotel,
+                "is_change": previous_hotel is not None and current_hotel != previous_hotel
             }
             hotel_details.append(hotel_detail_entry)
+            previous_hotel = current_hotel
         
         # Add hotel stats to the trip
         trip_hotel_stats = {
