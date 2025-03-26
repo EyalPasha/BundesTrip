@@ -3,12 +3,12 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from fastapi import FastAPI, Query, Path
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from typing import Optional, List, Dict, Set, Any
+from typing import Optional, List, Dict
 from datetime import datetime, timedelta
-from backend.utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips
-from backend.models import TripRequest, FormattedResponse, TravelSegment, TripVariation, TripGroup
+from backend.utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips, get_travel_minutes_utils
+from backend.models import TripRequest, FormattedResponse, TripVariation, TripGroup
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
-from backend.config import BASE_DIR, GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
+from backend.config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
 
 # Initialize FastAPI with metadata
 app = FastAPI(
@@ -33,58 +33,6 @@ games, tbd_games = load_games(GAMES_FILE)
 @app.get("/")
 def home():
     return {"message": "Welcome to the Multi-Game Trip Planner API"}
-
-
-def get_travel_minutes(train_times: Dict, from_loc: str, to_loc: str) -> Optional[int]:
-    """Get travel time between locations, handling missing data and same-location"""
-    # Return 0 for same location
-    if from_loc == to_loc:
-        return 0
-    
-    # Try direct lookup
-    minutes = train_times.get((from_loc, to_loc))
-    if minutes is not None:
-        return minutes
-    
-    # Some stations like Leverkusen Mitte shouldn't have hbf appended
-    special_suffixes = ["Mitte", "süd", "nord", "ost", "west", "hbf", "Bahnhof"]
-    
-    # Only try adding hbf if no special suffix already exists
-    from_has_suffix = any(suffix in from_loc.lower() for suffix in special_suffixes)
-    to_has_suffix = any(suffix in to_loc.lower() for suffix in special_suffixes)
-    
-    # Try with hbf suffix for 'from' location if appropriate
-    if not from_has_suffix:
-        minutes = train_times.get((from_loc + " hbf", to_loc))
-        if minutes is not None:
-            return minutes
-    
-    # Try with hbf suffix for 'to' location if appropriate
-    if not to_has_suffix:
-        minutes = train_times.get((from_loc, to_loc + " hbf"))
-        if minutes is not None:
-            return minutes
-    
-    # Try with hbf suffix for both locations if appropriate
-    if not from_has_suffix and not to_has_suffix:
-        minutes = train_times.get((from_loc + " hbf", to_loc + " hbf"))
-        if minutes is not None:
-            return minutes
-    
-    # Try removing hbf from both locations
-    from_clean = from_loc.replace(" hbf", "")
-    to_clean = to_loc.replace(" hbf", "")
-    minutes = train_times.get((from_clean, to_clean))
-    if minutes is not None:
-        return minutes
-    
-    # Try reverse direction (sometimes train_times only has one direction)
-    minutes = train_times.get((to_loc, from_loc))
-    if minutes is not None:
-        return minutes
-    
-    # Not found
-    return None
 
 
 def has_special_suffix(location_name: str) -> bool:
@@ -185,7 +133,7 @@ def process_travel_segments(sorted_days: List[Dict], variant_detail: TripVariati
                 from_with_hbf = from_loc_clean + " hbf" if not has_special_suffix(from_loc_clean) else from_loc_clean
                 to_with_hbf = to_loc_clean + " hbf" if not has_special_suffix(to_loc_clean) else to_loc_clean
                 
-                travel_minutes = get_travel_minutes(train_times, from_with_hbf, to_with_hbf)
+                travel_minutes = get_travel_minutes_utils(train_times, from_with_hbf, to_with_hbf)
                 
                 if travel_minutes and travel_minutes > 0:
                     travel_time = format_travel_time(travel_minutes)
@@ -210,7 +158,7 @@ def process_travel_segments(sorted_days: List[Dict], variant_detail: TripVariati
                 hotel_with_hbf = hotel_loc_clean + " hbf" if not has_special_suffix(hotel_loc_clean) else hotel_loc_clean
                 match_with_hbf = match_loc_clean + " hbf" if not has_special_suffix(match_loc_clean) else match_loc_clean
                 
-                travel_minutes = get_travel_minutes(train_times, hotel_with_hbf, match_with_hbf)
+                travel_minutes = get_travel_minutes_utils(train_times, hotel_with_hbf, match_with_hbf)
                 
                 if travel_minutes and travel_minutes > 0:
                     travel_time = format_travel_time(travel_minutes)
@@ -268,7 +216,7 @@ def process_hotel_information(sorted_days: List[Dict]) -> List[str]:
 
 def process_trip_variant(variant: Dict, actual_start_location: str) -> TripVariation:
     """Process a trip variant and extract its details"""
-    total_travel_time = calculate_total_travel_time(variant)
+    total_travel_time = calculate_total_travel_time(variant, train_times)  # Pass train_times here
     
     # Extract cities, teams, and count games
     cities = set()
