@@ -294,8 +294,8 @@ def process_hotel_information(sorted_days: List[Dict]) -> List[str]:
 
 def process_trip_variant(variant: Dict, actual_start_location: str) -> TripVariation:
     """Process a trip variant and extract its details"""
-    total_travel_time = calculate_total_travel_time(variant, train_times)  # Pass train_times here
-    
+    total_travel_time = calculate_total_travel_time(variant, train_times, actual_start_location)
+
     # Extract cities, teams, and count games
     cities = set()
     teams = set()
