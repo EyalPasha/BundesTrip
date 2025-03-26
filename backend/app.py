@@ -37,7 +37,7 @@ def home():
 
 def has_special_suffix(location_name: str) -> bool:
     """Check if location has a special suffix that shouldn't have hbf appended"""
-    special_suffixes = ["mitte", "süd", "nord", "ost", "west", "hbf", "bahnhof"]
+    special_suffixes = ["mitte", "bahnhof"]
     location_lower = location_name.lower()
     return any(suffix in location_lower for suffix in special_suffixes)
 

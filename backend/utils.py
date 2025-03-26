@@ -18,7 +18,7 @@ def get_travel_minutes_utils(train_times: Dict, from_loc: str, to_loc: str) -> O
         return minutes
     
     # Some stations like Leverkusen Mitte shouldn't have hbf appended
-    special_suffixes = ["Mitte", "süd", "nord", "ost", "west", "hbf", "Bahnhof"]
+    special_suffixes = ["Mitte", "Bahnhof"]
     
     # Only try adding hbf if no special suffix already exists
     from_has_suffix = any(suffix in from_loc.lower() for suffix in special_suffixes)
@@ -579,10 +579,50 @@ def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time
                     
                     if second_part:
                         variations.append(second_part)
-    
-    return variations
 
-def filter_best_variations_by_hotel_changes(trips: list, train_times: dict = None) -> list:
+    # Final validation: ensure all trips respect max_travel_time for every segment
+    valid_variations = []
+    for trip in variations:
+        # Validate against max_travel_time
+        is_valid = True
+        sorted_days = sorted([d for d in trip if isinstance(d, dict) and d.get("day")], 
+                             key=lambda x: x.get("day", ""))
+        
+        for i in range(1, len(sorted_days)):
+            prev_day = sorted_days[i-1]
+            curr_day = sorted_days[i]
+            
+            # Check hotel-to-hotel transitions
+            prev_hotel = prev_day.get("hotel")
+            curr_hotel = curr_day.get("hotel")
+            
+            if prev_hotel and curr_hotel and prev_hotel != curr_hotel:
+                transition_time = train_times.get((prev_hotel, curr_hotel), float("inf"))
+                if transition_time > max_travel_time:
+                    is_valid = False
+                    break
+            
+            # Check hotel-to-match travel
+            if curr_day.get("matches"):
+                match_loc = curr_day.get("location")
+                hotel_to_match = train_times.get((prev_hotel, match_loc), float("inf"))
+                if hotel_to_match > max_travel_time:
+                    is_valid = False
+                    break
+                
+                # Check match-to-hotel return travel if staying elsewhere
+                if curr_hotel != match_loc:
+                    match_to_hotel = train_times.get((match_loc, curr_hotel), float("inf"))
+                    if match_to_hotel > max_travel_time:
+                        is_valid = False
+                        break
+        
+        if is_valid:
+            valid_variations.append(trip)
+    
+    return valid_variations
+
+def filter_best_variations_by_hotel_changes(trips: list, train_times: dict = None, max_travel_time: int = None) -> list:
     """
     For each distinct trip (same matches), show only the fastest route per number of hotel changes,
     and apply Pareto-optimal filtering to give meaningful choices.
@@ -613,6 +653,31 @@ def filter_best_variations_by_hotel_changes(trips: list, train_times: dict = Non
         by_change_count = {}
         
         for trip in match_group:
+            # Validate all travel segments against max_travel_time
+            has_invalid_segment = False
+            
+            # Check for hotel-to-hotel transitions
+            sorted_days = sorted([d for d in trip if isinstance(d, dict) and d.get("day")], 
+                                key=lambda x: x.get("day", ""))
+            
+            for i in range(1, len(sorted_days)):
+                prev_day = sorted_days[i-1]
+                curr_day = sorted_days[i]
+                
+                prev_hotel = prev_day.get("hotel")
+                curr_hotel = curr_day.get("hotel")
+                
+                if prev_hotel and curr_hotel and prev_hotel != curr_hotel:
+                    transition_time = train_times.get((prev_hotel, curr_hotel), float("inf"))
+                    if transition_time > max_travel_time:
+                        has_invalid_segment = True
+                        break
+            
+            # Skip trips with invalid segments
+            if has_invalid_segment:
+                continue
+                
+            # Get hotel change count
             hotel_stats = next((item for item in trip if isinstance(item, dict) and 
                                 "hotel_changes" in item), {"hotel_changes": 0})
                 
@@ -632,7 +697,7 @@ def filter_best_variations_by_hotel_changes(trips: list, train_times: dict = Non
                 best_by_changes.append(fastest_trip)
         
         # Then apply Pareto-optimal filtering
-        pareto_trips = filter_pareto_optimal_trips(best_by_changes)
+        pareto_trips = filter_pareto_optimal_trips(best_by_changes, train_times)
         all_filtered_trips.extend(pareto_trips)
     
     return all_filtered_trips
@@ -1101,7 +1166,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         trip.append(trip_hotel_stats)
     
     # Filter to show only best trip per hotel change count
-    all_trips = filter_best_variations_by_hotel_changes(all_trips, train_times)
+    all_trips = filter_best_variations_by_hotel_changes(all_trips, train_times, max_travel_time)
     
     # Return appropriate response based on results
     if not all_trips and tbd_games_in_period:
