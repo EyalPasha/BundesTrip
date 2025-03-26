@@ -369,17 +369,6 @@ def create_hotel_variation(base_trip: list, hotel_base: str, start_idx=0,
                           preserve_first_day=True, train_times=None, max_travel_time=None) -> list:
     """
     Create a trip variation using a specific hotel base, rebuilding travel segments to match.
-    
-    Args:
-        base_trip: The original trip itinerary
-        hotel_base: The hotel location to use as base
-        start_idx: Index from which to start applying the hotel base
-        preserve_first_day: If True, keeps first day hotel unchanged
-        train_times: Dictionary of train travel times
-        max_travel_time: Maximum allowed travel time
-        
-    Returns:
-        A new trip variation with updated hotel locations and travel segments, or None if invalid
     """
     variation = copy.deepcopy(base_trip)
     is_valid = True
@@ -443,6 +432,23 @@ def create_hotel_variation(base_trip: list, hotel_base: str, start_idx=0,
             for match in day.get("matches", []):
                 match["travel_from"] = previous_hotel
                 match["travel_time"] = format_travel_time(travel_time)
+    
+    # Third pass: Check hotel-to-hotel transitions between days
+    sorted_days = sorted([d for d in variation if isinstance(d, dict) and d.get("day")], 
+                        key=lambda x: x.get("day", ""))
+    
+    for i in range(1, len(sorted_days)):
+        prev_day = sorted_days[i-1]
+        curr_day = sorted_days[i]
+        
+        prev_hotel = prev_day.get("hotel")
+        curr_hotel = curr_day.get("hotel")
+        
+        if prev_hotel and curr_hotel and prev_hotel != curr_hotel:
+            transition_time = train_times.get((prev_hotel, curr_hotel), float("inf"))
+            if transition_time > max_travel_time:
+                is_valid = False
+                break
     
     return variation if is_valid else None
 
