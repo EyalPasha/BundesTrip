@@ -253,16 +253,33 @@ def calculate_total_travel_time(trip: Dict, train_times_param: Dict = None, star
                     match_by_day[day_str] = match.get("location")
                     break
     
-    # Second pass: calculate travel time based on daily movements
-    sorted_days = sorted([d for d in days if isinstance(d, dict) and d.get("day")], 
-                        key=lambda x: x.get("day", ""))
+    # Find initial location and first hotel for initial travel calculation
+    initial_location = None
+    first_hotel = None
     
-    # Handle initial travel from start_location to first hotel if provided
-    if start_location and sorted_days and sorted_days[0].get("hotel"):
-        first_hotel = sorted_days[0].get("hotel")
+    # Get the first day's initial location
+    for day in days:
+        if isinstance(day, dict) and day.get("location"):
+            initial_location = day.get("location")
+            break
+    
+    # Get the first hotel location
+    for day in sorted(hotel_by_day.keys()):
+        first_hotel = hotel_by_day[day]
+        break
+    
+    # Calculate initial travel if needed (from specified start or from first location to first hotel)
+    if start_location and first_hotel:
         if start_location.lower() != first_hotel.lower():
             initial_travel_time = get_travel_minutes_utils(train_times_to_use, start_location, first_hotel) or 0
             total_minutes += initial_travel_time
+    elif initial_location and first_hotel and initial_location.lower() != first_hotel.lower():
+        initial_travel_time = get_travel_minutes_utils(train_times_to_use, initial_location, first_hotel) or 0
+        total_minutes += initial_travel_time
+    
+    # Second pass: calculate travel time based on daily movements
+    sorted_days = sorted([d for d in days if isinstance(d, dict) and d.get("day")], 
+                        key=lambda x: x.get("day", ""))
     
     previous_hotel = None
     
