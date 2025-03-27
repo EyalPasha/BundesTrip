@@ -712,6 +712,20 @@ def print_formatted_trip_schedule(response: FormattedResponse) -> str:
 
         output.append("\nCheck back later for updated schedules!")
 
+    # Format the current date and time for the filename
+    #current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+    #filename = f"trip_plan_{current_datetime}.txt"
+    #filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "trip_plans", filename)
+    #
+    ## Create directory if it doesn't exist
+    #os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    #
+    ## Write to file
+    #with open(filepath, 'w', encoding='utf-8') as f:
+    #    f.write("\n".join(output))
+    #
+    #print(f"Trip plan saved to: {filepath}")      
+
     print("\n".join(output))
     return "\n".join(output)
 

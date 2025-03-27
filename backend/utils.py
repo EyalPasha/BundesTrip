@@ -476,18 +476,10 @@ def create_hotel_variation(base_trip: list, hotel_base: str, start_idx=0,
     
     return variation if is_valid else None
 
-def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time: int) -> list:
+def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time: int, start_location: str = None) -> list:
     """
     Generate optimized variations of a trip with different hotel strategies,
     ensuring all travel segments are feasible.
-    
-    Args:
-        base_trip: Base trip itinerary
-        train_times: Dictionary mapping (from, to) tuples to travel times in minutes
-        max_travel_time: Maximum allowed travel time in minutes
-        
-    Returns:
-        List of trip variations with different hotel strategies
     """
     # Always include the original trip
     variations = [copy.deepcopy(base_trip)]
@@ -520,6 +512,18 @@ def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time
         all_train_cities.add(loc_pair[0])
         all_train_cities.add(loc_pair[1])
     
+    # NEW: Identify cities that are reachable from the start location
+    reachable_from_start = set()
+    if start_location:
+        for city in all_train_cities:
+            travel_time = train_times.get((start_location, city), 
+                                        train_times.get((city, start_location), float("inf")))
+            if travel_time <= max_travel_time:
+                reachable_from_start.add(city)
+        
+        # Make sure start location itself is included
+        reachable_from_start.add(start_location)
+    
     for city in all_train_cities:
         # Only consider cities reachable from all match locations
         if all(train_times.get((city, match_loc), float("inf")) <= max_travel_time 
@@ -528,6 +532,11 @@ def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time
     
     # Strategy 1: Generate single-base variations (stay in same hotel throughout)
     for hotel_base in potential_hotel_locations:
+        # NEW: Check if hotel base is reachable from start location for first night
+        if start_location and hotel_base != start_location and hotel_base not in reachable_from_start:
+            # Hotel is too far from start location, skip this base entirely for single-hotel stays
+            continue
+            
         # Use first match location as a consideration for the first day's hotel
         if match_days and 0 in match_days:
             first_match_location = match_days[0]["location"]
@@ -565,11 +574,13 @@ def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time
             # Get potential hotels for first segment
             first_segment_matches = [match_days[i]["location"] for i in match_days if i < pivot_idx]
             
-            # First hotel bases: either at first match or reachable from all first segment matches
+            # First hotel bases: must be reachable from start_location and all first segment matches
             potential_first_hotels = set(first_segment_matches)
             for city in all_train_cities:
-                if all(train_times.get((city, loc), float("inf")) <= max_travel_time 
-                      for loc in first_segment_matches):
+                if (city in reachable_from_start or not start_location) and all(
+                    train_times.get((city, loc), float("inf")) <= max_travel_time 
+                    for loc in first_segment_matches
+                ):
                     potential_first_hotels.add(city)
             
             # Get potential hotels for second segment
@@ -609,6 +620,23 @@ def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time
     for trip in variations:
         # Validate against max_travel_time
         is_valid = True
+        
+        # NEW: Check initial travel from start_location to first hotel
+        if start_location:
+            first_hotel = None
+            for day in trip:
+                if isinstance(day, dict) and day.get("hotel"):
+                    first_hotel = day.get("hotel")
+                    break
+                    
+            if first_hotel and first_hotel.lower() != start_location.lower():
+                initial_travel_time = train_times.get((start_location, first_hotel), 
+                                                      train_times.get((first_hotel, start_location), float('inf')))
+                if initial_travel_time > max_travel_time:
+                    is_valid = False
+                    continue  # Skip this variation entirely
+        
+        # Check hotel-to-hotel transitions and match travel
         sorted_days = sorted([d for d in trip if isinstance(d, dict) and d.get("day")], 
                              key=lambda x: x.get("day", ""))
         
@@ -995,18 +1023,20 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
                                 "contains_must_team": contains_must_team
                             })
                 
-                # If no reachable games, add a rest day
+                # ALWAYS add a rest day option (this is the key change)
+                new_trip = copy.deepcopy(trip)
+                hotel_location = trip[-1]["hotel"]
+                new_trip.append({
+                    "day": current_date_str,
+                    "location": trip[-1]["location"],
+                    "matches": [],
+                    "note": "Rest Day (Skipped Match)",  # Note that we skipped available matches
+                    "hotel": hotel_location
+                })
+                new_routes.append(new_trip)
+                
+                # If no reachable games, we've already added the rest day above
                 if not reachable_by_location:
-                    new_trip = copy.deepcopy(trip)
-                    hotel_location = trip[-1]["hotel"]
-                    new_trip.append({
-                        "day": current_date_str,
-                        "location": trip[-1]["location"],
-                        "matches": [],
-                        "note": "Rest Day",
-                        "hotel": hotel_location
-                    })
-                    new_routes.append(new_trip)
                     continue
                 
                 # Add new routes based on reachable games
@@ -1064,7 +1094,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
 
     # Filter trips based on having matches
     all_trips = [trip for trip in initial_routes 
-                if any(len(day.get("matches", [])) > 0 for day in trip)]
+                if sum(len(day.get("matches", [])) > 0 for day in trip) >= 2]
     
     # Filter trips to include only those with required teams
     if must_teams_lower and all_trips:
@@ -1079,7 +1109,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     optimized_trips = []
     for original_trip in all_trips:
         trip_without_stats = [day for day in original_trip if isinstance(day, dict) and "day" in day]
-        variations = optimize_trip_variations(trip_without_stats, train_times, max_travel_time)
+        variations = optimize_trip_variations(trip_without_stats, train_times, max_travel_time, start_location)
         optimized_trips.extend(variations)
     
     # Replace with optimized trips
@@ -1123,6 +1153,11 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         hotel_locations = set()
         previous_hotel = None
         hotel_changes = 0
+        
+        # Check if trip has at least 2 games
+        game_count = sum(1 for day in trip if isinstance(day, dict) and day.get("matches"))
+        if game_count < 2:
+            continue
         
         # First organize days by date, keeping only the last entry for each date
         # (the last entry represents where the traveler actually stays that night)

@@ -1,0 +1,5205 @@
+📍 Start Location: Dortmund
+📅 Start Date: 28 March
+⏳ Max Travel Time: 2h 10m
+🗓️ Trip Duration: 9 days
+🏆 Preferred Leagues: Bundesliga, 2. Bundesliga, DFB-Pokal
+==================================================
+
+----------------------------------------------------------------------------------------------------
+Trip 1:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bochum, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Borussia Mönchengladbach, RB Leipzig, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 5
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 5h 16m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 2: 7h 22m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+----------------------------------------------------------------------------------------------------
+Trip 2:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bochum, Dortmund, Frankfurt, Freiburg (Breisgau), Leverkusen Mitte
+⚽ Teams: 1. FC Union Berlin, Arminia Bielefeld, Bayer Leverkusen, Eintracht Frankfurt, SC Freiburg, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 5
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  SC Freiburg vs 1. FC Union Berlin (14:30)
+      📍 Freiburg (Breisgau)
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   ℹ️  Only one travel option: 6h 58m total travel, ending in Bochum
+   🏨 Hotel Changes: 4
+   🏨 Unique Hotels: 5
+   🏨 Hotel Locations: Frankfurt, Bochum, Leverkusen Mitte, Freiburg (Breisgau), Bielefeld
+   ✈️  Nearest airports to Bochum: Düsseldorf (1h 1m), Frankfurt (2h 34m), Karlsruhe (3h 22m)
+   🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Frankfurt
+        30 March: Change hotel to Freiburg (Breisgau)
+        31 March: Stay in hotel in Freiburg (Breisgau)
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bochum
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Frankfurt (29 March) - 1h 35m
+      Frankfurt → Frankfurt (29 March, After Game) - 0h 0m
+      Frankfurt → Freiburg (Breisgau) (30 March) - 2h 7m
+      Freiburg (Breisgau) → Freiburg (Breisgau) (30 March, After Game) - 0h 0m
+      Freiburg (Breisgau) → Bielefeld (01 April) - 5h 31m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bochum (05 April) - 1h 20m
+      Bochum → Bochum (05 April, After Game) - 0h 0m
+
+----------------------------------------------------------------------------------------------------
+Trip 3:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bochum, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 5
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 7h 2m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 2: 9h 56m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Dortmund (30 March) - 0h 30m
+      Dortmund → Essen (30 March, After Game) - 0h 30m
+      Essen → Bielefeld (01 April) - 1h 17m
+      Bielefeld → Essen (01 April, After Game) - 1h 17m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+----------------------------------------------------------------------------------------------------
+Trip 4:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bremen, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Borussia Mönchengladbach, Eintracht Frankfurt, RB Leipzig, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 5
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 7h 58m total travel, ending in Bremen:
+      🏨 Hotel Changes: 4
+      🏨 Unique Hotels: 5
+      🏨 Hotel Locations: Bremen, Leverkusen Mitte, Dortmund, Mönchengladbach, Bielefeld
+      ✈️  Nearest airports to Bremen: Düsseldorf (2h 33m), Berlin (2h 48m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Mönchengladbach
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bremen
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Mönchengladbach (29 March) - 0h 52m
+      Mönchengladbach → Mönchengladbach (29 March, After Game) - 0h 0m
+      Mönchengladbach → Dortmund (30 March) - 1h 17m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bremen (05 April) - 1h 58m
+      Bremen → Bremen (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 9h 28m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Essen, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Mönchengladbach (29 March) - 0h 53m
+      Mönchengladbach → Essen (29 March, After Game) - 0h 53m
+      Essen → Dortmund (30 March) - 0h 30m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+      🚆 Option 3: 10h 14m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+----------------------------------------------------------------------------------------------------
+Trip 5:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bremen, Dortmund, Frankfurt, Freiburg (Breisgau), Leverkusen Mitte
+⚽ Teams: 1. FC Union Berlin, Arminia Bielefeld, Bayer Leverkusen, Eintracht Frankfurt, SC Freiburg, VfB Stuttgart, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 5
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  SC Freiburg vs 1. FC Union Berlin (14:30)
+      📍 Freiburg (Breisgau)
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   ℹ️  Only one travel option: 9h 31m total travel, ending in Bremen
+   🏨 Hotel Changes: 4
+   🏨 Unique Hotels: 5
+   🏨 Hotel Locations: Frankfurt, Bremen, Leverkusen Mitte, Freiburg (Breisgau), Bielefeld
+   ✈️  Nearest airports to Bremen: Düsseldorf (2h 33m), Berlin (2h 48m), Frankfurt (3h 29m)
+   🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Frankfurt
+        30 March: Change hotel to Freiburg (Breisgau)
+        31 March: Stay in hotel in Freiburg (Breisgau)
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bremen
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Frankfurt (29 March) - 1h 35m
+      Frankfurt → Frankfurt (29 March, After Game) - 0h 0m
+      Frankfurt → Freiburg (Breisgau) (30 March) - 2h 7m
+      Freiburg (Breisgau) → Freiburg (Breisgau) (30 March, After Game) - 0h 0m
+      Freiburg (Breisgau) → Bielefeld (01 April) - 5h 31m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bremen (05 April) - 1h 58m
+      Bremen → Bremen (05 April, After Game) - 0h 0m
+
+----------------------------------------------------------------------------------------------------
+Trip 6:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Leverkusen Mitte, Mainz, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Borussia Mönchengladbach, Holstein Kiel, RB Leipzig, VfL Bochum
+🏟️  Number of Games: 5
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   🔄 Travel Options:
+      🚆 Option 1: 10h 27m total travel, ending in Köln:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Bielefeld (01 April) - 1h 43m
+      Bielefeld → Düsseldorf (01 April, After Game) - 1h 43m
+      Düsseldorf → Köln (04 April) - 0h 21m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+      🚆 Option 2: 10h 41m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Bielefeld (01 April) - 1h 43m
+      Bielefeld → Düsseldorf (01 April, After Game) - 1h 43m
+      Düsseldorf → Mainz (05 April) - 1h 50m
+      Mainz → Düsseldorf (05 April, After Game) - 1h 50m
+
+----------------------------------------------------------------------------------------------------
+Trip 7:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bremen, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 5
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 11h 28m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Essen, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Dortmund (30 March) - 0h 30m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+      🚆 Option 2: 13h 32m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Dortmund (30 March) - 0h 30m
+      Dortmund → Essen (30 March, After Game) - 0h 30m
+      Essen → Bielefeld (01 April) - 1h 17m
+      Bielefeld → Essen (01 April, After Game) - 1h 17m
+      Essen → Bremen (05 April) - 2h 6m
+      Bremen → Essen (05 April, After Game) - 2h 6m
+
+----------------------------------------------------------------------------------------------------
+Trip 8:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Frankfurt, Leverkusen Mitte, Mainz
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, Holstein Kiel, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 5
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   🔄 Travel Options:
+      🚆 Option 1: 12h 13m total travel, ending in Köln:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Bielefeld (01 April) - 1h 43m
+      Bielefeld → Düsseldorf (01 April, After Game) - 1h 43m
+      Düsseldorf → Köln (04 April) - 0h 21m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+      🚆 Option 2: 12h 20m total travel, ending in Köln:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Stay in hotel in Köln
+        02 April: Stay in hotel in Köln
+        03 April: Stay in hotel in Köln
+        04 April: Stay in hotel in Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Frankfurt (29 March) - 1h 6m
+      Frankfurt → Köln (29 March, After Game) - 1h 6m
+      Köln → Dortmund (30 March) - 1h 10m
+      Dortmund → Köln (30 March, After Game) - 1h 10m
+      Köln → Bielefeld (01 April) - 1h 41m
+      Bielefeld → Köln (01 April, After Game) - 1h 41m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+----------------------------------------------------------------------------------------------------
+Trip 9:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bochum, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Borussia Mönchengladbach, RB Leipzig, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 3h 41m total travel, ending in Bochum:
+      🏨 Hotel Changes: 3
+      🏨 Unique Hotels: 4
+      🏨 Hotel Locations: Leverkusen Mitte, Dortmund, Bochum, Mönchengladbach
+      ✈️  Nearest airports to Bochum: Düsseldorf (1h 1m), Frankfurt (2h 34m), Karlsruhe (3h 22m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Mönchengladbach
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Change hotel to Bochum
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Mönchengladbach (29 March) - 0h 52m
+      Mönchengladbach → Mönchengladbach (29 March, After Game) - 0h 0m
+      Mönchengladbach → Dortmund (30 March) - 1h 17m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Bochum (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 3h 42m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 3: 5h 22m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Mönchengladbach (29 March) - 0h 53m
+      Mönchengladbach → Essen (29 March, After Game) - 0h 53m
+      Essen → Dortmund (30 March) - 0h 30m
+      Dortmund → Essen (30 March, After Game) - 0h 30m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+----------------------------------------------------------------------------------------------------
+Trip 10:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bochum, Dortmund, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 4h 8m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Change hotel to Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (29 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 2: 4h 48m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+----------------------------------------------------------------------------------------------------
+Trip 11:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bochum, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Borussia Mönchengladbach, RB Leipzig, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 4h 8m total travel, ending in Bochum:
+      🏨 Hotel Changes: 3
+      🏨 Unique Hotels: 4
+      🏨 Hotel Locations: Leverkusen Mitte, Bochum, Bielefeld, Mönchengladbach
+      ✈️  Nearest airports to Bochum: Düsseldorf (1h 1m), Frankfurt (2h 34m), Karlsruhe (3h 22m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Mönchengladbach
+        30 March: Stay in hotel in Mönchengladbach
+        31 March: Stay in hotel in Mönchengladbach
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bochum
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Mönchengladbach (29 March) - 0h 52m
+      Mönchengladbach → Mönchengladbach (29 March, After Game) - 0h 0m
+      Mönchengladbach → Bielefeld (01 April) - 2h 5m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bochum (05 April) - 1h 20m
+      Bochum → Bochum (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 4h 37m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Change hotel to Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (01 April) - 0h 39m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 3: 6h 56m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Mönchengladbach (29 March) - 0h 53m
+      Mönchengladbach → Essen (29 March, After Game) - 0h 53m
+      Essen → Bielefeld (01 April) - 1h 17m
+      Bielefeld → Essen (01 April, After Game) - 1h 17m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+----------------------------------------------------------------------------------------------------
+Trip 12:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Borussia Mönchengladbach, RB Leipzig, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 4h 30m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+
+      🚆 Option 2: 6h 36m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+
+----------------------------------------------------------------------------------------------------
+Trip 13:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bochum, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 4h 51m total travel, ending in Bochum:
+      🏨 Hotel Changes: 3
+      🏨 Unique Hotels: 4
+      🏨 Hotel Locations: Leverkusen Mitte, Bochum, Frankfurt, Bielefeld
+      ✈️  Nearest airports to Bochum: Düsseldorf (1h 1m), Frankfurt (2h 34m), Karlsruhe (3h 22m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Frankfurt
+        30 March: Stay in hotel in Frankfurt
+        31 March: Stay in hotel in Frankfurt
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bochum
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Frankfurt (29 March) - 1h 35m
+      Frankfurt → Frankfurt (29 March, After Game) - 0h 0m
+      Frankfurt → Bielefeld (01 April) - 2h 59m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bochum (05 April) - 1h 20m
+      Bochum → Bochum (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 6h 14m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Dortmund, Köln
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Change hotel to Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Frankfurt (29 March) - 1h 6m
+      Frankfurt → Köln (29 March, After Game) - 1h 6m
+      Köln → Dortmund (01 April) - 1h 10m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 3: 8h 56m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Bielefeld (01 April) - 1h 17m
+      Bielefeld → Essen (01 April, After Game) - 1h 17m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+----------------------------------------------------------------------------------------------------
+Trip 14:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bochum, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 5h 28m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 2: 7h 22m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Dortmund (30 March) - 0h 30m
+      Dortmund → Essen (30 March, After Game) - 0h 30m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+----------------------------------------------------------------------------------------------------
+Trip 15:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 6h 16m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+
+      🚆 Option 2: 8h 47m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Bielefeld (01 April) - 1h 43m
+      Bielefeld → Düsseldorf (01 April, After Game) - 1h 43m
+
+----------------------------------------------------------------------------------------------------
+Trip 16:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bremen, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Borussia Mönchengladbach, Eintracht Frankfurt, RB Leipzig, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 6h 41m total travel, ending in Bremen:
+      🏨 Hotel Changes: 3
+      🏨 Unique Hotels: 4
+      🏨 Hotel Locations: Bremen, Leverkusen Mitte, Bielefeld, Mönchengladbach
+      ✈️  Nearest airports to Bremen: Düsseldorf (2h 33m), Berlin (2h 48m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Mönchengladbach
+        30 March: Stay in hotel in Mönchengladbach
+        31 March: Stay in hotel in Mönchengladbach
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bremen
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Mönchengladbach (29 March) - 0h 52m
+      Mönchengladbach → Mönchengladbach (29 March, After Game) - 0h 0m
+      Mönchengladbach → Bielefeld (01 April) - 2h 5m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bremen (05 April) - 1h 58m
+      Bremen → Bremen (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 8h 51m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Essen, Osnabrück
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Change hotel to Osnabrück
+        02 April: Stay in hotel in Osnabrück
+        03 April: Stay in hotel in Osnabrück
+        04 April: Stay in hotel in Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Mönchengladbach (29 March) - 0h 53m
+      Mönchengladbach → Essen (29 March, After Game) - 0h 53m
+      Essen → Osnabrück (01 April) - 1h 14m
+      Osnabrück → Bielefeld (01 April) - 0h 53m
+      Bielefeld → Osnabrück (01 April, After Game) - 0h 53m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+      🚆 Option 3: 10h 14m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+----------------------------------------------------------------------------------------------------
+Trip 17:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Frankfurt, Freiburg (Breisgau), Leverkusen Mitte
+⚽ Teams: 1. FC Union Berlin, Arminia Bielefeld, Bayer Leverkusen, Eintracht Frankfurt, SC Freiburg, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  SC Freiburg vs 1. FC Union Berlin (14:30)
+      📍 Freiburg (Breisgau)
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   ℹ️  Only one travel option: 6h 42m total travel, ending in Bielefeld
+   🏨 Hotel Changes: 3
+   🏨 Unique Hotels: 4
+   🏨 Hotel Locations: Leverkusen Mitte, Frankfurt, Freiburg (Breisgau), Bielefeld
+   ✈️  Nearest airports to Bielefeld: Düsseldorf (1h 43m), Berlin (2h 40m), Frankfurt (2h 59m)
+   🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Frankfurt
+        30 March: Change hotel to Freiburg (Breisgau)
+        31 March: Stay in hotel in Freiburg (Breisgau)
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Stay in hotel in Bielefeld
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Frankfurt (29 March) - 1h 35m
+      Frankfurt → Frankfurt (29 March, After Game) - 0h 0m
+      Frankfurt → Freiburg (Breisgau) (30 March) - 2h 7m
+      Freiburg (Breisgau) → Freiburg (Breisgau) (30 March, After Game) - 0h 0m
+      Freiburg (Breisgau) → Bielefeld (01 April) - 5h 31m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+
+----------------------------------------------------------------------------------------------------
+Trip 18:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Leverkusen Mitte, Mainz, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Borussia Mönchengladbach, Holstein Kiel, RB Leipzig, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   🔄 Travel Options:
+      🚆 Option 1: 7h 1m total travel, ending in Köln:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Köln (04 April) - 0h 21m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+      🚆 Option 2: 7h 15m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Mainz (05 April) - 1h 50m
+      Mainz → Düsseldorf (05 April, After Game) - 1h 50m
+
+----------------------------------------------------------------------------------------------------
+Trip 19:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bremen, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Borussia Mönchengladbach, Eintracht Frankfurt, RB Leipzig, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 7h 2m total travel, ending in Bremen:
+      🏨 Hotel Changes: 3
+      🏨 Unique Hotels: 4
+      🏨 Hotel Locations: Leverkusen Mitte, Dortmund, Bremen, Mönchengladbach
+      ✈️  Nearest airports to Bremen: Düsseldorf (2h 33m), Berlin (2h 48m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Mönchengladbach
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Change hotel to Bremen
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Mönchengladbach (29 March) - 0h 52m
+      Mönchengladbach → Mönchengladbach (29 March, After Game) - 0h 0m
+      Mönchengladbach → Dortmund (30 March) - 1h 17m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Bremen (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 7h 54m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Essen, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Mönchengladbach (29 March) - 0h 53m
+      Mönchengladbach → Essen (29 March, After Game) - 0h 53m
+      Essen → Dortmund (30 March) - 0h 30m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+      🚆 Option 3: 8h 40m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+----------------------------------------------------------------------------------------------------
+Trip 20:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bremen, Dortmund, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 7h 3m total travel, ending in Bremen:
+      🏨 Hotel Changes: 3
+      🏨 Unique Hotels: 4
+      🏨 Hotel Locations: Leverkusen Mitte, Dortmund, Bremen, Bielefeld
+      ✈️  Nearest airports to Bremen: Düsseldorf (2h 33m), Berlin (2h 48m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Stay in hotel in Leverkusen Mitte
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bremen
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Dortmund (30 March) - 1h 14m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bremen (05 April) - 1h 58m
+      Bremen → Bremen (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 7h 32m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Dortmund, Osnabrück
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Change hotel to Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Osnabrück (04 April) - 0h 55m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+      🚆 Option 3: 7h 40m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+----------------------------------------------------------------------------------------------------
+Trip 21:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bremen, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 7h 24m total travel, ending in Bremen:
+      🏨 Hotel Changes: 3
+      🏨 Unique Hotels: 4
+      🏨 Hotel Locations: Bremen, Leverkusen Mitte, Frankfurt, Bielefeld
+      ✈️  Nearest airports to Bremen: Düsseldorf (2h 33m), Berlin (2h 48m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Frankfurt
+        30 March: Stay in hotel in Frankfurt
+        31 March: Stay in hotel in Frankfurt
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bremen
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Frankfurt (29 March) - 1h 35m
+      Frankfurt → Frankfurt (29 March, After Game) - 0h 0m
+      Frankfurt → Bielefeld (01 April) - 2h 59m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bremen (05 April) - 1h 58m
+      Bremen → Bremen (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 10h 51m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Essen, Osnabrück
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Change hotel to Osnabrück
+        02 April: Stay in hotel in Osnabrück
+        03 April: Stay in hotel in Osnabrück
+        04 April: Stay in hotel in Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Osnabrück (01 April) - 1h 14m
+      Osnabrück → Bielefeld (01 April) - 0h 53m
+      Bielefeld → Osnabrück (01 April, After Game) - 0h 53m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+      🚆 Option 3: 12h 32m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Bielefeld (01 April) - 1h 17m
+      Bielefeld → Essen (01 April, After Game) - 1h 17m
+      Essen → Bremen (05 April) - 2h 6m
+      Bremen → Essen (05 April, After Game) - 2h 6m
+
+----------------------------------------------------------------------------------------------------
+Trip 22:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Frankfurt, Leverkusen Mitte, Mainz
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, Holstein Kiel, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   🔄 Travel Options:
+      🚆 Option 1: 8h 47m total travel, ending in Köln:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Köln (04 April) - 0h 21m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+      🚆 Option 2: 8h 58m total travel, ending in Köln:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Stay in hotel in Köln
+        02 April: Stay in hotel in Köln
+        03 April: Stay in hotel in Köln
+        04 April: Stay in hotel in Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Frankfurt (29 March) - 1h 6m
+      Frankfurt → Köln (29 March, After Game) - 1h 6m
+      Köln → Dortmund (30 March) - 1h 10m
+      Dortmund → Köln (30 March, After Game) - 1h 10m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+----------------------------------------------------------------------------------------------------
+Trip 23:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Leverkusen Mitte, Mainz, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Mönchengladbach, Holstein Kiel, RB Leipzig, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   🔄 Travel Options:
+      🚆 Option 1: 9h 9m total travel, ending in Köln:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Bielefeld (01 April) - 1h 43m
+      Bielefeld → Düsseldorf (01 April, After Game) - 1h 43m
+      Düsseldorf → Köln (04 April) - 0h 21m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+      🚆 Option 2: 9h 23m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Bielefeld (01 April) - 1h 43m
+      Bielefeld → Düsseldorf (01 April, After Game) - 1h 43m
+      Düsseldorf → Mainz (05 April) - 1h 50m
+      Mainz → Düsseldorf (05 April, After Game) - 1h 50m
+
+----------------------------------------------------------------------------------------------------
+Trip 24:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Leverkusen Mitte, Mainz
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, Holstein Kiel, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   🔄 Travel Options:
+      🚆 Option 1: 9h 19m total travel, ending in Köln:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Bielefeld (01 April) - 1h 43m
+      Bielefeld → Düsseldorf (01 April, After Game) - 1h 43m
+      Düsseldorf → Köln (04 April) - 0h 21m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+      🚆 Option 2: 9h 33m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Bielefeld (01 April) - 1h 43m
+      Bielefeld → Düsseldorf (01 April, After Game) - 1h 43m
+      Düsseldorf → Mainz (05 April) - 1h 50m
+      Mainz → Düsseldorf (05 April, After Game) - 1h 50m
+
+----------------------------------------------------------------------------------------------------
+Trip 25:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bremen, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 9h 54m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Essen, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Dortmund (30 March) - 0h 30m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+      🚆 Option 2: 10h 58m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Dortmund (30 March) - 0h 30m
+      Dortmund → Essen (30 March, After Game) - 0h 30m
+      Essen → Bremen (05 April) - 2h 6m
+      Bremen → Essen (05 April, After Game) - 2h 6m
+
+----------------------------------------------------------------------------------------------------
+Trip 26:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Frankfurt, Leverkusen Mitte, Mainz
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Eintracht Frankfurt, Holstein Kiel, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 4
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   ℹ️  Only one travel option: 10h 0m total travel, ending in Köln
+   🏨 Hotel Changes: 0
+   🏨 Unique Hotels: 1
+   🏨 Hotel Locations: Köln
+   ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+   🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Stay in hotel in Köln
+        02 April: Stay in hotel in Köln
+        03 April: Stay in hotel in Köln
+        04 April: Stay in hotel in Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Frankfurt (29 March) - 1h 6m
+      Frankfurt → Köln (29 March, After Game) - 1h 6m
+      Köln → Bielefeld (01 April) - 1h 41m
+      Bielefeld → Köln (01 April, After Game) - 1h 41m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+----------------------------------------------------------------------------------------------------
+Trip 27:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bochum, Dortmund, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 2h 34m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Change hotel to Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (29 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 2: 3h 14m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+----------------------------------------------------------------------------------------------------
+Trip 28:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Borussia Mönchengladbach, RB Leipzig, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 2h 56m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+
+      🚆 Option 2: 3h 35m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+
+----------------------------------------------------------------------------------------------------
+Trip 29:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bochum, Dortmund, Leverkusen Mitte
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 3h 16m total travel, ending in Bochum:
+      🏨 Hotel Changes: 2
+      🏨 Unique Hotels: 3
+      🏨 Hotel Locations: Leverkusen Mitte, Bochum, Bielefeld
+      ✈️  Nearest airports to Bochum: Düsseldorf (1h 1m), Frankfurt (2h 34m), Karlsruhe (3h 22m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Stay in hotel in Leverkusen Mitte
+        30 March: Stay in hotel in Leverkusen Mitte
+        31 March: Stay in hotel in Leverkusen Mitte
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bochum
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Bielefeld (01 April) - 2h 13m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bochum (05 April) - 1h 20m
+      Bochum → Bochum (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 3h 29m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Change hotel to Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (01 April) - 0h 39m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 3: 4h 48m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+----------------------------------------------------------------------------------------------------
+Trip 30:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Borussia Dortmund, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 3h 22m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Change hotel to Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (29 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+
+      🚆 Option 2: 4h 2m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+
+----------------------------------------------------------------------------------------------------
+Trip 31:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bochum, Dortmund, Mönchengladbach
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Borussia Mönchengladbach, RB Leipzig, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   💤 Rest Day
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 3h 37m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Mönchengladbach, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Mönchengladbach
+        29 March: Stay in hotel in Mönchengladbach
+        30 March: Stay in hotel in Mönchengladbach
+        31 March: Stay in hotel in Mönchengladbach
+        01 April: Change hotel to Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Mönchengladbach (28 March) - 1h 17m
+      Mönchengladbach → Mönchengladbach (29 March, After Game) - 0h 0m
+      Mönchengladbach → Dortmund (01 April) - 1h 17m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+      🚆 Option 2: 4h 54m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+----------------------------------------------------------------------------------------------------
+Trip 32:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bochum, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: Bayer Leverkusen, Borussia Mönchengladbach, RB Leipzig, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 3h 41m total travel, ending in Essen:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Essen (04 April) - 0h 24m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+      🚆 Option 2: 4h 19m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Bochum (05 April) - 1h 1m
+      Bochum → Düsseldorf (05 April, After Game) - 1h 1m
+
+----------------------------------------------------------------------------------------------------
+Trip 33:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Borussia Mönchengladbach, RB Leipzig, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 3h 51m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Change hotel to Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Dortmund (01 April) - 0h 39m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+
+      🚆 Option 2: 5h 43m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Bielefeld (01 April) - 1h 43m
+      Bielefeld → Düsseldorf (01 April, After Game) - 1h 43m
+
+----------------------------------------------------------------------------------------------------
+Trip 34:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 4h 35m total travel, ending in Bielefeld:
+      🏨 Hotel Changes: 2
+      🏨 Unique Hotels: 3
+      🏨 Hotel Locations: Leverkusen Mitte, Frankfurt, Bielefeld
+      ✈️  Nearest airports to Bielefeld: Düsseldorf (1h 43m), Berlin (2h 40m), Frankfurt (2h 59m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Frankfurt
+        30 March: Stay in hotel in Frankfurt
+        31 March: Stay in hotel in Frankfurt
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Stay in hotel in Bielefeld
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Frankfurt (29 March) - 1h 35m
+      Frankfurt → Frankfurt (29 March, After Game) - 0h 0m
+      Frankfurt → Bielefeld (01 April) - 2h 59m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+
+      🚆 Option 2: 5h 12m total travel, ending in Bielefeld:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Bielefeld, Köln
+      ✈️  Nearest airports to Bielefeld: Düsseldorf (1h 43m), Berlin (2h 40m), Frankfurt (2h 59m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Stay in hotel in Bielefeld
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Frankfurt (29 March) - 1h 6m
+      Frankfurt → Köln (29 March, After Game) - 1h 6m
+      Köln → Bielefeld (01 April) - 1h 41m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+
+      🚆 Option 3: 7h 16m total travel, ending in Köln:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Stay in hotel in Köln
+        02 April: Stay in hotel in Köln
+        03 April: Stay in hotel in Köln
+        04 April: Stay in hotel in Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Frankfurt (29 March) - 1h 6m
+      Frankfurt → Köln (29 March, After Game) - 1h 6m
+      Köln → Bielefeld (01 April) - 1h 41m
+      Bielefeld → Köln (01 April, After Game) - 1h 41m
+
+----------------------------------------------------------------------------------------------------
+Trip 35:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 4h 42m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Change hotel to Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+
+      🚆 Option 2: 5h 21m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+
+----------------------------------------------------------------------------------------------------
+Trip 36:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bochum, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: Bayer Leverkusen, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 5h 27m total travel, ending in Essen:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Essen (04 April) - 0h 24m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+      🚆 Option 2: 6h 5m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Frankfurt (29 March) - 1h 27m
+      Frankfurt → Düsseldorf (29 March, After Game) - 1h 27m
+      Düsseldorf → Bochum (05 April) - 1h 1m
+      Bochum → Düsseldorf (05 April, After Game) - 1h 1m
+
+----------------------------------------------------------------------------------------------------
+Trip 37:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Leverkusen Mitte, Mainz, Mönchengladbach
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Mönchengladbach, Holstein Kiel, RB Leipzig, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   🔄 Travel Options:
+      🚆 Option 1: 5h 43m total travel, ending in Köln:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Köln (04 April) - 0h 21m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+      🚆 Option 2: 5h 57m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+      Düsseldorf → Mainz (05 April) - 1h 50m
+      Mainz → Düsseldorf (05 April, After Game) - 1h 50m
+
+----------------------------------------------------------------------------------------------------
+Trip 38:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bremen, Dortmund, Leverkusen Mitte
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Eintracht Frankfurt, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 5h 49m total travel, ending in Bremen:
+      🏨 Hotel Changes: 2
+      🏨 Unique Hotels: 3
+      🏨 Hotel Locations: Leverkusen Mitte, Bremen, Bielefeld
+      ✈️  Nearest airports to Bremen: Düsseldorf (2h 33m), Berlin (2h 48m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Stay in hotel in Leverkusen Mitte
+        30 March: Stay in hotel in Leverkusen Mitte
+        31 March: Stay in hotel in Leverkusen Mitte
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bremen
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Bielefeld (01 April) - 2h 13m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bremen (05 April) - 1h 58m
+      Bremen → Bremen (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 7h 5m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Essen, Osnabrück
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Change hotel to Osnabrück
+        02 April: Stay in hotel in Osnabrück
+        03 April: Stay in hotel in Osnabrück
+        04 April: Stay in hotel in Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Osnabrück (01 April) - 1h 14m
+      Osnabrück → Bielefeld (01 April) - 0h 53m
+      Bielefeld → Osnabrück (01 April, After Game) - 0h 53m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+      🚆 Option 3: 7h 40m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+----------------------------------------------------------------------------------------------------
+Trip 39:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bremen, Dortmund, Mönchengladbach
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Borussia Mönchengladbach, Eintracht Frankfurt, RB Leipzig, Werder Bremen
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   💤 Rest Day
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 5h 51m total travel, ending in Bremen:
+      🏨 Hotel Changes: 3
+      🏨 Unique Hotels: 4
+      🏨 Hotel Locations: Mönchengladbach, Dortmund, Bremen, Bielefeld
+      ✈️  Nearest airports to Bremen: Düsseldorf (2h 33m), Berlin (2h 48m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Change hotel to Mönchengladbach
+        30 March: Stay in hotel in Mönchengladbach
+        31 March: Stay in hotel in Mönchengladbach
+        01 April: Change hotel to Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Stay in hotel in Bielefeld
+        05 April: Change hotel to Bremen
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Mönchengladbach (29 March, After Game) - 0h 0m
+      Mönchengladbach → Bielefeld (01 April) - 2h 5m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Bremen (05 April) - 1h 58m
+      Bremen → Bremen (05 April, After Game) - 0h 0m
+
+      🚆 Option 2: 7h 21m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Essen, Osnabrück
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Change hotel to Osnabrück
+        02 April: Stay in hotel in Osnabrück
+        03 April: Stay in hotel in Osnabrück
+        04 April: Stay in hotel in Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Mönchengladbach (29 March) - 0h 53m
+      Mönchengladbach → Essen (29 March, After Game) - 0h 53m
+      Essen → Osnabrück (01 April) - 1h 14m
+      Osnabrück → Bielefeld (01 April) - 0h 53m
+      Bielefeld → Osnabrück (01 April, After Game) - 0h 53m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+      🚆 Option 3: 7h 46m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+----------------------------------------------------------------------------------------------------
+Trip 40:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Leverkusen Mitte, Mainz
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Holstein Kiel, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   🔄 Travel Options:
+      🚆 Option 1: 5h 53m total travel, ending in Köln:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Köln (04 April) - 0h 21m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+      🚆 Option 2: 6h 7m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+      Düsseldorf → Mainz (05 April) - 1h 50m
+      Mainz → Düsseldorf (05 April, After Game) - 1h 50m
+
+----------------------------------------------------------------------------------------------------
+Trip 41:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bremen, Dortmund, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, Eintracht Frankfurt, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 5h 58m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Dortmund, Osnabrück
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Change hotel to Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Osnabrück (04 April) - 0h 55m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+      🚆 Option 2: 6h 6m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+----------------------------------------------------------------------------------------------------
+Trip 42:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Frankfurt, Leverkusen Mitte, Mainz
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Eintracht Frankfurt, Holstein Kiel, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   🔄 Travel Options:
+      🚆 Option 1: 6h 22m total travel, ending in Frankfurt:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Frankfurt, Köln
+      ✈️  Nearest airports to Frankfurt: Frankfurt (0h 0m), Karlsruhe (1h 3m), Düsseldorf (1h 27m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Change hotel to Frankfurt
+        30 March: Stay in hotel in Frankfurt
+        31 March: Stay in hotel in Frankfurt
+        01 April: Stay in hotel in Frankfurt
+        02 April: Stay in hotel in Frankfurt
+        03 April: Stay in hotel in Frankfurt
+        04 April: Stay in hotel in Frankfurt
+        05 April: Stay in hotel in Frankfurt
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Frankfurt (29 March) - 1h 6m
+      Frankfurt → Frankfurt (29 March, After Game) - 0h 0m
+      Frankfurt → Mainz (05 April) - 0h 35m
+      Mainz → Frankfurt (05 April, After Game) - 0h 35m
+
+      🚆 Option 2: 6h 38m total travel, ending in Köln:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Köln
+      ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Stay in hotel in Köln
+        02 April: Stay in hotel in Köln
+        03 April: Stay in hotel in Köln
+        04 April: Stay in hotel in Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Frankfurt (29 March) - 1h 6m
+      Frankfurt → Köln (29 March, After Game) - 1h 6m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+----------------------------------------------------------------------------------------------------
+Trip 43:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Leverkusen Mitte, Mainz
+⚽ Teams: 1. FSV Mainz 05, Arminia Bielefeld, Bayer Leverkusen, Holstein Kiel, VfL Bochum
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   ℹ️  Only one travel option: 7h 48m total travel, ending in Köln
+   🏨 Hotel Changes: 0
+   🏨 Unique Hotels: 1
+   🏨 Hotel Locations: Köln
+   ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+   🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Stay in hotel in Köln
+        02 April: Stay in hotel in Köln
+        03 April: Stay in hotel in Köln
+        04 April: Stay in hotel in Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Bielefeld (01 April) - 1h 41m
+      Bielefeld → Köln (01 April, After Game) - 1h 41m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+----------------------------------------------------------------------------------------------------
+Trip 44:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bremen, Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: Bayer Leverkusen, Borussia Mönchengladbach, Eintracht Frankfurt, RB Leipzig, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 7h 54m total travel, ending in Münster (Westf):
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Münster (Westf), Essen
+      ✈️  Nearest airports to Münster (Westf): Düsseldorf (1h 11m), Frankfurt (3h 1m), Berlin (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Change hotel to Münster (Westf)
+        05 April: Stay in hotel in Münster (Westf)
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Mönchengladbach (29 March) - 0h 53m
+      Mönchengladbach → Essen (29 March, After Game) - 0h 53m
+      Essen → Münster (Westf) (04 April) - 0h 49m
+      Münster (Westf) → Bremen (05 April) - 1h 15m
+      Bremen → Münster (Westf) (05 April, After Game) - 1h 15m
+
+      🚆 Option 2: 7h 58m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Mönchengladbach (29 March) - 0h 53m
+      Mönchengladbach → Essen (29 March, After Game) - 0h 53m
+      Essen → Bremen (05 April) - 2h 6m
+      Bremen → Essen (05 April, After Game) - 2h 6m
+
+----------------------------------------------------------------------------------------------------
+Trip 45:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bremen, Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: Bayer Leverkusen, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 3
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 9h 54m total travel, ending in Münster (Westf):
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Münster (Westf), Essen
+      ✈️  Nearest airports to Münster (Westf): Düsseldorf (1h 11m), Frankfurt (3h 1m), Berlin (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Change hotel to Münster (Westf)
+        05 April: Stay in hotel in Münster (Westf)
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Münster (Westf) (04 April) - 0h 49m
+      Münster (Westf) → Bremen (05 April) - 1h 15m
+      Bremen → Münster (Westf) (05 April, After Game) - 1h 15m
+
+      🚆 Option 2: 9h 58m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Frankfurt (29 March) - 1h 53m
+      Frankfurt → Essen (29 March, After Game) - 1h 53m
+      Essen → Bremen (05 April) - 2h 6m
+      Bremen → Essen (05 April, After Game) - 2h 6m
+
+----------------------------------------------------------------------------------------------------
+Trip 46:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Leverkusen Mitte
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Borussia Dortmund, VfL Bochum
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   ⚽ Match:
+      🏟️  Borussia Dortmund vs 1. FSV Mainz 05 (16:30)
+      📍 Dortmund
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 1h 48m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Change hotel to Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (29 March) - 0h 39m
+      Dortmund → Dortmund (30 March, After Game) - 0h 0m
+
+      🚆 Option 2: 2h 27m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (30 March) - 0h 39m
+      Dortmund → Düsseldorf (30 March, After Game) - 0h 39m
+
+----------------------------------------------------------------------------------------------------
+Trip 47:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Leverkusen Mitte, Mönchengladbach
+⚽ Teams: Bayer Leverkusen, Borussia Mönchengladbach, RB Leipzig, VfL Bochum
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 2h 17m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Leverkusen Mitte
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Leverkusen Mitte
+        29 March: Change hotel to Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Leverkusen Mitte (28 March, After Game) - 0h 0m
+      Leverkusen Mitte → Düsseldorf (29 March) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+
+      🚆 Option 2: 2h 17m total travel, ending in Düsseldorf:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Düsseldorf
+      ✈️  Nearest airports to Düsseldorf: Düsseldorf (0h 0m), Frankfurt (1h 27m), Karlsruhe (2h 16m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Stay in hotel in Düsseldorf
+        05 April: Stay in hotel in Düsseldorf
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Mönchengladbach (29 March) - 0h 34m
+      Mönchengladbach → Düsseldorf (29 March, After Game) - 0h 34m
+
+----------------------------------------------------------------------------------------------------
+Trip 48:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bochum, Dortmund
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   💤 Rest Day
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   ℹ️  Only one travel option: 2h 20m total travel, ending in Dortmund
+   🏨 Hotel Changes: 0
+   🏨 Unique Hotels: 1
+   🏨 Hotel Locations: Dortmund
+   ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+   🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+      Dortmund → Bochum (05 April) - 0h 23m
+      Bochum → Dortmund (05 April, After Game) - 0h 23m
+
+----------------------------------------------------------------------------------------------------
+Trip 49:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bochum, Dortmund, Leverkusen Mitte
+⚽ Teams: Bayer Leverkusen, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   🔄 Travel Options:
+      🚆 Option 1: 2h 33m total travel, ending in Essen:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Stay in hotel in Düsseldorf
+        02 April: Stay in hotel in Düsseldorf
+        03 April: Stay in hotel in Düsseldorf
+        04 April: Change hotel to Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Essen (04 April) - 0h 24m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+      🚆 Option 2: 2h 36m total travel, ending in Essen:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Essen
+      ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Leverkusen Mitte (28 March) - 0h 45m
+      Leverkusen Mitte → Essen (28 March, After Game) - 0h 45m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+----------------------------------------------------------------------------------------------------
+Trip 50:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Leverkusen Mitte
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, VfL Bochum
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 2h 43m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Düsseldorf, Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Düsseldorf
+        29 March: Stay in hotel in Düsseldorf
+        30 March: Stay in hotel in Düsseldorf
+        31 March: Stay in hotel in Düsseldorf
+        01 April: Change hotel to Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Düsseldorf (28 March) - 0h 39m
+      Düsseldorf → Leverkusen Mitte (28 March) - 0h 15m
+      Leverkusen Mitte → Düsseldorf (28 March, After Game) - 0h 15m
+      Düsseldorf → Dortmund (01 April) - 0h 39m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+
+      🚆 Option 2: 4h 2m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+
+----------------------------------------------------------------------------------------------------
+Trip 51:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Dortmund, Mönchengladbach
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Borussia Mönchengladbach, RB Leipzig
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   💤 Rest Day
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   🔄 Travel Options:
+      🚆 Option 1: 2h 48m total travel, ending in Gütersloh:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Mönchengladbach, Gütersloh
+      ✈️  Nearest airports to Gütersloh: Düsseldorf (1h 34m), Berlin (2h 55m), Frankfurt (3h 18m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Mönchengladbach
+        29 March: Stay in hotel in Mönchengladbach
+        30 March: Stay in hotel in Mönchengladbach
+        31 March: Stay in hotel in Mönchengladbach
+        01 April: Change hotel to Gütersloh
+        02 April: Stay in hotel in Gütersloh
+        03 April: Stay in hotel in Gütersloh
+        04 April: Stay in hotel in Gütersloh
+        05 April: Stay in hotel in Gütersloh
+      Dortmund → Mönchengladbach (28 March) - 1h 17m
+      Mönchengladbach → Mönchengladbach (29 March, After Game) - 0h 0m
+      Mönchengladbach → Gütersloh (01 April) - 1h 54m
+      Gütersloh → Bielefeld (01 April) - 0h 8m
+      Bielefeld → Gütersloh (01 April, After Game) - 0h 8m
+
+      🚆 Option 2: 4h 8m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Bielefeld (01 April) - 0h 47m
+      Bielefeld → Dortmund (01 April, After Game) - 0h 47m
+
+----------------------------------------------------------------------------------------------------
+Trip 52:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bochum, Dortmund, Mönchengladbach
+⚽ Teams: Borussia Mönchengladbach, RB Leipzig, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   💤 Rest Day
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  VfL Bochum vs VfB Stuttgart (14:30)
+      📍 Bochum
+
+   ℹ️  Only one travel option: 2h 52m total travel, ending in Essen
+   🏨 Hotel Changes: 0
+   🏨 Unique Hotels: 1
+   🏨 Hotel Locations: Essen
+   ✈️  Nearest airports to Essen: Düsseldorf (0h 24m), Frankfurt (1h 53m), Karlsruhe (2h 57m)
+   🏨 Hotel Details:
+        28 March: Stay in hotel in Essen
+        29 March: Stay in hotel in Essen
+        30 March: Stay in hotel in Essen
+        31 March: Stay in hotel in Essen
+        01 April: Stay in hotel in Essen
+        02 April: Stay in hotel in Essen
+        03 April: Stay in hotel in Essen
+        04 April: Stay in hotel in Essen
+        05 April: Stay in hotel in Essen
+      Dortmund → Essen (28 March) - 0h 30m
+      Essen → Mönchengladbach (29 March) - 0h 53m
+      Mönchengladbach → Essen (29 March, After Game) - 0h 53m
+      Essen → Bochum (05 April) - 0h 18m
+      Bochum → Essen (05 April, After Game) - 0h 18m
+
+----------------------------------------------------------------------------------------------------
+Trip 53:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Frankfurt, Leverkusen Mitte
+⚽ Teams: Bayer Leverkusen, Eintracht Frankfurt, VfB Stuttgart, VfL Bochum
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Eintracht Frankfurt vs VfB Stuttgart (18:30)
+      📍 Frankfurt
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   💤 Rest Day
+
+   ℹ️  Only one travel option: 3h 54m total travel, ending in Köln
+   🏨 Hotel Changes: 0
+   🏨 Unique Hotels: 1
+   🏨 Hotel Locations: Köln
+   ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+   🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Stay in hotel in Köln
+        02 April: Stay in hotel in Köln
+        03 April: Stay in hotel in Köln
+        04 April: Stay in hotel in Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Frankfurt (29 March) - 1h 6m
+      Frankfurt → Köln (29 March, After Game) - 1h 6m
+
+----------------------------------------------------------------------------------------------------
+Trip 54:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bielefeld, Bremen, Dortmund
+⚽ Teams: Arminia Bielefeld, Bayer Leverkusen, Eintracht Frankfurt, Werder Bremen
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   💤 Rest Day
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   ⚽ Match:
+      🏟️  Arminia Bielefeld vs Bayer Leverkusen (21:45)
+      📍 Bielefeld
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 4h 13m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Osnabrück, Bielefeld
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Bielefeld
+        29 March: Stay in hotel in Bielefeld
+        30 March: Stay in hotel in Bielefeld
+        31 March: Stay in hotel in Bielefeld
+        01 April: Stay in hotel in Bielefeld
+        02 April: Stay in hotel in Bielefeld
+        03 April: Stay in hotel in Bielefeld
+        04 April: Change hotel to Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Bielefeld (28 March) - 0h 47m
+      Bielefeld → Bielefeld (01 April, After Game) - 0h 0m
+      Bielefeld → Osnabrück (04 April) - 0h 53m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+      🚆 Option 2: 4h 21m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Osnabrück
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Osnabrück
+        29 March: Stay in hotel in Osnabrück
+        30 March: Stay in hotel in Osnabrück
+        31 March: Stay in hotel in Osnabrück
+        01 April: Stay in hotel in Osnabrück
+        02 April: Stay in hotel in Osnabrück
+        03 April: Stay in hotel in Osnabrück
+        04 April: Stay in hotel in Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Osnabrück (28 March) - 0h 55m
+      Osnabrück → Bielefeld (01 April) - 0h 53m
+      Bielefeld → Osnabrück (01 April, After Game) - 0h 53m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+----------------------------------------------------------------------------------------------------
+Trip 55:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Dortmund, Leverkusen Mitte, Mainz
+⚽ Teams: 1. FSV Mainz 05, Bayer Leverkusen, Holstein Kiel, VfL Bochum
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  1. FSV Mainz 05 vs Holstein Kiel (14:30)
+      📍 Mainz
+
+   ℹ️  Only one travel option: 4h 26m total travel, ending in Köln
+   🏨 Hotel Changes: 0
+   🏨 Unique Hotels: 1
+   🏨 Hotel Locations: Köln
+   ✈️  Nearest airports to Köln: Düsseldorf (0h 21m), Frankfurt (1h 6m), Karlsruhe (2h 2m)
+   🏨 Hotel Details:
+        28 March: Stay in hotel in Köln
+        29 March: Stay in hotel in Köln
+        30 March: Stay in hotel in Köln
+        31 March: Stay in hotel in Köln
+        01 April: Stay in hotel in Köln
+        02 April: Stay in hotel in Köln
+        03 April: Stay in hotel in Köln
+        04 April: Stay in hotel in Köln
+        05 April: Stay in hotel in Köln
+      Dortmund → Köln (28 March) - 1h 10m
+      Köln → Leverkusen Mitte (28 March) - 0h 16m
+      Leverkusen Mitte → Köln (28 March, After Game) - 0h 16m
+      Köln → Mainz (05 April) - 1h 22m
+      Mainz → Köln (05 April, After Game) - 1h 22m
+
+----------------------------------------------------------------------------------------------------
+Trip 56:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bremen, Dortmund, Leverkusen Mitte
+⚽ Teams: Bayer Leverkusen, Eintracht Frankfurt, VfL Bochum, Werder Bremen
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   ⚽ Match:
+      🏟️  Bayer Leverkusen vs VfL Bochum (20:30)
+      📍 Leverkusen Mitte
+
+📅 29 March
+   💤 Rest Day
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 5h 58m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Dortmund, Osnabrück
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Change hotel to Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Osnabrück (04 April) - 0h 55m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+      🚆 Option 2: 6h 6m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Leverkusen Mitte (28 March) - 1h 14m
+      Leverkusen Mitte → Dortmund (28 March, After Game) - 1h 14m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m
+
+----------------------------------------------------------------------------------------------------
+Trip 57:
+----------------------------------------------------------------------------------------------------
+🏙️  Cities: Bremen, Dortmund, Mönchengladbach
+⚽ Teams: Borussia Mönchengladbach, Eintracht Frankfurt, RB Leipzig, Werder Bremen
+🏟️  Number of Games: 2
+✈️  Airports near start location (Dortmund): Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+
+📅 28 March
+   💤 Rest Day
+
+📅 29 March
+   ⚽ Match:
+      🏟️  Borussia Mönchengladbach vs RB Leipzig (15:30)
+      📍 Mönchengladbach
+
+📅 30 March
+   💤 Rest Day
+
+📅 31 March
+   💤 Rest Day
+
+📅 01 April
+   💤 Rest Day
+
+📅 02 April
+   💤 Rest Day
+
+📅 03 April
+   💤 Rest Day
+
+📅 04 April
+   💤 Rest Day
+
+📅 05 April
+   ⚽ Match:
+      🏟️  Werder Bremen vs Eintracht Frankfurt (17:30)
+      📍 Bremen
+
+   🔄 Travel Options:
+      🚆 Option 1: 6h 4m total travel, ending in Osnabrück:
+      🏨 Hotel Changes: 1
+      🏨 Unique Hotels: 2
+      🏨 Hotel Locations: Dortmund, Osnabrück
+      ✈️  Nearest airports to Osnabrück: Düsseldorf (1h 44m), Berlin (2h 55m), Frankfurt (3h 29m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Change hotel to Osnabrück
+        05 April: Stay in hotel in Osnabrück
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Osnabrück (04 April) - 0h 55m
+      Osnabrück → Bremen (05 April) - 0h 50m
+      Bremen → Osnabrück (05 April, After Game) - 0h 50m
+
+      🚆 Option 2: 6h 12m total travel, ending in Dortmund:
+      🏨 Hotel Changes: 0
+      🏨 Unique Hotels: 1
+      🏨 Hotel Locations: Dortmund
+      ✈️  Nearest airports to Dortmund: Düsseldorf (0h 39m), Frankfurt (2h 28m), Karlsruhe (3h 21m)
+      🏨 Hotel Details:
+        28 March: Stay in hotel in Dortmund
+        29 March: Stay in hotel in Dortmund
+        30 March: Stay in hotel in Dortmund
+        31 March: Stay in hotel in Dortmund
+        01 April: Stay in hotel in Dortmund
+        02 April: Stay in hotel in Dortmund
+        03 April: Stay in hotel in Dortmund
+        04 April: Stay in hotel in Dortmund
+        05 April: Stay in hotel in Dortmund
+      Dortmund → Mönchengladbach (29 March) - 1h 17m
+      Mönchengladbach → Dortmund (29 March, After Game) - 1h 17m
+      Dortmund → Bremen (05 April) - 1h 49m
+      Bremen → Dortmund (05 April, After Game) - 1h 49m

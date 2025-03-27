@@ -36,13 +36,13 @@ class TripVariation(BaseModel):
     cities: List[str] = []        
     teams: List[str] = []         
     num_games: int = 0
-    start_location: str = ""  # Add this field for the actual starting city
-    end_location: str = ""  # Final city of the trip
-    airport_distances: Dict[str, List[Dict[str, str]]] = {}  # Distances to/from airports
-    hotel_changes: int = 0  # Number of hotel changes during trip
-    unique_hotels: int = 0  # Number of unique hotels
-    hotel_locations: List[str] = []  # List of cities where hotels are located
-    hotel_stays: List[HotelStay] = []  # Detailed information about each hotel stay
+    start_location: str = "" 
+    end_location: str = ""  
+    airport_distances: Dict[str, List[Dict[str, str]]] = {} 
+    hotel_changes: int = 0  
+    unique_hotels: int = 0  
+    hotel_locations: List[str] = []  
+    hotel_stays: List[HotelStay] = [] 
 
 class TripGroup(BaseModel):
     base_trip: Dict[str, Any]
