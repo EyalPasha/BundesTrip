@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import Optional, List, Dict
 from datetime import datetime, timedelta
-from backend.utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips, get_travel_minutes_utils
+from backend.utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips, get_travel_minutes_utils, enhance_trip_planning_for_any_start
 from backend.models import TripRequest, FormattedResponse, TripVariation, TripGroup
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
 from backend.config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
@@ -34,6 +34,9 @@ games, tbd_games = load_games(GAMES_FILE)
 def home():
     return {"message": "Welcome to the Multi-Game Trip Planner API"}
 
+# ────────────────────────────────
+# 🛠️ Helper Functions
+# ────────────────────────────────
 
 def has_special_suffix(location_name: str) -> bool:
     """Check if location has a special suffix that shouldn't have hbf appended"""
@@ -730,6 +733,11 @@ def print_formatted_trip_schedule(response: FormattedResponse) -> str:
     return "\n".join(output)
 
 
+# ────────────────────────────────
+# 🛠️ Get Trip
+# ────────────────────────────────
+
+
 @app.post("/plan-trip", 
           summary="Plan a multi-game trip",
           description="Creates an optimized itinerary to watch multiple games based on preferences",
@@ -800,17 +808,31 @@ def get_trip(request: TripRequest):
                 )
         
         # Plan trip with optimized parameters
-        trip_result = plan_trip(
-            start_location=request.start_location,
-            trip_duration=request.trip_duration,
-            max_travel_time=request.max_travel_time,
-            games=filtered_games,
-            train_times=train_times,
-            tbd_games=filtered_tbd_games,
-            preferred_leagues=request.preferred_leagues,
-            start_date=request.start_date,
-            must_teams=request.must_teams
-        )
+        # NEW: Use enhance_trip_planning_for_any_start for "Any" start location
+        if request.start_location.lower() == "any":
+            trip_result = enhance_trip_planning_for_any_start(
+                start_location=request.start_location,
+                trip_duration=request.trip_duration,
+                max_travel_time=request.max_travel_time,
+                games=filtered_games,
+                train_times=train_times,
+                tbd_games=filtered_tbd_games,
+                preferred_leagues=request.preferred_leagues,
+                start_date=request.start_date,
+                must_teams=request.must_teams
+            )
+        else:
+            trip_result = plan_trip(
+                start_location=request.start_location,
+                trip_duration=request.trip_duration,
+                max_travel_time=request.max_travel_time,
+                games=filtered_games,
+                train_times=train_times,
+                tbd_games=filtered_tbd_games,
+                preferred_leagues=request.preferred_leagues,
+                start_date=request.start_date,
+                must_teams=request.must_teams
+            )
         
         # Extract TBD games
         result_tbd_games = None
@@ -996,6 +1018,12 @@ def get_trip(request: TripRequest):
             content={"error": f"An unexpected error occurred: {str(e)}"},
             status_code=500
         )
+
+
+
+# ────────────────────────────────
+# 🛠️ API's
+# ────────────────────────────────
 
 
 @app.get("/available-leagues", 

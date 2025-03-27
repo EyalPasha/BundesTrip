@@ -6,55 +6,66 @@ from typing import Optional, List, Dict, Tuple
 import copy
 from backend.config import TRAIN_TIMES_FILE
 
+# ────────────────────────────────
+# 🛠️ Helper Functions
+# ────────────────────────────────
+
 def get_travel_minutes_utils(train_times: Dict, from_loc: str, to_loc: str) -> Optional[int]:
     """Get travel time between locations, handling missing data and same-location"""
-    # Return 0 for same location
-    if from_loc == to_loc:
+    # Return 0 for same location (case-insensitive comparison)
+    if from_loc.lower() == to_loc.lower():
         return 0
     
-    # Try direct lookup
+    # Try direct lookup and reverse first (most common cases)
     minutes = train_times.get((from_loc, to_loc))
     if minutes is not None:
         return minutes
     
-    # Some stations like Leverkusen Mitte shouldn't have hbf appended
-    special_suffixes = ["Mitte", "Bahnhof"]
-    
-    # Only try adding hbf if no special suffix already exists
-    from_has_suffix = any(suffix in from_loc.lower() for suffix in special_suffixes)
-    to_has_suffix = any(suffix in to_loc.lower() for suffix in special_suffixes)
-    
-    # Try with hbf suffix for 'from' location if appropriate
-    if not from_has_suffix:
-        minutes = train_times.get((from_loc + " hbf", to_loc))
-        if minutes is not None:
-            return minutes
-    
-    # Try with hbf suffix for 'to' location if appropriate
-    if not to_has_suffix:
-        minutes = train_times.get((from_loc, to_loc + " hbf"))
-        if minutes is not None:
-            return minutes
-    
-    # Try with hbf suffix for both locations if appropriate
-    if not from_has_suffix and not to_has_suffix:
-        minutes = train_times.get((from_loc + " hbf", to_loc + " hbf"))
-        if minutes is not None:
-            return minutes
-    
-    # Try removing hbf from both locations
-    from_clean = from_loc.replace(" hbf", "")
-    to_clean = to_loc.replace(" hbf", "")
-    minutes = train_times.get((from_clean, to_clean))
-    if minutes is not None:
-        return minutes
-    
-    # Try reverse direction (sometimes train_times only has one direction)
     minutes = train_times.get((to_loc, from_loc))
     if minutes is not None:
         return minutes
     
-    # Not found
+    # Cache lowercase versions for suffix checking
+    from_loc_lower = from_loc.lower()
+    to_loc_lower = to_loc.lower()
+    
+    # Special suffixes that preclude adding HBF
+    special_suffixes = ["mitte", "bahnhof"]
+    
+    # Check if special suffixes exist
+    from_has_special = any(suffix in from_loc_lower for suffix in special_suffixes)
+    to_has_special = any(suffix in to_loc_lower for suffix in special_suffixes)
+    
+    # Generate variants efficiently
+    variants = []
+    
+    # Add "hbf" variants only when appropriate
+    if not from_has_special:
+        variants.append((from_loc + " hbf", to_loc))
+        if not to_has_special:
+            variants.append((from_loc + " hbf", to_loc + " hbf"))
+    
+    if not to_has_special:
+        variants.append((from_loc, to_loc + " hbf"))
+    
+    # Remove "hbf" if present (only compute cleaned versions when needed)
+    if " hbf" in from_loc or " hbf" in to_loc:
+        from_clean = from_loc.replace(" hbf", "")
+        to_clean = to_loc.replace(" hbf", "")
+        variants.append((from_clean, to_clean))
+    
+    # Try all variants and their reverse
+    for variant in variants:
+        minutes = train_times.get(variant)
+        if minutes is not None:
+            return minutes
+        
+        # Try reverse variant
+        reverse = (variant[1], variant[0])
+        minutes = train_times.get(reverse)
+        if minutes is not None:
+            return minutes
+    
     return None
 
 def convert_to_minutes(time_str: str) -> int:
@@ -856,6 +867,10 @@ def process_tbd_games(tbd_games: list, start_date: datetime, trip_duration: int,
             
     return tbd_games_in_period
 
+# ────────────────────────────────
+# 🛠️ Any Functions
+# ────────────────────────────────
+
 def determine_best_start_location(start_location: str, valid_games: list, start_date: datetime, train_times: dict, max_travel_time: int) -> str:
     """Determine the best starting location if 'Any' is specified."""
     if start_location.lower() != "any":
@@ -880,6 +895,196 @@ def determine_best_start_location(start_location: str, valid_games: list, start_
         pass
         
     return "Unknown"
+
+def identify_potential_start_cities(games, train_times, trip_duration, max_travel_time=120, **params):
+    """Identify potential starting cities using various strategies"""
+    start_date = params.get('start_date')
+    if isinstance(start_date, str):
+        # Convert string date to datetime if needed
+        try:
+            start_date = datetime.strptime(f"{start_date} 2025", "%d %B %Y")
+        except:
+            start_date = datetime.now()
+    elif not start_date:
+        start_date = datetime.now()
+    
+    trip_end_date = start_date + timedelta(days=trip_duration)
+    
+    # Get games in the trip period
+    trip_games = [g for g in games if hasattr(g, 'date') and start_date.date() <= g.date.date() < trip_end_date.date()]
+    
+    if not trip_games:
+        return ["Berlin", "Frankfurt", "Munich"]  # Default major cities as fallback
+    
+    candidate_cities = set()
+    
+    # Strategy 1: Include all game locations
+    for game in trip_games:
+        if hasattr(game, 'hbf_location') and game.hbf_location != "Unknown":
+            candidate_cities.add(game.hbf_location)
+    
+    # Strategy 2: Include major transit hubs
+    major_hubs = {"Berlin", "Frankfurt", "Munich", "Hamburg", "Cologne", "Düsseldorf", "Stuttgart"}
+    candidate_cities.update(major_hubs)
+    
+    # Strategy 3: Find midpoints between games (cities that can reach multiple games)
+    all_train_cities = set()
+    for loc_pair in train_times.keys():
+        all_train_cities.add(loc_pair[0])
+        all_train_cities.add(loc_pair[1])
+    
+    game_locations = [g.hbf_location for g in trip_games if hasattr(g, 'hbf_location')]
+    
+    # NEW: Find cities that can reach at least 2 game locations within max_travel_time
+    for city in all_train_cities:
+        reachable_count = sum(1 for loc in game_locations if 
+                            train_times.get((city, loc), float('inf')) <= max_travel_time)
+        if reachable_count >= 2:
+            candidate_cities.add(city)
+    
+    # NEW: Find strategic midpoints using clustering
+    if len(game_locations) >= 3:
+        # Find cities that minimize average travel time to game locations
+        avg_travel_times = {}
+        for city in all_train_cities:
+            travel_times = [train_times.get((city, loc), float('inf')) for loc in game_locations]
+            if all(t <= max_travel_time for t in travel_times):  # All games must be reachable
+                avg_travel_times[city] = sum(travel_times) / len(travel_times)
+        
+        # Add top 5 cities with lowest average travel time
+        if avg_travel_times:
+            top_cities = sorted(avg_travel_times.items(), key=lambda x: x[1])[:5]
+            for city, _ in top_cities:
+                candidate_cities.add(city)
+    
+    # Ensure we don't have too many cities to test
+    if len(candidate_cities) > 15:  # Limit to avoid excessive computation
+        # Prioritize major hubs and game locations
+        priority_cities = major_hubs.union(game_locations)
+        additional_cities = list(candidate_cities - priority_cities)
+        additional_cities.sort()  # Sort for deterministic behavior
+        
+        candidate_cities = list(priority_cities) + additional_cities[:15-len(priority_cities)]
+    
+    return list(candidate_cities)
+
+def enhance_trip_planning_for_any_start(start_location, trip_duration, max_travel_time, games, train_times, **other_params):
+    """Enhanced planning when 'Any' start location is chosen"""
+    if start_location.lower() != "any":
+        # Use regular planning for specific start locations
+        return plan_trip(start_location, trip_duration, max_travel_time, games, train_times, **other_params)
+    
+    # 1. Identify potential starting cities
+    potential_starts = identify_potential_start_cities(games, train_times, trip_duration, max_travel_time, **other_params)
+    
+    # 2. Generate trips for each potential start
+    all_potential_trips = []
+    trip_results_by_start = {}
+    
+    for potential_start in potential_starts:
+        try:
+            trip_result = plan_trip(potential_start, trip_duration, max_travel_time, games, train_times, **other_params)
+            
+            # Store the entire result to preserve TBD games and other metadata
+            trip_results_by_start[potential_start] = trip_result
+            
+            # Extract trips and tag with start location
+            if "trips" in trip_result and trip_result["trips"]:
+                for trip in trip_result["trips"]:
+                    trip_copy = copy.deepcopy(trip)
+                    # Tag trips with their start location for reference
+                    trip_copy.append({"start_location": potential_start})
+                    all_potential_trips.append(trip_copy)
+        except Exception as e:
+            print(f"Error planning trip from {potential_start}: {e}")
+            continue
+    
+    # 3. Sort and filter the trips to find the best options
+    if not all_potential_trips:
+        # If no trips found, return the result from first city with TBD games, or error
+        for start, result in trip_results_by_start.items():
+            if "TBD_Games" in result and result["TBD_Games"]:
+                return result
+        
+        return {"no_trips_available": True, "actual_start_date": other_params.get("start_date", "")}
+    
+    # Group trips by their game attendance pattern
+    trip_groups = group_trips_by_matches(all_potential_trips)
+    
+    # Find optimal start location for each unique trip pattern
+    best_trips = []
+    for group in trip_groups:
+        # For each distinct set of games, find the trip with:
+        optimal_trip = find_optimal_trip_in_group(group)
+        if optimal_trip:
+            best_trips.append(optimal_trip)
+    
+    # Extract TBD games from any result (they should be the same)
+    tbd_games = None
+    actual_start_date = ""
+    for start, result in trip_results_by_start.items():
+        if "TBD_Games" in result and result["TBD_Games"]:
+            tbd_games = result["TBD_Games"]
+        if "actual_start_date" in result:
+            actual_start_date = result["actual_start_date"]
+        if tbd_games and actual_start_date:
+            break
+    
+    # Return the best options
+    result = {"trips": best_trips, "actual_start_date": actual_start_date}
+    if tbd_games:
+        result["TBD_Games"] = tbd_games
+    
+    return result
+
+def group_trips_by_matches(trips):
+    """Group trips by the set of matches they include"""
+    groups = {}
+    
+    for trip in trips:
+        # Create signature based on attended matches
+        match_signature = []
+        for day in trip:
+            if isinstance(day, dict) and "matches" in day:
+                for match in day.get("matches", []):
+                    match_signature.append((day.get("day", ""), match.get("match", "")))
+        
+        signature = tuple(sorted(match_signature))
+        
+        if signature not in groups:
+            groups[signature] = []
+        
+        groups[signature].append(trip)
+    
+    return list(groups.values())
+
+def find_optimal_trip_in_group(trip_group):
+    """Find the optimal trip within a group with the same matches"""
+    if not trip_group:
+        return None
+    
+    # First prioritize by number of games
+    trip_group.sort(key=lambda t: -sum(1 for day in t if isinstance(day, dict) and day.get("matches")))
+    max_games = sum(1 for day in trip_group[0] if isinstance(day, dict) and day.get("matches"))
+    
+    # Filter to keep only trips with max games
+    max_game_trips = [t for t in trip_group if 
+                     sum(1 for day in t if isinstance(day, dict) and day.get("matches")) == max_games]
+    
+    # Then sort by total travel time
+    max_game_trips.sort(key=lambda t: calculate_total_travel_time(t))
+    
+    # Finally sort by hotel changes
+    max_game_trips.sort(key=lambda t: next((item.get("hotel_changes", 0) 
+                                           for item in t 
+                                           if isinstance(item, dict) and "hotel_changes" in item), 
+                                          float('inf')))
+    
+    return max_game_trips[0] if max_game_trips else None
+
+# ────────────────────────────────
+# 🛠️ Plan Trip
+# ────────────────────────────────
 
 def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, games: list, train_times: dict, 
              tbd_games: list = None, preferred_leagues: list = None, start_date: Optional[str] = None, must_teams: Optional[list] = None):    
