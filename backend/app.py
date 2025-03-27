@@ -5,10 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import Optional, List, Dict
 from datetime import datetime, timedelta
-from backend.utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips, get_travel_minutes_utils, enhance_trip_planning_for_any_start
-from backend.models import TripRequest, FormattedResponse, TripVariation, TripGroup
+from utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips, get_travel_minutes_utils, enhance_trip_planning_for_any_start
+from models import TripRequest, FormattedResponse, TripVariation, TripGroup
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
-from backend.config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
+from config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
 
 # Initialize FastAPI with metadata
 app = FastAPI(

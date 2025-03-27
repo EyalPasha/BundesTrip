@@ -1,10 +1,10 @@
 import pandas as pd
 from datetime import datetime, timedelta
-from backend.models import Game
-from backend.scrapers.synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, third_liga_stadiums
+from models import Game
+from scrapers.synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, third_liga_stadiums
 from typing import Optional, List, Dict, Tuple
 import copy
-from backend.config import TRAIN_TIMES_FILE
+from config import TRAIN_TIMES_FILE
 
 # ────────────────────────────────
 # 🛠️ Helper Functions
