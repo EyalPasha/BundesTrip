@@ -16,3 +16,5 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # CORS settings
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*").split(",")
+
+ADMIN_API_KEY = "wiz123"

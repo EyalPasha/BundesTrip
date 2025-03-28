@@ -1382,3 +1382,380 @@ def search(
         "results": results,
         "total_results": sum(len(results[t]) for t in results)
     }
+
+@app.get("/game-details/{league}/{date}",
+         summary="Get game details for a specific date",
+         description="Returns detailed information about games on a specific date for a league",
+         tags=["Game Data"])
+def get_game_details(
+    league: str = Path(..., description="The league name"),
+    date: str = Path(..., description="The date in YYYY-MM-DD format"),
+):
+    """Get detailed game information for a specific date and league."""
+    try:
+        target_date = datetime.strptime(date, "%Y-%m-%d").date()
+    except ValueError:
+        return JSONResponse(
+            content={"error": "Invalid date format. Please use YYYY-MM-DD."},
+            status_code=400
+        )
+    
+    # Filter games by league and date
+    day_games = []
+    
+    for game in games:
+        if not (hasattr(game, 'date') and hasattr(game, 'league')):
+            continue
+            
+        game_date = game.date.date()
+        if game_date == target_date and game.league == league:
+            day_games.append({
+                "match": f"{game.home_team} vs {game.away_team}",
+                "time": game.time if hasattr(game, 'time') else "TBD",
+                "location": game.hbf_location if hasattr(game, 'hbf_location') else "Unknown",
+                "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown",
+                "league": game.league
+            })
+    
+    return {
+        "league": league,
+        "date": date,
+        "display_date": target_date.strftime("%d %B %Y"),
+        "games": day_games,
+        "count": len(day_games)
+    }
+
+
+@app.get("/league-schedule/{league}",
+         summary="Get a league's schedule",
+         description="Returns the schedule for a specific league",
+         tags=["League Data"])
+def get_league_schedule(
+    league: str = Path(..., description="The league name"),
+    days: int = Query(60, description="Number of days to look ahead")
+):
+    """Get upcoming schedule for a specific league."""
+    start_date = datetime.now().date()
+    end_date = start_date + timedelta(days=days)
+    
+    # Find matching league with correct capitalization
+    league_name = None
+    all_leagues = set()
+    for game in games:
+        if hasattr(game, 'league'):
+            all_leagues.add(game.league)
+    
+    for l in all_leagues:
+        if l.lower() == league.lower():
+            league_name = l
+            break
+    
+    if not league_name:
+        return JSONResponse(
+            content={"error": f"League '{league}' not found in the database."},
+            status_code=404
+        )
+    
+    # Group games by date
+    dates_with_games = {}
+    for game in games:
+        if not (hasattr(game, 'date') and hasattr(game, 'league') and game.league == league_name):
+            continue
+            
+        game_date = game.date.date()
+        if game_date < start_date or game_date > end_date:
+            continue
+            
+        date_str = game_date.strftime("%Y-%m-%d")
+        if date_str not in dates_with_games:
+            dates_with_games[date_str] = {
+                "date": game_date.strftime("%d %B %Y"),
+                "games": []
+            }
+        
+        dates_with_games[date_str]["games"].append({
+            "match": f"{game.home_team} vs {game.away_team}",
+            "time": game.time if hasattr(game, 'time') else "TBD",
+            "location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown"
+        })
+    
+    # Sort dates and games
+    sorted_dates = sorted(dates_with_games.keys())
+    schedule = []
+    for date_str in sorted_dates:
+        day_info = dates_with_games[date_str]
+        schedule.append({
+            "date": date_str,
+            "display_date": day_info["date"],
+            "games": day_info["games"],
+            "game_count": len(day_info["games"])
+        })
+    
+    return {
+        "league": league_name,
+        "schedule": schedule,
+        "total_matchdays": len(schedule),
+        "total_games": sum(day["game_count"] for day in schedule)
+    }
+
+
+@app.get("/airport-information",
+         summary="Get airport information",
+         description="Returns information about airports and their connections to cities",
+         tags=["Travel Data"])
+def get_airport_information(city: Optional[str] = Query(None, description="Filter for connections to a specific city")):
+    """Get airport information and their connections to cities."""
+    from scrapers.synonyms import AIRPORT_CITIES
+    
+    airports = []
+    for airport in AIRPORT_CITIES:
+        airport_clean = airport.replace(" hbf", "")
+        
+        # If city filter is provided, check connections
+        if city:
+            # Find exact match for city
+            city_match = None
+            for city_key in set(c for pair in train_times.keys() for c in pair):
+                if city_key.lower() == city.lower():
+                    city_match = city_key
+                    break
+            
+            if not city_match:
+                return JSONResponse(
+                    content={"error": f"City '{city}' not found in the database."},
+                    status_code=404
+                )
+            
+            # Check if there's a direct connection
+            travel_minutes = train_times.get((city_match, airport), None)
+            if travel_minutes is None:
+                continue
+                
+            travel_time = format_travel_time(travel_minutes)
+            
+            airports.append({
+                "airport": airport_clean,
+                "connections": [{
+                    "city": city_match,
+                    "display_name": city_match.replace(" hbf", ""),
+                    "travel_time": travel_minutes,
+                    "travel_time_formatted": travel_time
+                }]
+            })
+        else:
+            # Get all connections for this airport
+            connections = []
+            for city_pair, travel_time in train_times.items():
+                if city_pair[0] == airport:
+                    dest_city = city_pair[1]
+                    connections.append({
+                        "city": dest_city,
+                        "display_name": dest_city.replace(" hbf", ""),
+                        "travel_time": travel_time,
+                        "travel_time_formatted": format_travel_time(travel_time)
+                    })
+            
+            # Sort connections by travel time
+            connections.sort(key=lambda x: x["travel_time"])
+            
+            airports.append({
+                "airport": airport_clean,
+                "connections": connections[:20]  # Limit to top 20 connections to avoid huge response
+            })
+    
+    return {
+        "airports": airports,
+        "count": len(airports)
+    }
+
+
+@app.get("/travel-stats",
+         summary="Get travel statistics",
+         description="Returns statistics about travel times between cities",
+         tags=["Travel Data"])
+def get_travel_stats():
+    """Get statistics about travel times between cities."""
+    if not train_times:
+        return JSONResponse(
+            content={"error": "No travel data available"},
+            status_code=500
+        )
+    
+    # Calculate statistics
+    travel_times = list(train_times.values())
+    avg_travel_time = sum(travel_times) / len(travel_times) if travel_times else 0
+    max_travel_time = max(travel_times) if travel_times else 0
+    min_travel_time = min(travel_times) if travel_times else 0
+    
+    # Get most connected cities
+    city_connections = {}
+    for city_pair in train_times.keys():
+        city1, city2 = city_pair
+        
+        if city1 not in city_connections:
+            city_connections[city1] = 0
+        city_connections[city1] += 1
+        
+        if city2 not in city_connections:
+            city_connections[city2] = 0
+        city_connections[city2] += 1
+    
+    # Sort cities by number of connections
+    most_connected = sorted(
+        [(city, count) for city, count in city_connections.items()],
+        key=lambda x: x[1],
+        reverse=True
+    )[:10]  # Top 10
+    
+    # Get fastest and slowest connections
+    fastest = sorted(
+        [(pair, time) for pair, time in train_times.items()],
+        key=lambda x: x[1]
+    )[:5]  # Top 5 fastest
+    
+    slowest = sorted(
+        [(pair, time) for pair, time in train_times.items()],
+        key=lambda x: x[1],
+        reverse=True
+    )[:5]  # Top 5 slowest
+    
+    return {
+        "total_connections": len(train_times),
+        "average_travel_time": {
+            "minutes": round(avg_travel_time),
+            "formatted": format_travel_time(round(avg_travel_time))
+        },
+        "max_travel_time": {
+            "minutes": max_travel_time,
+            "formatted": format_travel_time(max_travel_time)
+        },
+        "min_travel_time": {
+            "minutes": min_travel_time,
+            "formatted": format_travel_time(min_travel_time)
+        },
+        "most_connected_cities": [
+            {
+                "city": city.replace(" hbf", ""),
+                "connections": count
+            }
+            for city, count in most_connected
+        ],
+        "fastest_connections": [
+            {
+                "from": pair[0].replace(" hbf", ""),
+                "to": pair[1].replace(" hbf", ""),
+                "travel_time": {
+                    "minutes": time,
+                    "formatted": format_travel_time(time)
+                }
+            }
+            for pair, time in fastest
+        ],
+        "slowest_connections": [
+            {
+                "from": pair[0].replace(" hbf", ""),
+                "to": pair[1].replace(" hbf", ""),
+                "travel_time": {
+                    "minutes": time,
+                    "formatted": format_travel_time(time)
+                }
+            }
+            for pair, time in slowest
+        ]
+    }
+
+
+@app.get("/games-by-date/{date}",
+         summary="Get all games on a specific date",
+         description="Returns all games scheduled for a specific date across all leagues",
+         tags=["Game Data"])
+def get_games_by_date(
+    date: str = Path(..., description="The date in YYYY-MM-DD format"),
+    league: Optional[str] = Query(None, description="Filter by league")
+):
+    """Get all games scheduled for a specific date."""
+    try:
+        target_date = datetime.strptime(date, "%Y-%m-%d").date()
+    except ValueError:
+        return JSONResponse(
+            content={"error": "Invalid date format. Please use YYYY-MM-DD."},
+            status_code=400
+        )
+    
+    # Filter games by date
+    day_games = []
+    
+    for game in games:
+        if not hasattr(game, 'date'):
+            continue
+            
+        game_date = game.date.date()
+        if game_date == target_date:
+            # Apply league filter if specified
+            if league and hasattr(game, 'league') and game.league != league:
+                continue
+                
+            day_games.append({
+                "match": f"{game.home_team} vs {game.away_team}",
+                "time": game.time if hasattr(game, 'time') else "TBD",
+                "location": game.hbf_location if hasattr(game, 'hbf_location') else "Unknown",
+                "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown",
+                "league": game.league if hasattr(game, 'league') else "Unknown"
+            })
+    
+    # Group by league
+    by_league = {}
+    for game in day_games:
+        league_name = game["league"]
+        if league_name not in by_league:
+            by_league[league_name] = []
+        by_league[league_name].append(game)
+    
+    return {
+        "date": date,
+        "display_date": target_date.strftime("%d %B %Y"),
+        "total_games": len(day_games),
+        "games_by_league": by_league,
+        "leagues": list(by_league.keys())
+    }
+
+@app.post("/admin/refresh-data",
+         summary="Refresh game and travel data",
+         description="Reloads game schedules and train times from data files without restarting the server",
+         tags=["Administration"])
+def refresh_data(api_key: str = Query(..., description="API key for admin operations")):
+    """Refresh all data from source files."""
+    # Simple API key check (in production, use proper authentication)
+    from config import ADMIN_API_KEY
+    if api_key != ADMIN_API_KEY:
+        return JSONResponse(
+            content={"error": "Invalid API key"},
+            status_code=401
+        )
+    
+    try:
+        global train_times, games, tbd_games
+        
+        # Reload data
+        new_train_times = load_train_times(TRAIN_TIMES_FILE)
+        new_games, new_tbd_games = load_games(GAMES_FILE)
+        
+        # Update global variables
+        train_times = new_train_times
+        games = new_games
+        tbd_games = new_tbd_games
+        
+        return {
+            "status": "success",
+            "timestamp": datetime.now().isoformat(),
+            "games_loaded": len(games),
+            "tbd_games_loaded": len(tbd_games),
+            "train_connections_loaded": len(train_times)
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return JSONResponse(
+            content={"error": f"Failed to refresh data: {str(e)}"},
+            status_code=500
+        )
