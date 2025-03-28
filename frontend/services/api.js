@@ -10,20 +10,33 @@ const API_BASE_URL = 'http://localhost:8000';
  */
 async function fetchApi(endpoint, options = {}, retries = 2) {
     try {
-        // Create a promise that will resolve with either the fetch result or a timeout error
+        console.time(`API call to ${endpoint}`); // Add timing
+        
+        // Reduce timeout to 60 seconds
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 60000); 
+        
+        // Add keep-alive connection for better performance
+        const cacheOptions = {
+            cache: endpoint.includes('plan-trip') ? 'no-cache' : 'default',
+            keepalive: true,
+            ...options,
+        };
         
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-            ...options,
+            ...cacheOptions,
             signal: controller.signal,
             headers: {
                 'Content-Type': 'application/json',
+                'X-Client-Source': 'web-interface', // Help server identify source
+                'Connection': 'keep-alive',
+                'Accept': 'application/json',
                 ...options.headers
             }
         });
         
         clearTimeout(timeoutId);
+        console.timeEnd(`API call to ${endpoint}`); // Log timing
         
         // Enhanced error handling with user-friendly messages
         if (!response.ok) {
@@ -114,10 +127,47 @@ async function getTeams(league = null) {
  * @returns {Promise<object>} Trip planning results
  */
 async function planTrip(tripData) {
-    return fetchApi('/plan-trip', {
-        method: 'POST',
-        body: JSON.stringify(tripData)
-    });
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const loadingText = document.getElementById('loadingText');
+    
+    if (loadingIndicator) loadingIndicator.classList.remove('d-none');
+    if (loadingText) loadingText.textContent = 'Connecting to server...';
+    
+    try {
+        // Start a timer to update the loading message
+        let secondsElapsed = 0;
+        const loadingTimer = setInterval(() => {
+            secondsElapsed++;
+            if (loadingText) {
+                if (secondsElapsed < 5) {
+                    loadingText.textContent = 'Connecting to server...';
+                } else if (secondsElapsed < 20) {
+                    loadingText.textContent = `Planning trip routes (${secondsElapsed}s)...`;
+                } else if (secondsElapsed < 40) {
+                    loadingText.textContent = `Finding matches (${secondsElapsed}s)...`;
+                } else {
+                    loadingText.textContent = `Processing results (${secondsElapsed}s)...`; 
+                }
+            }
+        }, 1000);
+        
+        // Make the request
+        const response = await fetchApi('/plan-trip', {
+            method: 'POST',
+            body: JSON.stringify(tripData)
+        });
+        
+        // Clear the timer
+        clearInterval(loadingTimer);
+        
+        // Process response...
+        
+        return response;
+    } catch (error) {
+        throw error;
+    } finally {
+        if (loadingIndicator) loadingIndicator.classList.add('d-none');
+    }
 }
 
 /**
@@ -159,6 +209,92 @@ async function getTeamSchedule(team, days = 60) {
     return fetchApi(`/team-schedule/${encodeURIComponent(team)}?days=${days}`);
 }
 
+/**
+ * Get game details for a specific date and league
+ * @param {string} league - League name
+ * @param {string} date - Date in YYYY-MM-DD format
+ * @returns {Promise<object>} Game details
+ */
+async function getGameDetails(league, date) {
+    return fetchApi(`/game-details/${encodeURIComponent(league)}/${date}`);
+}
+
+/**
+ * Get a league's schedule
+ * @param {string} league - League name
+ * @param {number} days - Number of days to look ahead
+ * @returns {Promise<object>} League schedule
+ */
+async function getLeagueSchedule(league, days = 60) {
+    return fetchApi(`/league-schedule/${encodeURIComponent(league)}?days=${days}`);
+}
+
+/**
+ * Get airport information and connections
+ * @param {string|null} city - Filter for connections to a specific city
+ * @returns {Promise<object>} Airport information
+ */
+async function getAirportInformation(city = null) {
+    const endpoint = city ? `/airport-information?city=${encodeURIComponent(city)}` : '/airport-information';
+    return fetchApi(endpoint);
+}
+
+/**
+ * Get travel statistics
+ * @returns {Promise<object>} Travel statistics
+ */
+async function getTravelStats() {
+    return fetchApi('/travel-stats');
+}
+
+/**
+ * Get all games on a specific date
+ * @param {string} date - Date in YYYY-MM-DD format
+ * @param {string|null} league - Filter by league
+ * @returns {Promise<object>} Games on date
+ */
+async function getGamesByDate(date, league = null) {
+    const endpoint = league 
+        ? `/games-by-date/${date}?league=${encodeURIComponent(league)}`
+        : `/games-by-date/${date}`;
+    return fetchApi(endpoint);
+}
+
+/**
+ * Check API health
+ * @returns {Promise<object>} Health status
+ */
+async function checkHealth() {
+    return fetchApi('/health');
+}
+
+/**
+ * Search for teams, cities, or leagues
+ * @param {string} query - Search query (min 2 characters)
+ * @param {Array<string>} types - Types to search ["teams", "cities", "leagues"]
+ * @returns {Promise<object>} Search results
+ */
+async function search(query, types = ["teams", "cities", "leagues"]) {
+    const queryParams = new URLSearchParams();
+    queryParams.append('q', query);
+    
+    // Add each type as a separate query parameter
+    types.forEach(type => queryParams.append('types', type));
+    
+    return fetchApi(`/search?${queryParams.toString()}`);
+}
+
+/**
+ * Refresh game and travel data (admin only)
+ * @param {string} apiKey - Admin API key
+ * @returns {Promise<object>} Refresh status
+ */
+async function refreshData(apiKey) {
+    return fetchApi(`/admin/refresh-data?api_key=${apiKey}`, {
+        method: 'POST'
+    });
+}
+
 // Export all API functions
 export {
     fetchApi,
@@ -168,5 +304,13 @@ export {
     planTrip,
     getAvailableDates,
     getCityConnections,
-    getTeamSchedule
+    getTeamSchedule,
+    getGameDetails,
+    getLeagueSchedule,
+    getAirportInformation,
+    getTravelStats,
+    getGamesByDate,
+    checkHealth,
+    search,
+    refreshData
 };

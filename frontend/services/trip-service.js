@@ -2,6 +2,10 @@ import { validateForm } from './validators.js';
 import { planTrip } from './api.js';
 import { showErrorToast, showSuccessToast } from './notifications.js';
 import { renderResults } from '../components/results-display.js';
+import { renderTripCard } from '../components/trip-card.js';
+
+// Make renderTripCard globally available for API service
+window.renderTripCard = renderTripCard;
 
 async function handleSearch(e) {
     console.log("Form submitted!", e);
@@ -13,10 +17,21 @@ async function handleSearch(e) {
         return;
     }
     
+    // Hide results container while searching
+    const resultsContainer = document.getElementById('resultsContainer');
+    if (resultsContainer) {
+        resultsContainer.classList.add('d-none');
+    }
+    
+    // Clear previous results
+    const tripResults = document.getElementById('tripResults');
+    if (tripResults) {
+        tripResults.innerHTML = '';
+    }
+    
     // Show loading state
     window.DOM.loadingIndicator.classList.remove('d-none');
     window.DOM.resultsSection.classList.remove('d-none');
-    window.DOM.tripResults.innerHTML = '';
     window.DOM.noResultsMessage.classList.add('d-none');
     
     try {
@@ -38,6 +53,11 @@ async function handleSearch(e) {
         // Call API
         const response = await planTrip(payload);
         console.log("API response received:", response);
+        
+        // Show results container if we got results
+        if (resultsContainer && response && response.trip_groups && response.trip_groups.length > 0) {
+            resultsContainer.classList.remove('d-none');
+        }
         
         // Render the results
         renderResults(response);

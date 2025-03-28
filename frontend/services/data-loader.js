@@ -1,8 +1,8 @@
-import { getCities, getLeagues, getTeams } from './api.js';
+import { getCities, getLeagues, getTeams, getAvailableDates } from './api.js';
 import { showErrorToast } from './notifications.js';
 import { showComponentLoading, hideComponentLoading } from './ui-helpers.js';
 
-
+// German teams list - this should match the teams in your backend database
 const GERMAN_TEAMS = [
     "Bayern Munich", "Borussia Dortmund", "Bayer Leverkusen", "RB Leipzig", 
     "VfB Stuttgart", "Eintracht Frankfurt", "SC Freiburg", "1. FC Union Berlin", 
@@ -19,11 +19,12 @@ const GERMAN_TEAMS = [
     "VfB Stuttgart II", "SC Verl", "Viktoria Köln", "Waldhof Mannheim", "SV Wehen Wiesbaden"
 ];
 
+// This should match the priority in your backend's league_priority
 const LEAGUE_PRIORITY = {
-    "bundesliga": 1,  
-    "2bundesliga": 2, 
-    "Champions League": 3,  
-    "DFB-Pokal": 4,   
+    "bundesliga": 1,
+    "2bundesliga": 2,
+    "Champions League": 3,
+    "DFB-Pokal": 4,
     "3-liga": 5,
     "Europa League": 6,
     "Conference League": 7
@@ -44,12 +45,24 @@ async function loadCities() {
         showComponentLoading(window.DOM.startLocationSelect.parentElement);
         const data = await getCities();
         
+        // Clear existing options first
+        window.DOM.startLocationSelect.innerHTML = '';
+        
+        // Add cities from the backend response
         data.cities.forEach(city => {
             const option = document.createElement('option');
             option.value = city.id;
             option.textContent = city.name;
             window.DOM.startLocationSelect.appendChild(option);
         });
+        
+        // Select "Any" by default if it exists
+        const anyOption = Array.from(window.DOM.startLocationSelect.options)
+            .find(option => option.value.toLowerCase() === 'any');
+            
+        if (anyOption) {
+            window.DOM.startLocationSelect.value = anyOption.value;
+        }
     } catch (error) {
         showErrorToast(`Failed to load cities: ${error.message}`);
     } finally {
@@ -233,6 +246,23 @@ async function loadAllTeams() {
     }
 }
 
+/**
+ * Load available dates with matches for the datepicker
+ * @param {Object} params Filter parameters
+ * @param {string} [params.league] League filter
+ * @param {string} [params.team] Team filter 
+ * @returns {Promise<Array>} Array of dates with match info
+ */
+async function loadAvailableDates(params = {}) {
+    try {
+        const data = await getAvailableDates(params);
+        return data.dates || [];
+    } catch (error) {
+        console.error('Failed to load available dates:', error);
+        return [];
+    }
+}
+
 // Format options for Select2 dropdowns - clean modern design
 function formatLeagueOption(league) {
     if (!league.id) return league.text;
@@ -261,5 +291,6 @@ export {
     loadLeagues,
     loadTeams,
     updateTeamsByLeague,
+    loadAvailableDates,
     GERMAN_TEAMS
 };

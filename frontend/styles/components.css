@@ -480,3 +480,30 @@
 .leagues-container .badge:hover {
     transform: translateY(-2px);
 }
+
+/* Calendar date with matches styling */
+.flatpickr-day.has-matches {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    border-color: rgba(var(--bs-primary-rgb), 0.2);
+    position: relative;
+}
+
+.flatpickr-day .date-badge {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    font-size: 8px;
+    line-height: 1;
+    background-color: var(--primary-color, #043d7c);
+    color: white;
+    border-radius: 50%;
+    width: 13px;
+    height: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flatpickr-day.selected.has-matches {
+    background-color: var(--primary-color, #043d7c);
+}

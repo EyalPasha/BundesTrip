@@ -2,7 +2,8 @@ import {
     loadCities,
     loadLeagues, 
     loadTeams,
-    updateTeamsByLeague
+    updateTeamsByLeague,
+    loadAvailableDates  // Add this new function import
 } from './services/data-loader.js';
 
 import { 
@@ -14,6 +15,7 @@ import {
 
 import { handleSearch } from './services/trip-service.js';
 import { renderResults } from './components/results-display.js';
+import { checkHealth } from './services/api.js'; // Add health check import
 
 // Create a global DOM object to share references between modules
 window.DOM = {};
@@ -37,14 +39,83 @@ document.addEventListener('DOMContentLoaded', async function() {
         viewListBtn: document.getElementById('viewList'),
         teamFiltersContainer: document.getElementById('teamFilters'),
         cityFiltersContainer: document.getElementById('cityFilters'),
-        sortResults: document.getElementById('sortResults')
+        sortResults: document.getElementById('sortResults'),
+        // Add references to any new UI elements here
     };
 
-    // Initialize date picker
+    // Check API health before initializing UI
+    try {
+        const health = await checkHealth();
+        console.log("API Health:", health);
+        if (health.status !== 'ok') {
+            console.warn("API not fully operational - some features may be limited");
+        }
+    } catch (error) {
+        console.error("API health check failed:", error);
+        // You might want to show a warning banner here
+
+        // Create and show toast
+        const toastContainer = document.getElementById('toastContainer') || document.createElement('div');
+        if (!toastContainer.id) {
+            toastContainer.id = 'toastContainer';
+            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            document.body.appendChild(toastContainer);
+        }
+        
+        const toastId = `toast-${Date.now()}`;
+        const toast = document.createElement('div');
+        toast.className = 'toast show';
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        toast.id = toastId;
+        
+        toast.innerHTML = `
+            <div class="toast-header bg-danger text-white">
+                <strong class="me-auto">Connection Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Unable to connect to the server. Some features may be limited.
+            </div>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            const toastEl = document.getElementById(toastId);
+            if (toastEl) {
+                const bsToast = new bootstrap.Toast(toastEl);
+                bsToast.hide();
+            }
+        }, 5000);
+    }
+
+    // Initialize date picker with all dates available
+    const availableDates = await loadAvailableDates();
     flatpickr(window.DOM.startDateInput, {
-        dateFormat: "d F",
-        minDate: "today",
-        disableMobile: true
+        dateFormat: "d F", // Date format (day + month name)
+        minDate: "today", // Ensure dates start from today
+        disableMobile: true,
+        // Remove the 'enable' property to allow all dates
+        // Instead, highlight dates with games using the onDayCreate callback
+        onDayCreate: function(dObj, dStr, fp, dayElem) {
+            // Check if this date is in the availableDates list
+            if (availableDates && availableDates.length > 0) {
+                const dateStr = dayElem.dateObj.toISOString().split('T')[0];
+                const matchDate = availableDates.find(d => d.date === dateStr);
+                
+                if (matchDate) {
+                    // Add a visual indicator for dates with games
+                    dayElem.classList.add('has-matches');
+                    const badge = document.createElement('span');
+                    badge.className = 'date-badge';
+                    badge.textContent = matchDate.count || '';
+                    dayElem.appendChild(badge);
+                }
+            }
+        }
     });
     
     // Initialize selects
@@ -69,7 +140,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (window.DOM.sortResults) {
         window.DOM.sortResults.addEventListener('change', handleSortResults);
     }
-
 });
 
 // Sort results by selected criteria

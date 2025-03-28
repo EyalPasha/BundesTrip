@@ -1,4 +1,5 @@
 import { handleSearch } from '../services/trip-service.js';
+import { loadCities, loadLeagues, loadTeams } from '../services/data-loader.js'; // ADD THIS LINE
 
 // Initialize search form
 function initSearchForm() {
