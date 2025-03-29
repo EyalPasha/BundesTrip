@@ -121,6 +121,21 @@ def load_train_times(file_path: str) -> dict:
         train_times[(row["To"], row["From"])] = travel_minutes
     return train_times
 
+def add_missing_same_city_travel_times(train_times):
+    """Add missing same-city travel times (0 minutes) to the train_times dictionary."""
+    all_cities = set()
+    
+    # Collect all unique cities from the train_times keys
+    for from_loc, to_loc in train_times.keys():
+        all_cities.add(from_loc)
+        all_cities.add(to_loc)
+    
+    # Add 0-minute travel times for all cities to themselves
+    for city in all_cities:
+        train_times[(city, city)] = 0
+    
+    return train_times
+
 def load_games(file_path: str) -> tuple:
     """Load football games from CSV file, separating regular and TBD games."""
     df = pd.read_csv(file_path, encoding="utf-8", skipinitialspace=True)
@@ -156,6 +171,7 @@ def load_games(file_path: str) -> tuple:
     return games, tbd_games
 
 train_times = load_train_times(TRAIN_TIMES_FILE)
+train_times = add_missing_same_city_travel_times(train_times)
 
 def map_team_to_hbf(team_name: str) -> str:
     """Map team name to nearest train station (Hauptbahnhof)."""
@@ -308,13 +324,19 @@ def calculate_total_travel_time(trip: Dict, train_times_param: Dict = None, star
         
         # 2. Add match travel (outbound and return)
         match_location = match_by_day.get(day_str)
-        if match_location and match_location != current_hotel:
-            # Travel to match
-            match_travel_time = get_travel_minutes_utils(train_times_to_use, current_hotel, match_location) or 0
-            total_minutes += match_travel_time
+        if match_location:
+            # Determine starting point for match travel (hotel from previous night)
+            match_start_location = previous_hotel if previous_hotel else current_hotel
             
-            # Return from match
-            total_minutes += match_travel_time
+            # Travel to match if different from where you're starting the day
+            if match_location != match_start_location:
+                match_travel_time = get_travel_minutes_utils(train_times_to_use, match_start_location, match_location) or 0
+                total_minutes += match_travel_time
+            
+            # Only add return travel if you're not staying at the match location
+            if current_hotel != match_location and match_location != match_start_location:
+                return_travel_time = get_travel_minutes_utils(train_times_to_use, match_location, current_hotel) or 0
+                total_minutes += return_travel_time
         
         previous_hotel = current_hotel
     
@@ -338,8 +360,9 @@ def get_reachable_games(locations: list, games: list, train_times: dict, max_tra
     for loc in unique_locations:
         for game in todays_games:
             if hasattr(game, 'hbf_location'):
-                travel_time = train_times.get((loc, game.hbf_location), float("inf"))
-                if travel_time <= max_travel_time:
+                # Use helper function instead of direct lookup
+                travel_time = get_travel_minutes_utils(train_times, loc, game.hbf_location)
+                if travel_time is not None and travel_time <= max_travel_time:
                     reachable.append({
                         "game": game,
                         "from": loc,
@@ -357,10 +380,18 @@ def is_efficient_route(new_trip: list, new_location: str, trip_locations: list) 
         if new_location == second_last and last != second_last:
             return False
     
+    # Special case: First day of the trip - always allow staying in the starting location
+    if len(trip_locations) == 1 and trip_locations[0] == new_location:
+        return True
+    
     # Avoid unnecessary detours when staying in a location
     if len(trip_locations) >= 1 and trip_locations[-1] == new_location:
         has_match_today = any(len(day.get("matches", [])) > 0 for day in new_trip[-1:])
         if not has_match_today:
+            # Check if we're on the first day of the trip (special case)
+            first_day = len(new_trip) <= 1
+            if first_day:
+                return True  # Allow staying in the same location on first day
             return False
     
     return True
@@ -480,7 +511,9 @@ def create_hotel_variation(base_trip: list, hotel_base: str, start_idx=0,
         curr_hotel = curr_day.get("hotel")
         
         if prev_hotel and curr_hotel and prev_hotel != curr_hotel:
-            transition_time = train_times.get((prev_hotel, curr_hotel), float("inf"))
+            transition_time = get_travel_minutes_utils(train_times, prev_hotel, curr_hotel)
+            if transition_time is None:
+                transition_time = float("inf")
             if transition_time > max_travel_time:
                 is_valid = False
                 break
@@ -660,7 +693,9 @@ def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time
             curr_hotel = curr_day.get("hotel")
             
             if prev_hotel and curr_hotel and prev_hotel != curr_hotel:
-                transition_time = train_times.get((prev_hotel, curr_hotel), float("inf"))
+                transition_time = get_travel_minutes_utils(train_times, prev_hotel, curr_hotel)
+                if transition_time is None:
+                    transition_time = float("inf")
                 if transition_time > max_travel_time:
                     is_valid = False
                     break
@@ -731,7 +766,9 @@ def filter_best_variations_by_hotel_changes(trips: list, train_times: dict = Non
                 curr_hotel = curr_day.get("hotel")
                 
                 if prev_hotel and curr_hotel and prev_hotel != curr_hotel:
-                    transition_time = train_times.get((prev_hotel, curr_hotel), float("inf"))
+                    transition_time = get_travel_minutes_utils(train_times, prev_hotel, curr_hotel)
+                    if transition_time is None:
+                        transition_time = float("inf")
                     if transition_time > max_travel_time:
                         has_invalid_segment = True
                         break
@@ -1104,7 +1141,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     
     Returns:
         Dictionary containing trip options or error message
-    """
+    """    
     # Initialize variables
     all_trips = []
     tbd_games_in_period = []
@@ -1124,6 +1161,10 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         (not preferred_leagues_lower or g.league.lower() in preferred_leagues_lower)
     ]
     
+    # Add this after loading valid_games
+    trip_end_date = start_date + timedelta(days=trip_duration)
+    valid_trip_games = [g for g in valid_games if start_date.date() <= g.date.date() < trip_end_date.date()]
+
     # Find earliest valid game date if no specific start date
     if not start_date:
         earliest_date = None
@@ -1202,8 +1243,10 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
                 
                 for loc in current_locations:
                     for game in current_date_games:
-                        travel_time = train_times.get((loc, game.hbf_location), float("inf"))
-                        if travel_time <= max_travel_time:
+                        
+                        # Use get_travel_minutes_utils instead of direct train_times lookup
+                        travel_time = get_travel_minutes_utils(train_times, loc, game.hbf_location)
+                        if travel_time is not None and travel_time <= max_travel_time:
                             travel_time_str = format_travel_time(travel_time)
                             match_str = f"{game.home_team} vs {game.away_team} ({game.time})"
                             
