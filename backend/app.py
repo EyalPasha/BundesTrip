@@ -9,6 +9,7 @@ from utils import load_games, load_train_times, plan_trip, calculate_total_trave
 from models import TripRequest, FormattedResponse, TripVariation, TripGroup, TravelSegment
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
 from config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
+import functools
 
 # Initialize FastAPI with metadata
 app = FastAPI(
@@ -247,8 +248,33 @@ def process_hotel_information(sorted_days: List[Dict]) -> List[str]:
         
     return hotel_info
 
+@functools.lru_cache(maxsize=2048)
+def get_airport_distances(location, is_start=True):
+    """Cache airport distances calculation"""
+    distances = []
+    for airport in AIRPORT_CITIES:
+        if airport.lower() == location.lower():
+            distances.append({
+                "airport": airport.replace(" hbf", ""),
+                "travel_time": "0h 0m"
+            })
+            continue
+        
+        city_pair = (location, airport) if is_start else (airport, location)
+        travel_minutes = train_times.get(city_pair, None)
+        travel_time = format_travel_time(travel_minutes)
+            
+        distances.append({
+            "airport": airport.replace(" hbf", ""),
+            "travel_time": travel_time
+        })
+    
+    # Sort by travel time
+    distances.sort(key=lambda x: get_minutes(x["travel_time"]))
+    return distances
+
 def process_trip_variant(variant: Dict, actual_start_location: str) -> TripVariation:
-    """Process a trip variant and extract its details"""
+    """Optimized process_trip_variant function"""
     total_travel_time = calculate_total_travel_time(variant, train_times, actual_start_location)
 
     # Extract cities, teams, and count games
@@ -304,51 +330,9 @@ def process_trip_variant(variant: Dict, actual_start_location: str) -> TripVaria
     
     # Calculate airport distances
     airport_distances = {
-        "start": [],
-        "end": []
+        "start": get_airport_distances(actual_start_location, is_start=True),
+        "end": get_airport_distances(true_end_location, is_start=False)
     }
-    
-    # Get distances from actual start location to all airports
-    for airport in AIRPORT_CITIES:
-        # Skip if it's the same location
-        if airport.lower() == actual_start_location.lower():
-            airport_distances["start"].append({
-                "airport": airport.replace(" hbf", ""),
-                "travel_time": "0h 0m"
-            })
-            continue
-        
-        # Get travel time from train_times dictionary
-        travel_minutes = train_times.get((actual_start_location, airport), None)
-        travel_time = format_travel_time(travel_minutes)
-            
-        airport_distances["start"].append({
-            "airport": airport.replace(" hbf", ""),
-            "travel_time": travel_time
-        })
-    
-    # Get distances from end location to all airports
-    for airport in AIRPORT_CITIES:
-        # Skip if it's the same location
-        if airport.lower() == true_end_location.lower():
-            airport_distances["end"].append({
-                "airport": airport.replace(" hbf", ""),
-                "travel_time": "0h 0m"
-            })
-            continue
-        
-        # Get travel time from train_times dictionary
-        travel_minutes = train_times.get((true_end_location, airport), None)
-        travel_time = format_travel_time(travel_minutes)
-            
-        airport_distances["end"].append({
-            "airport": airport.replace(" hbf", ""),
-            "travel_time": travel_time
-        })
-    
-    # Sort airport distances by travel time
-    airport_distances["start"].sort(key=lambda x: get_minutes(x["travel_time"]))
-    airport_distances["end"].sort(key=lambda x: get_minutes(x["travel_time"]))
     
     # Convert sets to sorted lists for consistent output
     cities_list = sorted(list(cities))

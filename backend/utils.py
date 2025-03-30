@@ -1,3 +1,4 @@
+import functools
 import pandas as pd
 from datetime import datetime, timedelta
 from models import Game
@@ -9,7 +10,19 @@ from config import TRAIN_TIMES_FILE
 # ────────────────────────────────
 # 🛠️ Helper Functions
 # ────────────────────────────────
+def memoize_travel_time(func):
+    cache = {}
+    
+    @functools.wraps(func)
+    def wrapper(train_times, from_city, to_city):
+        key = (from_city.lower(), to_city.lower())
+        if key not in cache:
+            cache[key] = func(train_times, from_city, to_city)
+        return cache[key]
+    
+    return wrapper
 
+@memoize_travel_time
 def get_travel_minutes_utils(train_times: Dict, from_loc: str, to_loc: str) -> Optional[int]:
     """Get travel time between locations, handling missing data and same-location"""
     # Return 0 for same location (case-insensitive comparison)
