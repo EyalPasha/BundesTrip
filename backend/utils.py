@@ -10,14 +10,83 @@ from config import TRAIN_TIMES_FILE
 # ────────────────────────────────
 # 🛠️ Helper Functions
 # ────────────────────────────────
+@functools.lru_cache(maxsize=2048)
+def parse_date_string(date_str):
+    """Cache date string parsing to avoid repeated expensive operations"""
+    if not date_str:
+        return datetime.min  # Return minimum datetime for None/empty strings
+    
+    # Parse date with year (e.g., "28 March 2025")
+    return datetime.strptime(date_str, "%d %B %Y")
+
+def make_trip_hashable(trip):
+    """Convert a trip dictionary to a hashable structure (tuple) for caching"""
+    if "Itinerary" not in trip and not isinstance(trip, list):
+        return ()
+        
+    itinerary = trip.get("Itinerary", trip) if isinstance(trip, dict) else trip
+    result = []
+    
+    for day in itinerary:
+        if isinstance(day, dict):
+            day_items = []
+            for key, value in sorted(day.items()):
+                if key == 'matches' and value:
+                    # Convert matches to tuple of tuples
+                    matches_tuple = tuple(
+                        tuple((k, v) for k, v in sorted(m.items()) if isinstance(v, (str, int, bool, float)))
+                        for m in value
+                    )
+                    day_items.append((key, matches_tuple))
+                else:
+                    # Only include hashable types
+                    if isinstance(value, (str, int, bool, float)):
+                        day_items.append((key, value))
+            result.append(tuple(day_items))
+    
+    return tuple(result)
+
+@functools.lru_cache(maxsize=16384)
+def generate_trip_signature(trip_key):
+    """Generate a cached signature for trip comparison"""
+    match_signature = []
+    
+    for day_tuple in trip_key:
+        day_dict = dict(day_tuple)
+        
+        # Extract day value
+        day_value = ""
+        for k, v in day_tuple:
+            if k == "day":
+                day_value = v
+                break
+        
+        # Extract matches
+        for k, v in day_tuple:
+            if k == "matches" and isinstance(v, tuple):
+                for match_tuple in v:
+                    match_dict = dict(match_tuple)
+                    match_value = ""
+                    
+                    # Find match value
+                    for mk, mv in match_tuple:
+                        if mk == "match":
+                            match_value = mv
+                            break
+                    
+                    if match_value:
+                        match_signature.append((day_value, match_value))
+    
+    return tuple(sorted(match_signature))
+
 def memoize_travel_time(func):
     cache = {}
     
     @functools.wraps(func)
-    def wrapper(train_times, from_city, to_city):
-        key = (from_city.lower(), to_city.lower())
+    def wrapper(train_times, from_loc, to_loc):
+        key = (from_loc.lower(), to_loc.lower())
         if key not in cache:
-            cache[key] = func(train_times, from_city, to_city)
+            cache[key] = func(train_times, from_loc, to_loc)
         return cache[key]
     
     return wrapper
@@ -156,12 +225,12 @@ def load_games(file_path: str) -> tuple:
 
     games = []
     tbd_games = []
-    current_year = datetime.now().year
 
     for _, row in df.iterrows():
         try:
-            date_str = row["Date"] + f" {current_year}"
-            date_main = datetime.strptime(date_str, "%d %B %Y")  
+            date_str = row["Date"].strip()
+            # Parse with year already included
+            date_main = datetime.strptime(date_str, "%d %B %Y")
             
             game = Game(
                 league=row["League"].strip(),
@@ -206,14 +275,11 @@ def identify_similar_trips(sorted_trips: List[Dict]) -> List[Dict]:
         match_count = sum(1 for day in trip["Itinerary"] if day.get("matches"))
         if match_count == 0:
             continue
-            
-        match_signature = []
-        for day in trip["Itinerary"]:
-            if day.get("matches"):
-                for match in day["matches"]:
-                    match_signature.append((day.get("day"), match["match"]))
         
-        match_signature_tuple = tuple(sorted(match_signature))
+        # Use cached signature generation
+        trip_key = make_trip_hashable(trip)
+        match_signature_tuple = generate_trip_signature(trip_key)
+        
         group_index = signature_to_group_index.get(match_signature_tuple)
         
         if group_index is not None:
@@ -301,9 +367,9 @@ def calculate_total_travel_time(trip: Dict, train_times_param: Dict = None, star
             initial_location = day.get("location")
             break
 
-    for day in sorted(hotel_by_day.keys(), key=lambda d: datetime.strptime(d + " 2025", "%d %B %Y")):
-        first_hotel = hotel_by_day[day]
-        break
+    for day in sorted(hotel_by_day.keys(), key=lambda d: parse_date_string(d)):
+            first_hotel = hotel_by_day[day]
+            break
 
     if start_location and first_hotel:
         if start_location.lower() != first_hotel.lower():
@@ -316,10 +382,10 @@ def calculate_total_travel_time(trip: Dict, train_times_param: Dict = None, star
     # Second pass: calculate travel time based on daily movements.
     # Use datetime conversion in sorting the days.
     sorted_days = sorted(
-        [d for d in days if isinstance(d, dict) and d.get("day")],
-        key=lambda x: datetime.strptime(x.get("day") + " 2025", "%d %B %Y")
+    [d for d in days if isinstance(d, dict) and d.get("day")],
+    key=lambda x: parse_date_string(x.get("day"))
     )
-
+    
     previous_hotel = None
 
     for day in sorted_days:
@@ -361,34 +427,64 @@ def calculate_total_travel_time(trip: Dict, train_times_param: Dict = None, star
 
     return total_minutes
 
-def get_reachable_games(locations: list, games: list, train_times: dict, max_travel_time: int, current_date: datetime) -> list:
-    """Find games reachable within max_travel_time from any of the provided locations."""
-    if not locations or not games:
-        return []
-        
+
+
+@functools.lru_cache(maxsize=8192)
+def get_reachable_games_cached(location: str, date_str: str, games_tuple, max_travel_time: int, train_times_dict_id: int):
+    """Cache reachable games from a location on a specific date"""
+    games = list(games_tuple)  # Convert back to list
+    current_date = datetime.strptime(date_str, "%Y-%m-%d")
     current_date_only = current_date.date()
+    
+    # Get the train_times dictionary from the global reference
+    global train_times
+    train_times_to_use = train_times  # Default
     
     todays_games = [game for game in games if hasattr(game, 'date') and game.date.date() == current_date_only]
     
     if not todays_games:
-        return []
+        return ()
     
-    unique_locations = set(locations)
     reachable = []
     
-    for loc in unique_locations:
-        for game in todays_games:
-            if hasattr(game, 'hbf_location'):
-                # Use helper function instead of direct lookup
-                travel_time = get_travel_minutes_utils(train_times, loc, game.hbf_location)
-                if travel_time is not None and travel_time <= max_travel_time:
-                    reachable.append({
-                        "game": game,
-                        "from": loc,
-                        "travel_time": travel_time
-                    })
+    for game in todays_games:
+        if hasattr(game, 'hbf_location'):
+            # Use helper function instead of direct lookup
+            travel_time = get_travel_minutes_utils(train_times_to_use, location, game.hbf_location)
+            if travel_time is not None and travel_time <= max_travel_time:
+                reachable.append((
+                    game,
+                    location,
+                    travel_time
+                ))
     
-    return reachable
+    return tuple(reachable)  # Return immutable tuple for caching
+
+def get_reachable_games(locations: list, games: list, train_times: dict, max_travel_time: int, current_date: datetime) -> list:
+    """Find games reachable within max_travel_time from any of the provided locations."""
+    if not locations or not games:
+        return []
+    
+    date_str = current_date.strftime("%Y-%m-%d")
+    games_tuple = tuple(games)  # Make immutable for caching
+    train_times_dict_id = id(train_times)  # Use ID as reference
+    
+    unique_locations = set(locations)
+    all_reachable = []
+    
+    for loc in unique_locations:
+        # Use the cached function for each location
+        cached_results = get_reachable_games_cached(loc, date_str, games_tuple, max_travel_time, train_times_dict_id)
+        
+        # Convert the immutable tuple results back to dictionaries
+        for game, from_loc, travel_time in cached_results:
+            all_reachable.append({
+                "game": game,
+                "from": from_loc,
+                "travel_time": travel_time
+            })
+    
+    return all_reachable
 
 def is_efficient_route(new_trip: list, new_location: str, trip_locations: list) -> bool:
     """Check if adding this location creates an efficient route."""
@@ -515,8 +611,10 @@ def create_hotel_variation(base_trip: list, hotel_base: str, start_idx=0,
                 match["travel_from"] = previous_hotel
                 match["travel_time"] = format_travel_time(travel_time)
     # Third pass: Check hotel-to-hotel transitions between days
-    sorted_days = sorted([d for d in variation if isinstance(d, dict) and d.get("day")],
-                         key=lambda x: x.get("day", ""))
+    sorted_days = sorted(
+    [d for d in variation if isinstance(d, dict) and d.get("day")],
+    key=lambda x: parse_date_string(x.get("day"))
+        )
     for i in range(1, len(sorted_days)):
         prev_day = sorted_days[i-1]
         curr_day = sorted_days[i]
@@ -694,7 +792,7 @@ def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time
         
         # Check hotel-to-hotel transitions and match travel
         sorted_days = sorted([d for d in trip if isinstance(d, dict) and d.get("day")], 
-                             key=lambda x: x.get("day", ""))
+                     key=lambda x: parse_date_string(x.get("day", "")))
         
         for i in range(1, len(sorted_days)):
             prev_day = sorted_days[i-1]
@@ -768,7 +866,7 @@ def filter_best_variations_by_hotel_changes(trips: list, train_times: dict = Non
             
             # Check for hotel-to-hotel transitions
             sorted_days = sorted([d for d in trip if isinstance(d, dict) and d.get("day")], 
-                                key=lambda x: x.get("day", ""))
+                    key=lambda x: parse_date_string(x.get("day", "")))
             
             for i in range(1, len(sorted_days)):
                 prev_day = sorted_days[i-1]
@@ -856,17 +954,19 @@ def is_must_team_match(team_name: str, must_teams_set: set) -> bool:
 
 def get_processed_start_date(start_date: Optional[str] = None) -> Tuple[datetime, str]:
     """Process and validate the start date."""
-    current_year = datetime.now().year
-    
     if start_date:
         try:
-            parsed_date = datetime.strptime(f"{start_date} {current_year}", "%d %B %Y")
-            return parsed_date, parsed_date.strftime("%d %B")
+            # Parse date with year included
+            parsed_date = datetime.strptime(start_date, "%d %B %Y")
+            # Return without year for display
+            return parsed_date, f"{parsed_date.day} {parsed_date.strftime('%B')}"
         except ValueError:
-            raise ValueError("Invalid start date format. Use '28 March' format.")
+            raise ValueError("Invalid start date format. Use '28 March 2025' format.")
     else:
         today = datetime.now()
-        return today, today.strftime("%d %B")
+        next_year = today.year + 1  # Use next year for default dates
+        start_with_year = today.replace(year=next_year)
+        return start_with_year, today.strftime("%d %B")
 
 def process_tbd_games(tbd_games: list, start_date: datetime, trip_duration: int, 
                     preferred_leagues: list, potential_locations: set,
@@ -902,7 +1002,7 @@ def process_tbd_games(tbd_games: list, start_date: datetime, trip_duration: int,
             for loc in potential_locations:
                 travel_time = train_times.get((loc, tbd_game.hbf_location), float("inf"))
                 if travel_time <= max_travel_time:
-                    date_str = tbd_game.date.strftime("%d %B")
+                    date_str = tbd_game.date.strftime("%d %B %Y")
                     tbd_games_in_period.append({
                         "match": f"{tbd_game.home_team} vs {tbd_game.away_team}",
                         "date": date_str,
@@ -949,9 +1049,10 @@ def identify_potential_start_cities(games, train_times, trip_duration, max_trave
     """Identify potential starting cities using various strategies"""
     start_date = params.get('start_date')
     if isinstance(start_date, str):
-        # Convert string date to datetime if needed
+    # Convert string date to datetime if needed
         try:
-            start_date = datetime.strptime(f"{start_date} 2025", "%d %B %Y")
+            # Parse date with year already included
+            start_date = datetime.strptime(start_date, "%d %B %Y")
         except:
             start_date = datetime.now()
     elif not start_date:
@@ -1091,14 +1192,9 @@ def group_trips_by_matches(trips):
     groups = {}
     
     for trip in trips:
-        # Create signature based on attended matches
-        match_signature = []
-        for day in trip:
-            if isinstance(day, dict) and "matches" in day:
-                for match in day.get("matches", []):
-                    match_signature.append((day.get("day", ""), match.get("match", "")))
-        
-        signature = tuple(sorted(match_signature))
+        # Use cached signature generation
+        trip_key = make_trip_hashable(trip)
+        signature = generate_trip_signature(trip_key)
         
         if signature not in groups:
             groups[signature] = []
@@ -1209,7 +1305,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     
     # Generate date range for the trip
     full_date_range = [start_date + timedelta(days=i) for i in range(trip_duration)]
-    date_strings = [d.strftime("%d %B") for d in full_date_range]
+    date_strings = [d.strftime("%d %B %Y") for d in full_date_range]
     
     # Initial route with start location
     initial_routes = [[{
@@ -1352,9 +1448,12 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
 
         initial_routes = new_routes
 
-    # Filter trips based on having matches
+    # Determine minimum required games based on trip duration
+    min_required_games = 3 if trip_duration >= 6 else 2
+
+    # Filter trips based on having minimum required matches
     all_trips = [trip for trip in initial_routes 
-                if sum(len(day.get("matches", [])) > 0 for day in trip) >= 2]
+                if sum(len(day.get("matches", [])) > 0 for day in trip) >= min_required_games]
     
     # Filter trips to include only those with required teams
     if must_teams_lower and all_trips:
@@ -1429,7 +1528,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         # Sort days chronologically
         sorted_dates = sorted(
     days_by_date.keys(),
-    key=lambda d: datetime.strptime(d + " 2025", "%d %B %Y")
+    key=lambda d: parse_date_string(d)
 )
         
         # Now process days in chronological order using the final hotel for each day

@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import Optional, List, Dict
 from datetime import datetime, timedelta
-from utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips, get_travel_minutes_utils, enhance_trip_planning_for_any_start
+from utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips, get_travel_minutes_utils, enhance_trip_planning_for_any_start, parse_date_string
 from models import TripRequest, FormattedResponse, TripVariation, TripGroup, TravelSegment
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
 from config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
@@ -60,11 +60,17 @@ def get_date_sortkey(day_item: Dict) -> str:
                          "July", "August", "September", "October", "November", "December"]
             day = int(parts[0])
             month = month_names.index(parts[1]) + 1
-            return f"2025-{month:02d}-{day:02d}"  # Use fixed year for sorting
+            year = 2025  # Hardcoded year
+            
+            # Check if year is included in the date string
+            if len(parts) >= 3 and parts[2].isdigit() and len(parts[2]) == 4:
+                year = int(parts[2])
+                
+            return f"{year}-{month:02d}-{day:02d}"
     except:
         pass
     
-    return day_str  # Fallback to string sorting
+    return day_str
 
 
 def sort_date_string(day_str: str) -> str:
@@ -79,13 +85,19 @@ def sort_date_string(day_str: str) -> str:
                         "July", "August", "September", "October", "November", "December"]
             day = int(parts[0])
             month = month_names.index(parts[1]) + 1
-            return f"2025-{month:02d}-{day:02d}"
+            year = 2025  # Default year
+            
+            # Check if year is included in date string
+            if len(parts) >= 3 and parts[2].isdigit() and len(parts[2]) == 4:
+                year = int(parts[2])
+                
+            return f"{year}-{month:02d}-{day:02d}"
     except:
         pass
     
     return day_str
 
-
+@functools.lru_cache(maxsize=2048)
 def format_travel_time(minutes: Optional[int]) -> str:
     """Format travel time in minutes to 'Xh Ym' format"""
     if minutes is None:
@@ -125,7 +137,7 @@ def process_travel_segments(
     
     # Sort days chronologically
     sorted_dates = sorted([day.get("day") for day in sorted_days if isinstance(day, dict) and day.get("day")],
-                         key=lambda d: datetime.strptime(d + " 2025", "%d %B %Y"))
+                     key=lambda d: parse_date_string(d))
     
     prev_hotel_location = variant_detail.start_location
     
