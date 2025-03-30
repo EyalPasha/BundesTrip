@@ -242,60 +242,56 @@ def parse_travel_time(time_str: str) -> int:
 
 def calculate_total_travel_time(trip: Dict, train_times_param: Dict = None, start_location: str = None) -> int:
     """Calculate the total travel time for a trip based on actual travel segments."""
-    # Use the provided train_times parameter or fall back to the global variable
     global train_times
     train_times_to_use = train_times_param if train_times_param is not None else train_times
-    
+
     total_minutes = 0
-    
+
     # Handle both trip formats
     days = trip.get("Itinerary", trip) if isinstance(trip, dict) else trip
-    
+
     if not isinstance(days, list):
         return 0
-    
+
     # Track previous hotel to detect changes
     previous_hotel = None
     hotel_by_day = {}
     match_by_day = {}
-    
+
     # First pass: collect hotel and match locations by day
     for day in days:
         if not isinstance(day, dict):
             continue
-            
+
         day_str = day.get("day")
         if not day_str:
             continue
-            
+
         # Store hotel location
         hotel = day.get("hotel")
         if hotel:
             hotel_by_day[day_str] = hotel
-        
+
         # Store match location
         if day.get("matches"):
             for match in day.get("matches"):
                 if match.get("location"):
                     match_by_day[day_str] = match.get("location")
                     break
-    
+
     # Find initial location and first hotel for initial travel calculation
     initial_location = None
     first_hotel = None
-    
-    # Get the first day's initial location
+
     for day in days:
         if isinstance(day, dict) and day.get("location"):
             initial_location = day.get("location")
             break
-    
-    # Get the first hotel location
-    for day in sorted(hotel_by_day.keys()):
+
+    for day in sorted(hotel_by_day.keys(), key=lambda d: datetime.strptime(d + " 2025", "%d %B %Y")):
         first_hotel = hotel_by_day[day]
         break
-    
-    # Calculate initial travel if needed (from specified start or from first location to first hotel)
+
     if start_location and first_hotel:
         if start_location.lower() != first_hotel.lower():
             initial_travel_time = get_travel_minutes_utils(train_times_to_use, start_location, first_hotel) or 0
@@ -303,43 +299,53 @@ def calculate_total_travel_time(trip: Dict, train_times_param: Dict = None, star
     elif initial_location and first_hotel and initial_location.lower() != first_hotel.lower():
         initial_travel_time = get_travel_minutes_utils(train_times_to_use, initial_location, first_hotel) or 0
         total_minutes += initial_travel_time
-    
-    # Second pass: calculate travel time based on daily movements
-    sorted_days = sorted([d for d in days if isinstance(d, dict) and d.get("day")], 
-                        key=lambda x: x.get("day", ""))
-    
+
+    # Second pass: calculate travel time based on daily movements.
+    # Use datetime conversion in sorting the days.
+    sorted_days = sorted(
+        [d for d in days if isinstance(d, dict) and d.get("day")],
+        key=lambda x: datetime.strptime(x.get("day") + " 2025", "%d %B %Y")
+    )
+
     previous_hotel = None
-    
+
     for day in sorted_days:
         day_str = day.get("day")
         current_hotel = day.get("hotel")
-        
+        match_location = match_by_day.get(day_str)
+
         if not current_hotel:
             continue
-        
-        # 1. Add hotel change travel if hotel changed
-        if previous_hotel and current_hotel != previous_hotel:
-            hotel_change_time = get_travel_minutes_utils(train_times_to_use, previous_hotel, current_hotel) or 0
-            total_minutes += hotel_change_time
-        
-        # 2. Add match travel (outbound and return)
-        match_location = match_by_day.get(day_str)
-        if match_location:
-            # Determine starting point for match travel (hotel from previous night)
-            match_start_location = previous_hotel if previous_hotel else current_hotel
-            
-            # Travel to match if different from where you're starting the day
-            if match_location != match_start_location:
-                match_travel_time = get_travel_minutes_utils(train_times_to_use, match_start_location, match_location) or 0
-                total_minutes += match_travel_time
-            
-            # Only add return travel if you're not staying at the match location
-            if current_hotel != match_location and match_location != match_start_location:
-                return_travel_time = get_travel_minutes_utils(train_times_to_use, match_location, current_hotel) or 0
-                total_minutes += return_travel_time
-        
+
+        if match_location and previous_hotel and current_hotel != previous_hotel:
+            if match_location.lower() == previous_hotel.lower():
+                travel_time = get_travel_minutes_utils(train_times_to_use, match_location, current_hotel) or 0
+                total_minutes += travel_time
+            elif match_location.lower() == current_hotel.lower():
+                travel_time = get_travel_minutes_utils(train_times_to_use, previous_hotel, match_location) or 0
+                total_minutes += travel_time
+            else:
+                to_match_time = get_travel_minutes_utils(train_times_to_use, previous_hotel, match_location) or 0
+                to_new_hotel_time = get_travel_minutes_utils(train_times_to_use, match_location, current_hotel) or 0
+                total_minutes += to_match_time + to_new_hotel_time
+        else:
+            if previous_hotel and current_hotel != previous_hotel:
+                hotel_change_time = get_travel_minutes_utils(train_times_to_use, previous_hotel, current_hotel) or 0
+                total_minutes += hotel_change_time
+
+            if match_location and not (previous_hotel and current_hotel != previous_hotel):
+                start_point = previous_hotel if previous_hotel else current_hotel
+
+                if match_location.lower() != start_point.lower():
+                    match_travel_time = get_travel_minutes_utils(train_times_to_use, start_point, match_location) or 0
+                    total_minutes += match_travel_time
+
+                if match_location.lower() != current_hotel.lower():
+                    return_travel_time = get_travel_minutes_utils(train_times_to_use, match_location, current_hotel) or 0
+                    total_minutes += return_travel_time
+
         previous_hotel = current_hotel
-    
+
     return total_minutes
 
 def get_reachable_games(locations: list, games: list, train_times: dict, max_travel_time: int, current_date: datetime) -> list:
@@ -432,84 +438,77 @@ def filter_pareto_optimal_trips(trips: list, train_times: dict = None) -> list:
     return pareto_optimal
 
 def create_hotel_variation(base_trip: list, hotel_base: str, start_idx=0, 
-                          preserve_first_day=True, train_times=None, max_travel_time=None) -> list:
+                           preserve_first_day=True, train_times=None, max_travel_time=None) -> list:
     """
     Create a trip variation using a specific hotel base, rebuilding travel segments to match.
+    This updated version enforces that a hotel change cannot occur on a game day.
     """
     variation = copy.deepcopy(base_trip)
     is_valid = True
-    
-    # First ensure every day has a hotel value, including the first day
+
+    # Ensure the first day has a hotel value; if missing, use the day's location or hotel_base
     if variation and isinstance(variation[0], dict):
         if not variation[0].get("hotel"):
-            # Set the first day's hotel to its location or hotel_base
             variation[0]["hotel"] = variation[0].get("location", hotel_base)
-    
+
     # First pass: Set hotel locations
     for i, day in enumerate(variation):
-        # Skip days before start_idx or preserve first day if needed
+        # Skip days before start_idx or preserve the first day if needed
         if i < start_idx or (i == 0 and preserve_first_day):
             continue
-            
+
+        # *** NEW: If day has matches, do not allow a hotel change on the same day.
+        if day.get("matches"):
+            # For game days, force the hotel to be the same as the previous day's hotel.
+            # (If this is the first day, use hotel_base as fallback.)
+            day["hotel"] = variation[i-1].get("hotel") if i > 0 else hotel_base
+            continue
+
         current_loc = day.get("location")
-        
-        # For rest days, always use hotel_base
+
+        # For rest days or days without matches, assign hotel according to feasibility
         if not day.get("matches"):
             day["hotel"] = hotel_base
             continue
-        
-        # For match days, check travel feasibility from hotel base
-        # Special case when match is at the same location as hotel
+
+        # (The following logic is kept for completeness but will not trigger because
+        # days with matches are already handled above.)
         if current_loc == hotel_base:
             day["hotel"] = hotel_base
             continue
-            
-        # Check if travel to/from hotel_base is feasible with train_times
+
         travel_time = train_times.get((hotel_base, current_loc), float("inf"))
         return_time = train_times.get((current_loc, hotel_base), float("inf"))
-        
+
         if travel_time <= max_travel_time and return_time <= max_travel_time:
-            # Feasible to stay at hotel_base
             day["hotel"] = hotel_base
         else:
-            # Must stay at match location instead
             day["hotel"] = current_loc
-    
+
     # Second pass: Update travel segments based on hotel locations
     for i, day in enumerate(variation):
-        # Skip first day (no travel to first day)
         if i == 0:
             continue
-            
+
         if day.get("matches"):
             current_match_loc = day.get("location")
             previous_hotel = variation[i-1].get("hotel")
             current_hotel = day.get("hotel")
-            
-            # Calculate hotel-to-match travel time
             travel_time = train_times.get((previous_hotel, current_match_loc), float("inf"))
-            
-            # If travel time exceeds max_travel_time, variation is invalid
             if travel_time > max_travel_time:
                 is_valid = False
                 break
-                
-            # Update match travel information
             for match in day.get("matches", []):
                 match["travel_from"] = previous_hotel
                 match["travel_time"] = format_travel_time(travel_time)
-    
     # Third pass: Check hotel-to-hotel transitions between days
-    sorted_days = sorted([d for d in variation if isinstance(d, dict) and d.get("day")], 
-                        key=lambda x: x.get("day", ""))
-    
+    sorted_days = sorted([d for d in variation if isinstance(d, dict) and d.get("day")],
+                         key=lambda x: x.get("day", ""))
     for i in range(1, len(sorted_days)):
         prev_day = sorted_days[i-1]
         curr_day = sorted_days[i]
-        
         prev_hotel = prev_day.get("hotel")
         curr_hotel = curr_day.get("hotel")
-        
         if prev_hotel and curr_hotel and prev_hotel != curr_hotel:
             transition_time = get_travel_minutes_utils(train_times, prev_hotel, curr_hotel)
             if transition_time is None:
@@ -517,7 +516,7 @@ def create_hotel_variation(base_trip: list, hotel_base: str, start_idx=0,
             if transition_time > max_travel_time:
                 is_valid = False
                 break
-    
+
     return variation if is_valid else None
 
 def optimize_trip_variations(base_trip: list, train_times: dict, max_travel_time: int, start_location: str = None) -> list:
@@ -1415,8 +1414,10 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
                 days_by_date[day.get("day")] = day
         
         # Sort days chronologically
-        sorted_dates = sorted(days_by_date.keys(), 
-                            key=lambda d: datetime.strptime(d + " 2025", "%d %B %Y"))
+        sorted_dates = sorted(
+    days_by_date.keys(),
+    key=lambda d: datetime.strptime(d + " 2025", "%d %B %Y")
+)
         
         # Now process days in chronological order using the final hotel for each day
         for date_str in sorted_dates:
