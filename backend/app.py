@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from typing import Optional, List, Dict
 from datetime import datetime, timedelta
 from utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips, get_travel_minutes_utils, enhance_trip_planning_for_any_start
-from models import TripRequest, FormattedResponse, TripVariation, TripGroup
+from models import TripRequest, FormattedResponse, TripVariation, TripGroup, TravelSegment
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
 from config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
 
@@ -247,7 +247,6 @@ def process_hotel_information(sorted_days: List[Dict]) -> List[str]:
         
     return hotel_info
 
-
 def process_trip_variant(variant: Dict, actual_start_location: str) -> TripVariation:
     """Process a trip variant and extract its details"""
     total_travel_time = calculate_total_travel_time(variant, train_times, actual_start_location)
@@ -355,23 +354,179 @@ def process_trip_variant(variant: Dict, actual_start_location: str) -> TripVaria
     cities_list = sorted(list(cities))
     teams_list = sorted(list(teams))
     
+    # Extract hotel information
+    hotel_stats = None
+    for day in variant["Itinerary"]:
+        if isinstance(day, dict) and not day.get("matches") and not day.get("day") and "hotel_changes" in day:
+            hotel_stats = day
+            break
+    
+    hotel_changes = hotel_stats.get("hotel_changes", 0) if hotel_stats else 0
+    unique_hotels = hotel_stats.get("unique_hotels", 0) if hotel_stats else 0
+    hotel_locations = hotel_stats.get("hotel_locations", []) if hotel_stats else []
+    hotel_stays = hotel_stats.get("hotel_stays", []) if hotel_stats else []
+    
+    # Process hotel details and travel segments
+    sorted_days = []
+    for day in variant["Itinerary"]:
+        if isinstance(day, dict) and "day" in day and "hotel" in day:
+            sorted_days.append(day)
+    
+    sorted_days = sorted(sorted_days, key=get_date_sortkey)
+    
+    # Create dicts to track location data for travel segments
+    hotel_by_day = {}
+    match_by_day = {}
+    
+    # Map days to hotels and match locations
+    for day in sorted_days:
+        if "day" in day and "hotel" in day:
+            day_name = day["day"]
+            hotel_by_day[day_name] = day["hotel"]
+        
+        if "day" in day and "matches" in day and day["matches"]:
+            day_name = day["day"]
+            match_location = day["matches"][0]["location"]
+            match_by_day[day_name] = match_location
+    
+    # Process travel segments
+    travel_segments_text = process_travel_segments(
+        sorted_days, 
+        TripVariation(
+            total_travel_time=total_travel_time,
+            travel_hours=total_travel_time // 60,
+            travel_minutes=total_travel_time % 60,
+            travel_segments=[],
+            cities=cities_list,
+            teams=teams_list,
+            num_games=num_games,
+            start_location=clean_start_location,
+            end_location=clean_end_location,
+            airport_distances=airport_distances,
+            hotel_changes=hotel_changes,
+            unique_hotels=unique_hotels,
+            hotel_locations=[loc.replace(" hbf", "") for loc in hotel_locations],
+            hotel_stays=hotel_stays
+        ),
+        actual_start_location, 
+        match_by_day, 
+        hotel_by_day
+    )
+    
+    # Convert text segments to TravelSegment objects
+    travel_segments = []
+    for segment_text in travel_segments_text:
+        # Parse segment text like "Berlin → Frankfurt (29 March) - 3h 59m"
+        try:
+            parts = segment_text.split(" → ")
+            from_location = parts[0]
+            
+            # Extract to_location and the rest
+            rest_parts = parts[1].split(" (")
+            to_location = rest_parts[0]
+            
+            # Extract day and context
+            day_context = rest_parts[1].split(")")[0]
+            day = day_context
+            context = None
+            if "," in day_context:
+                day_parts = day_context.split(", ")
+                day = day_parts[0]
+                context = day_parts[1]
+            
+            # Extract travel time
+            travel_time = segment_text.split(" - ")[1]
+            
+            travel_segments.append(TravelSegment(
+                from_location=from_location,
+                to_location=to_location,
+                day=day,
+                context=context,
+                travel_time=travel_time
+            ))
+        except Exception as e:
+            # If parsing fails, add a simple version
+            travel_segments.append(TravelSegment(
+                from_location="Unknown",
+                to_location="Unknown",
+                travel_time=segment_text
+            ))
+    
+    # Get hotel details
+    hotel_details = []
+    if sorted_days:
+        hotel_details = process_hotel_information(sorted_days)
+    
+    # Create day-by-day itinerary
+    day_itinerary = []
+    day_map = {}
+    day_order = []
+    
+    # Process the itinerary
+    for day_item in variant["Itinerary"]:
+        day_name = day_item.get("day", "Unknown")
+        
+        # Skip days with "Unknown" date
+        if day_name == "Unknown":
+            continue
+        
+        if day_name not in day_map:
+            day_map[day_name] = {"matches": [], "locations": [], "hotel": None}
+            day_order.append(day_name)  # preserve order
+            
+        # Add matches
+        if day_item.get("matches"):
+            day_map[day_name]["matches"].extend([{
+                "match": m["match"],
+                "location": m["location"].replace(" hbf", ""),
+                "travel_from": m.get("travel_from", "").replace(" hbf", ""),
+                "travel_time": m.get("travel_time", ""),
+                "contains_must_team": m.get("contains_must_team", False)
+            } for m in day_item["matches"]])
+            
+        # Add hotel
+        if "hotel" in day_item:
+            day_map[day_name]["hotel"] = day_item["hotel"].replace(" hbf", "")
+            
+        # If no matches, treat as rest-day item -> store location
+        if not day_item.get("matches") and "location" in day_item:
+            day_map[day_name]["locations"].append(day_item["location"].replace(" hbf", ""))
+    
+    # Convert day map to ordered list
+    for day_name in day_order:
+        day_info = day_map[day_name]
+        day_itinerary.append({
+            "day": day_name,
+            "matches": day_info["matches"],
+            "locations": day_info["locations"],
+            "hotel": day_info["hotel"],
+            "is_rest_day": len(day_info["matches"]) == 0
+        })
+    
     # Add variation details with actual start location
     return TripVariation(
         total_travel_time=total_travel_time,
         travel_hours=total_travel_time // 60,
         travel_minutes=total_travel_time % 60,
-        travel_segments=[],  # Will be populated later
+        travel_segments=travel_segments,
         cities=cities_list,
         teams=teams_list,
         num_games=num_games,
         start_location=clean_start_location,
         end_location=clean_end_location,
-        airport_distances=airport_distances
+        airport_distances=airport_distances,
+        hotel_changes=hotel_changes,
+        unique_hotels=unique_hotels,
+        hotel_locations=[loc.replace(" hbf", "") for loc in hotel_locations],
+        hotel_stays=hotel_stays,
+        # Add these fields to the object - they'll be included in the JSON serialization
+        hotel_details=hotel_details,
+        day_itinerary=day_itinerary
     )
 
 
 def print_formatted_trip_schedule(response: FormattedResponse) -> str:
-    """Format trip schedule for display"""
+    """Format trip schedule for display using pre-calculated data from TripVariation objects"""
     output = []
 
     output.append(f"📍 Start Location: {response.start_location.replace(' hbf', '')}")
@@ -428,87 +583,47 @@ def print_formatted_trip_schedule(response: FormattedResponse) -> str:
 
                 output.append("")
 
-            # Group items by day, but preserve the JSON order
-            base_trip = group.base_trip
-            day_map = {}
-            day_order = []
+            # Use the pre-calculated day-by-day itinerary from the base variant
+            base_variant = group.variation_details[0] if group.variation_details else None
+            
+            if base_variant and base_variant.day_itinerary:
+                # Print each day in chronological order
+                for day_info in base_variant.day_itinerary:
+                    day_name = day_info.get("day", "Unknown")
+                    output.append(f"📅 {day_name}")
 
-            for day_item in base_trip["Itinerary"]:
-                day_name = day_item.get("day", "Unknown")
-                
-                # Skip days with "Unknown" date
-                if day_name == "Unknown":
-                    continue
-                
-                if day_name not in day_map:
-                    day_map[day_name] = {"matches": [], "locations": []}
-                    day_order.append(day_name)  # preserve order
-
-                day_map[day_name]["matches"].extend(day_item.get("matches", []))
-
-                # If no matches, treat as rest-day item -> store location
-                if not day_item.get("matches") and "location" in day_item:
-                    day_map[day_name]["locations"].append(day_item["location"])
-
-            # Now print the days in the order they appeared in the JSON
-            for day_name in day_order:
-                day_info = day_map[day_name]
-                output.append(f"📅 {day_name}")
-
-                if day_info["matches"]:
-                    # Single or multiple matches?
-                    if len(day_info["matches"]) == 1:
-                        output.append("   ⚽ Match:")
+                    if day_info.get("matches"):
+                        # Single or multiple matches?
+                        if len(day_info["matches"]) == 1:
+                            output.append("   ⚽ Match:")
+                        else:
+                            output.append("   ⚽ Matches:")
+                        for match in day_info["matches"]:
+                            # Highlight matches with must_teams
+                            match_prefix = "🌟 " if match.get("contains_must_team", False) else ""
+                            output.append(f"      {match_prefix}🏟️  {match['match']}")
+                            output.append(f"      📍 {match['location']}")
                     else:
-                        output.append("   ⚽ Matches:")
-                    for match in day_info["matches"]:
-                        clean_location = match['location'].replace(' hbf', '')
-                        from_loc = match.get('travel_from', '').replace(' hbf', '')
+                        output.append(f"   💤 Rest Day")
 
-                        # Handle "Any" in from_loc
-                        if from_loc.lower() == "any":
-                            from_loc = group.variation_details[0].start_location if group.variation_details else clean_location
+                    output.append("")
 
-                        # Highlight matches with must_teams
-                        match_prefix = "🌟 " if match.get("contains_must_team", False) else ""
-                        output.append(f"      {match_prefix}🏟️  {match['match']}")
-                        output.append(f"      📍 {clean_location}")
-
-                else:
-                    output.append(f"   💤 Rest Day")
-
-                output.append("")
-
-            # Travel options - add hotel info per option here
+            # Travel options - use pre-calculated variation details
             if len(group.variations) > 1:
                 output.append("   🔄 Travel Options:")
                 for var_idx, variant_detail in enumerate(group.variation_details):
-                    # Calculate actual total travel time
-                    total_travel_time = calculate_total_travel_time(group.variations[var_idx])
-                    travel_hours = total_travel_time // 60
-                    travel_minutes = total_travel_time % 60
-                    
-                    # Travel option header
+                    # Use pre-calculated total travel time
                     output.append(
                         f"      🚆 Option {var_idx+1}: "
-                        f"{travel_hours}h {travel_minutes}m total travel, "
+                        f"{variant_detail.travel_hours}h {variant_detail.travel_minutes}m total travel, "
                         f"ending in {variant_detail.end_location}:"
                     )
                     
                     # Add hotel information for this specific travel option
-                    hotel_summary = None
-                    for day in group.variations[var_idx]["Itinerary"]:
-                        if isinstance(day, dict) and not day.get("matches") and not day.get("day") and "hotel_changes" in day:
-                            hotel_summary = day
-                            break
-                    
-                    if hotel_summary:
-                        output.append(f"      🏨 Hotel Changes: {hotel_summary.get('hotel_changes', 0)}")
-                        output.append(f"      🏨 Unique Hotels: {hotel_summary.get('unique_hotels', 0)}")
-                        if "hotel_locations" in hotel_summary and hotel_summary["hotel_locations"]:
-                            # Clean up hotel location names
-                            clean_locations = [loc.replace(" hbf", "") for loc in hotel_summary["hotel_locations"]]
-                            output.append(f"      🏨 Hotel Locations: {', '.join(clean_locations)}")
+                    output.append(f"      🏨 Hotel Changes: {variant_detail.hotel_changes}")
+                    output.append(f"      🏨 Unique Hotels: {variant_detail.unique_hotels}")
+                    if variant_detail.hotel_locations:
+                        output.append(f"      🏨 Hotel Locations: {', '.join(variant_detail.hotel_locations)}")
 
                     # End airports
                     if variant_detail.airport_distances and "end" in variant_detail.airport_distances:
@@ -522,82 +637,38 @@ def print_formatted_trip_schedule(response: FormattedResponse) -> str:
                                 f"      ✈️  Nearest airports to {variant_detail.end_location}: {airport_text}"
                             )
                     
-                    # Now add day-by-day hotel information for this travel option
+                    # Use pre-calculated hotel details
                     output.append(f"      🏨 Hotel Details:")
-                    
-                    # Sort the itinerary days chronologically
-                    sorted_days = []
-                    for day in group.variations[var_idx]["Itinerary"]:
-                        if isinstance(day, dict) and "day" in day and "hotel" in day:
-                            sorted_days.append(day)
-                    
-                    sorted_days = sorted(sorted_days, key=get_date_sortkey)
-                    
-                    # Process each day's hotel information
-                    hotel_details = process_hotel_information(sorted_days)
-                    for detail in hotel_details:
+                    for detail in variant_detail.hotel_details:
                         output.append(f"        {detail}")
                     
-                    # Create dicts to track location data
-                    hotel_by_day = {}
-                    match_by_day = {}
-                    
-                    # Map days to hotels and match locations
-                    for day in sorted_days:
-                        if "day" in day and "hotel" in day:
-                            day_name = day["day"]
-                            hotel_by_day[day_name] = day["hotel"]
-                        
-                        if "day" in day and "matches" in day and day["matches"]:
-                            day_name = day["day"]
-                            match_location = day["matches"][0]["location"]
-                            match_by_day[day_name] = match_location
-                    
-                    # Process travel segments
-                    travel_segments_text = process_travel_segments(
-                        sorted_days, variant_detail, response.start_location, match_by_day, hotel_by_day
-                    )
+                    # Use pre-calculated travel segments
+                    travel_segments_text = [
+                        f"{segment.from_location} → {segment.to_location} "
+                        f"({segment.day}{', ' + segment.context if segment.context else ''}) - "
+                        f"{segment.travel_time}"
+                        for segment in variant_detail.travel_segments
+                    ]
                     
                     output.append("      " + "\n      ".join(travel_segments_text))
 
                     if var_idx < len(group.variation_details) - 1:
                         output.append("")
             else:
-                # Single travel option - use the same enhanced travel segment logic
+                # Single travel option - use the pre-processed data
                 variant_detail = group.variation_details[0] if group.variation_details else None
                 if variant_detail:
-                    # Calculate actual total travel time
-                    total_travel_time = calculate_total_travel_time(group.variations[0])
-                    travel_hours = total_travel_time // 60
-                    travel_minutes = total_travel_time % 60
-                    
                     output.append(
                         f"   ℹ️  Only one travel option: "
-                        f"{travel_hours}h {travel_minutes}m total travel, "
+                        f"{variant_detail.travel_hours}h {variant_detail.travel_minutes}m total travel, "
                         f"ending in {variant_detail.end_location}"
                     )
 
-                    # Add hotel information for this option
-                    hotel_summary = None
-                    # Check both places where hotel summary might be stored
-                    for day in group.variations[0]["Itinerary"]:
-                        if isinstance(day, dict) and not day.get("matches") and not day.get("day") and "hotel_changes" in day:
-                            hotel_summary = day
-                            break
-                    
-                    if not hotel_summary:
-                        for day in group.base_trip["Itinerary"]:
-                            if isinstance(day, dict) and not day.get("matches") and not day.get("day") and "hotel_changes" in day:
-                                hotel_summary = day
-                                break
-                    
-                    if hotel_summary:
-                        output.append(f"   🏨 Hotel Changes: {hotel_summary.get('hotel_changes', 0)}")
-                        output.append(f"   🏨 Unique Hotels: {hotel_summary.get('unique_hotels', 0)}")
-                        if "hotel_locations" in hotel_summary and hotel_summary["hotel_locations"]:
-                            # Clean up hotel location names
-                            clean_locations = [loc.replace(" hbf", "") for loc in hotel_summary["hotel_locations"]]
-                            output.append(f"   🏨 Hotel Locations: {', '.join(clean_locations)}")
+                    # Add hotel information from the variant detail
+                    output.append(f"   🏨 Hotel Changes: {variant_detail.hotel_changes}")
+                    output.append(f"   🏨 Unique Hotels: {variant_detail.unique_hotels}")
+                    if variant_detail.hotel_locations:
+                        output.append(f"   🏨 Hotel Locations: {', '.join(variant_detail.hotel_locations)}")
                     
                     # End airports
                     if variant_detail.airport_distances and "end" in variant_detail.airport_distances:
@@ -611,41 +682,18 @@ def print_formatted_trip_schedule(response: FormattedResponse) -> str:
                                 f"   ✈️  Nearest airports to {variant_detail.end_location}: {airport_text}"
                             )
 
-                    # Now add day-by-day hotel information for this travel option
+                    # Use pre-calculated hotel details 
                     output.append(f"   🏨 Hotel Details:")
-                    
-                    # Sort the itinerary days chronologically
-                    sorted_days = []
-                    for day in group.variations[0]["Itinerary"]:
-                        if isinstance(day, dict) and "day" in day and "hotel" in day:
-                            sorted_days.append(day)
-                    
-                    sorted_days = sorted(sorted_days, key=get_date_sortkey)
-                    
-                    # Process each day's hotel information
-                    hotel_details = process_hotel_information(sorted_days)
-                    for detail in hotel_details:
+                    for detail in variant_detail.hotel_details:
                         output.append(f"        {detail}")
                     
-                    # Create dicts to track location data
-                    hotel_by_day = {}
-                    match_by_day = {}
-                    
-                    # Map days to hotels and match locations
-                    for day in sorted_days:
-                        if "day" in day and "hotel" in day:
-                            day_name = day["day"]
-                            hotel_by_day[day_name] = day["hotel"]
-                        
-                        if "day" in day and "matches" in day and day["matches"]:
-                            day_name = day["day"]
-                            match_location = day["matches"][0]["location"]
-                            match_by_day[day_name] = match_location
-                    
-                    # Process travel segments
-                    travel_segments_text = process_travel_segments(
-                        sorted_days, variant_detail, response.start_location, match_by_day, hotel_by_day
-                    )
+                    # Use pre-calculated travel segments
+                    travel_segments_text = [
+                        f"{segment.from_location} → {segment.to_location} "
+                        f"({segment.day}{', ' + segment.context if segment.context else ''}) - "
+                        f"{segment.travel_time}"
+                        for segment in variant_detail.travel_segments
+                    ]
                     
                     output.append("      " + "\n      ".join(travel_segments_text))
 
@@ -668,23 +716,8 @@ def print_formatted_trip_schedule(response: FormattedResponse) -> str:
 
         output.append("\nCheck back later for updated schedules!")
 
-    # Format the current date and time for the filename
-    #current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
-    #filename = f"trip_plan_{current_datetime}.txt"
-    #filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "trip_plans", filename)
-    #
-    ## Create directory if it doesn't exist
-    #os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    #
-    ## Write to file
-    #with open(filepath, 'w', encoding='utf-8') as f:
-    #    f.write("\n".join(output))
-    #
-    #print(f"Trip plan saved to: {filepath}")      
-
     print("\n".join(output))
     return "\n".join(output)
-
 
 # ────────────────────────────────
 # 🛠️ Get Trip

@@ -42,7 +42,9 @@ class TripVariation(BaseModel):
     hotel_changes: int = 0  
     unique_hotels: int = 0  
     hotel_locations: List[str] = []  
-    hotel_stays: List[HotelStay] = [] 
+    hotel_stays: List[Dict[str, Any]] = [] 
+    hotel_details: List[str] = []
+    day_itinerary: List[Dict[str, Any]] = []
 
 class TripGroup(BaseModel):
     base_trip: Dict[str, Any]
