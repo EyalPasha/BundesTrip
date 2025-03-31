@@ -47,6 +47,13 @@ async function handleSearch(e) {
             preferred_leagues: selectedLeagues.length > 0 ? selectedLeagues : null,
             must_teams: selectedTeams.length > 0 ? selectedTeams : []
         };
+
+        // Ensure the date has a year (note: this is a fallback in case the flatpickr change doesn't work)
+        if (payload.start_date && !payload.start_date.includes("2025") && !payload.start_date.includes("2026")) {
+            // Add current year if missing
+            const currentYear = new Date().getFullYear();
+            payload.start_date = `${payload.start_date} ${currentYear}`;
+        }
         
         console.log("Sending payload:", payload);
         

@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Initialize date picker with all dates available
     const availableDates = await loadAvailableDates();
     flatpickr(window.DOM.startDateInput, {
-        dateFormat: "d F", // Date format (day + month name)
-        minDate: "today", // Ensure dates start from today
+        dateFormat: "d F Y",  // Include year in date format
+        minDate: "today",
         disableMobile: true,
         // Remove the 'enable' property to allow all dates
         // Instead, highlight dates with games using the onDayCreate callback

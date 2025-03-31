@@ -377,54 +377,79 @@
 
 /* Airport information styling */
 .airport-distances {
-    background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
-    border-radius: 14px;
-    padding: 1.5rem;
-    margin-top: 2rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-    border: 1px solid #e4ebf3;
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    border: 1px solid #edf2f7;
 }
 
-.airport-distances .nav-tabs {
-    border-bottom: none;
-    gap: 8px;
-    padding-bottom: 8px;
-}
-
-.airport-distances .nav-link {
-    color: #64748b;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    padding: 0.6rem 1.2rem;
-    font-weight: 500;
-    transition: all 0.2s;
-}
-
-.airport-distances .nav-link:hover {
-    background-color: #f1f5f9;
-    border-color: #e2e8f0;
-}
-
-.airport-distances .nav-link.active {
-    color: white;
-    background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
-    border-color: transparent;
-    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.25);
-}
-
-.airport-distances .list-group-item {
-    border-radius: 8px !important;
-    margin-bottom: 8px;
-    padding: 12px 16px;
+/* Airport sections */
+.airport-section {
     background-color: white;
-    border: 1px solid #e4ebf3;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 12px; 
+    border: 1px solid #edf2f7;
+}
+
+.airport-section h6 {
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--bs-dark);
+    font-size: 0.95rem;
+}
+
+/* More compact airport items */
+.airport-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 6px !important;
+    background-color: #f8fafc;
+    border: 1px solid #edf2f7 !important;
+    margin-bottom: 6px;
     transition: all 0.2s;
 }
 
-.airport-distances .list-group-item:hover {
-    background-color: #f8fafc;
-    transform: translateX(2px);
+.airport-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Airport badges */
+.airport-badge {
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.airport-badge.starting, 
+.airport-badge.ending, 
+.airport-badge.major {
+    background-color: var(--primary-color, #043d7c);
+    color: white;
+}
+
+.airport-code {
+    font-weight: 500;
+    margin-right: 4px;
+    font-size: 0.9rem;
+}
+
+.airport-name {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+/* Airport header styling */
+.airport-distances h5 {
+    font-weight: 600;
+    color: var(--bs-dark);
+    font-size: 1rem;
+    margin-bottom: 1rem;
 }
 
 /* Enhanced TBD Games styling */
@@ -506,4 +531,32 @@
 
 .flatpickr-day.selected.has-matches {
     background-color: var(--primary-color, #043d7c);
+}
+
+/* Add this to components.css */
+
+.dynamic-itinerary-container {
+    max-height: 700px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-right: -10px;
+}
+
+/* Make scrollbar more visible */
+.dynamic-itinerary-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dynamic-itinerary-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.dynamic-itinerary-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.dynamic-itinerary-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

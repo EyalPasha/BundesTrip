@@ -164,6 +164,8 @@ async function planTrip(tripData) {
         
         return response;
     } catch (error) {
+        console.error("Trip planning error:", error);
+        console.error("Request payload was:", JSON.stringify(tripData, null, 2));
         throw error;
     } finally {
         if (loadingIndicator) loadingIndicator.classList.add('d-none');

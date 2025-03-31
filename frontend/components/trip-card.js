@@ -138,166 +138,33 @@ function renderTripCard(group, index, tripContext = {}) {
     const details = document.createElement('div');
     details.className = 'trip-details collapse';
     
-    // Itinerary with timeline styling
-    const itinerary = document.createElement('div');
-    itinerary.className = 'itinerary timeline mt-3';
+    // *** MOVE TRAVEL OPTIONS TO TOP OF DETAILS ***
+    // Create travel options section first (before itinerary)
+    const travelOptionsSection = document.createElement('div');
+    travelOptionsSection.className = 'travel-options-section mt-3 mb-4';
     
-    // Group items by day, but preserve order
-    const dayMap = {};
-    const dayOrder = [];
+    const travelOptionsHeader = document.createElement('h5');
+    travelOptionsHeader.className = 'mb-3 d-flex align-items-center';
+    travelOptionsHeader.innerHTML = '<i class="fas fa-exchange-alt text-primary me-2"></i> Travel Options';
+    travelOptionsSection.appendChild(travelOptionsHeader);
     
-    baseTrip.Itinerary.forEach(dayItem => {
-        const dayName = dayItem.day || 'Unknown';
-        if (!dayMap[dayName]) {
-            dayMap[dayName] = { matches: [], location: null, hotel: null };
-            dayOrder.push(dayName);
-        }
-        
-        if (dayItem.matches) {
-            dayMap[dayName].matches.push(...dayItem.matches);
-        }
-        
-        // Always store the location if it exists
-        if (dayItem.location) {
-            dayMap[dayName].location = dayItem.location;
-        }
-        
-        // Store hotel information
-        if (dayItem.hotel) {
-            dayMap[dayName].hotel = dayItem.hotel;
-        }
-    });
+    // Create tabs for travel options
+    const optionsTabs = document.createElement('div');
+    optionsTabs.className = 'nav nav-tabs mb-3';
+    optionsTabs.id = `trip-${index}-tabs`;
     
-    // Create timeline for each day
-    dayOrder.forEach((dayName, dayIndex) => {
-        const dayInfo = dayMap[dayName];
-        const isLastDay = dayIndex === dayOrder.length - 1; // Check if this is the last day
-        
-        // Day header with improved visual
-        const dayHeader = document.createElement('div');
-        dayHeader.className = 'day-header mb-3 position-relative';
-        dayHeader.innerHTML = `
-            <div class="day-badge">${dayIndex + 1}</div>
-            <h5 class="mb-0 ms-4 ps-2">Day ${dayIndex + 1}: ${dayName}</h5>
-            <div class="day-line"></div>
-        `;
-        itinerary.appendChild(dayHeader);
-        
-        // Add hotel information if available
-        if (dayInfo.hotel) {
-            const hotelInfo = document.createElement('div');
-            hotelInfo.className = 'hotel-info ms-4 ps-2 mb-3';
-            hotelInfo.innerHTML = `
-                <div class="d-flex align-items-center text-primary">
-                    <i class="fas fa-hotel me-2"></i>
-                    <strong>Hotel: ${dayInfo.hotel.replace(' hbf', '')}</strong>
-                </div>
-            `;
-            itinerary.appendChild(hotelInfo);
-        }
-        
-        if (dayInfo.matches && dayInfo.matches.length > 0) {
-            // Render matches with enhanced styling
-            const matchesContainer = document.createElement('div');
-            matchesContainer.className = 'matches-container ms-4 ps-2 mb-4';
-            
-            dayInfo.matches.forEach(match => {
-                const matchItem = document.createElement('div');
-                matchItem.className = match.contains_must_team 
-                    ? 'match-item must-team mb-3 p-3 rounded' 
-                    : 'match-item mb-3 p-3 rounded';
-                
-                const matchLocation = match.location.replace(' hbf', '');
-                const fromLocation = match.travel_from ? match.travel_from.replace(' hbf', '') : '';
-                
-                // Enhanced match item with team logos, time
-                matchItem.innerHTML = `
-                    <div class="match-details">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <strong class="match-teams">${match.match}</strong>
-                            ${match.contains_must_team ? '<span class="badge bg-warning text-dark">Must-See</span>' : ''}
-                        </div>
-                        <div class="match-meta d-flex flex-wrap">
-                            <div class="me-3 d-flex align-items-center">
-                                <i class="fas fa-map-marker-alt text-danger me-1"></i> 
-                                <span>${matchLocation}</span>
-                            </div>
-                            ${match.travel_from ? `
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-train text-primary me-1"></i>
-                                <span>From ${fromLocation} - ${match.travel_time}</span>
-                            </div>` : ''}
-                        </div>
-                    </div>
-                `;
-                
-                matchesContainer.appendChild(matchItem);
-            });
-            
-            itinerary.appendChild(matchesContainer);
-        } else {
-            // Enhanced rest day display
-            const restDay = document.createElement('div');
-            restDay.className = 'rest-day ms-4 ps-2 mb-4 p-3 bg-light rounded';
-            
-            let location = dayInfo.location ? dayInfo.location.replace(' hbf', '') : '---';
-            
-            // Find the next city if this is not the last day
-            let nextCity = '---';
-            if (!isLastDay && dayIndex + 1 < dayOrder.length) {
-                const nextDayName = dayOrder[dayIndex + 1];
-                const nextDayInfo = dayMap[nextDayName];
-                
-                if (nextDayInfo.location) {
-                    nextCity = nextDayInfo.location.replace(' hbf', '');
-                } else if (nextDayInfo.matches && nextDayInfo.matches.length > 0) {
-                    // If no direct location for the day, try to get it from the first match
-                    nextCity = nextDayInfo.matches[0].location.replace(' hbf', '');
-                }
-            }
-            
-            // Different message based on whether it's the last day
-            const restDayMessage = isLastDay 
-                ? `Your trip has come to an end. You can return home from ${location} or explore nearby cities. Check airport information below for travel options.`
-                : `Take time to explore ${location}, visit local attractions, or travel early to ${nextCity !== '---' ? nextCity : 'your next destination'}. A rest day gives you flexibility to enjoy the cities at your own pace.`;
-            
-            const iconClass = isLastDay ? 'fa-flag-checkered' : 'fa-bed';
-            
-            restDay.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <i class="fas ${iconClass} ${isLastDay ? 'text-success' : 'text-secondary'} me-2"></i>
-                    <span>${isLastDay ? 'Final day' : 'Rest day'} in ${location}</span>
-                </div>
-                <div class="text-muted small mt-1">
-                    ${restDayMessage}
-                </div>
-            `;
-            
-            itinerary.appendChild(restDay);
-        }
-    });
+    // Create content container for travel options
+    const optionsContent = document.createElement('div');
+    optionsContent.className = 'tab-content';
+    optionsContent.id = `trip-${index}-content`;
     
-    // NEW: Travel Options Section - with multiple options
+    // Create container for the dynamic itinerary
+    const dynamicItineraryContainer = document.createElement('div');
+    dynamicItineraryContainer.className = 'dynamic-itinerary-container mt-4';
+    
+    // Only add travel options if multiple variations exist
     if (group.variations && group.variations.length > 0) {
-        const travelOptionsSection = document.createElement('div');
-        travelOptionsSection.className = 'travel-options-section mt-4 mb-3';
-        
-        const travelOptionsHeader = document.createElement('h5');
-        travelOptionsHeader.className = 'mb-3 d-flex align-items-center';
-        travelOptionsHeader.innerHTML = '<i class="fas fa-exchange-alt text-primary me-2"></i> Travel Options';
-        travelOptionsSection.appendChild(travelOptionsHeader);
-        
-        // Create tabs for travel options
-        const optionsTabs = document.createElement('div');
-        optionsTabs.className = 'nav nav-tabs mb-3';
-        optionsTabs.id = `trip-${index}-tabs`;
-        
-        // Create content container for travel options
-        const optionsContent = document.createElement('div');
-        optionsContent.className = 'tab-content';
-        optionsContent.id = `trip-${index}-content`;
-        
-        // Create each option tab and content
+        // Create each option tab
         group.variation_details.forEach((variant, varIdx) => {
             const isActive = varIdx === 0;
             const optionId = `trip-${index}-option-${varIdx}`;
@@ -314,7 +181,10 @@ function renderTripCard(group, index, tripContext = {}) {
             tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
             tab.innerHTML = `
                 <i class="fas fa-${varIdx === 0 ? 'star' : 'route'} me-1"></i> 
-                Option ${varIdx + 1} <span class="option-time ms-1">(${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m)</span>
+                Option ${varIdx + 1} 
+                <span class="option-time ms-1">
+                    (${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m, ${variant.unique_hotels || 0} hotels)
+                </span>
             `;
             optionsTabs.appendChild(tab);
             
@@ -325,126 +195,38 @@ function renderTripCard(group, index, tripContext = {}) {
             contentPane.setAttribute('role', 'tabpanel');
             contentPane.setAttribute('aria-labelledby', `${optionId}-tab`);
             
-            // Hotel Summary section - NEW
-            const hotelSummary = extractHotelSummary(group.variations[varIdx]);
-            if (hotelSummary) {
-                const hotelSummaryElement = document.createElement('div');
-                hotelSummaryElement.className = 'hotel-summary bg-light rounded p-3 mb-3';
-                hotelSummaryElement.innerHTML = `
-                    <div class="d-flex align-items-center mb-2">
-                        <i class="fas fa-hotel text-primary me-2"></i>
-                        <strong>Hotel Information</strong>
+            // Add basic travel option info
+            contentPane.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <i class="fas fa-route text-primary me-2"></i>
+                        <strong>${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m total travel time</strong>
                     </div>
-                    <div class="d-flex flex-wrap">
-                        ${hotelSummary.hotelChanges !== undefined ? `
-                            <div class="me-3">
-                                <i class="fas fa-exchange-alt me-1"></i>
-                                Hotel Changes: ${hotelSummary.hotelChanges}
-                            </div>
-                        ` : ''}
-                        ${hotelSummary.uniqueHotels !== undefined ? `
-                            <div class="me-3">
-                                <i class="fas fa-building me-1"></i>
-                                Unique Hotels: ${hotelSummary.uniqueHotels}
-                            </div>
-                        ` : ''}
+                    <div>
+                        <i class="fas fa-hotel text-secondary me-2"></i>
+                        Hotel changes: ${variant.hotel_changes || 0}
                     </div>
-                    ${hotelSummary.hotelLocations && hotelSummary.hotelLocations.length > 0 ? `
-                        <div class="mt-1">
-                            <i class="fas fa-map-marker-alt me-1"></i>
-                            Hotel Locations: ${hotelSummary.hotelLocations.join(', ')}
-                        </div>
-                    ` : ''}
-                `;
-                contentPane.appendChild(hotelSummaryElement);
-            }
+                </div>
+            `;
             
-            // Travel segments list
-            const segmentsList = renderTravelSegments(variant);
-            contentPane.appendChild(segmentsList);
-            
-            // Airport Information if available
-            if (variant.airports && variant.airports.length > 0) {
-                const airportInfo = document.createElement('div');
-                airportInfo.className = 'airport-info bg-light rounded p-3 mt-3';
-                
-                let finalCity = variant.final_city || 
-                    (variant.travel_segments && variant.travel_segments.length > 0 ? 
-                        variant.travel_segments[variant.travel_segments.length - 1].to_location : '');
-                
-                if (finalCity) {
-                    finalCity = finalCity.replace(' hbf', '');
-                    
-                    airportInfo.innerHTML = `
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="fas fa-plane text-info me-2"></i>
-                            <strong>Nearest airports to ${finalCity}:</strong>
-                        </div>
-                        <ul class="list-unstyled ms-4 mb-0">
-                            ${variant.airports.map(airport => 
-                                `<li class="mb-1">
-                                    <i class="fas fa-plane-departure text-info me-1"></i> 
-                                    ${airport.name} (${airport.travel_time})
-                                </li>`
-                            ).join('')}
-                        </ul>
-                    `;
-                    
-                    contentPane.appendChild(airportInfo);
-                }
-            }
-            
-            // Return trip info if available
-            if (variant.return_trip) {
-                const returnInfo = document.createElement('div');
-                returnInfo.className = 'return-info bg-light rounded p-3 mt-3';
-                
-                const startLocation = variant.return_trip.start_location || '';
-                const endLocation = variant.return_trip.end_location || '';
-                const travelTime = variant.return_trip.travel_time || '';
-                
-                returnInfo.innerHTML = `
-                    <div class="d-flex align-items-center mb-2">
-                        <i class="fas fa-undo text-warning me-2"></i>
-                        <strong>Return to start location:</strong>
-                    </div>
-                    <div class="ms-4">
-                        <i class="fas fa-long-arrow-alt-right me-1"></i>
-                        ${startLocation.replace(' hbf', '')} → ${endLocation.replace(' hbf', '')} - ${travelTime}
-                    </div>
-                `;
-                
-                contentPane.appendChild(returnInfo);
-            }
-            
-            // Add to main content container
             optionsContent.appendChild(contentPane);
+            
+            // Add click handler to update itinerary when tab is clicked
+            tab.addEventListener('click', function() {
+                renderItineraryForVariant(dynamicItineraryContainer, group, varIdx);
+            });
         });
         
-        // Add tabs and content to travel options section
         travelOptionsSection.appendChild(optionsTabs);
         travelOptionsSection.appendChild(optionsContent);
-        
-        // Add travel options to itinerary
-        itinerary.appendChild(travelOptionsSection);
+        details.appendChild(travelOptionsSection);
     }
     
-    // Airport distances section if available
-    if (defaultVariant.airport_distances) {
-        // Add city context to airport distances
-        const airportDistancesWithCities = {
-            ...defaultVariant.airport_distances,
-            start_city: defaultVariant.start_location?.replace(' hbf', '') || 'starting point',
-            end_city: defaultVariant.end_location?.replace(' hbf', '') || 'destination'
-        };
-        
-        const airportSection = renderAirportDistances(airportDistancesWithCities);
-        if (airportSection) {
-            itinerary.appendChild(airportSection);
-        }
-    }
+    // Add the dynamic itinerary container
+    details.appendChild(dynamicItineraryContainer);
     
-    details.appendChild(itinerary);
+    // Render the initial itinerary (option 0)
+    renderItineraryForVariant(dynamicItineraryContainer, group, 0);
     
     // Add content to card
     tripCard.appendChild(header);
@@ -471,54 +253,98 @@ function renderTripCard(group, index, tripContext = {}) {
 }
 
 /**
- * Extracts hotel summary information from a trip variation
- * @param {object} variation - The trip variation object
+ * Extracts hotel summary information from a variant
+ * @param {object} variant - The trip variation object
  * @returns {object|null} Hotel summary info or null if not available
  */
-function extractHotelSummary(variation) {
-    if (!variation || !variation.Itinerary) return null;
+function extractHotelSummary(variant) {
+    if (!variant) return null;
     
-    // Look for hotel summary object in the itinerary
-    for (const day of variation.Itinerary) {
-        if (day && !day.matches && !day.day && day.hotel_changes !== undefined) {
+    // First try to get from variant's direct properties
+    if (variant.hotel_changes !== undefined && variant.unique_hotels !== undefined) {
+        return {
+            hotelChanges: variant.hotel_changes,
+            uniqueHotels: variant.unique_hotels,
+            hotelLocations: variant.hotel_locations || []
+        };
+    }
+    
+    // If not available directly, try to extract from day_itinerary
+    if (variant.day_itinerary && variant.day_itinerary.length > 0) {
+        const hotels = new Set();
+        const hotelLocations = [];
+        let hotelChanges = 0;
+        let prevHotel = null;
+        
+        for (const day of variant.day_itinerary) {
+            if (day && day.hotel) {
+                const hotel = day.hotel;
+                hotels.add(hotel);
+                
+                if (!hotelLocations.includes(hotel)) {
+                    hotelLocations.push(hotel);
+                }
+                
+                if (prevHotel && prevHotel !== hotel) {
+                    hotelChanges++;
+                }
+                
+                prevHotel = hotel;
+            }
+        }
+        
+        if (hotels.size > 0) {
             return {
-                hotelChanges: day.hotel_changes,
-                uniqueHotels: day.unique_hotels,
-                hotelLocations: day.hotel_locations ? 
-                    day.hotel_locations.map(loc => loc.replace(' hbf', '')) : []
+                hotelChanges: hotelChanges,
+                uniqueHotels: hotels.size,
+                hotelLocations: hotelLocations
             };
         }
     }
     
-    // If no explicit summary, try to extract from individual days
-    const hotels = new Set();
-    const hotelLocations = [];
-    let hotelChanges = 0;
-    let prevHotel = null;
-    
-    for (const day of variation.Itinerary) {
-        if (day && day.hotel) {
-            const hotel = day.hotel;
-            hotels.add(hotel);
-            
-            if (!hotelLocations.includes(hotel)) {
-                hotelLocations.push(hotel.replace(' hbf', ''));
+    // Legacy fallback
+    // Look for hotel summary object in the itinerary
+    if (variant.Itinerary) {
+        for (const day of variant.Itinerary) {
+            if (day && !day.matches && !day.day && day.hotel_changes !== undefined) {
+                return {
+                    hotelChanges: day.hotel_changes,
+                    uniqueHotels: day.unique_hotels,
+                    hotelLocations: day.hotel_locations ? day.hotel_locations : []
+                };
             }
-            
-            if (prevHotel && prevHotel !== hotel) {
-                hotelChanges++;
-            }
-            
-            prevHotel = hotel;
         }
-    }
-    
-    if (hotels.size > 0) {
-        return {
-            hotelChanges: hotelChanges,
-            uniqueHotels: hotels.size,
-            hotelLocations: hotelLocations
-        };
+        
+        // Try to extract from individual days
+        const hotels = new Set();
+        const hotelLocations = [];
+        let hotelChanges = 0;
+        let prevHotel = null;
+        
+        for (const day of variant.Itinerary) {
+            if (day && day.hotel) {
+                const hotel = day.hotel;
+                hotels.add(hotel);
+                
+                if (!hotelLocations.includes(hotel)) {
+                    hotelLocations.push(hotel);
+                }
+                
+                if (prevHotel && prevHotel !== hotel) {
+                    hotelChanges++;
+                }
+                
+                prevHotel = hotel;
+            }
+        }
+        
+        if (hotels.size > 0) {
+            return {
+                hotelChanges: hotelChanges,
+                uniqueHotels: hotels.size,
+                hotelLocations: hotelLocations
+            };
+        }
     }
     
     return null;
@@ -579,91 +405,148 @@ function renderTravelSegments(variant) {
 }
 
 /**
- * Renders airport distances section for trip details
- * @param {object} airportData - Airport distance data with city context
- * @returns {HTMLDivElement|null} The rendered airport section or null if no valid data
+ * Renders airport distances section for trip details with consistent styling
  */
 function renderAirportDistances(airportData) {
-    if (!airportData || (!airportData.nearest_airports && !airportData.closest_major_airports)) {
+    // Early return if no data available
+    if (!airportData) return null;
+    
+    // Check for different possible data structures
+    const startAirports = airportData.start || [];
+    const endAirports = airportData.end || airportData.nearest_airports || [];
+    const majorAirports = airportData.major || airportData.closest_major_airports || [];
+    
+    // If no airports in any category, return nothing
+    if (startAirports.length === 0 && endAirports.length === 0 && majorAirports.length === 0) {
         return null;
     }
 
     const airportSection = document.createElement('div');
-    airportSection.className = 'airport-distances mt-4 mb-3';
-
-    const airportHeader = document.createElement('h5');
-    airportHeader.className = 'mb-3 d-flex align-items-center';
-    airportHeader.innerHTML = '<i class="fas fa-plane-departure text-primary me-2"></i> Airport Information';
-    airportSection.appendChild(airportHeader);
-
-    const airportCard = document.createElement('div');
-    airportCard.className = 'card border-0';
-
-    // Nearest airports list
-    if (airportData.nearest_airports && airportData.nearest_airports.length > 0) {
-        const nearestAirportsDiv = document.createElement('div');
-        nearestAirportsDiv.className = 'card-body bg-light rounded mb-2';
+    airportSection.className = 'travel-segments-section mt-4 mb-3';
+    
+    // Airports near start location
+    if (startAirports && startAirports.length > 0) {
+        const startAirportsDiv = document.createElement('div');
+        startAirportsDiv.className = 'mb-3';
         
-        const nearestTitle = document.createElement('h6');
-        nearestTitle.className = 'card-title mb-3';
-        nearestTitle.innerHTML = `
-            <i class="fas fa-plane text-info me-2"></i>
-            Nearest Airports to ${airportData.end_city || 'destination'}:
+        const startTitle = document.createElement('h5');
+        startTitle.className = 'mb-3 d-flex align-items-center';
+        startTitle.innerHTML = `
+            <i class="fas fa-plane-departure text-primary me-2"></i>
+            Airports near ${airportData.start_city || 'starting point'}
         `;
-        nearestAirportsDiv.appendChild(nearestTitle);
+        startAirportsDiv.appendChild(startTitle);
         
-        const nearestList = document.createElement('ul');
-        nearestList.className = 'list-group list-group-flush';
+        const startList = document.createElement('div');
+        startList.className = 'list-group';
         
-        airportData.nearest_airports.forEach(airport => {
-            const listItem = document.createElement('li');
-            listItem.className = 'list-group-item bg-transparent px-0';
+        startAirports.slice(0, 3).forEach((airport, idx) => {
+            const airportName = airport.airport || airport.name || airport.code || 'Unknown Airport';
+            const airportCode = airport.code ? `(${airport.code})` : '';
+            const travelTime = airport.travel_time || 'N/A';
+            
+            const listItem = document.createElement('div');
+            listItem.className = 'list-group-item travel-segment';
             listItem.innerHTML = `
                 <div class="d-flex justify-content-between align-items-center">
-                    <span>${airport.name || airport.code}</span>
-                    <span class="badge bg-info text-white">${airport.travel_time}</span>
+                    <div class="d-flex align-items-center">
+                        <span class="segment-number me-2">${idx + 1}</span>
+                        <div>
+                            ${airportName} ${airportCode}
+                        </div>
+                    </div>
+                    <div class="travel-time badge bg-info text-white">${travelTime}</div>
                 </div>
             `;
-            nearestList.appendChild(listItem);
+            startList.appendChild(listItem);
         });
         
-        nearestAirportsDiv.appendChild(nearestList);
-        airportCard.appendChild(nearestAirportsDiv);
+        startAirportsDiv.appendChild(startList);
+        airportSection.appendChild(startAirportsDiv);
+    }
+
+    // Airports near end location
+    if (endAirports && endAirports.length > 0) {
+        const endAirportsDiv = document.createElement('div');
+        endAirportsDiv.className = 'mb-3';
+        
+        const endTitle = document.createElement('h5');
+        endTitle.className = 'mb-3 d-flex align-items-center';
+        endTitle.innerHTML = `
+            <i class="fas fa-plane-departure text-primary me-2"></i>
+            Airports near ${airportData.end_city || 'destination'}
+        `;
+        endAirportsDiv.appendChild(endTitle);
+        
+        const endList = document.createElement('div');
+        endList.className = 'list-group';
+        
+        endAirports.slice(0, 3).forEach((airport, idx) => {
+            const airportName = airport.airport || airport.name || airport.code || 'Unknown Airport';
+            const airportCode = airport.code ? `(${airport.code})` : '';
+            const travelTime = airport.travel_time || 'N/A';
+            
+            const listItem = document.createElement('div');
+            listItem.className = 'list-group-item travel-segment';
+            listItem.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <span class="segment-number me-2">${idx + 1}</span>
+                        <div>
+                            ${airportName} ${airportCode}
+                        </div>
+                    </div>
+                    <div class="travel-time badge bg-info text-white">${travelTime}</div>
+                </div>
+            `;
+            endList.appendChild(listItem);
+        });
+        
+        endAirportsDiv.appendChild(endList);
+        airportSection.appendChild(endAirportsDiv);
     }
     
-    // Major airports list
-    if (airportData.closest_major_airports && airportData.closest_major_airports.length > 0) {
+    // Major airports
+    if (majorAirports && majorAirports.length > 0) {
         const majorAirportsDiv = document.createElement('div');
-        majorAirportsDiv.className = 'card-body bg-light rounded';
+        majorAirportsDiv.className = 'mb-3';
         
-        const majorTitle = document.createElement('h6');
-        majorTitle.className = 'card-title mb-3';
+        const majorTitle = document.createElement('h5');
+        majorTitle.className = 'mb-3 d-flex align-items-center';
         majorTitle.innerHTML = `
             <i class="fas fa-plane-departure text-primary me-2"></i>
-            Major International Airports:
+            Major International Airports
         `;
         majorAirportsDiv.appendChild(majorTitle);
         
-        const majorList = document.createElement('ul');
-        majorList.className = 'list-group list-group-flush';
+        const majorList = document.createElement('div');
+        majorList.className = 'list-group';
         
-        airportData.closest_major_airports.forEach(airport => {
-            const listItem = document.createElement('li');
-            listItem.className = 'list-group-item bg-transparent px-0';
+        majorAirports.slice(0, 3).forEach((airport, idx) => {
+            const airportName = airport.airport || airport.name || airport.code || 'Unknown Airport';
+            const airportCode = airport.code ? `(${airport.code})` : '';
+            const travelTime = airport.travel_time || 'N/A';
+            
+            const listItem = document.createElement('div');
+            listItem.className = 'list-group-item travel-segment';
             listItem.innerHTML = `
                 <div class="d-flex justify-content-between align-items-center">
-                    <span>${airport.name || airport.code}</span>
-                    <span class="badge bg-primary text-white">${airport.travel_time}</span>
+                    <div class="d-flex align-items-center">
+                        <span class="segment-number me-2">${idx + 1}</span>
+                        <div>
+                            ${airportName} ${airportCode}
+                        </div>
+                    </div>
+                    <div class="travel-time badge bg-info text-white">${travelTime}</div>
                 </div>
             `;
             majorList.appendChild(listItem);
         });
         
         majorAirportsDiv.appendChild(majorList);
-        airportCard.appendChild(majorAirportsDiv);
+        airportSection.appendChild(majorAirportsDiv);
     }
     
-    airportSection.appendChild(airportCard);
     return airportSection;
 }
 
@@ -802,5 +685,259 @@ function renderTbdGames(tbdGames, mustTeams = []) {
     tripResults.insertBefore(tbdSection, tripResults.firstChild);
 }
 
+/**
+ * Renders the itinerary for a specific trip variant
+ * @param {HTMLElement} container - The container to render the itinerary into
+ * @param {Object} group - The trip group data
+ * @param {number} variantIndex - The index of the selected variant
+ */
+function renderItineraryForVariant(container, group, variantIndex) {
+    // Clear the container
+    container.innerHTML = '';
+    
+    // Safety checks - keep existing error handling
+    if (!group || !group.variation_details) {
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'alert alert-warning';
+        errorMsg.textContent = 'Unable to display trip details: Missing data';
+        container.appendChild(errorMsg);
+        return;
+    }
+    
+    // Get the selected variant
+    const variant = group.variation_details[variantIndex];
+    const variantFull = group.variations ? group.variations[variantIndex] : null;
+    
+    if (!variant) {
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'alert alert-warning';
+        errorMsg.textContent = 'Unable to display trip variant: Missing data';
+        container.appendChild(errorMsg);
+        return;
+    }
+    
+    // Create itinerary with timeline styling
+    const itinerary = document.createElement('div');
+    itinerary.className = 'itinerary timeline mt-3';
+    
+    // Create day-by-day itinerary from variant's day_itinerary
+    if (variant.day_itinerary && variant.day_itinerary.length > 0) {
+        // First, organize travel segments by day for easy lookup
+        const travelSegmentsByDay = {};
+        if (variant.travel_segments && variant.travel_segments.length > 0) {
+            variant.travel_segments.forEach(segment => {
+                const day = segment.day || '';
+                if (!travelSegmentsByDay[day]) {
+                    travelSegmentsByDay[day] = [];
+                }
+                travelSegmentsByDay[day].push(segment);
+            });
+        }
+        
+        // Track previous day's hotel for detecting hotel changes
+        let previousHotel = null;
+        
+        variant.day_itinerary.forEach((dayInfo, dayIndex) => {
+            const dayName = dayInfo.day || `Day ${dayIndex + 1}`;
+            const isLastDay = dayIndex === variant.day_itinerary.length - 1;
+            
+            // Day header with improved visual
+            const dayHeader = document.createElement('div');
+            dayHeader.className = 'day-header mb-3 position-relative';
+            dayHeader.innerHTML = `
+                <div class="day-badge">${dayIndex + 1}</div>
+                <h5 class="mb-0 ms-4 ps-2">Day ${dayIndex + 1}: ${dayName}</h5>
+                <div class="day-line"></div>
+            `;
+            itinerary.appendChild(dayHeader);
+            
+            // Check for hotel change
+            if (dayInfo.hotel) {
+                const hotelInfo = document.createElement('div');
+                hotelInfo.className = 'hotel-info ms-4 ps-2 mb-3';
+                
+                // If hotel changed from previous day
+                if (previousHotel && previousHotel !== dayInfo.hotel) {
+                    hotelInfo.innerHTML = `
+                        <div class="d-flex align-items-center text-primary">
+                            <i class="fas fa-exchange-alt me-2"></i>
+                            <strong>Hotel change: ${previousHotel} → ${dayInfo.hotel}</strong>
+                        </div>
+                    `;
+                } else {
+                    hotelInfo.innerHTML = `
+                        <div class="d-flex align-items-center text-primary">
+                            <i class="fas fa-hotel me-2"></i>
+                            <strong>Hotel: ${dayInfo.hotel}</strong>
+                        </div>
+                    `;
+                }
+                
+                itinerary.appendChild(hotelInfo);
+                previousHotel = dayInfo.hotel;
+            }
+            
+            // Add travel segments for this day
+            const dayTravelSegments = travelSegmentsByDay[dayName] || [];
+            if (dayTravelSegments.length > 0) {
+                // Filter out "after game" segments that have 0 travel time
+                const filteredSegments = dayTravelSegments.filter(segment => {
+                    const context = segment.context || '';
+                    const travelTime = segment.travel_time || '';
+                    // Keep the segment if it's not an "after game" with zero time
+                    return !(
+                        context.toLowerCase().includes('after game') && 
+                        (travelTime === '0h 0m' || travelTime === '0m' || travelTime === '0')
+                    );
+                });
+                
+                // Only create container if we have segments after filtering
+                if (filteredSegments.length > 0) {
+                    const travelContainer = document.createElement('div');
+                    travelContainer.className = 'travel-container ms-4 ps-2 mb-3';
+                    
+                    filteredSegments.forEach((segment, idx) => {
+                        // Clean up location names
+                        const fromLocation = typeof segment.from_location === 'string' ? 
+                            segment.from_location.replace(' hbf', '') : 'Unknown';
+                        const toLocation = typeof segment.to_location === 'string' ? 
+                            segment.to_location.replace(' hbf', '') : 'Unknown';
+                        
+                        // Get context (purpose)
+                        const context = segment.context || '';
+                        
+                        const travelItem = document.createElement('div');
+                        travelItem.className = 'travel-item mb-2 p-2 bg-light rounded';
+                        travelItem.innerHTML = `
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-train text-primary me-2"></i>
+                                    <div>
+                                        Travel: ${fromLocation} → ${toLocation}
+                                        ${context ? `<span class="text-muted">(${context})</span>` : ''}
+                                    </div>
+                                </div>
+                                <div class="travel-time badge bg-info text-white">${segment.travel_time || 'Unknown'}</div>
+                            </div>
+                        `;
+                        
+                        travelContainer.appendChild(travelItem);
+                    });
+                    
+                    itinerary.appendChild(travelContainer);
+                }
+            }
+            
+            // Render matches or rest day
+            if (dayInfo.matches && dayInfo.matches.length > 0) {
+                // Matches container
+                const matchesContainer = document.createElement('div');
+                matchesContainer.className = 'matches-container ms-4 ps-2 mb-4';
+                
+                dayInfo.matches.forEach(match => {
+                    const matchItem = document.createElement('div');
+                    matchItem.className = match.contains_must_team 
+                        ? 'match-item must-team mb-3 p-3 rounded' 
+                        : 'match-item mb-3 p-3 rounded';
+                    
+                    matchItem.innerHTML = `
+                        <div class="match-details">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <strong class="match-teams">${match.match}</strong>
+                                ${match.contains_must_team ? '<span class="badge bg-warning text-dark">Must-See</span>' : ''}
+                            </div>
+                            <div class="match-meta d-flex flex-wrap">
+                                <div class="me-3 d-flex align-items-center">
+                                    <i class="fas fa-map-marker-alt text-danger me-1"></i> 
+                                    <span>${match.location}</span>
+                                </div>
+                                ${match.travel_from ? `
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-train text-primary me-1"></i>
+                                    <span>From ${match.travel_from} - ${match.travel_time}</span>
+                                </div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    
+                    matchesContainer.appendChild(matchItem);
+                });
+                
+                itinerary.appendChild(matchesContainer);
+            } else {
+                // Rest day
+                const restDay = document.createElement('div');
+                restDay.className = 'rest-day ms-4 ps-2 mb-4 p-3 bg-light rounded';
+                
+                const location = dayInfo.locations && dayInfo.locations.length > 0 
+                    ? dayInfo.locations[0] 
+                    : dayInfo.hotel || '---';
+                
+                // Find the next location if this is not the last day
+                let nextLocation = '---';
+                if (!isLastDay && dayIndex + 1 < variant.day_itinerary.length) {
+                    const nextDayInfo = variant.day_itinerary[dayIndex + 1];
+                    if (nextDayInfo.locations && nextDayInfo.locations.length > 0) {
+                        nextLocation = nextDayInfo.locations[0];
+                    } else if (nextDayInfo.matches && nextDayInfo.matches.length > 0) {
+                        nextLocation = nextDayInfo.matches[0].location;
+                    } else if (nextDayInfo.hotel) {
+                        nextLocation = nextDayInfo.hotel;
+                    }
+                }
+                
+                const restDayMessage = isLastDay 
+                    ? `Your trip has come to an end. You can return home from ${location} or explore nearby cities.`
+                    : `Take time to explore ${location}, visit local attractions, or travel early to ${nextLocation !== '---' ? nextLocation : 'your next destination'}.`;
+                
+                const iconClass = isLastDay ? 'fa-flag-checkered' : 'fa-bed';
+                
+                restDay.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <i class="fas ${iconClass} ${isLastDay ? 'text-success' : 'text-secondary'} me-2"></i>
+                        <span>${isLastDay ? 'Final day' : 'Rest day'} in ${location}</span>
+                    </div>
+                    <div class="text-muted small mt-1">
+                        ${restDayMessage}
+                    </div>
+                `;
+                
+                itinerary.appendChild(restDay);
+            }
+        });
+    }
+    
+    // Airport information (keep this section)
+    if (variant.airport_distances) {
+        const airportData = {
+            nearest_airports: variant.airport_distances.end || [],
+            closest_major_airports: variant.airport_distances.major || [],
+            start_city: variant.start_location?.replace(' hbf', '') || 'starting point',
+            end_city: variant.end_location?.replace(' hbf', '') || 'destination'
+        };
+        
+        const airportSection = renderAirportDistances(airportData);
+        
+        if (airportSection) {
+            itinerary.appendChild(airportSection);
+        }
+    } else if (variant.nearest_airports || variant.closest_major_airports) {
+        // Fallback for older data format
+        const airportSection = renderAirportDistances({
+            nearest_airports: variant.nearest_airports || [],
+            closest_major_airports: variant.closest_major_airports || [],
+            start_city: variant.start_location?.replace(' hbf', '') || 'starting point', 
+            end_city: variant.end_location?.replace(' hbf', '') || 'destination'
+        });
+        
+        if (airportSection) {
+            itinerary.appendChild(airportSection);
+        }
+    }
+    
+    // Add the itinerary to the container
+    container.appendChild(itinerary);
+}
+
 // Export the functions so they can be used by other modules
-export { renderTripCard, renderTbdGames, extractHotelSummary, renderTravelSegments, renderAirportDistances };
+export { renderTripCard, renderTbdGames, extractHotelSummary, renderTravelSegments, renderAirportDistances, renderItineraryForVariant };
