@@ -57,7 +57,8 @@ class FormattedResponse(BaseModel):
     max_travel_time: str
     trip_duration: str
     preferred_leagues: Any
-    must_teams: Optional[List[str]] = None  
+    must_teams: Optional[List[str]] = None
+    min_games: Optional[int] = 2  # Add this line
     no_trips_available: bool = False
     trip_groups: Optional[List[TripGroup]] = None
     tbd_games: Optional[List[Dict[str, Any]]] = None
@@ -77,3 +78,4 @@ class TripRequest(BaseModel):
     preferred_leagues: Optional[List[str]] = None
     start_date: Optional[str] = None
     must_teams: Optional[List[str]] = None
+    min_games: Optional[int] = 2  # New field with default value of 2

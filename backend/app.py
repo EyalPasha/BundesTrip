@@ -809,8 +809,10 @@ def get_trip(request: TripRequest):
                     status_code=404
                 )
         
-        # Plan trip with optimized parameters
-        # NEW: Use enhance_trip_planning_for_any_start for "Any" start location
+        # Get min_games from request with default value of 2
+        min_games = request.min_games if hasattr(request, 'min_games') else 2
+        
+        # Plan trip with optimized parameters including min_games
         if request.start_location.lower() == "any":
             trip_result = enhance_trip_planning_for_any_start(
                 start_location=request.start_location,
@@ -821,7 +823,8 @@ def get_trip(request: TripRequest):
                 tbd_games=filtered_tbd_games,
                 preferred_leagues=request.preferred_leagues,
                 start_date=request.start_date,
-                must_teams=request.must_teams
+                must_teams=request.must_teams,
+                min_games=min_games  # Add min_games parameter
             )
         else:
             trip_result = plan_trip(
@@ -833,7 +836,8 @@ def get_trip(request: TripRequest):
                 tbd_games=filtered_tbd_games,
                 preferred_leagues=request.preferred_leagues,
                 start_date=request.start_date,
-                must_teams=request.must_teams
+                must_teams=request.must_teams,
+                min_games=min_games  # Add min_games parameter
             )
         
         # Extract TBD games
@@ -857,6 +861,7 @@ def get_trip(request: TripRequest):
                     trip_duration=f"{request.trip_duration} days",
                     preferred_leagues=request.preferred_leagues or "All Leagues",
                     must_teams=request.must_teams,
+                    min_games=min_games,
                     no_trips_available=True,
                     message="No scheduled games found, but there are TBD games during this period.",
                     tbd_games=result_tbd_games
@@ -876,6 +881,7 @@ def get_trip(request: TripRequest):
                     trip_duration=f"{request.trip_duration} days",
                     preferred_leagues=request.preferred_leagues or "All Leagues",
                     must_teams=request.must_teams,
+                    min_games=min_games,
                     no_trips_available=True,
                     message="No scheduled games found during this period.",
                     tbd_games=result_tbd_games
@@ -894,6 +900,7 @@ def get_trip(request: TripRequest):
                 trip_duration=f"{request.trip_duration} days",
                 preferred_leagues=request.preferred_leagues or "All Leagues",
                 must_teams=request.must_teams,
+                min_games=min_games,
                 no_trips_available=True,
                 message="No trip found. No available games during this period.",
                 tbd_games=result_tbd_games
@@ -916,6 +923,7 @@ def get_trip(request: TripRequest):
                 trip_duration=f"{request.trip_duration} days",
                 preferred_leagues=request.preferred_leagues or "All Leagues",
                 must_teams=request.must_teams,
+                min_games=min_games,
                 no_trips_available=True,
                 message="No scheduled games found during this period.",
                 tbd_games=result_tbd_games
@@ -1004,6 +1012,7 @@ def get_trip(request: TripRequest):
             trip_duration=f"{request.trip_duration} days",
             preferred_leagues=request.preferred_leagues or "All Leagues",
             must_teams=request.must_teams,
+            min_games=min_games,
             no_trips_available=False,
             trip_groups=structured_groups,
             tbd_games=result_tbd_games

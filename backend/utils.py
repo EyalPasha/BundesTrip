@@ -15,15 +15,79 @@ def parse_date_string(date_str):
     # Parse date with year (e.g., "28 March 2025")
     return datetime.strptime(date_str, "%d %B %Y")
 
-def memoize_travel_time(func):
-    cache = {}
+def make_trip_hashable(trip):
+    """Convert a trip dictionary to a hashable structure (tuple) for caching"""
+    if "Itinerary" not in trip and not isinstance(trip, list):
+        return ()
+        
+    itinerary = trip.get("Itinerary", trip) if isinstance(trip, dict) else trip
+    result = []
+    
+    for day in itinerary:
+        if isinstance(day, dict):
+            day_items = []
+            for key, value in sorted(day.items()):
+                if key == 'matches' and value:
+                    # Convert matches to tuple of tuples
+                    matches_tuple = tuple(
+                        tuple((k, v) for k, v in sorted(m.items()) if isinstance(v, (str, int, bool, float)))
+                        for m in value
+                    )
+                    day_items.append((key, matches_tuple))
+                else:
+                    # Only include hashable types
+                    if isinstance(value, (str, int, bool, float)):
+                        day_items.append((key, value))
+            result.append(tuple(day_items))
+    
+    return tuple(result)
+
+@functools.lru_cache(maxsize=16384)
+def generate_trip_signature(trip_key):
+    match_signature = []
+    
+    for day_tuple in trip_key:
+        day_value = ""
+        # Get day directly
+        for k, v in day_tuple:
+            if k == "day":
+                day_value = v
+                break
+        
+        # Process matches directly from the tuple
+        for k, v in day_tuple:
+            if k == "matches" and isinstance(v, tuple):
+                for match_tuple in v:
+                    match_value = ""
+                    for mk, mv in match_tuple:
+                        if mk == "match":
+                            match_value = mv
+                            break
+                    if match_value:
+                        match_signature.append((day_value, match_value))
+    
+    return tuple(sorted(match_signature))
+
+def memoize_travel_time(func, maxsize=10000):
+    from collections import OrderedDict
+    cache = OrderedDict()
     
     @functools.wraps(func)
     def wrapper(train_times, from_loc, to_loc):
         key = (from_loc.lower(), to_loc.lower())
-        if key not in cache:
-            cache[key] = func(train_times, from_loc, to_loc)
-        return cache[key]
+        if key in cache:
+            value = cache.pop(key)
+            cache[key] = value  # Move to end (most recently used)
+            return value
+            
+        result = func(train_times, from_loc, to_loc)
+        cache[key] = result
+        
+        # Limit cache size
+        if len(cache) > maxsize:
+            cache.popitem(last=False)  # Remove oldest item
+            
+        return result
     
     return wrapper
 
@@ -211,14 +275,11 @@ def identify_similar_trips(sorted_trips: List[Dict]) -> List[Dict]:
         match_count = sum(1 for day in trip["Itinerary"] if day.get("matches"))
         if match_count == 0:
             continue
-            
-        match_signature = []
-        for day in trip["Itinerary"]:
-            if day.get("matches"):
-                for match in day["matches"]:
-                    match_signature.append((day.get("day"), match["match"]))
         
-        match_signature_tuple = tuple(sorted(match_signature))
+        # Use cached signature generation
+        trip_key = make_trip_hashable(trip)
+        match_signature_tuple = generate_trip_signature(trip_key)
+        
         group_index = signature_to_group_index.get(match_signature_tuple)
         
         if group_index is not None:
@@ -366,34 +427,62 @@ def calculate_total_travel_time(trip: Dict, train_times_param: Dict = None, star
 
     return total_minutes
 
-def get_reachable_games(locations: list, games: list, train_times: dict, max_travel_time: int, current_date: datetime) -> list:
-    """Find games reachable within max_travel_time from any of the provided locations."""
-    if not locations or not games:
-        return []
-        
+@functools.lru_cache(maxsize=8192)
+def get_reachable_games_cached(location: str, date_str: str, games_tuple, max_travel_time: int, train_times_dict_id: int):
+    """Cache reachable games from a location on a specific date"""
+    games = list(games_tuple)  # Convert back to list
+    current_date = datetime.strptime(date_str, "%Y-%m-%d")
     current_date_only = current_date.date()
+    
+    # Get the train_times dictionary from the global reference
+    global train_times
+    train_times_to_use = train_times  # Default
     
     todays_games = [game for game in games if hasattr(game, 'date') and game.date.date() == current_date_only]
     
     if not todays_games:
-        return []
+        return ()
     
-    unique_locations = set(locations)
     reachable = []
     
-    for loc in unique_locations:
-        for game in todays_games:
-            if hasattr(game, 'hbf_location'):
-                # Use helper function instead of direct lookup
-                travel_time = get_travel_minutes_utils(train_times, loc, game.hbf_location)
-                if travel_time is not None and travel_time <= max_travel_time:
-                    reachable.append({
-                        "game": game,
-                        "from": loc,
-                        "travel_time": travel_time
-                    })
+    for game in todays_games:
+        if hasattr(game, 'hbf_location'):
+            # Use helper function instead of direct lookup
+            travel_time = get_travel_minutes_utils(train_times_to_use, location, game.hbf_location)
+            if travel_time is not None and travel_time <= max_travel_time:
+                reachable.append((
+                    game,
+                    location,
+                    travel_time
+                ))
     
-    return reachable
+    return tuple(reachable)  # Return immutable tuple for caching
+
+def get_reachable_games(locations: list, games: list, train_times: dict, max_travel_time: int, current_date: datetime) -> list:
+    """Find games reachable within max_travel_time from any of the provided locations."""
+    if not locations or not games:
+        return []
+    
+    date_str = current_date.strftime("%Y-%m-%d")
+    games_tuple = tuple(games)  # Make immutable for caching
+    train_times_dict_id = id(train_times)  # Use ID as reference
+    
+    unique_locations = set(locations)
+    all_reachable = []
+    
+    for loc in unique_locations:
+        # Use the cached function for each location
+        cached_results = get_reachable_games_cached(loc, date_str, games_tuple, max_travel_time, train_times_dict_id)
+        
+        # Convert the immutable tuple results back to dictionaries
+        for game, from_loc, travel_time in cached_results:
+            all_reachable.append({
+                "game": game,
+                "from": from_loc,
+                "travel_time": travel_time
+            })
+    
+    return all_reachable
 
 def is_efficient_route(new_trip: list, new_location: str, trip_locations: list) -> bool:
     """Check if adding this location creates an efficient route."""
@@ -925,6 +1014,110 @@ def process_tbd_games(tbd_games: list, start_date: datetime, trip_duration: int,
             
     return tbd_games_in_period
 
+def generate_rest_day_options(trip, current_date_str, train_times, max_travel_time, 
+                             valid_games, full_date_range, date_idx):
+    """
+    Generate all possible hotel options for rest days using multiple strategic approaches.
+    
+    Args:
+        trip: Current trip itinerary
+        current_date_str: String representation of the current date
+        train_times: Dictionary of travel times between locations
+        max_travel_time: Maximum allowed travel time in minutes
+        valid_games: List of all valid games for the trip
+        full_date_range: List of datetime objects representing the entire trip range
+        date_idx: Index of current date within full_date_range
+        
+    Returns:
+        List of new trip variations with different rest day options
+    """
+    new_routes = []
+    current_date = full_date_range[date_idx]
+    previous_location = trip[-1]["location"]
+    previous_hotel = trip[-1].get("hotel", previous_location)
+    
+    # STRATEGY 1: Stay at the same hotel (always include this as an option)
+    new_trip_same_hotel = copy.deepcopy(trip)
+    new_trip_same_hotel.append({
+        "day": current_date_str,
+        "location": previous_location,
+        "matches": [],
+        "note": "Rest Day",
+        "hotel": previous_hotel
+    })
+    new_routes.append(new_trip_same_hotel)
+    
+    # STRATEGY 2: Move to strategic locations for future games
+    # Look ahead to find upcoming game locations
+    future_game_locations = set()
+    look_ahead_days = min(3, len(full_date_range) - date_idx - 1)  # Look ahead up to 3 days
+    
+    for future_day in range(1, look_ahead_days + 1):
+        future_date = current_date + timedelta(days=future_day)
+        future_games = [g for g in valid_games if g.date.date() == future_date.date()]
+        for game in future_games:
+            if hasattr(game, 'hbf_location'):
+                future_game_locations.add(game.hbf_location)
+    
+    # Only consider hotel changes if there are future games
+    if future_game_locations:
+        # Add variations for each strategic future location
+        for future_location in future_game_locations:
+            # Check if moving to this location is within travel time limits
+            travel_time = get_travel_minutes_utils(train_times, previous_hotel, future_location)
+            if travel_time is not None and travel_time <= max_travel_time:
+                # Create a new variation with hotel change
+                new_trip_strategic = copy.deepcopy(trip)
+                new_trip_strategic.append({
+                    "day": current_date_str,
+                    "location": previous_location,  # Location during day is still previous
+                    "matches": [],
+                    "note": f"Rest Day (Moving closer to {future_location.replace(' hbf', '')})",
+                    "hotel": future_location,  # But hotel at night changes to future location
+                    "hotel_change": previous_hotel != future_location
+                })
+                new_routes.append(new_trip_strategic)
+    
+    # STRATEGY 3: Consider major hub cities that can reach multiple future games
+    if len(future_game_locations) >= 2:
+        # Get all train cities from the train_times dictionary
+        all_train_cities = set()
+        for loc_pair in train_times.keys():
+            all_train_cities.add(loc_pair[0])
+            all_train_cities.add(loc_pair[1])
+        
+        # Find cities that can reach all future game locations
+        potential_hubs = set()
+        for city in all_train_cities:
+            if all(get_travel_minutes_utils(train_times, city, game_loc) is not None and 
+                   get_travel_minutes_utils(train_times, city, game_loc) <= max_travel_time 
+                   for game_loc in future_game_locations):
+                potential_hubs.add(city)
+        
+        # Filter out cities too far from current location
+        for hub in list(potential_hubs):
+            travel_time = get_travel_minutes_utils(train_times, previous_hotel, hub)
+            if travel_time is None or travel_time > max_travel_time:
+                potential_hubs.remove(hub)
+        
+        # Add up to 3 major hub options (to avoid too many variations)
+        hub_count = 0
+        for hub in potential_hubs:
+            if hub != previous_hotel and hub not in future_game_locations and hub_count < 3:
+                new_trip_hub = copy.deepcopy(trip)
+                new_trip_hub.append({
+                    "day": current_date_str,
+                    "location": previous_location,
+                    "matches": [],
+                    "note": f"Rest Day (Strategic hotel in {hub.replace(' hbf', '')})",
+                    "hotel": hub,
+                    "hotel_change": previous_hotel != hub
+                })
+                new_routes.append(new_trip_hub)
+                hub_count += 1
+    
+    return new_routes
+
 # ────────────────────────────────
 # 🛠️ Any Functions
 # ────────────────────────────────
@@ -1030,8 +1223,9 @@ def identify_potential_start_cities(games, train_times, trip_duration, max_trave
 def enhance_trip_planning_for_any_start(start_location, trip_duration, max_travel_time, games, train_times, **other_params):
     """Enhanced planning when 'Any' start location is chosen"""
     if start_location.lower() != "any":
-        # Use regular planning for specific start locations
-        return plan_trip(start_location, trip_duration, max_travel_time, games, train_times, **other_params)
+        # Pass all parameters including min_games if present
+        min_games = other_params.get('min_games', 2)  # Default to 2 if not specified
+        return plan_trip(start_location, trip_duration, max_travel_time, games, train_times, min_games=min_games, **other_params)
     
     # 1. Identify potential starting cities
     potential_starts = identify_potential_start_cities(games, train_times, trip_duration, max_travel_time, **other_params)
@@ -1042,7 +1236,10 @@ def enhance_trip_planning_for_any_start(start_location, trip_duration, max_trave
     
     for potential_start in potential_starts:
         try:
-            trip_result = plan_trip(potential_start, trip_duration, max_travel_time, games, train_times, **other_params)
+            # Extract min_games from other_params with default of 2
+            min_games = other_params.get('min_games', 2)
+            trip_result = plan_trip(potential_start, trip_duration, max_travel_time, 
+                                   games, train_times, min_games=min_games, **other_params)
             
             # Store the entire result to preserve TBD games and other metadata
             trip_results_by_start[potential_start] = trip_result
@@ -1101,14 +1298,9 @@ def group_trips_by_matches(trips):
     groups = {}
     
     for trip in trips:
-        # Create signature based on attended matches
-        match_signature = []
-        for day in trip:
-            if isinstance(day, dict) and "matches" in day:
-                for match in day.get("matches", []):
-                    match_signature.append((day.get("day", ""), match.get("match", "")))
-        
-        signature = tuple(sorted(match_signature))
+        # Use cached signature generation
+        trip_key = make_trip_hashable(trip)
+        signature = generate_trip_signature(trip_key)
         
         if signature not in groups:
             groups[signature] = []
@@ -1146,7 +1338,8 @@ def find_optimal_trip_in_group(trip_group):
 # ────────────────────────────────
 
 def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, games: list, train_times: dict, 
-             tbd_games: list = None, preferred_leagues: list = None, start_date: Optional[str] = None, must_teams: Optional[list] = None):    
+             tbd_games: list = None, preferred_leagues: list = None, start_date: Optional[str] = None, 
+             must_teams: Optional[list] = None, min_games: int = 2):
     """
     Main function to plan football trips based on available games.
     
@@ -1160,10 +1353,11 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         preferred_leagues: List of preferred leagues to filter games
         start_date: Optional start date string in format "28 March"
         must_teams: List of teams that must be included in the trip
+        min_games: Minimum number of games to include in a trip (default 2)
     
     Returns:
         Dictionary containing trip options or error message
-    """    
+    """   
     # Initialize variables
     all_trips = []
     tbd_games_in_period = []
@@ -1220,91 +1414,20 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         # Filter games for current date
         current_date_games = [g for g in valid_games if g.date.date() == current_date.date()]
         
-            # Handle rest days (no games on this date) with hotel variation strategies
+        # Handle rest days (no games on this date)
         if not current_date_games:
             for trip in initial_routes:
-                previous_location = trip[-1]["location"]
-                previous_hotel = trip[-1].get("hotel", previous_location)
-                
-                # STRATEGY 1: Stay at the same hotel (always include this as an option)
-                new_trip_same_hotel = copy.deepcopy(trip)
-                new_trip_same_hotel.append({
-                    "day": current_date_str,
-                    "location": previous_location,
-                    "matches": [],
-                    "note": "Rest Day",
-                    "hotel": previous_hotel
-                })
-                new_routes.append(new_trip_same_hotel)
-                
-                # STRATEGY 2: Move to strategic locations for future games
-                # Look ahead to find upcoming game locations
-                future_game_locations = set()
-                look_ahead_days = min(3, trip_duration - date_idx - 1)  # Look ahead up to 3 days
-                
-                for future_day in range(1, look_ahead_days + 1):
-                    future_date = current_date + timedelta(days=future_day)
-                    future_games = [g for g in valid_games if g.date.date() == future_date.date()]
-                    for game in future_games:
-                        if hasattr(game, 'hbf_location'):
-                            future_game_locations.add(game.hbf_location)
-                
-                # Only consider hotel changes if there are future games
-                if future_game_locations:
-                    # Add variations for each strategic future location
-                    for future_location in future_game_locations:
-                        # Check if moving to this location is within travel time limits
-                        travel_time = get_travel_minutes_utils(train_times, previous_hotel, future_location)
-                        if travel_time is not None and travel_time <= max_travel_time:
-                            # Create a new variation with hotel change
-                            new_trip_strategic = copy.deepcopy(trip)
-                            new_trip_strategic.append({
-                                "day": current_date_str,
-                                "location": previous_location,  # Location during day is still previous
-                                "matches": [],
-                                "note": f"Rest Day (Moving closer to {future_location.replace(' hbf', '')})",
-                                "hotel": future_location,  # But hotel at night changes to future location
-                                "hotel_change": previous_hotel != future_location
-                            })
-                            new_routes.append(new_trip_strategic)
-                            
-                # STRATEGY 3: Consider major hub cities that can reach multiple future games
-                if len(future_game_locations) >= 2:
-                    # Get all train cities from the train_times dictionary
-                    all_train_cities = set()
-                    for loc_pair in train_times.keys():
-                        all_train_cities.add(loc_pair[0])
-                        all_train_cities.add(loc_pair[1])
-                    
-                    # Find cities that can reach all future game locations
-                    potential_hubs = set()
-                    for city in all_train_cities:
-                        if all(get_travel_minutes_utils(train_times, city, game_loc) is not None and 
-                               get_travel_minutes_utils(train_times, city, game_loc) <= max_travel_time 
-                               for game_loc in future_game_locations):
-                            potential_hubs.add(city)
-                    
-                    # Filter out cities too far from current location
-                    for hub in list(potential_hubs):
-                        travel_time = get_travel_minutes_utils(train_times, previous_hotel, hub)
-                        if travel_time is None or travel_time > max_travel_time:
-                            potential_hubs.remove(hub)
-                    
-                    # Add up to 3 major hub options (to avoid too many variations)
-                    hub_count = 0
-                    for hub in potential_hubs:
-                        if hub != previous_hotel and hub not in future_game_locations and hub_count < 3:
-                            new_trip_hub = copy.deepcopy(trip)
-                            new_trip_hub.append({
-                                "day": current_date_str,
-                                "location": previous_location,
-                                "matches": [],
-                                "note": f"Rest Day (Strategic hotel in {hub.replace(' hbf', '')})",
-                                "hotel": hub,
-                                "hotel_change": previous_hotel != hub
-                            })
-                            new_routes.append(new_trip_hub)
-                            hub_count += 1
+                # Generate all rest day options for this trip
+                trip_options = generate_rest_day_options(
+                    trip=trip,
+                    current_date_str=current_date_str, 
+                    train_times=train_times,
+                    max_travel_time=max_travel_time,
+                    valid_games=valid_games,
+                    full_date_range=full_date_range,
+                    date_idx=date_idx
+                )
+                new_routes.extend(trip_options)
             
             initial_routes = new_routes
             continue
@@ -1417,12 +1540,8 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
 
         initial_routes = new_routes
 
-    # MODIFIED: User can define min_required_games via parameter with fallback
-    min_required_games = 2  # Default to 2 matches always like the old version
-    
-    # Filter trips based on having minimum required matches, but keep the new hotel optimization logic
     all_trips = [trip for trip in initial_routes 
-                if sum(len(day.get("matches", [])) > 0 for day in trip) >= min_required_games]
+                if sum(len(day.get("matches", [])) > 0 for day in trip) >= min_games]
     
     # Filter trips to include only those with required teams
     if must_teams_lower and all_trips:
