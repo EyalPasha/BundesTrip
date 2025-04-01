@@ -157,10 +157,17 @@ async function planTrip(tripData) {
             body: JSON.stringify(tripData)
         });
         
+        // Provide better error for no trips meeting min games criteria
+        if (response.no_trips_available && response.min_games > 1) {
+            document.getElementById('loadingText').textContent = 
+                `No trips found with ${response.min_games} or more games. Try reducing the minimum games requirement.`;
+        } else if (response.no_trips_available) {
+            document.getElementById('loadingText').textContent = 
+                `No trips found. Try adjusting your search parameters.`;
+        }
+        
         // Clear the timer
         clearInterval(loadingTimer);
-        
-        // Process response...
         
         return response;
     } catch (error) {

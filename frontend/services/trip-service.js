@@ -43,11 +43,11 @@ async function handleSearch(e) {
             start_location: window.DOM.startLocationSelect.value,
             start_date: window.DOM.startDateInput.value || null,
             trip_duration: parseInt(window.DOM.tripDurationInput.value),
-            max_travel_time: parseInt(window.DOM.maxTravelTimeInput.value), // Fix: was DOMlets
+            max_travel_time: parseInt(window.DOM.maxTravelTimeInput.value),
             preferred_leagues: selectedLeagues.length > 0 ? selectedLeagues : null,
-            must_teams: selectedTeams.length > 0 ? selectedTeams : []
+            must_teams: selectedTeams.length > 0 ? selectedTeams : [],
+            min_games: parseInt(window.DOM.minGamesInput.value) // Add this line
         };
-
         // Ensure the date has a year (note: this is a fallback in case the flatpickr change doesn't work)
         if (payload.start_date && !payload.start_date.includes("2025") && !payload.start_date.includes("2026")) {
             // Add current year if missing

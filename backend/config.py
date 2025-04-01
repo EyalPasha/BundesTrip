@@ -18,3 +18,5 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*").split(",")
 
 ADMIN_API_KEY = "wiz123"
+
+DEFAULT_CITIES = ["Berlin", "Frankfurt", "Munich"]

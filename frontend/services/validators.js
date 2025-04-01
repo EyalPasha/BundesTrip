@@ -32,6 +32,20 @@ function validateForm() {
     } else {
         window.DOM.maxTravelTimeInput.classList.remove('is-invalid');
     }
+    
+    // Validate min games
+    const minGames = parseInt(window.DOM.minGamesInput.value);
+    const tripDuration = parseInt(window.DOM.tripDurationInput.value);
+    
+    if (isNaN(minGames) || minGames < 1) {
+        showErrorToast('Minimum games must be at least 1');
+        return false;
+    }
+    
+    if (minGames > tripDuration) {
+        showErrorToast('Minimum games cannot exceed trip duration');
+        return false;
+    }
         
     // Show validation errors if any
     if (!isValid) {

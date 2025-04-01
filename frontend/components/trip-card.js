@@ -183,7 +183,7 @@ function renderTripCard(group, index, tripContext = {}) {
                 <i class="fas fa-${varIdx === 0 ? 'star' : 'route'} me-1"></i> 
                 Option ${varIdx + 1} 
                 <span class="option-time ms-1">
-                    (${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m, ${variant.unique_hotels || 0} hotels)
+                    (${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m, ${variant.unique_hotels || 0} Hotels)
                 </span>
             `;
             optionsTabs.appendChild(tab);

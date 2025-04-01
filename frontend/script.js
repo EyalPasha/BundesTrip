@@ -40,8 +40,29 @@ document.addEventListener('DOMContentLoaded', async function() {
         teamFiltersContainer: document.getElementById('teamFilters'),
         cityFiltersContainer: document.getElementById('cityFilters'),
         sortResults: document.getElementById('sortResults'),
+        minGamesInput: document.getElementById('minGames'),
         // Add references to any new UI elements here
     };
+
+    // Add dynamic min/max validation for minGames
+window.DOM.tripDurationInput.addEventListener('change', function() {
+    const tripDuration = parseInt(this.value);
+    // Min games can't exceed trip duration
+    window.DOM.minGamesInput.max = tripDuration;
+    
+    // If current min games value exceeds new max, adjust it
+    if (parseInt(window.DOM.minGamesInput.value) > tripDuration) {
+        window.DOM.minGamesInput.value = tripDuration;
+    }
+    
+    // Ensure min games is at least 1
+    if (parseInt(window.DOM.minGamesInput.value) < 1) {
+        window.DOM.minGamesInput.value = 1;
+    }
+});
+
+// Initialize min games max value based on initial trip duration
+window.DOM.minGamesInput.max = window.DOM.tripDurationInput.value;
 
     // Check API health before initializing UI
     try {

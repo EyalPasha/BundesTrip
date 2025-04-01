@@ -39,6 +39,13 @@ function renderResults(response) {
     
     // Process trip groups (if any)
     if (response.trip_groups && response.trip_groups.length > 0) {
+        // Add min games info to results header if present
+        const resultsHeader = document.querySelector('#resultsContainer h2');
+        if (resultsHeader && response.min_games) {
+            resultsHeader.innerHTML = `Trip Results <span class="badge bg-primary" id="tripCount">${response.trip_groups.length}</span>
+                <small class="ms-2 text-muted">(min. ${response.min_games} games/trip)</small>`;
+        }
+        
         // Generate filters based on match data
         renderFilters(response.trip_groups);
         

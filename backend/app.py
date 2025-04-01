@@ -10,6 +10,7 @@ from models import TripRequest, FormattedResponse, TripVariation, TripGroup, Tra
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
 from config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
 import functools
+import traceback
 
 # Initialize FastAPI with metadata
 app = FastAPI(
@@ -521,219 +522,219 @@ def process_trip_variant(variant: Dict, actual_start_location: str) -> TripVaria
     )
 
 
-def print_formatted_trip_schedule(response: FormattedResponse) -> str:
-    """Format trip schedule for display using pre-calculated data from TripVariation objects"""
-    output = []
+# def print_formatted_trip_schedule(response: FormattedResponse) -> str:
+#     """Format trip schedule for display using pre-calculated data from TripVariation objects"""
+#     output = []
 
-    output.append(f"📍 Start Location: {response.start_location.replace(' hbf', '')}")
-    output.append(f"📅 Start Date: {response.start_date}")
-    output.append(f"⏳ Max Travel Time: {response.max_travel_time}")
-    output.append(f"🗓️ Trip Duration: {response.trip_duration}")
-    output.append(
-        f"🏆 Preferred Leagues: "
-        f"{', '.join(response.preferred_leagues) if isinstance(response.preferred_leagues, list) else response.preferred_leagues}"
-    )
+#     output.append(f"📍 Start Location: {response.start_location.replace(' hbf', '')}")
+#     output.append(f"📅 Start Date: {response.start_date}")
+#     output.append(f"⏳ Max Travel Time: {response.max_travel_time}")
+#     output.append(f"🗓️ Trip Duration: {response.trip_duration}")
+#     output.append(
+#         f"🏆 Preferred Leagues: "
+#         f"{', '.join(response.preferred_leagues) if isinstance(response.preferred_leagues, list) else response.preferred_leagues}"
+#     )
     
-    # Add must_teams display
-    if hasattr(response, 'must_teams') and response.must_teams:
-        must_teams_display = ', '.join(response.must_teams) if isinstance(response.must_teams, list) else response.must_teams
-        output.append(f"⭐ Must Include Teams: {must_teams_display}")
+#     # Add must_teams display
+#     if hasattr(response, 'must_teams') and response.must_teams:
+#         must_teams_display = ', '.join(response.must_teams) if isinstance(response.must_teams, list) else response.must_teams
+#         output.append(f"⭐ Must Include Teams: {must_teams_display}")
     
-    output.append("=" * 50 + "\n")
+#     output.append("=" * 50 + "\n")
 
-    if response.no_trips_available:
-        output.append("No trips with matches found for this period.")
-        output.append("")
-    else:
-        # Process trip groups
-        for group_index, group in enumerate(response.trip_groups or [], start=1):
-            output.append("-" * 100)
-            output.append(f"Trip {group_index}:")
-            output.append("-" * 100)
+#     if response.no_trips_available:
+#         output.append("No trips with matches found for this period.")
+#         output.append("")
+#     else:
+#         # Process trip groups
+#         for group_index, group in enumerate(response.trip_groups or [], start=1):
+#             output.append("-" * 100)
+#             output.append(f"Trip {group_index}:")
+#             output.append("-" * 100)
 
-            # Add common metadata summary if available
-            if group.variation_details and group.variation_details[0]:
-                variant = group.variation_details[0]
+#             # Add common metadata summary if available
+#             if group.variation_details and group.variation_details[0]:
+#                 variant = group.variation_details[0]
                 
-                # Display actual start location if original was "Any"
-                if response.start_location.lower() == "any":
-                    output.append(f"📍 Starting City: {variant.start_location}")
+#                 # Display actual start location if original was "Any"
+#                 if response.start_location.lower() == "any":
+#                     output.append(f"📍 Starting City: {variant.start_location}")
                 
-                output.append(f"🏙️  Cities: {', '.join(variant.cities)}")
-                output.append(f"⚽ Teams: {', '.join(variant.teams)}")
-                output.append(f"🏟️  Number of Games: {variant.num_games}")
+#                 output.append(f"🏙️  Cities: {', '.join(variant.cities)}")
+#                 output.append(f"⚽ Teams: {', '.join(variant.teams)}")
+#                 output.append(f"🏟️  Number of Games: {variant.num_games}")
 
-                if variant.airport_distances and "start" in variant.airport_distances:
-                    airport_text = ", ".join(
-                        [f"{a['airport']} ({a['travel_time']})"
-                         for a in variant.airport_distances["start"][:3]]
-                    )
+#                 if variant.airport_distances and "start" in variant.airport_distances:
+#                     airport_text = ", ".join(
+#                         [f"{a['airport']} ({a['travel_time']})"
+#                          for a in variant.airport_distances["start"][:3]]
+#                     )
                     
-                    # Use variant.start_location if start_location is "Any"
-                    display_location = variant.start_location if response.start_location.lower() == "any" else response.start_location.replace(' hbf', '')
-                    output.append(
-                        f"✈️  Airports near start location "
-                        f"({display_location}): "
-                        f"{airport_text}"
-                    )
+#                     # Use variant.start_location if start_location is "Any"
+#                     display_location = variant.start_location if response.start_location.lower() == "any" else response.start_location.replace(' hbf', '')
+#                     output.append(
+#                         f"✈️  Airports near start location "
+#                         f"({display_location}): "
+#                         f"{airport_text}"
+#                     )
 
-                output.append("")
+#                 output.append("")
 
-            # Use the pre-calculated day-by-day itinerary from the base variant
-            base_variant = group.variation_details[0] if group.variation_details else None
+#             # Use the pre-calculated day-by-day itinerary from the base variant
+#             base_variant = group.variation_details[0] if group.variation_details else None
             
-            if base_variant and base_variant.day_itinerary:
-                # Print each day in chronological order
-                for day_info in base_variant.day_itinerary:
-                    day_name = day_info.get("day", "Unknown")
-                    output.append(f"📅 {day_name}")
+#             if base_variant and base_variant.day_itinerary:
+#                 # Print each day in chronological order
+#                 for day_info in base_variant.day_itinerary:
+#                     day_name = day_info.get("day", "Unknown")
+#                     output.append(f"📅 {day_name}")
 
-                    if day_info.get("matches"):
-                        # Single or multiple matches?
-                        if len(day_info["matches"]) == 1:
-                            output.append("   ⚽ Match:")
-                        else:
-                            output.append("   ⚽ Matches:")
-                        for match in day_info["matches"]:
-                            # Highlight matches with must_teams
-                            match_prefix = "🌟 " if match.get("contains_must_team", False) else ""
-                            output.append(f"      {match_prefix}🏟️  {match['match']}")
-                            output.append(f"      📍 {match['location']}")
-                    else:
-                        output.append(f"   💤 Rest Day")
+#                     if day_info.get("matches"):
+#                         # Single or multiple matches?
+#                         if len(day_info["matches"]) == 1:
+#                             output.append("   ⚽ Match:")
+#                         else:
+#                             output.append("   ⚽ Matches:")
+#                         for match in day_info["matches"]:
+#                             # Highlight matches with must_teams
+#                             match_prefix = "🌟 " if match.get("contains_must_team", False) else ""
+#                             output.append(f"      {match_prefix}🏟️  {match['match']}")
+#                             output.append(f"      📍 {match['location']}")
+#                     else:
+#                         output.append(f"   💤 Rest Day")
 
-                    output.append("")
+#                     output.append("")
 
-            # Travel options - use pre-calculated variation details
-            if len(group.variations) > 1:
-                output.append("   🔄 Travel Options:")
-                for var_idx, variant_detail in enumerate(group.variation_details):
-                    # Use pre-calculated total travel time
-                    output.append(
-                        f"      🚆 Option {var_idx+1}: "
-                        f"{variant_detail.travel_hours}h {variant_detail.travel_minutes}m total travel, "
-                        f"ending in {variant_detail.end_location}:"
-                    )
+#             # Travel options - use pre-calculated variation details
+#             if len(group.variations) > 1:
+#                 output.append("   🔄 Travel Options:")
+#                 for var_idx, variant_detail in enumerate(group.variation_details):
+#                     # Use pre-calculated total travel time
+#                     output.append(
+#                         f"      🚆 Option {var_idx+1}: "
+#                         f"{variant_detail.travel_hours}h {variant_detail.travel_minutes}m total travel, "
+#                         f"ending in {variant_detail.end_location}:"
+#                     )
                     
-                    # Add hotel information for this specific travel option
-                    output.append(f"      🏨 Hotel Changes: {variant_detail.hotel_changes}")
-                    output.append(f"      🏨 Unique Hotels: {variant_detail.unique_hotels}")
-                    if variant_detail.hotel_locations:
-                        output.append(f"      🏨 Hotel Locations: {', '.join(variant_detail.hotel_locations)}")
+#                     # Add hotel information for this specific travel option
+#                     output.append(f"      🏨 Hotel Changes: {variant_detail.hotel_changes}")
+#                     output.append(f"      🏨 Unique Hotels: {variant_detail.unique_hotels}")
+#                     if variant_detail.hotel_locations:
+#                         output.append(f"      🏨 Hotel Locations: {', '.join(variant_detail.hotel_locations)}")
 
-                    # End airports
-                    if variant_detail.airport_distances and "end" in variant_detail.airport_distances:
-                        top_airports = variant_detail.airport_distances["end"][:3]
-                        if top_airports:
-                            airport_text = ", ".join(
-                                [f"{a['airport']} ({a['travel_time']})"
-                                 for a in top_airports]
-                            )
-                            output.append(
-                                f"      ✈️  Nearest airports to {variant_detail.end_location}: {airport_text}"
-                            )
+#                     # End airports
+#                     if variant_detail.airport_distances and "end" in variant_detail.airport_distances:
+#                         top_airports = variant_detail.airport_distances["end"][:3]
+#                         if top_airports:
+#                             airport_text = ", ".join(
+#                                 [f"{a['airport']} ({a['travel_time']})"
+#                                  for a in top_airports]
+#                             )
+#                             output.append(
+#                                 f"      ✈️  Nearest airports to {variant_detail.end_location}: {airport_text}"
+#                             )
                     
-                    # Use pre-calculated hotel details
-                    output.append(f"      🏨 Hotel Details:")
-                    for detail in variant_detail.hotel_details:
-                        output.append(f"        {detail}")
+#                     # Use pre-calculated hotel details
+#                     output.append(f"      🏨 Hotel Details:")
+#                     for detail in variant_detail.hotel_details:
+#                         output.append(f"        {detail}")
                     
-                    # Use pre-calculated travel segments
-                    travel_segments_text = [
-                        f"{segment.from_location} → {segment.to_location} "
-                        f"({segment.day}{', ' + segment.context if segment.context else ''}) - "
-                        f"{segment.travel_time}"
-                        for segment in variant_detail.travel_segments
-                    ]
+#                     # Use pre-calculated travel segments
+#                     travel_segments_text = [
+#                         f"{segment.from_location} → {segment.to_location} "
+#                         f"({segment.day}{', ' + segment.context if segment.context else ''}) - "
+#                         f"{segment.travel_time}"
+#                         for segment in variant_detail.travel_segments
+#                     ]
                     
-                    output.append("      " + "\n      ".join(travel_segments_text))
+#                     output.append("      " + "\n      ".join(travel_segments_text))
 
-                    if var_idx < len(group.variation_details) - 1:
-                        output.append("")
-            else:
-                # Single travel option - use the pre-processed data
-                variant_detail = group.variation_details[0] if group.variation_details else None
-                if variant_detail:
-                    output.append(
-                        f"   ℹ️  Only one travel option: "
-                        f"{variant_detail.travel_hours}h {variant_detail.travel_minutes}m total travel, "
-                        f"ending in {variant_detail.end_location}"
-                    )
+#                     if var_idx < len(group.variation_details) - 1:
+#                         output.append("")
+#             else:
+#                 # Single travel option - use the pre-processed data
+#                 variant_detail = group.variation_details[0] if group.variation_details else None
+#                 if variant_detail:
+#                     output.append(
+#                         f"   ℹ️  Only one travel option: "
+#                         f"{variant_detail.travel_hours}h {variant_detail.travel_minutes}m total travel, "
+#                         f"ending in {variant_detail.end_location}"
+#                     )
 
-                    # Add hotel information from the variant detail
-                    output.append(f"   🏨 Hotel Changes: {variant_detail.hotel_changes}")
-                    output.append(f"   🏨 Unique Hotels: {variant_detail.unique_hotels}")
-                    if variant_detail.hotel_locations:
-                        output.append(f"   🏨 Hotel Locations: {', '.join(variant_detail.hotel_locations)}")
+#                     # Add hotel information from the variant detail
+#                     output.append(f"   🏨 Hotel Changes: {variant_detail.hotel_changes}")
+#                     output.append(f"   🏨 Unique Hotels: {variant_detail.unique_hotels}")
+#                     if variant_detail.hotel_locations:
+#                         output.append(f"   🏨 Hotel Locations: {', '.join(variant_detail.hotel_locations)}")
                     
-                    # End airports
-                    if variant_detail.airport_distances and "end" in variant_detail.airport_distances:
-                        top_airports = variant_detail.airport_distances["end"][:3]
-                        if top_airports:
-                            airport_text = ", ".join(
-                                [f"{a['airport']} ({a['travel_time']})"
-                                for a in top_airports]
-                            )
-                            output.append(
-                                f"   ✈️  Nearest airports to {variant_detail.end_location}: {airport_text}"
-                            )
+#                     # End airports
+#                     if variant_detail.airport_distances and "end" in variant_detail.airport_distances:
+#                         top_airports = variant_detail.airport_distances["end"][:3]
+#                         if top_airports:
+#                             airport_text = ", ".join(
+#                                 [f"{a['airport']} ({a['travel_time']})"
+#                                 for a in top_airports]
+#                             )
+#                             output.append(
+#                                 f"   ✈️  Nearest airports to {variant_detail.end_location}: {airport_text}"
+#                             )
 
-                    # Use pre-calculated hotel details 
-                    output.append(f"   🏨 Hotel Details:")
-                    for detail in variant_detail.hotel_details:
-                        output.append(f"        {detail}")
+#                     # Use pre-calculated hotel details 
+#                     output.append(f"   🏨 Hotel Details:")
+#                     for detail in variant_detail.hotel_details:
+#                         output.append(f"        {detail}")
                     
-                    # Use pre-calculated travel segments
-                    travel_segments_text = [
-                        f"{segment.from_location} → {segment.to_location} "
-                        f"({segment.day}{', ' + segment.context if segment.context else ''}) - "
-                        f"{segment.travel_time}"
-                        for segment in variant_detail.travel_segments
-                    ]
+#                     # Use pre-calculated travel segments
+#                     travel_segments_text = [
+#                         f"{segment.from_location} → {segment.to_location} "
+#                         f"({segment.day}{', ' + segment.context if segment.context else ''}) - "
+#                         f"{segment.travel_time}"
+#                         for segment in variant_detail.travel_segments
+#                     ]
                     
-                    output.append("      " + "\n      ".join(travel_segments_text))
+#                     output.append("      " + "\n      ".join(travel_segments_text))
 
-            output.append("")  # Blank line after each trip group
+#             output.append("")  # Blank line after each trip group
 
-    # TBD games
-    if response.tbd_games:
-        output.append("\n📝 Upcoming Unscheduled Games:")
-        output.append("These games don't have confirmed times yet but might be included in your trip once scheduled:")
+#     # TBD games
+#     if response.tbd_games:
+#         output.append("\n📝 Upcoming Unscheduled Games:")
+#         output.append("These games don't have confirmed times yet but might be included in your trip once scheduled:")
 
-        for game in sorted(response.tbd_games, key=lambda g: g["date"]):
-            clean_location = game['location'].replace(' hbf', '')
-            date_display = game['date']
+#         for game in sorted(response.tbd_games, key=lambda g: g["date"]):
+#             clean_location = game['location'].replace(' hbf', '')
+#             date_display = game['date']
             
-            # Highlight TBD games with must_teams
-            match_prefix = "🌟 " if game.get("has_must_team", False) else ""
-            output.append(
-                f"   • {match_prefix}{date_display} - {game['match']} @ {clean_location} ({game['league']})"
-            )
+#             # Highlight TBD games with must_teams
+#             match_prefix = "🌟 " if game.get("has_must_team", False) else ""
+#             output.append(
+#                 f"   • {match_prefix}{date_display} - {game['match']} @ {clean_location} ({game['league']})"
+#             )
 
-        output.append("\nCheck back later for updated schedules!")
+#         output.append("\nCheck back later for updated schedules!")
         
-    output_text="\n".join(output)    
-    # Save to file
-    try:
-        # Create 'logs' directory if it doesn't exist
-        log_dir = os.path.join(os.path.dirname(__file__), 'logs')
-        os.makedirs(log_dir, exist_ok=True)
+#     output_text="\n".join(output)    
+#     # Save to file
+#     try:
+#         # Create 'logs' directory if it doesn't exist
+#         log_dir = os.path.join(os.path.dirname(__file__), 'logs')
+#         os.makedirs(log_dir, exist_ok=True)
         
-        # Generate filename with timestamp
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"trip_schedule_{timestamp}.txt"
-        filepath = os.path.join(log_dir, filename)
+#         # Generate filename with timestamp
+#         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+#         filename = f"trip_schedule_{timestamp}.txt"
+#         filepath = os.path.join(log_dir, filename)
         
-        # Write to file
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(output_text)
+#         # Write to file
+#         with open(filepath, 'w', encoding='utf-8') as f:
+#             f.write(output_text)
             
-        print(f"Trip schedule saved to {filepath}")
-    except Exception as e:
-        print(f"Error saving trip schedule to file: {e}")
+#         print(f"Trip schedule saved to {filepath}")
+#     except Exception as e:
+#         print(f"Error saving trip schedule to file: {e}")
     
-    print(output_text)
-    return output_text
+#     print(output_text)
+#     return output_text
 
 # ────────────────────────────────
 # 🛠️ Get Trip
@@ -866,7 +867,7 @@ def get_trip(request: TripRequest):
                     message="No scheduled games found, but there are TBD games during this period.",
                     tbd_games=result_tbd_games
                 )
-                print_formatted_trip_schedule(structured_response)
+                #print_formatted_trip_schedule(structured_response)
                 return JSONResponse(content=structured_response.model_dump(), status_code=200)
             elif "error" in trip_result and not result_tbd_games:
                 return JSONResponse(content=trip_result, status_code=400)
@@ -886,7 +887,7 @@ def get_trip(request: TripRequest):
                     message="No scheduled games found during this period.",
                     tbd_games=result_tbd_games
                 )
-                print_formatted_trip_schedule(structured_response)
+                #print_formatted_trip_schedule(structured_response)
                 return JSONResponse(content=structured_response.model_dump(), status_code=200)
         else:
             trip_schedule = trip_result
@@ -905,7 +906,7 @@ def get_trip(request: TripRequest):
                 message="No trip found. No available games during this period.",
                 tbd_games=result_tbd_games
             )
-            print_formatted_trip_schedule(structured_response)
+            #print_formatted_trip_schedule(structured_response)
             return JSONResponse(content=structured_response.model_dump(), status_code=200)
 
         # Check for matches
@@ -928,7 +929,7 @@ def get_trip(request: TripRequest):
                 message="No scheduled games found during this period.",
                 tbd_games=result_tbd_games
             )
-            print_formatted_trip_schedule(structured_response)
+            #print_formatted_trip_schedule(structured_response)
             return JSONResponse(content=structured_response.model_dump(), status_code=200)
 
         # Format trips
@@ -1018,12 +1019,10 @@ def get_trip(request: TripRequest):
             tbd_games=result_tbd_games
         )
         
-        print_formatted_trip_schedule(structured_response)
+        #print_formatted_trip_schedule(structured_response)
         return JSONResponse(content=structured_response.model_dump(), status_code=200)
         
     except Exception as e:
-        print(f"Unexpected error in get_trip: {e}")
-        import traceback
         traceback.print_exc()
         return JSONResponse(
             content={"error": f"An unexpected error occurred: {str(e)}"},

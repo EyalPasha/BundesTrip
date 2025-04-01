@@ -5,7 +5,9 @@ from models import Game
 from scrapers.synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, third_liga_stadiums
 from typing import Optional, List, Dict, Tuple
 import copy
-from config import TRAIN_TIMES_FILE
+from config import TRAIN_TIMES_FILE, DEFAULT_CITIES
+import logging
+logger = logging.getLogger(__name__)
 
 # ────────────────────────────────
 # 🛠️ Helper Functions
@@ -42,7 +44,7 @@ def make_trip_hashable(trip):
     
     return tuple(result)
 
-@functools.lru_cache(maxsize=16384)
+@functools.lru_cache(maxsize=16384, ttl=3600)
 def generate_trip_signature(trip_key):
     match_signature = []
     
@@ -247,7 +249,7 @@ def load_games(file_path: str) -> tuple:
                 games.append(game)
                 
         except Exception as e:
-            print(f"Error parsing row {row}: {e}")
+            logger.error(f"Error parsing row {row}: {e}")
             continue
 
     return games, tbd_games
@@ -1166,7 +1168,7 @@ def identify_potential_start_cities(games, train_times, trip_duration, max_trave
     trip_games = [g for g in games if hasattr(g, 'date') and start_date.date() <= g.date.date() < trip_end_date.date()]
     
     if not trip_games:
-        return ["Berlin", "Frankfurt", "Munich"]  # Default major cities as fallback
+        return DEFAULT_CITIES  # Default major cities as fallback
     
     candidate_cities = set()
     
@@ -1252,7 +1254,7 @@ def enhance_trip_planning_for_any_start(start_location, trip_duration, max_trave
                     trip_copy.append({"start_location": potential_start})
                     all_potential_trips.append(trip_copy)
         except Exception as e:
-            print(f"Error planning trip from {potential_start}: {e}")
+            logger.error(f"Error in plan_trip: {e}", exc_info=True)
             continue
     
     # 3. Sort and filter the trips to find the best options
