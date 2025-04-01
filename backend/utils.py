@@ -44,7 +44,7 @@ def make_trip_hashable(trip):
     
     return tuple(result)
 
-@functools.lru_cache(maxsize=16384, ttl=3600)
+@functools.lru_cache(maxsize=16384)
 def generate_trip_signature(trip_key):
     match_signature = []
     
