@@ -1,0 +1,308 @@
+/* ============================================
+   MODERN FLATPICKR CALENDAR STYLING FOR 2025
+   ============================================ */
+
+/* Calendar Container */
+.flatpickr-calendar {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 325px;
+    padding: 12px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Month navigation area - Simplified for arrow-only navigation */
+.flatpickr-months {
+    background: var(--primary-color);
+    border-radius: 8px 8px 0 0;
+    padding: 12px 8px 8px;
+    position: relative;
+    text-align: center;
+}
+
+.flatpickr-months .flatpickr-month {
+    height: 46px; /* Increased height */
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible; /* Ensure text isn't cut off */
+}
+
+/* Make arrows more prominent */
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+    top: 12px;
+    height: 40px;
+    width: 40px;
+    padding: 8px;
+    fill: rgba(255, 255, 255, 0.8);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover,
+.flatpickr-months .flatpickr-next-month:hover {
+    fill: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+}
+
+/* Style month and year to align on the same baseline */
+.flatpickr-current-month {
+    padding-top: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: baseline; /* Change from center to baseline */
+    gap: 8px;
+    line-height: 1.4;
+    min-height: 32px;
+}
+
+/* Ensure month and year use the same text properties */
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    color: #fff;
+    font-weight: 500;
+    appearance: none;
+    border: none;
+    background: transparent;
+    pointer-events: none;
+    cursor: default;
+    padding: 0 !important;
+    line-height: 1.4;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Remove dropdown arrow */
+.flatpickr-current-month .flatpickr-monthDropdown-months::after {
+    display: none;
+}
+
+/* Completely remove year hover effects and overlay */
+.numInputWrapper {
+    display: inline-flex;
+    align-items: baseline;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    pointer-events: none; /* Prevent all interactions */
+}
+
+.numInputWrapper:hover {
+    background: transparent !important;
+}
+
+.numInputWrapper:hover input {
+    background: transparent !important;
+}
+
+/* Override any popup/overlay that might appear on hover */
+.flatpickr-current-month .numInputWrapper:hover ~ div,
+.flatpickr-current-month .numInputWrapper:hover ~ span {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Hide any ::after or ::before elements that might cause overlays */
+.flatpickr-current-month .numInputWrapper::after,
+.flatpickr-current-month .numInputWrapper::before {
+    display: none !important;
+}
+
+/* Hide the year input arrows but keep the year visible */
+.numInputWrapper span {
+    display: none;
+}
+
+/* Make year input match the month text exactly */
+.numInputWrapper input {
+    color: white !important;
+    font-weight: 500 !important;
+    background: transparent !important;
+    border: none !important;
+    width: auto !important;
+    padding: 0 !important;
+    pointer-events: none;
+    cursor: default;
+    line-height: 1.4 !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    vertical-align: baseline !important;
+}
+
+/* Fix dropdown background when open */
+.flatpickr-monthDropdown-month {
+    background-color: #fff !important;
+    color: #333 !important;
+    font-weight: normal !important;
+}
+
+.flatpickr-monthDropdown-months option {
+    color: #333 !important;
+}
+
+/* Fix dropdown appearance when open */
+.flatpickr-months .flatpickr-month:hover {
+    background: transparent;
+}
+
+/* Ensure no overflow issues */
+.flatpickr-current-month input.cur-year {
+    margin: 0;
+    height: auto;
+    vertical-align: baseline;
+}
+
+/* Additional fix to ensure consistent text rendering */
+.flatpickr-current-month span.cur-month,
+.flatpickr-current-month input.cur-year {
+    display: inline;
+    vertical-align: baseline;
+}
+
+/* Weekday header */
+.flatpickr-weekdays {
+    background: var(--primary-color);
+    padding: 8px 0 4px;
+    margin-bottom: 8px;
+}
+
+span.flatpickr-weekday {
+    color: #fff;
+    font-weight: 400;
+    font-size: 14px;
+    background: transparent;
+    opacity: 0.9;
+}
+
+/* Calendar days */
+.flatpickr-days {
+    width: 100% !important;
+    border-radius: 0 0 8px 8px;
+    padding: 6px 0;
+}
+
+.dayContainer {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    padding: 0 2px;
+}
+
+.flatpickr-day {
+    max-width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 2px;
+    border-radius: 50%;
+    border: none;
+    color: #333;
+    font-weight: 400;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+/* Today styling */
+.flatpickr-day.today {
+    border: none;
+    position: relative;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.flatpickr-day.today:before {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--primary-color);
+    border-radius: 50%;
+}
+
+/* Selected day */
+.flatpickr-day.selected {
+    background: var(--primary-color);
+    color: #fff;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(4, 61, 124, 0.25);
+}
+
+.flatpickr-day.selected:hover {
+    background: var(--primary-color);
+    box-shadow: 0 6px 10px rgba(4, 61, 124, 0.3);
+}
+
+/* Hover states */
+.flatpickr-day:hover {
+    background: rgba(4, 61, 124, 0.08);
+}
+
+/* Days with matches styling */
+.flatpickr-day.has-matches {
+    background: rgba(4, 61, 124, 0.03);
+    font-weight: 500;
+    color: var(--primary-color);
+    position: relative;
+    overflow: visible;
+}
+
+/* Date badge (game count indicator) */
+.flatpickr-day .date-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 16px;
+    text-align: center;
+    background: var(--accent-color, #ff6b00);
+    color: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Disabled and out of month days */
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover,
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    color: #bbb;
+    background: transparent;
+}
+
+/* Disabled day that has matches */
+.flatpickr-day.flatpickr-disabled.has-matches {
+    color: #999;
+    background: rgba(4, 61, 124, 0.02);
+}
+
+/* Animation for calendar appearance */
+@keyframes flatpickrFadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -20px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.flatpickr-calendar.animate.open {
+    animation: flatpickrFadeInDown 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}

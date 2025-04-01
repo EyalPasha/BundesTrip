@@ -2,8 +2,7 @@ import {
     loadCities,
     loadLeagues, 
     loadTeams,
-    updateTeamsByLeague,
-    loadAvailableDates  // Add this new function import
+    loadAvailableDates
 } from './services/data-loader.js';
 
 import { 
@@ -13,9 +12,9 @@ import {
     clearFilters 
 } from './services/ui-helpers.js';
 
-import { handleSearch } from './services/trip-service.js';
+import { handleSearch, initFormHandlers, updateMinGamesOptions } from './services/trip-service.js';
 import { renderResults } from './components/results-display.js';
-import { checkHealth } from './services/api.js'; // Add health check import
+import { checkHealth } from './services/api.js';
 
 // Create a global DOM object to share references between modules
 window.DOM = {};
@@ -44,26 +43,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Add references to any new UI elements here
     };
 
-    // Add dynamic min/max validation for minGames
-window.DOM.tripDurationInput.addEventListener('change', function() {
-    const tripDuration = parseInt(this.value);
-    // Min games can't exceed trip duration
-    window.DOM.minGamesInput.max = tripDuration;
+    // Initialize form handlers
+    initFormHandlers();
     
-    // If current min games value exceeds new max, adjust it
-    if (parseInt(window.DOM.minGamesInput.value) > tripDuration) {
-        window.DOM.minGamesInput.value = tripDuration;
-    }
+    // Initial update of minGames options based on trip duration
+    updateMinGamesOptions();
     
-    // Ensure min games is at least 1
-    if (parseInt(window.DOM.minGamesInput.value) < 1) {
-        window.DOM.minGamesInput.value = 1;
-    }
-});
-
-// Initialize min games max value based on initial trip duration
-window.DOM.minGamesInput.max = window.DOM.tripDurationInput.value;
-
     // Check API health before initializing UI
     try {
         const health = await checkHealth();
@@ -73,8 +58,7 @@ window.DOM.minGamesInput.max = window.DOM.tripDurationInput.value;
         }
     } catch (error) {
         console.error("API health check failed:", error);
-        // You might want to show a warning banner here
-
+        
         // Create and show toast
         const toastContainer = document.getElementById('toastContainer') || document.createElement('div');
         if (!toastContainer.id) {
@@ -119,20 +103,28 @@ window.DOM.minGamesInput.max = window.DOM.tripDurationInput.value;
         dateFormat: "d F Y",  // Include year in date format
         minDate: "today",
         disableMobile: true,
+        allowInput: false,  // Prevent manual text entry to ensure valid dates
+        // Add onChange handler to clear validation error if present
+        onChange: function(selectedDates, dateStr) {
+            if (dateStr) {
+                window.DOM.startDateInput.classList.remove('is-invalid');
+            }
+        },
         // Remove the 'enable' property to allow all dates
         // Instead, highlight dates with games using the onDayCreate callback
         onDayCreate: function(dObj, dStr, fp, dayElem) {
-            // Check if this date is in the availableDates list
             if (availableDates && availableDates.length > 0) {
                 const dateStr = dayElem.dateObj.toISOString().split('T')[0];
                 const matchDate = availableDates.find(d => d.date === dateStr);
                 
-                if (matchDate) {
+                if (matchDate && matchDate.count) {
                     // Add a visual indicator for dates with games
                     dayElem.classList.add('has-matches');
+                    
+                    // Create badge with proper positioning
                     const badge = document.createElement('span');
                     badge.className = 'date-badge';
-                    badge.textContent = matchDate.count || '';
+                    badge.textContent = matchDate.count;
                     dayElem.appendChild(badge);
                 }
             }
@@ -161,6 +153,29 @@ window.DOM.minGamesInput.max = window.DOM.tripDurationInput.value;
     if (window.DOM.sortResults) {
         window.DOM.sortResults.addEventListener('change', handleSortResults);
     }
+
+    // Replace the current Select2 configuration with this:
+    $(document).ready(function() {
+        // Configure Preferred Leagues dropdown
+        $('#preferredLeagues').select2({
+            placeholder: 'Select leagues...',
+            width: '100%',
+            dropdownParent: $('#preferredLeaguesContainer'),
+            minimumResultsForSearch: Infinity,
+            selectionCssClass: 'select2-selection--clean',
+            dropdownCssClass: 'select2-dropdown--clean'
+        });
+        
+        // Configure Must Include Teams dropdown
+        $('#mustTeams').select2({
+            placeholder: 'Select teams...',
+            width: '100%',
+            dropdownParent: $('#mustTeamsContainer'),
+            minimumResultsForSearch: Infinity,
+            selectionCssClass: 'select2-selection--clean',
+            dropdownCssClass: 'select2-dropdown--clean'
+        });
+    });
 });
 
 // Sort results by selected criteria

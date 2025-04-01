@@ -13,6 +13,15 @@ function validateForm() {
         window.DOM.startLocationSelect.classList.remove('is-invalid');
     }
     
+    // Start date validation (new required field)
+    if (!window.DOM.startDateInput.value) {
+        isValid = false;
+        errors.push("Please select a start date");
+        window.DOM.startDateInput.classList.add('is-invalid');
+    } else {
+        window.DOM.startDateInput.classList.remove('is-invalid');
+    }
+    
     // Trip duration validation
     const duration = parseInt(window.DOM.tripDurationInput.value);
     if (isNaN(duration) || duration < 1 || duration > 10) {
@@ -38,13 +47,15 @@ function validateForm() {
     const tripDuration = parseInt(window.DOM.tripDurationInput.value);
     
     if (isNaN(minGames) || minGames < 1) {
-        showErrorToast('Minimum games must be at least 1');
-        return false;
-    }
-    
-    if (minGames > tripDuration) {
-        showErrorToast('Minimum games cannot exceed trip duration');
-        return false;
+        isValid = false;
+        errors.push("Minimum games must be at least 1");
+        window.DOM.minGamesInput.classList.add('is-invalid');
+    } else if (minGames > tripDuration) {
+        isValid = false;
+        errors.push("Minimum games cannot exceed trip duration");
+        window.DOM.minGamesInput.classList.add('is-invalid');
+    } else {
+        window.DOM.minGamesInput.classList.remove('is-invalid');
     }
         
     // Show validation errors if any

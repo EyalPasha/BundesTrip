@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="styles/forms.css">
         <link rel="stylesheet" href="styles/select2.css">
         <link rel="stylesheet" href="styles/animations.css">
+        <link rel="stylesheet" href="styles/calendar.css">
     </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -56,55 +57,94 @@
                             <h2 class="card-title mb-4">Find Your Trip</h2>
                             <form id="tripSearchForm">
                                 <div class="mb-3">
-                                    <label for="startLocation" class="form-label">Starting Location</label>
+                                    <label for="startLocation" class="form-label">Starting Location <span class="text-danger">*</span></label>
                                     <select class="form-select" id="startLocation" required>
                                         <option value="" selected disabled>Select a city</option>
                                         <option value="any">Any (Best Option)</option>
                                         <!-- Cities will be loaded dynamically -->
                                     </select>
+                                    <div class="invalid-feedback">Please select a starting location</div>
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="startDate" class="form-label">Start Date</label>
-                                    <input type="text" class="form-control" id="startDate" placeholder="Select date">
+                                    <label for="startDate" class="form-label">Start Date <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="startDate" placeholder="Select date" required>
+                                    <div class="invalid-feedback">Please select a start date</div>
                                 </div>
                                 
-                                <div class="row mb-3">
-                                    <div class="col">
-                                        <label for="tripDuration" class="form-label">Trip Duration (days)</label>
-                                        <input type="number" class="form-control" id="tripDuration" min="1" max="10" value="5">
-                                    </div>
-                                    <div class="col">
-                                        <label for="maxTravelTime" class="form-label">Max Travel Time (min)</label>
-                                        <input type="number" class="form-control" id="maxTravelTime" min="30" max="360" value="90">
-                                    </div>
+                                <!-- Trip Duration (days) - Dropdown -->
+                                <div class="mb-3">
+                                    <label for="tripDuration" class="form-label">Trip Duration (Days)</label>
+                                    <select class="form-select" id="tripDuration">
+                                        <!-- Options 2-10 days -->
+                                        <option value="2">2 Days</option>
+                                        <option value="3" selected>3 Days</option>
+                                        <option value="4">4 Days</option>
+                                        <option value="5">5 Days</option>
+                                        <option value="6">6 Days</option>
+                                        <option value="7">7 Days</option>
+                                        <option value="8">8 Days</option>
+                                        <option value="9">9 Days</option>
+                                        <option value="10">10 Days</option>
+                                    </select>
                                 </div>
                                 
+                                <!-- Max Travel Time (min) - Dropdown -->
+                                <div class="mb-3">
+                                    <label for="maxTravelTime" class="form-label">Max Travel Time</label>
+                                    <select class="form-select" id="maxTravelTime">
+                                        <option value="30">30 Minutes</option>
+                                        <option value="45">45 Minutes</option>
+                                        <option value="60">1 Hour </option>
+                                        <option value="75">1 Hour 15 Minutes</option>
+                                        <option value="90">1 Hour 30 Minutes</option>
+                                        <option value="105">1 Hour 45 Minutes</option>
+                                        <option value="120" selected>2 Hours</option>
+                                        <option value="135">2 Hours 15 Minutes</option>
+                                        <option value="150">2 Hours 30 Minutes</option>
+                                        <option value="165">2 Hours 45 Minutes</option>
+                                        <option value="180">3 Hours</option>
+                                        <option value="210">3 Hours 30 Minutes</option>
+                                        <option value="240">4 Hours</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Minimum Games - Dropdown -->
                                 <div class="mb-3">
                                     <label for="minGames" class="form-label">Minimum Games</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" id="minGames" min="2" max="10" value="2">
-                                    </div>
-                                    <div class="form-text">At least this many games in your trip</div>
+                                    <select class="form-select" id="minGames">
+                                        <option value="1">1 Game</option>
+                                        <option value="2" selected>2 Games</option>
+                                        <option value="3">3 Games</option>
+                                        <option value="4">4 Games</option>
+                                        <option value="5">5 Games</option>
+                                        <!-- More options will be adjusted dynamically based on trip duration -->
+                                    </select>
                                 </div>
 
+                                <!-- Update the Preferred Leagues section -->
                                 <div class="mb-3">
                                     <label for="preferredLeagues" class="form-label">
                                         <i class="fas fa-layer-group"></i> Preferred Leagues (Optional)
                                     </label>
-                                    <select class="form-select" id="preferredLeagues" multiple="multiple">
-                                        <!-- Options will be loaded dynamically -->
-                                    </select>
+                                    <div id="preferredLeaguesContainer" class="position-relative">
+                                        <select class="form-select" id="preferredLeagues" multiple="multiple">
+                                            <!-- Options will be loaded dynamically -->
+                                        </select>
+                                    </div>
                                     <div class="form-text">Select none to include all leagues</div>
                                 </div>
                                 
+                                <!-- Update the Must Include Teams section -->
                                 <div class="mb-3">
                                     <label for="mustTeams" class="form-label">
                                         <i class="fas fa-users-cog"></i> Must Include Teams (Optional)
                                     </label>
-                                    <select class="form-select" id="mustTeams" multiple="multiple">
-                                        <!-- Options will be loaded dynamically -->
-                                    </select>
+                                    <div id="mustTeamsContainer" class="position-relative">
+                                        <select class="form-select" id="mustTeams" multiple="multiple">
+                                            <!-- Options will be loaded dynamically -->
+                                        </select>
+                                    </div>
                                     <div class="form-text">Teams you absolutely want to see play</div>
                                 </div>
                                 
