@@ -1,0 +1,259 @@
+/* ===== Card Structure ===== */
+.trip-card {
+    margin-bottom: 1.5rem;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .trip-card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .trip-header {
+    padding: 1.5rem;
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .trip-details {
+    padding: 1.5rem;
+    background-color: #fff;
+  }
+  
+  /* ===== Option Panels ===== */
+  .travel-options-section {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  /* Enhanced nav tabs */
+  .nav-tabs {
+    border-bottom: 2px solid #e9ecef;
+  }
+  
+  .nav-tabs .nav-link {
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+  }
+  
+  .nav-tabs .nav-link:hover {
+    border-color: rgba(4, 61, 124, 0.3);
+    background-color: rgba(4, 61, 124, 0.03);
+  }
+  
+  .nav-tabs .nav-link.active {
+    color: var(--primary-color, #043d7c);
+    border-bottom-color: var(--primary-color, #043d7c);
+    font-weight: 600;
+  }
+  
+  /* Tab content */
+  .tab-content {
+    padding: 1.25rem 0;
+  }
+  
+  /* ===== Stat Items ===== */
+  .variant-summary {
+    padding-bottom: 1rem;
+  }
+  
+  .stat-item {
+    position: relative;
+  }
+  
+  .stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  
+  .stat-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .stat-label {
+    color: #6c757d;
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+  
+  .stat-value {
+    font-size: 0.95rem;
+    color: #212529;
+    line-height: 1.2;
+  }
+  
+  /* Route preview */
+  .route-preview {
+    padding: 0.5rem;
+    border-radius: 6px;
+  }
+  
+  /* ===== Match Preview ===== */
+  .match-preview {
+    margin: 1rem 0;
+  }
+  
+  .match-preview-item {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+  }
+  
+  .match-preview-item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  
+  .match-teams-preview {
+    font-size: 0.95rem;
+  }
+  
+  .match-location-preview {
+    font-size: 0.85rem;
+    color: #6c757d;
+  }
+  
+  .must-match {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-left: 3px solid #ffc107;
+  }
+  
+  /* ===== Timeline Styling ===== */
+  .timeline {
+    position: relative;
+    padding: 1rem 0;
+  }
+  
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 1.65rem;
+    width: 2px;
+    background-color: #e9ecef;
+  }
+  
+  /* Day header and badge */
+  .day-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+  
+  .day-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-color, #043d7c);
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  
+  .day-line {
+    position: absolute;
+    left: 1.65rem;
+    top: 16px;
+    width: 2px;
+    background-color: #e9ecef;
+    z-index: 0;
+  }
+  
+  /* Match items */
+  .match-item {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .match-item.must-team {
+    border-left: 4px solid #ffc107;
+    background-color: rgba(255, 193, 7, 0.05);
+  }
+  
+  /* ===== Travel Segments ===== */
+  .travel-segments {
+    margin-top: 1.5rem;
+  }
+  
+  .travel-segment {
+    padding: 0.75rem;
+    border-radius: 6px;
+    border-left: 4px solid var(--info-color, #0dcaf0);
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+  }
+  
+  .travel-segment:hover {
+    background-color: rgba(13, 202, 240, 0.05);
+  }
+  
+  .segment-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #6c757d;
+  }
+  
+  /* ===== Hotel Info ===== */
+  .hotel-info {
+    background-color: rgba(13, 110, 253, 0.04);
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    border-left: 4px solid #0d6efd;
+  }
+  
+  /* ===== Rest Days ===== */
+  .rest-day {
+    background-color: #f8f9fa;
+    border-left: 4px solid #6c757d;
+    margin-bottom: 1rem;
+  }
+  
+  /* ===== TBD Games Section ===== */
+  .match-item .match-teams {
+    font-size: 1.05rem;
+    color: #212529;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .option-stats {
+      flex-wrap: wrap;
+    }
+    
+    .stat-item {
+      margin-bottom: 0.75rem;
+      width: 100%;
+    }
+    
+    .route-preview {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  }

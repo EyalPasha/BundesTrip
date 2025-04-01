@@ -86,20 +86,12 @@ function renderTripCard(group, index, tripContext = {}) {
         
         <div class="d-flex flex-wrap align-items-center mb-3">
             <div class="me-3 d-flex align-items-center">
-                <i class="fas fa-map-marker-alt text-danger me-1"></i> 
-                <span>${defaultVariant.cities?.length || 0} cities</span>
-            </div>
-            <div class="me-3 d-flex align-items-center">
-                <i class="fas fa-clock text-success me-1"></i>
-                <span>${defaultVariant.travel_hours || 0}h ${defaultVariant.travel_minutes || 0}m travel</span>
-            </div>
-            <div class="me-3 d-flex align-items-center">
                 <i class="fas fa-calendar-alt text-primary me-1"></i>
-                <span>${tripDuration} days</span>
+                <span>${tripDuration}</span>
             </div>
             <div class="me-3 d-flex align-items-center">
-                <i class="fas fa-route text-info me-1"></i>
-                <span>${firstCity} → ${finalCity}</span>
+                <i class="fas fa-sliders-h text-secondary me-1"></i>
+                <span>${group.variation_details.length} travel options</span>
             </div>
         </div>
         
@@ -181,10 +173,7 @@ function renderTripCard(group, index, tripContext = {}) {
             tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
             tab.innerHTML = `
                 <i class="fas fa-${varIdx === 0 ? 'star' : 'route'} me-1"></i> 
-                Option ${varIdx + 1} 
-                <span class="option-time ms-1">
-                    (${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m, ${variant.unique_hotels || 0} Hotels)
-                </span>
+                Option ${varIdx + 1}
             `;
             optionsTabs.appendChild(tab);
             
@@ -194,17 +183,63 @@ function renderTripCard(group, index, tripContext = {}) {
             contentPane.id = optionId;
             contentPane.setAttribute('role', 'tabpanel');
             contentPane.setAttribute('aria-labelledby', `${optionId}-tab`);
-            
-            // Add basic travel option info
+
+            // Extract route path
+            const firstCity = variant.start_location?.replace(' hbf', '') || 
+                             (variant.cities?.length > 0 ? variant.cities[0] : 'Unknown');
+            const finalCity = variant.end_location?.replace(' hbf', '') || 
+                             (variant.cities?.length > 0 ? variant.cities[variant.cities.length - 1] : 'Unknown');
+
+            // Add complete travel option info with modern styling
             contentPane.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <i class="fas fa-route text-primary me-2"></i>
-                        <strong>${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m total travel time</strong>
-                    </div>
-                    <div>
-                        <i class="fas fa-hotel text-secondary me-2"></i>
-                        Hotel changes: ${variant.hotel_changes || 0}
+                <div class="variant-summary mb-3 border-bottom pb-3">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="option-stats d-flex align-items-center">
+                            <div class="stat-item me-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-map-marker-alt text-danger"></i>
+                                    </div>
+                                    <div class="stat-content ms-2">
+                                        <div class="stat-label text-muted small">Cities</div>
+                                        <div class="stat-value fw-bold">${variant.cities?.length || 0}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item me-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-clock text-success"></i>
+                                    </div>
+                                    <div class="stat-content ms-2">
+                                        <div class="stat-label text-muted small">Total Travel</div>
+                                        <div class="stat-value fw-bold">${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-hotel text-primary"></i>
+                                    </div>
+                                    <div class="stat-content ms-2">
+                                        <div class="stat-label text-muted small">Hotel Changes</div>
+                                        <div class="stat-value fw-bold">${variant.hotel_changes || 0}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="route-preview mt-2 mt-md-0">
+                            <div class="small text-muted mb-1">Route</div>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-medium">${firstCity}</span>
+                                <i class="fas fa-long-arrow-alt-right mx-2 text-muted"></i>
+                                <span class="fw-medium">${finalCity}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;

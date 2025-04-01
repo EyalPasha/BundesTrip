@@ -14,7 +14,7 @@ async function fetchApi(endpoint, options = {}, retries = 2) {
         
         // Reduce timeout to 60 seconds
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 60000); 
+        const timeoutId = setTimeout(() => controller.abort(), 180000); 
         
         // Add keep-alive connection for better performance
         const cacheOptions = {
