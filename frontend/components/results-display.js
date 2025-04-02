@@ -7,8 +7,9 @@ import { showListView } from '../services/ui-helpers.js';
  * Properly processes trip groups, variations, hotel information and airport data
  * 
  * @param {Object} response - The API response from the trip planning endpoint
+ * @param {boolean} hideLoadingOnNoResults - Indicates whether to keep the loading container visible
  */
-function renderResults(response) {
+function renderResults(response, hideLoadingOnNoResults = true) {
     const tripResults = document.getElementById('tripResults');
     
     // Clear previous results
@@ -39,6 +40,12 @@ function renderResults(response) {
     
     // Process trip groups (if any)
     if (response.trip_groups && response.trip_groups.length > 0) {
+        // Show filter card
+        const filterResultsCard = document.getElementById('filterResultsCard');
+        if (filterResultsCard) {
+            filterResultsCard.classList.remove('d-none');
+        }
+        
         // Add min games info to results header if present
         const resultsHeader = document.querySelector('#resultsContainer h2');
         if (resultsHeader && response.min_games) {
@@ -72,6 +79,12 @@ function renderResults(response) {
             viewListBtn.classList.remove('d-none');
             viewListBtn.onclick = () => showListView(response.trip_groups);
         }
+    } else {
+        // Hide filter card if no results
+        const filterResultsCard = document.getElementById('filterResultsCard');
+        if (filterResultsCard) {
+            filterResultsCard.classList.add('d-none');
+        }
     }
     
     // Handle error messages or no results
@@ -92,27 +105,25 @@ function renderResults(response) {
         messageContainer.textContent = response.message;
     }
     
-    // Only show no results message if BOTH trips AND TBD games are missing
-    if ((!response.trip_groups || response.trip_groups.length === 0) && 
-        (!response.tbd_games || response.tbd_games.length === 0)) {
-        
-        if (window.DOM && window.DOM.noResultsMessage) {
-            window.DOM.noResultsMessage.classList.remove('d-none');
+    // Only process loading state if we have results OR if we're explicitly told to hide loading
+    const hasResults = (response.trip_groups && response.trip_groups.length > 0) || 
+                       (response.tbd_games && response.tbd_games.length > 0);
+                       
+    if (hasResults || hideLoadingOnNoResults) {
+        // Only hide loading if we have results or are explicitly told to
+        if (window.DOM && window.DOM.loadingIndicator) {
+            window.DOM.loadingIndicator.classList.add('d-none');
         }
         
-        // Hide sorting and list-view controls when no results
-        const sortingControl = document.getElementById('sortResults');
-        if (sortingControl) {
-            sortingControl.classList.add('d-none');
-        }
-        
-        const viewListBtn = document.getElementById('viewList');
-        if (viewListBtn) {
-            viewListBtn.classList.add('d-none');
-        }
-    } else {
-        if (window.DOM && window.DOM.noResultsMessage) {
-            window.DOM.noResultsMessage.classList.add('d-none');
+        // Enable scrolling
+        document.body.classList.remove('no-scroll');
+    }
+    
+    // Remove any "no scheduled games" messages that would be redundant
+    const messageContainer = document.getElementById('messageContainer');
+    if (messageContainer) {
+        if (messageContainer.textContent.includes("No scheduled games found")) {
+            messageContainer.remove();
         }
     }
     

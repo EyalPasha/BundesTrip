@@ -130,14 +130,15 @@ async function planTrip(tripData) {
     const loadingIndicator = document.getElementById('loadingIndicator');
     const loadingText = document.getElementById('loadingText');
     
+    // Only update loading text if the element exists
     if (loadingIndicator) loadingIndicator.classList.remove('d-none');
-    if (loadingText) loadingText.textContent = 'Connecting to server...';
     
     try {
         // Start a timer to update the loading message
         let secondsElapsed = 0;
         const loadingTimer = setInterval(() => {
             secondsElapsed++;
+            // Only update loading text if the element exists
             if (loadingText) {
                 if (secondsElapsed < 5) {
                     loadingText.textContent = 'Connecting to server...';
@@ -157,13 +158,15 @@ async function planTrip(tripData) {
             body: JSON.stringify(tripData)
         });
         
-        // Provide better error for no trips meeting min games criteria
-        if (response.no_trips_available && response.min_games > 1) {
-            document.getElementById('loadingText').textContent = 
-                `No trips found with ${response.min_games} or more games. Try reducing the minimum games requirement.`;
-        } else if (response.no_trips_available) {
-            document.getElementById('loadingText').textContent = 
-                `No trips found. Try adjusting your search parameters.`;
+        // Provide better error for no trips meeting min games criteria - but check if element exists first
+        if (response.no_trips_available && loadingText) {
+            if (response.min_games > 1) {
+                loadingText.textContent = 
+                    `No trips found with ${response.min_games} or more games. Try reducing the minimum games requirement.`;
+            } else {
+                loadingText.textContent = 
+                    `No trips found. Try adjusting your search parameters.`;
+            }
         }
         
         // Clear the timer

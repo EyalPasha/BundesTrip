@@ -19,30 +19,47 @@ import { checkHealth } from './services/api.js';
 // Create a global DOM object to share references between modules
 window.DOM = {};
 
+// Function to safely initialize DOM references
+function initDOMReferences() {
+    const elements = {
+        tripSearchForm: 'tripSearchForm',
+        startLocationSelect: 'startLocation',
+        startDateInput: 'startDate',
+        tripDurationInput: 'tripDuration',
+        maxTravelTimeInput: 'maxTravelTime',
+        preferredLeaguesSelect: 'preferredLeagues',
+        mustTeamsSelect: 'mustTeams',
+        resultsSection: 'results',
+        resultsCount: 'resultsCount',
+        tripResults: 'tripResults',
+        loadingIndicator: 'loading',
+        noResultsMessage: 'noResultsMessage',
+        viewListBtn: 'viewList',
+        teamFiltersContainer: 'teamFilters',
+        cityFiltersContainer: 'cityFilters',
+        sortResults: 'sortResults',
+        minGamesInput: 'minGames',
+        tripOptionsHeader: 'tripOptionsHeader',
+        resultsCountContainer: 'resultsCountContainer',
+    };
+    
+    // Safely get elements with logging for any missing ones
+    for (const [key, id] of Object.entries(elements)) {
+        const element = document.getElementById(id);
+        if (element) {
+            window.DOM[key] = element;
+        } else {
+            console.warn(`DOM element not found: ${id}`);
+            window.DOM[key] = null; // Set to null to allow safe checks
+        }
+    }
+}
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', async function() {
-    // Store DOM references globally for access from other modules
-    window.DOM = {
-        tripSearchForm: document.getElementById('tripSearchForm'),
-        startLocationSelect: document.getElementById('startLocation'),
-        startDateInput: document.getElementById('startDate'),
-        tripDurationInput: document.getElementById('tripDuration'),
-        maxTravelTimeInput: document.getElementById('maxTravelTime'),
-        preferredLeaguesSelect: document.getElementById('preferredLeagues'),
-        mustTeamsSelect: document.getElementById('mustTeams'),
-        resultsSection: document.getElementById('results'),
-        resultsCount: document.getElementById('resultsCount'),
-        tripResults: document.getElementById('tripResults'),
-        loadingIndicator: document.getElementById('loading'),
-        noResultsMessage: document.getElementById('noResults'),
-        viewListBtn: document.getElementById('viewList'),
-        teamFiltersContainer: document.getElementById('teamFilters'),
-        cityFiltersContainer: document.getElementById('cityFilters'),
-        sortResults: document.getElementById('sortResults'),
-        minGamesInput: document.getElementById('minGames'),
-        // Add references to any new UI elements here
-    };
-
+    // Initialize DOM references
+    initDOMReferences();
+    
     // Initialize form handlers
     initFormHandlers();
     
@@ -176,6 +193,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             dropdownCssClass: 'select2-dropdown--clean'
         });
     });
+
+    // Initialize loading animation
+    initLoadingAnimation();
 });
 
 // Sort results by selected criteria
@@ -211,6 +231,52 @@ function handleSortResults() {
         container.appendChild(card);
     });
 }
+
+function initLoadingAnimation() {
+  // Rotate through loading messages
+  const messages = document.querySelectorAll('.loading-message');
+  let currentIndex = 0;
+  
+  if (messages.length > 0) {
+    setInterval(() => {
+      // Remove active class from current message
+      messages[currentIndex].classList.remove('active');
+      
+      // Move to next message
+      currentIndex = (currentIndex + 1) % messages.length;
+      
+      // Add active class to new message
+      messages[currentIndex].classList.add('active');
+    }, 2500);
+  }
+}
+
+function returnToSearch() {
+    // Hide the loading container
+    if (window.DOM.loadingIndicator) {
+        window.DOM.loadingIndicator.classList.add('d-none');
+    }
+    
+    // Reset the content inside loading for next time
+    const loadingAnimation = document.getElementById('loadingAnimation');
+    const loadingMessages = document.getElementById('loadingMessages');
+    const cancelButton = document.getElementById('cancelSearch');
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    
+    if (loadingAnimation) loadingAnimation.classList.remove('d-none');
+    if (loadingMessages) loadingMessages.classList.remove('d-none');
+    if (cancelButton) cancelButton.classList.remove('d-none');
+    if (noResultsMessage) noResultsMessage.classList.add('d-none');
+    
+    // Enable scrolling
+    document.body.classList.remove('no-scroll');
+    
+    // Scroll back to top
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// Make returnToSearch globally available so onclick can find it
+window.returnToSearch = returnToSearch;
 
 // Export helper functions to avoid circular dependencies
 export const helpers = {

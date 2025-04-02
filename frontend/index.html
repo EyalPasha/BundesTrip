@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="styles/animations.css">
         <link rel="stylesheet" href="styles/calendar.css">
         <link rel="stylesheet" href="styles/trip-cards.css">
+        <link rel="stylesheet" href="styles/loading-animation.css">
     </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -163,10 +164,10 @@
     <main>
         <section id="results" class="py-5 d-none">
             <div class="container">
-                <h2 class="mb-4">Trip Options</h2>
+                <h2 id="tripOptionsHeader" class="mb-4">Trip Options</h2>
                 <div class="row">
                     <div class="col-lg-4 mb-4">
-                        <div class="card filter-card sticky-top filter-card-sticky">
+                        <div id="filterResultsCard" class="card d-none filter-card sticky-top filter-card-sticky">
                             <div class="card-body">
                                 <h3 class="card-title">Filter Results</h3>
                                 <div class="mb-3">
@@ -188,52 +189,61 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div id="resultsCountContainer" class="d-flex justify-content-between align-items-center mb-3">
                             <div>
                                 <span id="resultsCount" class="badge bg-primary">0</span> trips found
                             </div>
-                            <div class="btn-group">
-                                <button class="btn btn-outline-primary btn-sm" id="viewList">
-                                    <i class="fas fa-list"></i> List
-                                </button>
-                            </div>
                         </div>
                         <div id="tripResults"></div>
-                        <div id="loading" class="text-center py-5 d-none">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <div id="loading" class="custom-loading-container d-none">
+                                    <div class="loading-content">
+                                        <!-- Normal loading animation -->
+                                        <div id="loadingAnimation" class="loading-animation">
+                                            <div class="football">
+                                                <div class="football-pattern"></div>
+                                            </div>
+                                            <div class="travel-path">
+                                                <div class="city-marker marker-start"></div>
+                                                <div class="travel-line"></div>
+                                                <div class="city-marker marker-mid pulse"></div>
+                                                <div class="travel-line"></div>
+                                                <div class="city-marker marker-end"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Loading state messages -->
+                                        <div id="loadingMessages" class="loading-messages">
+                                            <p class="loading-message active">Searching for matches...</p>
+                                            <p class="loading-message">Planning optimal routes...</p>
+                                            <p class="loading-message">Calculating travel times...</p>
+                                            <p class="loading-message">Finalizing your trip options...</p>
+                                        </div>
+                                        
+                                        <!-- Cancel button for loading state -->
+                                        <button id="cancelSearch" class="cancel-search-btn">
+                                            <i class="fas fa-times-circle"></i> Cancel Search
+                                        </button>
+                                        
+                                        <!-- No results message - hidden by default -->
+                                        <div id="noResultsMessage" class="no-results-message d-none">
+                                            <i class="fas fa-search-minus"></i>
+                                            <h4>No Trips Found</h4>
+                                            <p>We couldn't find any trips matching your criteria.</p>
+                                            <button onclick="returnToSearch()" class="return-to-search-btn">
+                                                <i class="fas fa-arrow-up"></i> Back to Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="mt-2">Searching for the best trips...</p>
-                        </div>
-                        <div id="noResults" class="alert alert-info d-none">
-                            No trips found for your criteria. Try adjusting your search parameters.
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        <div class="container mt-4">
-            <div id="loadingIndicator" class="text-center my-5 d-none">
-                <div class="spinner-border text-primary mb-3" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <p id="loadingText" class="lead">Searching for trips...</p>
-            </div>
-            
-            <div id="resultsContainer" class="mb-5 d-none">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2>Trip Results <span class="badge bg-primary" id="tripCount">0</span></h2>
-                    <div class="sort-controls">
-                        <!-- Sort controls here if needed -->
-                    </div>
-                </div>
-                <div id="tripResults" class="row">
-                    <!-- Trip cards will be inserted here -->
-                </div>
-            </div>
-        </div>
-
+        
         <section id="about" class="py-5 bg-light">
             <div class="container">
                 <h2 class="text-center mb-4">How It Works</h2>

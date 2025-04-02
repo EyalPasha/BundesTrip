@@ -8,24 +8,8 @@ import { renderTripCard } from '../components/trip-card.js';
 window.renderTripCard = renderTripCard;
 
 async function handleSearch(e) {
-    console.log("Form submitted!", e);
-    e.preventDefault();
-    
-    // Check mandatory fields first (faster than full validation)
-    if (!window.DOM.startLocationSelect.value) {
-        showErrorToast("Starting location is required");
-        window.DOM.startLocationSelect.classList.add('is-invalid');
-        return;
-    }
-    
-    if (!window.DOM.startDateInput.value) {
-        showErrorToast("Start date is required");
-        window.DOM.startDateInput.classList.add('is-invalid');
-        return;
-    }
-    
-    // Full form validation
     console.log("Validating form...");
+    e.preventDefault();
     if (!validateForm()) {
         return;
     }
@@ -41,11 +25,78 @@ async function handleSearch(e) {
     if (tripResults) {
         tripResults.innerHTML = '';
     }
+
+    // Hide filters container AND filter card during search
+    const filtersContainer = document.getElementById('filtersContainer');
+    if (filtersContainer) {
+        filtersContainer.classList.add('d-none');
+    }
     
-    // Show loading state
+    // Hide the entire filter results card
+    const filterResultsCard = document.getElementById('filterResultsCard');
+    if (filterResultsCard) {
+        filterResultsCard.classList.add('d-none');
+    }
+    
+    // Hide trip options header
+    const tripOptionsHeader = document.getElementById('tripOptionsHeader');
+    if (tripOptionsHeader) {
+        tripOptionsHeader.classList.add('d-none');
+    }
+    
+    // Hide results count container
+    const resultsCountContainer = document.getElementById('resultsCountContainer');
+    if (resultsCountContainer) {
+        resultsCountContainer.classList.add('d-none');
+    }
+
+    // Show loading state and prevent page scrolling
+    window.DOM.loadingIndicator = document.getElementById('loading');
     window.DOM.loadingIndicator.classList.remove('d-none');
+    document.body.classList.add('no-scroll'); // Prevent scrolling
     window.DOM.resultsSection.classList.remove('d-none');
-    window.DOM.noResultsMessage.classList.add('d-none');
+
+    // Fix the null reference error by adding a null check
+    if (window.DOM.noResultsMessage) {
+        window.DOM.noResultsMessage.classList.add('d-none');
+    }
+    
+    // Setup cancel button handler
+    let searchCancelled = false;
+    const cancelButton = document.getElementById('cancelSearch');
+    
+    if (cancelButton) {
+        // Reset existing event listeners
+        const newCancelButton = cancelButton.cloneNode(true);
+        cancelButton.parentNode.replaceChild(newCancelButton, cancelButton);
+        
+        newCancelButton.addEventListener('click', function() {
+            searchCancelled = true;
+            
+            // Hide loading and restore scrolling
+            window.DOM.loadingIndicator.classList.add('d-none');
+            document.body.classList.remove('no-scroll');
+            
+            // Clear any previous results
+            const tripResults = document.getElementById('tripResults');
+            if (tripResults) {
+                tripResults.innerHTML = '';
+            }
+            
+            // Hide no results message if it's showing
+            if (window.DOM.noResultsMessage) {
+                window.DOM.noResultsMessage.classList.add('d-none');
+            }
+            
+            // Show toast notification
+            showErrorToast("Search cancelled");
+            
+            // Reset the search form focus
+            if (window.DOM.startLocationSelect) {
+                window.DOM.startLocationSelect.focus();
+            }
+        });
+    }
     
     try {
         // Use Select2's API to get selected values
@@ -71,34 +122,113 @@ async function handleSearch(e) {
         
         console.log("Sending payload:", payload);
         
+        // Check if search was cancelled during API call
+        if (searchCancelled) return;
+        
         // Call API
         const response = await planTrip(payload);
         console.log("API response received:", response);
+        
+        // Check if search was cancelled while waiting for response
+        if (searchCancelled) return;
         
         // Show results container if we got results
         if (resultsContainer && response && response.trip_groups && response.trip_groups.length > 0) {
             resultsContainer.classList.remove('d-none');
         }
         
-        // Render the results
-        renderResults(response);
+        // Show filter card only if we have results
+        if (response && response.trip_groups && response.trip_groups.length > 0) {
+            if (filterResultsCard) {
+                filterResultsCard.classList.remove('d-none');
+            }
+            
+            // Show trip options header
+            if (tripOptionsHeader) {
+                tripOptionsHeader.classList.remove('d-none');
+            }
+            
+            // Show results count container
+            if (resultsCountContainer) {
+                resultsCountContainer.classList.remove('d-none');
+            }
+            
+            // Update results count
+            const resultsCount = document.getElementById('resultsCount');
+            if (resultsCount) {
+                resultsCount.textContent = response.trip_groups.length;
+            }
+        } else {
+            // Show the no results message within the loading container
+            const loadingAnimation = document.getElementById('loadingAnimation');
+            const loadingMessages = document.getElementById('loadingMessages');
+            const cancelButton = document.getElementById('cancelSearch');
+            const noResultsMessage = document.getElementById('noResultsMessage');
+            
+            if (loadingAnimation) loadingAnimation.classList.add('d-none');
+            if (loadingMessages) loadingMessages.classList.add('d-none');
+            if (cancelButton) cancelButton.classList.add('d-none');
+            if (noResultsMessage) noResultsMessage.classList.remove('d-none');
+            
+            // Keep the loading overlay visible, just change its content
+            // Do not attempt to hide the loading indicator as it contains the no results message
+        }
         
+        // Render the results
+        renderResults(response, false); // Add a parameter to indicate we want to keep the loading overlay if no results
+
         // Show success message with the count of trip options
         const tripCount = response.trip_groups?.length || 0;
         if (tripCount > 0) {
             showSuccessToast(`Found ${tripCount} trip option${tripCount !== 1 ? 's' : ''}!`);
-        } else {
-            showErrorToast("No trips found matching your criteria");
-            window.DOM.noResultsMessage.classList.remove('d-none');
+            
+            // Hide loading and show results
+            window.DOM.loadingIndicator.classList.add('d-none');
+            document.body.classList.remove('no-scroll');
+            
+            // Scroll directly to results section 
+            setTimeout(() => {
+                window.DOM.resultsSection.scrollIntoView({ 
+                    behavior: "smooth", 
+                    block: "start" 
+                });
+            }, 100);
         }
         
     } catch (error) {
-        console.error("Error in handleSearch:", error);
-        showErrorToast(`Error planning trip: ${error.message}`);
-        window.DOM.noResultsMessage.classList.remove('d-none');
+        if (!searchCancelled) {
+            console.error("Error in handleSearch:", error);
+            
+            // Only show error toast for actual errors, not "no results" scenarios
+            if (error.message !== "No trips found matching your criteria") {
+                showErrorToast(error.message || "Error planning trip");
+            }
+            
+            // Display no results message
+            if (window.DOM.noResultsMessage) {
+                window.DOM.noResultsMessage.classList.remove('d-none');
+                
+                // Scroll to no results message with delay to ensure it's rendered
+                setTimeout(() => {
+                    // Calculate the centered position considering the viewport height
+                    const viewHeight = window.innerHeight;
+                    const noResultsHeight = window.DOM.noResultsMessage.offsetHeight;
+                    const topOffset = Math.max(50, (viewHeight - noResultsHeight) / 2);
+                    
+                    window.scrollTo({
+                        top: window.DOM.noResultsMessage.offsetTop - topOffset,
+                        behavior: 'smooth'
+                    });
+                }, 200);
+            }
+        }
     } finally {
-        // Hide loading
-        window.DOM.loadingIndicator.classList.add('d-none');
+        // Only restore if not already done by cancel button
+        if (!searchCancelled) {
+            // Hide loading
+            window.DOM.loadingIndicator.classList.add('d-none');
+            document.body.classList.remove('no-scroll'); // Restore scrolling
+        }
     }
 }
 
