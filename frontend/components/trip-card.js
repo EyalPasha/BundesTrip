@@ -26,6 +26,56 @@ function renderTripCard(group, index, tripContext = {}) {
     const finalCity = defaultVariant.end_location?.replace(' hbf', '') || 
                      (defaultVariant.cities?.length > 0 ? defaultVariant.cities[defaultVariant.cities.length - 1] : 'Unknown');
 
+    // Extract start and end dates for the trip
+    let tripStartDate = '';
+    let tripEndDate = '';
+
+    if (defaultVariant.day_itinerary && defaultVariant.day_itinerary.length > 0) {
+        // Get the first day
+        const firstDay = defaultVariant.day_itinerary[0];
+        if (firstDay.day) {
+            // Try a few different date extraction patterns
+            let dateMatch = firstDay.day.match(/,\s*(.+)$/);
+            if (dateMatch && dateMatch[1]) {
+                tripStartDate = dateMatch[1].trim();
+            } else if (firstDay.day.includes(' - ')) {
+                // Try extracting from "Day X - Date" format
+                dateMatch = firstDay.day.match(/\s*-\s*(.+)$/);
+                if (dateMatch && dateMatch[1]) {
+                    tripStartDate = dateMatch[1].trim();
+                }
+            } else {
+                // If it looks like a date directly, use it
+                if (/\d{1,2}\s+[A-Za-z]+\s+\d{4}/.test(firstDay.day)) {
+                    tripStartDate = firstDay.day;
+                }
+            }
+        }
+        
+        // Get the last day
+        const lastDay = defaultVariant.day_itinerary[defaultVariant.day_itinerary.length - 1];
+        if (lastDay.day) {
+            // Try a few different date extraction patterns (same as above)
+            let dateMatch = lastDay.day.match(/,\s*(.+)$/);
+            if (dateMatch && dateMatch[1]) {
+                tripEndDate = dateMatch[1].trim();
+            } else if (lastDay.day.includes(' - ')) {
+                // Try extracting from "Day X - Date" format
+                dateMatch = lastDay.day.match(/\s*-\s*(.+)$/);
+                if (dateMatch && dateMatch[1]) {
+                    tripEndDate = dateMatch[1].trim();
+                }
+            } else {
+                // If it looks like a date directly, use it
+                if (/\d{1,2}\s+[A-Za-z]+\s+\d{4}/.test(lastDay.day)) {
+                    tripEndDate = lastDay.day;
+                }
+            }
+        }
+        
+        console.log("Date extraction:", {firstDay: firstDay.day, lastDay: lastDay.day, tripStartDate, tripEndDate});
+    }
+
     // Process leagues data from matches - FIXED LOGIC
     const leaguesMap = {};
     let hasLeagueInfo = false;
@@ -68,8 +118,10 @@ function renderTripCard(group, index, tripContext = {}) {
     baseTrip.Itinerary.forEach(day => {
         if (day.matches && day.matches.length > 0) {
             day.matches.forEach(match => {
+                const { time, cleanMatch } = extractTimeFromMatch(match.match);
                 allMatches.push({
-                    match: match.match,
+                    match: cleanMatch,
+                    matchTime: time,
                     date: day.day,
                     location: match.location.replace(' hbf', ''),
                     contains_must_team: match.contains_must_team || false
@@ -78,53 +130,176 @@ function renderTripCard(group, index, tripContext = {}) {
         }
     });
 
-    header.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="mb-0">Trip ${index}</h3>
-            <span class="badge bg-primary rounded-pill px-3 py-2">${defaultVariant.num_games || 0} matches</span>
-        </div>
+    // Extract hotel info with dates for preview
+    const hotelSummary = [];
+    if (defaultVariant.day_itinerary && defaultVariant.day_itinerary.length > 0) {
+        let currentHotel = null;
+        let startDate = null;
+        let endDate = null;
         
-        <div class="d-flex flex-wrap align-items-center mb-3">
-            <div class="me-3 d-flex align-items-center">
-                <i class="fas fa-calendar-alt text-primary me-1"></i>
-                <span>${tripDuration}</span>
-            </div>
-            <div class="me-3 d-flex align-items-center">
-                <i class="fas fa-sliders-h text-secondary me-1"></i>
-                <span>${group.variation_details.length} travel options</span>
-            </div>
-        </div>
+        defaultVariant.day_itinerary.forEach((dayInfo, index) => {
+            if (!dayInfo.hotel) return;
+            
+            // Extract date in a readable format
+            let dateDisplay = '';
+            if (dayInfo.day) {
+                // Extract only the date part after the comma
+                const dateMatch = dayInfo.day.match(/,\s*(.+)$/);
+                if (dateMatch && dateMatch[1]) {
+                    dateDisplay = dateMatch[1].trim();
+                } else {
+                    // If no comma found, just use the whole day string
+                    dateDisplay = dayInfo.day;
+                }
+            }
+            
+            if (currentHotel !== dayInfo.hotel) {
+                // If we have a previous hotel, add it to the summary
+                if (currentHotel) {
+                    hotelSummary.push({
+                        hotel: currentHotel,
+                        startDate: startDate,
+                        endDate: endDate || startDate
+                    });
+                }
+                // Start new hotel stay
+                currentHotel = dayInfo.hotel;
+                startDate = dateDisplay || `Day ${index + 1}`;
+                endDate = dateDisplay || `Day ${index + 1}`;
+            } else {
+                // Continue current hotel stay
+                endDate = dateDisplay || `Day ${index + 1}`;
+            }
+        });
         
-        ${allMatches.length > 0 ? `
-        <div class="match-preview">
-            ${allMatches.slice(0, Math.min(3, allMatches.length)).map(match => `
-                <div class="match-preview-item ${match.contains_must_team ? 'must-match' : ''}">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="match-teams-preview">
-                            <i class="fas fa-futbol text-secondary me-2"></i>
-                            <strong>${match.match}</strong>
-                            ${match.contains_must_team ? '<span class="badge bg-warning text-dark ms-1">Must-See</span>' : ''}
-                        </div>
-                        <div class="match-location-preview">
-                            <i class="fas fa-map-marker-alt text-danger me-1"></i>
-                            ${match.location}
-                        </div>
+        // Add the last hotel
+        if (currentHotel) {
+            hotelSummary.push({
+                hotel: currentHotel,
+                startDate: startDate,
+                endDate: endDate
+            });
+        }
+    }
+    // Get the end city for airport preview
+    let endCityForAirports = '';
+    if (defaultVariant.end_location) {
+        endCityForAirports = defaultVariant.end_location.replace(' hbf', '');
+    } else if (defaultVariant.cities && defaultVariant.cities.length > 0) {
+        endCityForAirports = defaultVariant.cities[defaultVariant.cities.length - 1];
+    }
+    
+    // Extract airport information for preview
+    let airportPreview = '';
+    if (defaultVariant.airport_distances) {
+        const nearestAirports = defaultVariant.airport_distances.end || [];
+        const majorAirports = defaultVariant.airport_distances.major || [];
+        
+        if (nearestAirports.length > 0 || majorAirports.length > 0) {
+            airportPreview = `
+                <div class="airport-preview mt-3">
+                    <div class="preview-section-title">
+                        <i class="fas fa-plane"></i> Closest Airports ${endCityForAirports ? `to ${endCityForAirports}` : ''}
                     </div>
-                    <div class="small text-muted mt-1">${match.date}</div>
+                    <div class="airport-list">
+                        ${nearestAirports.slice(0, 2).map(airport => {
+                            const airportName = airport.airport || airport.name || airport.code || 'Airport';
+                            const airportCode = airport.code ? `(${airport.code})` : '';
+                            const travelTime = airport.travel_time || 'N/A';
+                            return `
+                                <div class="airport-item">
+                                    <span class="airport-name">${airportName} ${airportCode}</span>
+                                    <span class="travel-time">${travelTime}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                        ${majorAirports.length > 0 ? `
+                            <div class="airport-divider">Major International</div>
+                            ${majorAirports.slice(0, 1).map(airport => {
+                                const airportName = airport.airport || airport.name || airport.code || 'Airport';
+                                const airportCode = airport.code ? `(${airport.code})` : '';
+                                const travelTime = airport.travel_time || 'N/A';
+                                return `
+                                    <div class="airport-item">
+                                        <span class="airport-name">${airportName} ${airportCode}</span>
+                                        <span class="travel-time">${travelTime}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        ` : ''}
+                    </div>
                 </div>
-            `).join('')}
-            ${allMatches.length > 3 ? `
-                <div class="text-center text-muted small mt-2">
-                    +${allMatches.length - 3} more matches
-                </div>
-            ` : ''}
+            `;
+        }
+    }
+
+    header.innerHTML = `
+    <div class="trip-header-main">
+        <h3>Trip ${index}</h3>
+        <span class="match-count-badge">${defaultVariant.num_games || 0} matches</span>
+    </div>
+    
+    <div class="trip-header-meta">
+        <div class="trip-meta-item">
+            <i class="fas fa-calendar-alt"></i>
+            <span>
+                ${tripStartDate && tripEndDate ? 
+                  `<span class="date-range">${tripStartDate} - ${tripEndDate}</span>` : 
+                  ''}
+            </span>
         </div>
-        ` : ''}
-        
-        <button class="btn btn-sm btn-outline-secondary mt-3 toggle-details">
-            <i class="fas fa-chevron-down"></i> Show Details
-        </button>
-    `;
+        <div class="trip-meta-item">
+            <i class="fas fa-sliders-h"></i>
+            <span>${group.variation_details.length} travel options</span>
+        </div>
+    </div>
+    
+    ${airportPreview}
+    
+    ${allMatches.length > 0 ? `
+        <div class="match-preview">
+            <div class="preview-section-title">
+                <i class="fas fa-futbol"></i> Matches
+            </div>
+            <div class="match-list">
+                ${allMatches.slice(0, Math.min(3, allMatches.length)).map(match => {
+                    // First extract just the date part (remove day name)
+                    const matchDate = match.date.replace(/^.+,\s*/, '');
+                    
+                    return `
+                        <div class="match-preview-item ${match.contains_must_team ? 'must-match' : ''}">
+                            <div class="match-teams-preview">
+                                <strong>${match.match}</strong>
+                                ${match.contains_must_team ? '<span class="must-see-badge">Must-See</span>' : ''}
+                            </div>
+                            <div class="match-info-compact">
+                                <span class="match-location-inline">
+                                    <i class="fas fa-map-marker-alt"></i> ${match.location}
+                                </span>
+                                ${match.matchTime ? `
+                                <span class="match-time-data">
+                                    <i class="fas fa-clock"></i> ${match.matchTime}
+                                </span>` : ''}
+                                <span class="match-date-inline">
+                                    <i class="fas fa-calendar-day"></i> ${matchDate}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+                ${allMatches.length > 3 ? `
+                    <div class="more-matches-indicator">
+                        +${allMatches.length - 3} more matches
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    ` : ''}
+    
+    <button class="toggle-details-button">
+        <i class="fas fa-chevron-down"></i> Show Details
+    </button>
+`;
     
     // Trip details - initially collapsed
     const details = document.createElement('div');
@@ -190,57 +365,117 @@ function renderTripCard(group, index, tripContext = {}) {
             const finalCity = variant.end_location?.replace(' hbf', '') || 
                              (variant.cities?.length > 0 ? variant.cities[variant.cities.length - 1] : 'Unknown');
 
+            // First, extract hotel summary for this variant
+            const hotelSummary = [];
+            if (variant.day_itinerary && variant.day_itinerary.length > 0) {
+                let currentHotel = null;
+                let startDate = null;
+                let endDate = null;
+                
+                variant.day_itinerary.forEach((dayInfo, idx) => {
+                    if (!dayInfo.hotel) return;
+                    
+                    // Extract date in a readable format
+                    let dateDisplay = '';
+                    if (dayInfo.day) {
+                        const dateMatch = dayInfo.day.match(/,\s*(.+)$/);
+                        if (dateMatch && dateMatch[1]) {
+                            dateDisplay = dateMatch[1].trim();
+                        } else {
+                            dateDisplay = dayInfo.day;
+                        }
+                    }
+                    
+                    if (currentHotel !== dayInfo.hotel) {
+                        // If we have a previous hotel, add it to the summary
+                        if (currentHotel) {
+                            hotelSummary.push({
+                                hotel: currentHotel,
+                                startDate: startDate,
+                                endDate: endDate || startDate
+                            });
+                        }
+                        // Start new hotel stay
+                        currentHotel = dayInfo.hotel;
+                        startDate = dateDisplay || `Day ${idx + 1}`;
+                        endDate = dateDisplay || `Day ${idx + 1}`;
+                    } else {
+                        // Continue current hotel stay
+                        endDate = dateDisplay || `Day ${idx + 1}`;
+                    }
+                });
+                
+                // Add the last hotel
+                if (currentHotel) {
+                    hotelSummary.push({
+                        hotel: currentHotel,
+                        startDate: startDate,
+                        endDate: endDate
+                    });
+                }
+            }
+
             // Add complete travel option info with modern styling
             contentPane.innerHTML = `
-                <div class="variant-summary mb-3 border-bottom pb-3">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="option-stats d-flex align-items-center">
-                            <div class="stat-item me-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-map-marker-alt text-danger"></i>
-                                    </div>
-                                    <div class="stat-content ms-2">
-                                        <div class="stat-label text-muted small">Cities</div>
-                                        <div class="stat-value fw-bold">${variant.cities?.length || 0}</div>
-                                    </div>
+                <div class="variant-summary">
+                    <div class="stats-container">
+                        <div class="option-stats">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-map-marker-alt text-danger"></i>
                                 </div>
-                            </div>
-                            
-                            <div class="stat-item me-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-clock text-success"></i>
-                                    </div>
-                                    <div class="stat-content ms-2">
-                                        <div class="stat-label text-muted small">Total Travel</div>
-                                        <div class="stat-value fw-bold">${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m</div>
-                                    </div>
+                                <div class="stat-content">
+                                    <div class="stat-label">Cities</div>
+                                    <div class="stat-value">${variant.cities?.length || 0}</div>
                                 </div>
                             </div>
                             
                             <div class="stat-item">
-                                <div class="d-flex align-items-center">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-hotel text-primary"></i>
-                                    </div>
-                                    <div class="stat-content ms-2">
-                                        <div class="stat-label text-muted small">Hotel Changes</div>
-                                        <div class="stat-value fw-bold">${variant.hotel_changes || 0}</div>
-                                    </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock text-success"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-label">Total Travel</div>
+                                    <div class="stat-value">${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-hotel text-primary"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-label">Hotel Changes</div>
+                                    <div class="stat-value">${variant.hotel_changes || 0}</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="route-preview mt-2 mt-md-0">
-                            <div class="small text-muted mb-1">Route</div>
-                            <div class="d-flex align-items-center">
-                                <span class="fw-medium">${firstCity}</span>
-                                <i class="fas fa-long-arrow-alt-right mx-2 text-muted"></i>
-                                <span class="fw-medium">${finalCity}</span>
-                            </div>
+                        <div class="route-preview">
+                            <div class="route-label">Route</div>
+                            <div class="route-cities">${firstCity} → ${finalCity}</div>
                         </div>
                     </div>
+                    
+                    ${hotelSummary.length > 0 ? `
+                        <div class="hotel-stays-section mt-3">
+                            <div class="section-title">
+                                <i class="fas fa-hotel"></i> Hotel Stays
+                            </div>
+                            <div class="hotel-stays-list">
+                                ${hotelSummary.map(stay => `
+                                    <div class="hotel-stay-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span class="hotel-name">${stay.hotel}</span>
+                                        <span class="hotel-dates">
+                                            ${stay.startDate}
+                                            ${stay.startDate !== stay.endDate ? ` - ${stay.endDate}` : ''}
+                                        </span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
             `;
             
@@ -271,7 +506,7 @@ function renderTripCard(group, index, tripContext = {}) {
     tripResults.appendChild(tripCard);
     
     // Add toggle functionality
-    const toggleButton = tripCard.querySelector('.toggle-details');
+    const toggleButton = tripCard.querySelector('.toggle-details-button');
     const detailsSection = tripCard.querySelector('.trip-details');
     
     toggleButton.addEventListener('click', function() {
@@ -775,92 +1010,61 @@ function renderItineraryForVariant(container, group, variantIndex) {
         variant.day_itinerary.forEach((dayInfo, dayIndex) => {
             const dayName = dayInfo.day || `Day ${dayIndex + 1}`;
             const isLastDay = dayIndex === variant.day_itinerary.length - 1;
+            const hotel = dayInfo.hotel || '';
             
-            // Day header with improved visual
+            // Format date if available (assuming dayName might contain a date string like "Monday, 02 April 2025")
+            let dateDisplay = '';
+            const dateMatch = dayName.match(/,\s*(.+)$/);
+            if (dateMatch && dateMatch[1]) {
+                dateDisplay = dateMatch[1].trim();
+            }
+            
+            // Day header with hotel name and date on same line
             const dayHeader = document.createElement('div');
-            dayHeader.className = 'day-header mb-3 position-relative';
+            dayHeader.className = `day-header ${isLastDay ? 'final-day' : ''}`;
             dayHeader.innerHTML = `
                 <div class="day-badge">${dayIndex + 1}</div>
-                <h5 class="mb-0 ms-4 ps-2">Day ${dayIndex + 1}: ${dayName}</h5>
+                <div class="day-header-content">
+                    <h5>Day ${dayIndex + 1}: ${hotel} ${dateDisplay ? `<span class="day-date-inline">${dateDisplay}</span>` : ''}</h5>
+                </div>
                 <div class="day-line"></div>
             `;
             itinerary.appendChild(dayHeader);
             
-            // Check for hotel change
+            // Keep track of previous hotel (for other logic) but don't create hotel segment
             if (dayInfo.hotel) {
-                const hotelInfo = document.createElement('div');
-                hotelInfo.className = 'hotel-info ms-4 ps-2 mb-3';
-                
-                // If hotel changed from previous day
-                if (previousHotel && previousHotel !== dayInfo.hotel) {
-                    hotelInfo.innerHTML = `
-                        <div class="d-flex align-items-center text-primary">
-                            <i class="fas fa-exchange-alt me-2"></i>
-                            <strong>Hotel change: ${previousHotel} → ${dayInfo.hotel}</strong>
-                        </div>
-                    `;
-                } else {
-                    hotelInfo.innerHTML = `
-                        <div class="d-flex align-items-center text-primary">
-                            <i class="fas fa-hotel me-2"></i>
-                            <strong>Hotel: ${dayInfo.hotel}</strong>
-                        </div>
-                    `;
-                }
-                
-                itinerary.appendChild(hotelInfo);
                 previousHotel = dayInfo.hotel;
             }
             
             // Add travel segments for this day
             const dayTravelSegments = travelSegmentsByDay[dayName] || [];
-            if (dayTravelSegments.length > 0) {
-                // Filter out "after game" segments that have 0 travel time
-                const filteredSegments = dayTravelSegments.filter(segment => {
-                    const context = segment.context || '';
-                    const travelTime = segment.travel_time || '';
-                    // Keep the segment if it's not an "after game" with zero time
-                    return !(
-                        context.toLowerCase().includes('after game') && 
-                        (travelTime === '0h 0m' || travelTime === '0m' || travelTime === '0')
-                    );
-                });
-                
-                // Only create container if we have segments after filtering
-                if (filteredSegments.length > 0) {
-                    const travelContainer = document.createElement('div');
-                    travelContainer.className = 'travel-container ms-4 ps-2 mb-3';
-                    
-                    filteredSegments.forEach((segment, idx) => {
-                        // Clean up location names
-                        const fromLocation = typeof segment.from_location === 'string' ? 
-                            segment.from_location.replace(' hbf', '') : 'Unknown';
-                        const toLocation = typeof segment.to_location === 'string' ? 
-                            segment.to_location.replace(' hbf', '') : 'Unknown';
-                        
-                        // Get context (purpose)
-                        const context = segment.context || '';
-                        
-                        const travelItem = document.createElement('div');
-                        travelItem.className = 'travel-item mb-2 p-2 bg-light rounded';
-                        travelItem.innerHTML = `
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-train text-primary me-2"></i>
-                                    <div>
-                                        Travel: ${fromLocation} → ${toLocation}
-                                        ${context ? `<span class="text-muted">(${context})</span>` : ''}
-                                    </div>
-                                </div>
-                                <div class="travel-time badge bg-info text-white">${segment.travel_time || 'Unknown'}</div>
-                            </div>
-                        `;
-                        
-                        travelContainer.appendChild(travelItem);
-                    });
-                    
-                    itinerary.appendChild(travelContainer);
+
+            // Split segments into before-game and after-game segments
+            const beforeGameSegments = [];
+            const afterGameSegments = [];
+            
+            dayTravelSegments.forEach(segment => {
+                // Filter out zero-time segments in all cases
+                const travelTime = segment.travel_time || '';
+                if (travelTime === '0h 0m' || travelTime === '0m' || travelTime === '0') {
+                    return; // Skip this segment entirely
                 }
+                
+                const context = segment.context || '';
+                if (context.toLowerCase().includes('after game')) {
+                    afterGameSegments.push(segment);
+                } else {
+                    beforeGameSegments.push(segment);
+                }
+            });
+
+            // Render before-game segments first
+            if (beforeGameSegments.length > 0) {
+                const travelContainer = document.createElement('div');
+                travelContainer.className = 'travel-container ms-4 ps-2 mb-3';
+                
+                beforeGameSegments.forEach(segment => renderTravelSegmentItem(segment, travelContainer));
+                itinerary.appendChild(travelContainer);
             }
             
             // Render matches or rest day
@@ -870,27 +1074,30 @@ function renderItineraryForVariant(container, group, variantIndex) {
                 matchesContainer.className = 'matches-container ms-4 ps-2 mb-4';
                 
                 dayInfo.matches.forEach(match => {
+                    // Extract the time from the match title
+                    const { time, cleanMatch } = extractTimeFromMatch(match.match);
+                    
                     const matchItem = document.createElement('div');
                     matchItem.className = match.contains_must_team 
-                        ? 'match-item must-team mb-3 p-3 rounded' 
-                        : 'match-item mb-3 p-3 rounded';
+                        ? 'match-item must-team' 
+                        : 'match-item';
                     
-                    matchItem.innerHTML = `
+                        matchItem.innerHTML = `
                         <div class="match-details">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <strong class="match-teams">${match.match}</strong>
-                                ${match.contains_must_team ? '<span class="badge bg-warning text-dark">Must-See</span>' : ''}
+                            <div class="match-header">
+                                <strong class="match-teams">${cleanMatch}</strong>
+                                ${match.contains_must_team ? '<span class="must-see-tag">Must-See</span>' : ''}
                             </div>
-                            <div class="match-meta d-flex flex-wrap">
-                                <div class="me-3 d-flex align-items-center">
-                                    <i class="fas fa-map-marker-alt text-danger me-1"></i> 
+                            <div class="match-meta">
+                                <div class="match-location">
+                                    <i class="fas fa-map-marker-alt"></i> 
                                     <span>${match.location}</span>
+                                    ${time ? `
+                                    <span class="match-time-inline">
+                                        <i class="fas fa-clock"></i>
+                                        ${time}
+                                    </span>` : ''}
                                 </div>
-                                ${match.travel_from ? `
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-train text-primary me-1"></i>
-                                    <span>From ${match.travel_from} - ${match.travel_time}</span>
-                                </div>` : ''}
                             </div>
                         </div>
                     `;
@@ -902,76 +1109,121 @@ function renderItineraryForVariant(container, group, variantIndex) {
             } else {
                 // Rest day
                 const restDay = document.createElement('div');
-                restDay.className = 'rest-day ms-4 ps-2 mb-4 p-3 bg-light rounded';
+                restDay.className = 'rest-day';
                 
-                const location = dayInfo.locations && dayInfo.locations.length > 0 
-                    ? dayInfo.locations[0] 
-                    : dayInfo.hotel || '---';
+                // Use the hotel directly as the location since that's what we show in the day header
+                const location = dayInfo.hotel || '---';
                 
                 // Find the next location if this is not the last day
                 let nextLocation = '---';
                 if (!isLastDay && dayIndex + 1 < variant.day_itinerary.length) {
                     const nextDayInfo = variant.day_itinerary[dayIndex + 1];
-                    if (nextDayInfo.locations && nextDayInfo.locations.length > 0) {
-                        nextLocation = nextDayInfo.locations[0];
-                    } else if (nextDayInfo.matches && nextDayInfo.matches.length > 0) {
-                        nextLocation = nextDayInfo.matches[0].location;
-                    } else if (nextDayInfo.hotel) {
+                    if (nextDayInfo.hotel) {
                         nextLocation = nextDayInfo.hotel;
                     }
                 }
                 
                 const restDayMessage = isLastDay 
                     ? `Your trip has come to an end. You can return home from ${location} or explore nearby cities.`
-                    : `Take time to explore ${location}, visit local attractions, or travel early to ${nextLocation !== '---' ? nextLocation : 'your next destination'}.`;
+                    : `Take time to explore ${location}, visit local attractions, go shopping or enjoy the local cuisine.`;
                 
                 const iconClass = isLastDay ? 'fa-flag-checkered' : 'fa-bed';
                 
                 restDay.innerHTML = `
-                    <div class="d-flex align-items-center">
-                        <i class="fas ${iconClass} ${isLastDay ? 'text-success' : 'text-secondary'} me-2"></i>
+                    <div class="rest-day-header">
+                        <i class="fas ${iconClass} ${isLastDay ? 'final-day-icon' : 'rest-day-icon'}"></i>
                         <span>${isLastDay ? 'Final day' : 'Rest day'} in ${location}</span>
                     </div>
-                    <div class="text-muted small mt-1">
+                    <div class="rest-day-message">
                         ${restDayMessage}
                     </div>
                 `;
                 
                 itinerary.appendChild(restDay);
             }
+
+            // After rendering matches, add the after-game segments
+            if (afterGameSegments.length > 0) {
+                const afterGameContainer = document.createElement('div');
+                afterGameContainer.className = 'travel-container ms-4 ps-2 mb-3';
+                
+                afterGameSegments.forEach(segment => renderTravelSegmentItem(segment, afterGameContainer));
+                itinerary.appendChild(afterGameContainer);
+            }
         });
     }
-    
-    // Airport information (keep this section)
-    if (variant.airport_distances) {
-        const airportData = {
-            nearest_airports: variant.airport_distances.end || [],
-            closest_major_airports: variant.airport_distances.major || [],
-            start_city: variant.start_location?.replace(' hbf', '') || 'starting point',
-            end_city: variant.end_location?.replace(' hbf', '') || 'destination'
-        };
-        
-        const airportSection = renderAirportDistances(airportData);
-        
-        if (airportSection) {
-            itinerary.appendChild(airportSection);
-        }
-    } else if (variant.nearest_airports || variant.closest_major_airports) {
-        // Fallback for older data format
-        const airportSection = renderAirportDistances({
-            nearest_airports: variant.nearest_airports || [],
-            closest_major_airports: variant.closest_major_airports || [],
-            start_city: variant.start_location?.replace(' hbf', '') || 'starting point', 
-            end_city: variant.end_location?.replace(' hbf', '') || 'destination'
-        });
-        
-        if (airportSection) {
-            itinerary.appendChild(airportSection);
-        }
-    }
+
+    // Add closing element to the timeline after all days are rendered
+    const timelineEnd = document.createElement('div');
+    timelineEnd.className = 'timeline-end';
+
+    const endMarker = document.createElement('div');
+    endMarker.className = 'timeline-end-marker';
+    endMarker.innerHTML = '<i class="fas fa-flag-checkered"></i>';
+
+    const endText = document.createElement('div');
+    endText.className = 'timeline-end-text';
+    endText.innerHTML = `
+        <h5 class="mb-3">Trip Complete!</h5>
+        <p>Your ${variant.day_itinerary.length}-day journey through Germany is all set. Enjoy the matches, stunning cities, and vibrant atmosphere of German football!</p>
+        <div class="mt-3">
+            <span class="badge bg-light text-dark me-2 mb-2">${variant.num_games || 0} matches</span>
+            <span class="badge bg-light text-dark me-2 mb-2">${variant.cities?.length || 0} cities</span>
+            <span class="badge bg-light text-dark me-2 mb-2">${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m travel</span>
+        </div>
+    `;
+
+    timelineEnd.appendChild(endMarker);
+    timelineEnd.appendChild(endText);
+    itinerary.appendChild(timelineEnd);
     
     // Add the itinerary to the container
     container.appendChild(itinerary);
+}
+
+// Add this helper function to render travel segments
+function renderTravelSegmentItem(segment, container) {
+    // Clean up location names
+    const fromLocation = typeof segment.from_location === 'string' ? 
+        segment.from_location.replace(' hbf', '') : 'Unknown';
+    const toLocation = typeof segment.to_location === 'string' ? 
+        segment.to_location.replace(' hbf', '') : 'Unknown';
+    
+    // Get context (purpose)
+    const context = segment.context || '';
+    
+    const travelItem = document.createElement('div');
+    travelItem.className = 'travel-item';
+    travelItem.innerHTML = `
+        <div class="travel-item-content">
+            <div class="travel-item-route">
+                <i class="fas fa-train"></i>
+                <div>
+                    Travel: ${fromLocation} → ${toLocation}
+                    ${context ? `<span class="travel-context">(${context})</span>` : ''}
+                </div>
+            </div>
+            <div class="travel-time">${segment.travel_time || 'Unknown'}</div>
+        </div>
+    `;
+    
+    container.appendChild(travelItem);
+}
+
+function extractTimeFromMatch(matchText) {
+    // Extract time in format (HH:MM) if present
+    const timeMatch = matchText.match(/\((\d{1,2}:\d{2})\)$/);
+    if (timeMatch && timeMatch[1]) {
+        // Return the extracted time and the cleaned match name
+        return {
+            time: timeMatch[1],
+            cleanMatch: matchText.replace(/\s*\(\d{1,2}:\d{2}\)$/, '')
+        };
+    }
+    return {
+        time: null,
+        cleanMatch: matchText
+    };
 }
 
 // Export the functions so they can be used by other modules

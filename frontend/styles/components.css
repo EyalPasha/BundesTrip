@@ -1,251 +1,6 @@
-/* Trip Results */
-.trip-card {
-    border-radius: 8px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    margin-bottom: 20px;
-}
+/* General UI Components */
 
-.trip-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.trip-header {
-    padding: 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    background-color: #f8f9fa;
-    border-radius: 8px 8px 0 0;
-}
-
-.trip-details {
-    padding: 15px;
-    max-height: 2000px;
-    overflow: hidden;
-    transition: max-height 0.5s ease-in-out;
-}
-
-.trip-details.collapse {
-    max-height: 0;
-}
-
-/* Match Items */
-.match-item {
-    background-color: white;
-    border-left: none;
-    border-radius: 12px !important;
-    padding: 16px !important;
-    margin-bottom: 20px !important;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px solid #edf2f7;
-    position: relative;
-}
-
-.match-item::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: -28px;
-    width: 20px;
-    height: 3px;
-    background-color: var(--primary-color);
-    transform: translateY(-50%);
-    border-radius: 3px;
-    opacity: 0.8;
-}
-
-.match-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    border-color: #d1e0ed;
-}
-
-.match-item.must-team {
-    border-top: 3px solid var(--secondary-color);
-}
-
-.match-teams {
-    font-size: 1.15rem;
-    font-weight: 600;
-}
-
-/* Match preview styling for card header */
-.match-preview {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 12px;
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.match-preview-item {
-    padding: 8px 10px;
-    border-bottom: 1px dashed rgba(0,0,0,0.1);
-}
-
-.match-preview-item:last-child {
-    border-bottom: none;
-}
-
-.match-preview-item.must-match {
-    border-left: 3px solid var(--warning-color, #ffc107);
-    padding-left: 12px;
-    background-color: rgba(255, 193, 7, 0.05);
-}
-
-.match-teams-preview {
-    font-size: 0.95rem;
-    max-width: 70%;
-}
-
-.match-location-preview {
-    font-size: 0.85rem;
-    color: #6c757d;
-}
-
-/* Travel components */
-.travel-segment {
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-}
-
-.travel-section {
-    margin-left: 20px;
-}
-
-.segment-number {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    color: white;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-/* Timeline components */
-.itinerary.timeline {
-    position: relative;
-    padding-left: 28px;
-    margin-bottom: 2rem;
-}
-
-/* Timeline vertical track - resembles a train line */
-.itinerary.timeline::before {
-    content: '';
-    position: absolute;
-    top: 16px;
-    bottom: 0;
-    left: 16px;
-    width: 4px; 
-    background: linear-gradient(to bottom, 
-        var(--primary-color) 0%, 
-        var(--primary-color) 60%, 
-        rgba(var(--primary-color-rgb), 0.2) 100%);
-    border-radius: 4px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-}
-
-/* Day station badges */
-.day-badge {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-color) 0%, #0055cc 100%);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    font-weight: bold;
-    z-index: 2;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    border: 2px solid white;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-/* Day header hover effect */
-.day-header:hover .day-badge {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-}
-
-/* Customized day line - train track connectors */
-.day-line {
-    display: none; /* Hide the old line */
-}
-
-/* Day header */
-.day-header {
-    position: relative;
-    padding-left: 45px;
-    margin-bottom: 2rem;
-    min-height: 32px;
-}
-
-/* Day header title styling */
-.day-header h5 {
-    padding-top: 4px;
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-    font-weight: 600;
-    color: var(--bs-dark);
-    position: relative;
-    display: inline-block;
-    padding-bottom: 8px !important;
-}
-
-/* Underline effect for day header */
-.day-header h5::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background: linear-gradient(to right, var(--primary-color), transparent);
-    border-radius: 3px;
-}
-
-/* Rest day styling */
-.rest-day {
-    background: linear-gradient(to right, #f8fafc, #ffffff) !important;
-    border-radius: 12px !important;
-    padding: 16px !important;
-    margin-bottom: 20px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px dashed #e4ebf3;
-    position: relative;
-}
-
-.rest-day::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: -28px;
-    width: 20px;
-    height: 3px;
-    background-color: #cbd5e1;
-    transform: translateY(-50%);
-    border-radius: 3px;
-}
-
-.rest-day:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-/* Filter chips */
+/* Filter chips - keeping these since they might be used elsewhere */
 #teamFilters .badge, #cityFilters .badge {
     margin-right: 5px;
     margin-bottom: 5px;
@@ -258,305 +13,100 @@
     background-color: #e9ecef !important;
 }
 
-/* Toggle button */
-.toggle-details {
-    width: fit-content;
-}
-
-/* Toast styling */
+/* Toast styling - general toast component */
 #toastContainer .toast {
     opacity: 1;
     animation: fadeInUp 0.3s ease-out;
 }
 
-/* Travel options section */
-.travel-options-section {
-    background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
-    border-radius: 14px;
-    padding: 1.5rem;
-    margin-top: 2rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-    border: 1px solid #e4ebf3;
+/* Animation keyframes for general use */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* Tab styling for travel options */
-.travel-options-section .nav-tabs {
-    border-bottom: none;
-    gap: 8px;
-    padding-bottom: 8px;
+/* General form controls and UI elements */
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(4, 61, 124, 0.15);
+    border-color: rgba(4, 61, 124, 0.4);
 }
 
-.travel-options-section .nav-link {
-    color: #64748b;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    padding: 0.6rem 1.2rem;
-    font-weight: 500;
-    transition: all 0.2s;
+.btn-primary {
+    background-color: var(--primary-color, #043d7c);
+    border-color: var(--primary-color, #043d7c);
 }
 
-.travel-options-section .nav-link:hover {
-    background-color: #f1f5f9;
-    border-color: #e2e8f0;
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-dark, #032c59);
+    border-color: var(--primary-dark, #032c59);
 }
 
-/* Fix for travel options tab text color */
-.travel-options-section .nav-link.active {
-    color: white;
-    background: linear-gradient(135deg, var(--primary-color) 0%, #0055cc 100%);
-    border-color: transparent;
-    box-shadow: 0 2px 8px rgba(0, 85, 204, 0.25);
+/* Spinner and loading indicators */
+.spinner-border.text-primary {
+    color: var(--primary-color, #043d7c) !important;
 }
 
-/* Make all text in active tabs white, including the travel time */
-.travel-options-section .nav-link.active .text-muted {
-    color: rgba(255, 255, 255, 0.85) !important;
+/* Custom checkbox styling */
+.form-check-input:checked {
+    background-color: var(--primary-color, #043d7c);
+    border-color: var(--primary-color, #043d7c);
 }
 
-/* Travel option time styling */
-.option-time {
-    opacity: 0.8;
+/* Button outlines */
+.btn-outline-primary {
+    color: var(--primary-color, #043d7c);
+    border-color: var(--primary-color, #043d7c);
 }
 
-.nav-link.active .option-time {
-    color: white;
-    opacity: 0.9;
-}
-
-/* Airport information */
-.airport-info {
-    background-color: rgba(4, 61, 124, 0.05);
-    border-left: 4px solid var(--info-color, #0dcaf0);
-}
-
-.airport-info ul li {
-    padding: 4px 0;
-}
-
-/* Return trip information */
-.return-info {
-    background-color: rgba(255, 193, 7, 0.05);
-    border-left: 4px solid var(--warning-color, #ffc107);
-}
-
-/* Travel segments */
-.travel-segments .list-group-item {
-    border-radius: 8px !important;
-    margin-bottom: 8px;
-    padding: 12px 16px;
-    background-color: white;
-    border: 1px solid #e4ebf3;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-    transition: all 0.2s;
-}
-
-.travel-segments .list-group-item:first-child,
-.travel-segments .list-group-item:last-child {
-    border-radius: 8px;
-}
-
-.travel-segments .list-group-item:hover {
-    background-color: #f8fafc;
-    transform: translateX(2px);
-}
-
-.segment-number {
-    background: linear-gradient(135deg, var(--primary-color) 0%, #0055cc 100%);
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    font-weight: 600;
-    box-shadow: 0 2px 4px rgba(0, 85, 204, 0.2);
-}
-
-.travel-time {
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 0.85rem;
-}
-
-/* Airport information styling */
-.airport-distances {
-    background: #f8fafc;
-    border-radius: 10px;
-    padding: 1.25rem;
-    margin-top: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    border: 1px solid #edf2f7;
-}
-
-/* Airport sections */
-.airport-section {
-    background-color: white;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 12px; 
-    border: 1px solid #edf2f7;
-}
-
-.airport-section h6 {
-    font-weight: 600;
-    margin-bottom: 12px;
-    color: var(--bs-dark);
-    font-size: 0.95rem;
-}
-
-/* More compact airport items */
-.airport-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 6px !important;
-    background-color: #f8fafc;
-    border: 1px solid #edf2f7 !important;
-    margin-bottom: 6px;
-    transition: all 0.2s;
-}
-
-.airport-item:last-child {
-    margin-bottom: 0;
-}
-
-/* Airport badges */
-.airport-badge {
-    font-size: 0.8rem;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: 500;
-}
-
-.airport-badge.starting, 
-.airport-badge.ending, 
-.airport-badge.major {
+.btn-outline-primary:hover {
     background-color: var(--primary-color, #043d7c);
     color: white;
 }
 
-.airport-code {
-    font-weight: 500;
-    margin-right: 4px;
-    font-size: 0.9rem;
-}
-
-.airport-name {
-    color: #64748b;
-    font-size: 0.8rem;
-}
-
-/* Airport header styling */
-.airport-distances h5 {
-    font-weight: 600;
-    color: var(--bs-dark);
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
-
-/* Enhanced TBD Games styling */
-.accordion-button:not(.collapsed) {
+/* Custom input groups */
+.input-group-text {
     background-color: #f8f9fa;
-    color: var(--primary-color);
+    border-right: none;
 }
 
-.accordion-button:focus {
-    box-shadow: none;
-    border-color: rgba(0,0,0,.125);
+.input-group .form-control {
+    border-left: none;
 }
 
-.accordion-button::after {
-    background-size: 1rem;
+/* Custom pagination */
+.page-item.active .page-link {
+    background-color: var(--primary-color, #043d7c);
+    border-color: var(--primary-color, #043d7c);
 }
 
-/* List group enhancements for TBD games */
-.list-group-item-warning {
-    background-color: rgba(255, 193, 7, 0.1);
-    border-left: 3px solid var(--warning-color, #ffc107);
+.page-link {
+    color: var(--primary-color, #043d7c);
 }
 
-/* Journey path styling */
-.journey-path {
-    background: linear-gradient(to right, rgba(240,240,240,0.5), rgba(240,240,240,0), rgba(240,240,240,0.5));
-    padding: 8px 12px;
+.page-link:hover {
+    color: var(--primary-dark, #032c59);
+}
+
+/* Card components - general cards, not trip cards */
+.card {
     border-radius: 8px;
-    border: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden;
 }
 
-.journey-cities {
-    font-size: 1.1rem;
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 0.75rem 1rem;
 }
 
-.journey-cities i {
-    opacity: 0.7;
-}
-
-/* Leagues container styling */
-.leagues-container {
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 4px;
-}
-
-.leagues-container .badge {
-    font-weight: normal;
-    padding: 5px 10px;
-    transition: all 0.2s;
-}
-
-.leagues-container .badge:hover {
-    transform: translateY(-2px);
-}
-
-/* Calendar date with matches styling */
-.flatpickr-day.has-matches {
-    background-color: rgba(var(--bs-primary-rgb), 0.1);
-    border-color: rgba(var(--bs-primary-rgb), 0.2);
-    position: relative;
-}
-
-.flatpickr-day .date-badge {
-    position: absolute;
-    bottom: 3px;
-    right: 3px;
-    font-size: 8px;
-    line-height: 1;
-    background-color: var(--primary-color, #043d7c);
-    color: white;
-    border-radius: 50%;
-    width: 13px;
-    height: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.flatpickr-day.selected.has-matches {
+/* Dropdown menus */
+.dropdown-item:active {
     background-color: var(--primary-color, #043d7c);
 }
 
-/* Add this to components.css */
-
-.dynamic-itinerary-container {
-    max-height: 700px;
-    overflow-y: auto;
-    padding-right: 10px;
-    margin-right: -10px;
-}
-
-/* Make scrollbar more visible */
-.dynamic-itinerary-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-.dynamic-itinerary-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-.dynamic-itinerary-container::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.dynamic-itinerary-container::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
