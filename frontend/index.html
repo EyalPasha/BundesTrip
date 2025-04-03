@@ -79,7 +79,7 @@
                                     <label for="startDate" class="form-label">
                                         <i class="fas fa-calendar-alt icon"></i> Start Date <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="startDate" placeholder="Select date" required>
+                                    <input type="text" class="form-control select-hidden" id="startDate" placeholder="Select date" required>
                                     <div class="invalid-feedback">Please select a start date</div>
                                 </div>
                                 
@@ -185,20 +185,40 @@
                         <div id="filterResultsCard" class="card d-none filter-card sticky-top filter-card-sticky">
                             <div class="card-body">
                                 <h3 class="card-title">Filter Results</h3>
+                                
+                                <!-- New Sliders -->
+                                <div class="row mb-4">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="gamesSlider" class="d-flex justify-content-between">
+                                                <span>Number of Games:</span>
+                                                <span class="badge bg-primary" id="gamesSliderValue">Any</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="gamesSlider" min="1" max="10" value="1">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="hotelChangesSlider" class="d-flex justify-content-between">
+                                                <span>Max Hotel Changes:</span> 
+                                                <span class="badge bg-primary" id="hotelChangesValue">Any</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="hotelChangesSlider" min="0" max="7" value="7">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Team filters -->
                                 <div class="mb-3">
                                     <label class="form-label">Teams</label>
                                     <div id="teamFilters"></div>
                                 </div>
+                                
+                                <!-- City filters -->
                                 <div class="mb-3">
                                     <label class="form-label">Cities</label>
                                     <div id="cityFilters"></div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="sortResults">Sort By</label>
-                                    <select class="form-select select-hidden" id="sortResults" aria-label="Sort results by">
-                                        <option value="matches">Most Matches</option>
-                                        <option value="travel">Least Travel</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>

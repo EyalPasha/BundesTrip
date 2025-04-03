@@ -10,7 +10,6 @@ const API_BASE_URL = 'http://localhost:8000';
  */
 async function fetchApi(endpoint, options = {}, retries = 2) {
     try {
-        console.time(`API call to ${endpoint}`); // Add timing
         
         // Reduce timeout to 60 seconds
         const controller = new AbortController();
@@ -35,9 +34,7 @@ async function fetchApi(endpoint, options = {}, retries = 2) {
             }
         });
         
-        clearTimeout(timeoutId);
-        console.timeEnd(`API call to ${endpoint}`); // Log timing
-        
+        clearTimeout(timeoutId);        
         // Enhanced error handling with user-friendly messages
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));

@@ -9,12 +9,26 @@ import { showListView } from '../services/ui-helpers.js';
  * @param {Object} response - The API response from the trip planning endpoint
  * @param {boolean} hideLoadingOnNoResults - Indicates whether to keep the loading container visible
  */
+// Updated renderResults function with pagination support
 function renderResults(response, hideLoadingOnNoResults = true) {
     const tripResults = document.getElementById('tripResults');
     
     // Clear previous results
     if (tripResults) {
         tripResults.innerHTML = '';
+    }
+
+    // Initialize the window.tripResults pagination state
+    if (response.trip_groups && response.trip_groups.length > 0) {
+        // Store all trips for pagination
+        window.tripResults = {
+            allTrips: response.trip_groups || [],
+            renderedCount: 0,
+            batchSize: 3, // Display 3 trips per batch
+            hasMoreTrips: true
+        };
+    } else {
+        window.tripResults = null;
     }
     
     // Update the results count if it exists
@@ -56,17 +70,18 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         // Generate filters based on match data
         renderFilters(response.trip_groups);
         
-        // Render each trip group
-        response.trip_groups.forEach((group, index) => {
-            renderTripCard(group, index + 1, {
-                startLocation: response.start_location,
-                startDate: response.start_date,
-                maxTravelTime: response.max_travel_time,
-                tripDuration: response.trip_duration,
-                preferredLeagues: response.preferred_leagues,
-                mustTeams: response.must_teams
-            });
-        });
+        // Store trip context for all rendered trips
+        window.tripContext = {
+            startLocation: response.start_location,
+            startDate: response.start_date,
+            maxTravelTime: response.max_travel_time,
+            tripDuration: response.trip_duration,
+            preferredLeagues: response.preferred_leagues,
+            mustTeams: response.must_teams
+        };
+        
+        // Render first batch of trips instead of all at once
+        renderNextBatch();
         
         // Enable sorting and list-view controls once results are displayed
         const sortingControl = document.getElementById('sortResults');
@@ -87,6 +102,7 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         }
     }
     
+    // Rest of your existing code for handling messages, loading state, etc.
     // Handle error messages or no results
     if (response.message) {
         const messageContainer = document.getElementById('messageContainer') || 
@@ -176,4 +192,57 @@ function extractTeams(tripGroups) {
     return [...teams].sort();
 }
 
-export { renderResults, extractCities, extractTeams };
+// Update the renderNextBatch function
+function renderNextBatch() {
+    const state = window.tripResults;
+    if (!state || !state.allTrips) return;
+
+    const resultsContainer = document.getElementById('tripResults');
+    
+    // Calculate the end index for this batch
+    const start = state.renderedCount;
+    const end = Math.min(start + state.batchSize, state.allTrips.length);
+    
+    // Render this batch of trips
+    for (let i = start; i < end; i++) {
+        const trip = state.allTrips[i];
+        renderTripCard(trip, i + 1, window.tripContext);
+    }
+    
+    // Update the rendered count
+    state.renderedCount = end;
+    state.hasMoreTrips = state.renderedCount < state.allTrips.length;
+    
+    // Remove any existing load more button
+    const existingButton = document.getElementById('loadMoreTrips');
+    if (existingButton) {
+        existingButton.remove();
+    }
+    
+    // Add load more button if there are more trips
+    if (state.hasMoreTrips) {
+        const loadMoreBtn = document.createElement('div');
+        loadMoreBtn.id = 'loadMoreTrips';
+        loadMoreBtn.className = 'text-center my-4';
+        loadMoreBtn.innerHTML = `
+        <button class="btn btn-outline-primary load-more-btn">
+            <i class="fas fa-chevron-down me-2"></i>
+            Load More Trips
+            <span class="ms-2 badge">
+                ${state.renderedCount}/${state.allTrips.length}
+            </span>
+        </button>
+    `;
+        loadMoreBtn.addEventListener('click', renderNextBatch);
+        resultsContainer.appendChild(loadMoreBtn);
+    } else if (state.renderedCount > 0) {
+        // Add a "no more trips" indicator when all trips are loaded
+        const noMoreTrips = document.createElement('div');
+        noMoreTrips.className = 'text-center text-muted my-4';
+        noMoreTrips.innerHTML = `
+            <p><i class="fas fa-check-circle me-2"></i>All ${state.allTrips.length} trips loaded</p>
+        `;
+        resultsContainer.appendChild(noMoreTrips);
+    }
+}
+export { renderResults, extractCities, extractTeams, renderNextBatch };

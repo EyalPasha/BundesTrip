@@ -40,6 +40,10 @@ function initDOMReferences() {
         minGamesInput: 'minGames',
         tripOptionsHeader: 'tripOptionsHeader',
         resultsCountContainer: 'resultsCountContainer',
+        gamesSlider: 'gamesSlider',
+        gamesSliderValue: 'gamesSliderValue',
+        hotelChangesSlider: 'hotelChangesSlider',
+        hotelChangesValue: 'hotelChangesValue',
     };
     
     // Safely get elements with logging for any missing ones
@@ -167,81 +171,57 @@ document.addEventListener('DOMContentLoaded', async function() {
         showListView,
         clearFilters
     };
-    
-    // Add sorting functionality
-    if (window.DOM.sortResults) {
-        window.DOM.sortResults.addEventListener('change', handleSortResults);
-    }
 
-    // Replace your current Select2 initialization with this expanded version
+    // Replace your current Select2 initialization code
     $(document).ready(function() {
-        // Configure ALL dropdowns with Select2 styling
+        // Add loading class to body
+        document.body.classList.add('loading-select2');
         
-        // Starting Location dropdown
-        $('#startLocation').select2({
-            placeholder: 'Select a city',
-            width: '100%',
-            minimumResultsForSearch: 10, // Show search only if many options
-            selectionCssClass: 'select2-selection--clean',
-            dropdownCssClass: 'select2-dropdown--clean'
+        // Hide preloaders once real components are ready
+function hidePreloaders() {
+    // First synchronize styling
+    document.querySelectorAll('.select2-preloader, .select2-preloader-multi').forEach(el => {
+        el.style.position = 'absolute';
+        el.style.zIndex = '0';
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 0.2s ease-out';
+    });
+    
+    // Short delay to start the opacity transition
+    setTimeout(() => {
+        // Now fade in the real elements
+        document.querySelectorAll('#startLocation, #tripDuration, #maxTravelTime, #minGames, #preferredLeaguesContainer, #mustTeamsContainer').forEach(el => {
+            el.style.opacity = '1';
+            el.style.position = 'relative';
+            el.style.zIndex = '1';
         });
         
-        // Trip Duration dropdown
-        $('#tripDuration').select2({
+        // Mark the body as ready
+        document.body.classList.add('select2-ready');
+        document.body.classList.remove('loading-select2');
+    }, 50);
+}
+
+        // Initialize all Select2 dropdowns at once
+        $('#startLocation, #tripDuration, #maxTravelTime, #minGames').select2({
             width: '100%',
-            minimumResultsForSearch: Infinity, // Hide search
-            selectionCssClass: 'select2-selection--clean',
-            dropdownCssClass: 'select2-dropdown--clean'
-        });
-        
-        // Max Travel Time dropdown
-        $('#maxTravelTime').select2({
-            width: '100%',
-            minimumResultsForSearch: Infinity, // Hide search
-            selectionCssClass: 'select2-selection--clean',
-            dropdownCssClass: 'select2-dropdown--clean'
-        });
-        
-        // Min Games dropdown
-        $('#minGames').select2({
-            width: '100%',
-            minimumResultsForSearch: Infinity, // Hide search
-            selectionCssClass: 'select2-selection--clean',
-            dropdownCssClass: 'select2-dropdown--clean'
-        });
-        
-        // Configure Preferred Leagues dropdown (your existing code)
-        $('#preferredLeagues').select2({
-            placeholder: 'Select leagues...',
-            width: '100%',
-            dropdownParent: $('body'), // Append to body instead of container to avoid clipping
             minimumResultsForSearch: Infinity,
             selectionCssClass: 'select2-selection--clean',
             dropdownCssClass: 'select2-dropdown--clean'
-        }).on('select2:open', function() {
-            document.body.classList.add('select2-initialized');
-            document.body.classList.add('select2-dropdown-open'); // Add class to increase body z-index
-        }).on('select2:close', function() {
-            document.body.classList.remove('select2-dropdown-open');
         });
         
-        // Do the same for the mustTeams select
-        $('#mustTeams').select2({
-            placeholder: 'Select teams...',
+        // Initialize the multi-select dropdowns
+        $('#preferredLeagues, #mustTeams').select2({
+            placeholder: 'Select...',
             width: '100%',
-            dropdownParent: $('body'), // Append to body instead of container
+            dropdownParent: $('body'),
             minimumResultsForSearch: Infinity,
             selectionCssClass: 'select2-selection--clean',
             dropdownCssClass: 'select2-dropdown--clean'
-        }).on('select2:open', function() {
-            document.body.classList.add('select2-initialized');
-            document.body.classList.add('select2-dropdown-open');
-        }).on('select2:close', function() {
-            document.body.classList.remove('select2-dropdown-open');
         });
         
-        // Mark as initialized immediately to prevent flicker
-        document.body.classList.add('select2-initialized');
+        // Allow a slightly longer timeout to ensure everything is ready
+        setTimeout(hidePreloaders, 300);
     });
 
     // Add this to your script.js file to handle selection changes
@@ -297,40 +277,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
-// Sort results by selected criteria
-function handleSortResults() {
-    const sortBy = this.value;
-    const tripCards = [...document.querySelectorAll('.trip-card')];
-    
-    tripCards.sort((a, b) => {
-        if (sortBy === 'matches') {
-            // Sort by number of matches (descending)
-            const matchesA = a.querySelector('.badge.bg-primary')?.textContent.trim().split(' ')[0] || "0";
-            const matchesB = b.querySelector('.badge.bg-primary')?.textContent.trim().split(' ')[0] || "0";
-            return parseInt(matchesB) - parseInt(matchesA);
-        } else if (sortBy === 'travel') {
-            // Sort by travel time (ascending)
-            const travelTimeA = a.querySelector('.text-success')?.nextElementSibling?.textContent || "";
-            const travelTimeB = b.querySelector('.text-success')?.nextElementSibling?.textContent || "";
-            
-            const hoursA = parseInt(travelTimeA.match(/(\d+)h/)?.[1] || "0");
-            const hoursB = parseInt(travelTimeB.match(/(\d+)h/)?.[1] || "0");
-            
-            const minutesA = parseInt(travelTimeA.match(/(\d+)m/)?.[1] || "0");
-            const minutesB = parseInt(travelTimeB.match(/(\d+)m/)?.[1] || "0");
-            
-            return (hoursA * 60 + minutesA) - (hoursB * 60 + minutesB);
-        }
-        return 0;
-    });
-    
-    // Reorder the DOM elements
-    const container = document.getElementById('tripResults');
-    tripCards.forEach(card => {
-        container.appendChild(card);
-    });
-}
-
 // Enhanced loading animation function - add to script.js
 function initLoadingAnimation() {
   const messages = document.querySelectorAll('.loading-message');
@@ -382,9 +328,13 @@ function cleanupLoadingAnimation() {
   }
 }
 
-// Update returnToSearch to use this cleanup
+// Update returnToSearch function to reset pagination state
 function returnToSearch() {
     cleanupLoadingAnimation();
+    
+    // Reset trip results pagination state
+    window.tripResults = null;
+    window.tripContext = null;
     
     // Hide the loading container
     if (window.DOM.loadingIndicator) {
@@ -416,6 +366,29 @@ function returnToSearch() {
 
 // Make returnToSearch globally available so onclick can find it
 window.returnToSearch = returnToSearch;
+
+// Add this to your document.ready function in script.js
+$(document).ready(function() {
+    // Initialize flatpickr with consistent styling and timing
+    const datePicker = flatpickr("#startDate", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        disableMobile: true,
+        // Don't show it immediately to maintain consistent transition
+        onReady: function() {
+            // Delay showing until select2 is also ready
+            setTimeout(function() {
+                document.querySelector('#startDate').classList.add('flatpickr-ready');
+            }, 100);
+        },
+    });
+    
+    // This should be at the end of your ready handler, after all Select2 and flatpickr initializations
+    setTimeout(function() {
+        document.body.classList.add('select2-ready');
+        document.body.classList.remove('loading-select2');
+    }, 100);
+});
 
 // Export helper functions to avoid circular dependencies
 export const helpers = {

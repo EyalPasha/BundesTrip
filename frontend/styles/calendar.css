@@ -373,3 +373,24 @@ body.select2-ready .flatpickr-input.select-hidden {
 .flatpickr-calendar.animate.open {
     animation: flatpickrFadeInDown 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
+/* Match the transitions with Select2 */
+.flatpickr-input {
+    opacity: 0;
+    transition: opacity 0.25s ease-in;
+}
+
+body.select2-ready .flatpickr-input,
+.flatpickr-input.flatpickr-ready {
+    opacity: 1;
+}
+
+/* Ensure consistent timing during initialization */
+.flatpickr-calendar {
+    transition: opacity 0.25s ease-in;
+    opacity: 0;
+}
+
+body.select2-ready .flatpickr-calendar {
+    opacity: 1;
+}

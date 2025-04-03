@@ -3,6 +3,7 @@
 /* Base container */
 .select2-container {
     width: 100% !important;
+    transition: opacity 0.25s ease-in;
 }
 
 /* Selection area styling */
@@ -298,4 +299,20 @@ body.select2-ready .select-hidden {
 body.select2-dropdown-open {
     position: relative;
     z-index: 1;
+}
+
+/* Smoother transitions for Select2 elements */
+body:not(.select2-ready) .select2-container {
+    opacity: 0;
+}
+
+/* Show immediately once ready */
+body.select2-ready .select2-container {
+    opacity: 1;
+}
+
+/* Remove delay from showing select2 elements */
+body.select2-ready .select-hidden {
+    visibility: visible !important;
+    transition: none !important;
 }

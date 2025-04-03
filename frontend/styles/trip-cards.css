@@ -285,15 +285,18 @@
 }
 
 .nav-tabs .nav-link {
-  border: none;
-  border-radius: 0;
-  color: var(--neutral-text);
-  font-weight: 500;
-  padding: 0.65rem 1.25rem;
-  transition: all 0.2s ease;
   position: relative;
-  font-size: 0.85rem;
-  letter-spacing: 0.01em;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  min-width: 110px;
+  justify-content: center;
+  color: var(--primary-color); /* Add primary blue color for tab text */
+  font-weight: 500; /* Make it slightly bolder */
 }
 
 .nav-tabs .nav-link:hover {
@@ -1563,4 +1566,139 @@
   height: 3px;
   background: linear-gradient(to right, var(--primary-color), transparent);
   border-radius: 3px;
+}
+/* Add to trip-cards.css */
+
+.load-more-btn {
+    padding: 10px 20px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.load-more-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(4, 61, 124, 0.2);
+}
+
+.load-more-btn:active {
+    transform: translateY(0);
+}
+
+/* Add this to trip-cards.css */
+.load-more-btn .badge {
+  background-color: var(--primary-color) !important; /* Use main blue background */
+  color: white !important; /* White text for contrast */
+  font-weight: 500;
+  border-radius: 50px;
+  padding: 0.35rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect changes background to white and text to blue */
+.load-more-btn:hover .badge {
+  background-color: white !important;
+  color: var(--primary-color) !important;
+  box-shadow: 0 2px 5px rgba(4, 61, 124, 0.3);
+  transform: translateY(-1px);
+  border: 1px solid var(--primary-color);
+}
+
+/* Styling for filter sliders */
+.form-range {
+    height: 6px;
+    border-radius: 5px;
+}
+
+.form-range::-webkit-slider-thumb {
+    background: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(4, 61, 124, 0.3);
+    width: 18px;
+    height: 18px;
+}
+
+.form-range::-moz-range-thumb {
+    background: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(4, 61, 124, 0.3);
+    width: 18px;
+    height: 18px;
+}
+
+.form-range:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(4, 61, 124, 0.25);
+}
+
+.form-range:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(4, 61, 124, 0.25);
+}
+
+/* Badge styling in filter UI */
+#gamesSliderValue,
+#hotelChangesValue {
+    min-width: 45px;
+    text-align: center;
+}
+
+/* Fix for exchange icon position that's too close to the border */
+.fas.fa-exchange-alt.text-primary.me-2 {
+  margin-left: 0.5rem !important; /* Add left margin to move it away from the border */
+  position: relative;
+  left: 2px; /* Nudge it slightly to the right */
+}
+
+
+/* Style for active tab's hotel changes indicator */
+.nav-tabs .nav-link.active::before {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+}
+
+/* Option number styling */
+.nav-tabs .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 15%;
+  right: 15%;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary-light), var(--primary-light));
+  opacity: 0;
+  transition: all 0.3s ease;
+  border-radius: 3px;
+}
+
+.nav-tabs .nav-link:hover::after {
+  opacity: 0.7;
+}
+
+.nav-tabs .nav-link.active::after {
+  opacity: 1;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  left: 0;
+  right: 0;
+}
+
+/* Fix exchange icon position in tabs */
+.nav-tabs .nav-link .fas.fa-exchange-alt {
+  margin-right: 5px !important;
+  font-size: 0.85rem;
+}
+
+/* Override active tab styling */
+.nav-tabs .nav-link.active {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 4px 12px rgba(4, 61, 124, 0.2);
+}
+
+/* Hover effect for tabs */
+.nav-tabs .nav-link:hover:not(.active) {
+  background: var(--primary-light);
+  border-color: transparent;
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  font-weight: 600; /* Make text bolder on hover */
 }
