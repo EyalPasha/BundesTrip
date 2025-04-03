@@ -2,20 +2,24 @@
    MODERN FLATPICKR CALENDAR STYLING FOR 2025
    ============================================ */
 
-/* Calendar Container */
+/* Calendar Container - Match Select2 styling */
 .flatpickr-calendar {
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 0.375rem !important; /* Match Select2 border radius */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; /* Match Select2 dropdown shadow */
     width: 325px;
     padding: 12px;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; /* Match Select2 font */
+    border: 1px solid #80bdff !important; /* Match Select2 focused border */
+    font-size: 0.9rem !important; /* Match Select2 font size */
+    height: auto !important;
+    overflow: hidden;
 }
 
-/* Month navigation area - Simplified for arrow-only navigation */
+/* Month navigation area - match Select2 header colors */
 .flatpickr-months {
-    background: var(--primary-color);
-    border-radius: 8px 8px 0 0;
+    background: #043d7c; /* Match primary color used in Select2 */
+    border-radius: 0.25rem 0.25rem 0 0;
     padding: 12px 8px 8px;
     position: relative;
     text-align: center;
@@ -179,35 +183,42 @@
 span.flatpickr-weekday {
     color: #fff;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.9rem !important; /* Match Select2 font size */
     background: transparent;
     opacity: 0.9;
 }
 
-/* Calendar days */
+/* Calendar days - match font size with Select2 options */
 .flatpickr-days {
     width: 100% !important;
     border-radius: 0 0 8px 8px;
     padding: 6px 0;
 }
 
+/* Reduce container height to show only 5 rows */
 .dayContainer {
     width: 100%;
     min-width: 100%;
     max-width: 100%;
-    padding: 0 2px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 0;
+    max-height: 270; /* Reduced from 270px to show 5 rows */
+    overflow: hidden;
 }
 
+/* Make day cells slightly more compact if needed */
 .flatpickr-day {
-    max-width: 40px;
-    height: 40px;
-    line-height: 40px;
-    margin: 2px;
-    border-radius: 50%;
+    max-width: 38px;
+    height: 38px;
+    line-height: 38px;
+    margin: 1.5px;
+    border-radius: 0.25rem !important; /* Match Select2 option style */
     border: none;
     color: #333;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 0.9rem !important; /* Match Select2 font size */
     transition: all 0.2s ease;
     position: relative;
 }
@@ -232,22 +243,25 @@ span.flatpickr-weekday {
     border-radius: 50%;
 }
 
-/* Selected day */
+/* Selected day - match Select2 selected option */
 .flatpickr-day.selected {
-    background: var(--primary-color);
+    background: #043d7c !important; /* Match Select2 selection color */
     color: #fff;
     font-weight: 500;
     box-shadow: 0 4px 8px rgba(4, 61, 124, 0.25);
+    border: none !important;
 }
 
 .flatpickr-day.selected:hover {
-    background: var(--primary-color);
+    background: #043d7c !important;
     box-shadow: 0 6px 10px rgba(4, 61, 124, 0.3);
 }
 
-/* Hover states */
+/* Hover states - match hover effects with Select2 */
 .flatpickr-day:hover {
-    background: rgba(4, 61, 124, 0.08);
+    background-color: #f8f9fa !important; /* Match Select2 option hover */
+    color: #043d7c !important;
+    border-left: 3px solid #043d7c !important;
 }
 
 /* Days with matches styling */
@@ -276,19 +290,72 @@ span.flatpickr-weekday {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Disabled and out of month days */
+/* Fix cursor for disabled days - update this block */
 .flatpickr-day.flatpickr-disabled,
 .flatpickr-day.flatpickr-disabled:hover,
 .flatpickr-day.prevMonthDay,
-.flatpickr-day.nextMonthDay {
+.flatpickr-day.prevMonthDay:hover,
+.flatpickr-day.nextMonthDay,
+.flatpickr-day.nextMonthDay:hover {
     color: #bbb;
-    background: transparent;
+    background: transparent !important;
+    pointer-events: auto !important; /* Allow hover for cursor change */
+    border-left: none !important;
+    box-shadow: none !important;
+    opacity: 0.5;
+    cursor: not-allowed !important; /* Show not-allowed cursor */
 }
 
-/* Disabled day that has matches */
+/* Ensure no interactions still work */
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.prevMonthDay, 
+.flatpickr-day.nextMonthDay {
+    pointer-events: none; /* Prevent clicking */
+}
+
+/* Override pointer-events for cursor visibility only */
+.dayContainer:hover .flatpickr-day.flatpickr-disabled,
+.dayContainer:hover .flatpickr-day.prevMonthDay,
+.dayContainer:hover .flatpickr-day.nextMonthDay {
+    pointer-events: auto;
+}
+
+/* Disabled and out of month days - completely remove hover effects and make them non-interactive */
 .flatpickr-day.flatpickr-disabled.has-matches {
     color: #999;
     background: rgba(4, 61, 124, 0.02);
+}
+
+/* Add similar input styling for consistency */
+.flatpickr-input {
+    height: 42px !important; /* Match Select2 height */
+    padding: 0.375rem 0.75rem !important; /* Match Select2 padding */
+    border: 1px solid #ced4da !important; /* Match Select2 border */
+    border-radius: 0.375rem !important; /* Match Select2 border radius */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; /* Match font */
+    font-size: 0.9rem !important; /* Match font size */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.flatpickr-input:focus {
+    border-color: #80bdff !important; /* Match Select2 focus border */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important; /* Match Select2 focus shadow */
+    outline: 0;
+}
+
+/* Add these styles to handle initial loading, similar to Select2 */
+.flatpickr-input.select-hidden {
+    visibility: hidden !important;
+}
+
+body.select2-ready .flatpickr-input.select-hidden {
+    visibility: visible !important;
+}
+
+/* Adjust overall calendar dimensions */
+.flatpickr-innerContainer,
+.flatpickr-rContainer {
+    height: auto !important;
 }
 
 /* Animation for calendar appearance */

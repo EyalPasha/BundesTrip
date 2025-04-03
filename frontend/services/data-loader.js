@@ -40,13 +40,24 @@ const LEAGUE_DISPLAY_NAMES = {
     "Conference League": "UEFA Conference League"
 };
 
+// Update this function in data-loader.js
 async function loadCities() {
     try {
         showComponentLoading(window.DOM.startLocationSelect.parentElement);
         const data = await getCities();
         
-        // Clear existing options first
+        // Save the placeholder option
+        const placeholderOption = document.createElement('option');
+        placeholderOption.value = "";
+        placeholderOption.textContent = "Select a city";
+        placeholderOption.selected = true;
+        placeholderOption.disabled = true;
+        
+        // Clear existing options
         window.DOM.startLocationSelect.innerHTML = '';
+        
+        // Add the placeholder option back first
+        window.DOM.startLocationSelect.appendChild(placeholderOption);
         
         // Add cities from the backend response
         data.cities.forEach(city => {
@@ -56,13 +67,9 @@ async function loadCities() {
             window.DOM.startLocationSelect.appendChild(option);
         });
         
-        // Select "Any" by default if it exists
-        const anyOption = Array.from(window.DOM.startLocationSelect.options)
-            .find(option => option.value.toLowerCase() === 'any');
-            
-        if (anyOption) {
-            window.DOM.startLocationSelect.value = anyOption.value;
-        }
+        // Ensure the placeholder is selected
+        window.DOM.startLocationSelect.value = "";
+        
     } catch (error) {
         showErrorToast(`Failed to load cities: ${error.message}`);
     } finally {

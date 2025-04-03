@@ -9,6 +9,12 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         
+        <!-- Add this immediately after your Select2 CSS link in the head section -->
+        <script>
+            // Pre-initialize select2 variables to prevent FOUC
+            document.documentElement.className += ' select2-loading';
+        </script>
+        
         <!-- CSS files -->
         <link rel="stylesheet" href="styles/base.css">
         <link rel="stylesheet" href="styles/layout.css">
@@ -59,25 +65,30 @@
                             <h2 class="card-title mb-4">Find Your Trip</h2>
                             <form id="tripSearchForm">
                                 <div class="mb-3">
-                                    <label for="startLocation" class="form-label">Starting Location <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="startLocation" required>
+                                    <label for="startLocation" class="form-label">
+                                        <i class="fas fa-map-marker-alt icon"></i> Starting Location <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select select-hidden" id="startLocation" required>
                                         <option value="" selected disabled>Select a city</option>
-                                        <option value="any">Any (Best Option)</option>
                                         <!-- Cities will be loaded dynamically -->
                                     </select>
                                     <div class="invalid-feedback">Please select a starting location</div>
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="startDate" class="form-label">Start Date <span class="text-danger">*</span></label>
+                                    <label for="startDate" class="form-label">
+                                        <i class="fas fa-calendar-alt icon"></i> Start Date <span class="text-danger">*</span>
+                                    </label>
                                     <input type="text" class="form-control" id="startDate" placeholder="Select date" required>
                                     <div class="invalid-feedback">Please select a start date</div>
                                 </div>
                                 
                                 <!-- Trip Duration (days) - Dropdown -->
                                 <div class="mb-3">
-                                    <label for="tripDuration" class="form-label">Trip Duration (Days)</label>
-                                    <select class="form-select" id="tripDuration">
+                                    <label for="tripDuration" class="form-label">
+                                        <i class="fas fa-clock icon"></i> Trip Duration <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select select-hidden" id="tripDuration">
                                         <!-- Options 2-10 days -->
                                         <option value="2">2 Days</option>
                                         <option value="3" selected>3 Days</option>
@@ -93,8 +104,10 @@
                                 
                                 <!-- Max Travel Time (min) - Dropdown -->
                                 <div class="mb-3">
-                                    <label for="maxTravelTime" class="form-label">Max Travel Time</label>
-                                    <select class="form-select" id="maxTravelTime">
+                                    <label for="maxTravelTime" class="form-label">
+                                        <i class="fas fa-route icon"></i> Max Travel Time <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select select-hidden" id="maxTravelTime">
                                         <option value="30">30 Minutes</option>
                                         <option value="45">45 Minutes</option>
                                         <option value="60">1 Hour </option>
@@ -113,8 +126,10 @@
                                 
                                 <!-- Minimum Games - Dropdown -->
                                 <div class="mb-3">
-                                    <label for="minGames" class="form-label">Minimum Games</label>
-                                    <select class="form-select" id="minGames">
+                                    <label for="minGames" class="form-label">
+                                        <i class="fas fa-ticket-alt icon"></i> Min. Games Per Trip
+                                    </label>
+                                    <select class="form-select select-hidden" id="minGames">
                                         <option value="1">1 Game</option>
                                         <option value="2" selected>2 Games</option>
                                         <option value="3">3 Games</option>
@@ -127,10 +142,10 @@
                                 <!-- Update the Preferred Leagues section -->
                                 <div class="mb-3">
                                     <label for="preferredLeagues" class="form-label">
-                                        <i class="fas fa-layer-group"></i> Preferred Leagues (Optional)
+                                        <i class="fas fa-trophy icon"></i> Preferred Leagues
                                     </label>
                                     <div id="preferredLeaguesContainer" class="position-relative">
-                                        <select class="form-select" id="preferredLeagues" multiple="multiple">
+                                        <select class="form-select select-hidden" id="preferredLeagues" multiple="multiple">
                                             <!-- Options will be loaded dynamically -->
                                         </select>
                                     </div>
@@ -140,10 +155,10 @@
                                 <!-- Update the Must Include Teams section -->
                                 <div class="mb-3">
                                     <label for="mustTeams" class="form-label">
-                                        <i class="fas fa-users-cog"></i> Must Include Teams (Optional)
+                                        <i class="fas fa-futbol icon"></i> Must Include Teams
                                     </label>
                                     <div id="mustTeamsContainer" class="position-relative">
-                                        <select class="form-select" id="mustTeams" multiple="multiple">
+                                        <select class="form-select select-hidden" id="mustTeams" multiple="multiple">
                                             <!-- Options will be loaded dynamically -->
                                         </select>
                                     </div>
@@ -180,7 +195,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="sortResults">Sort By</label>
-                                    <select class="form-select" id="sortResults" aria-label="Sort results by">
+                                    <select class="form-select select-hidden" id="sortResults" aria-label="Sort results by">
                                         <option value="matches">Most Matches</option>
                                         <option value="travel">Least Travel</option>
                                     </select>
@@ -207,7 +222,7 @@
                                             <div class="travel-path">
                                                 <div class="city-marker marker-start"></div>
                                                 <div class="travel-line"></div>
-                                                <div class="city-marker marker-mid pulse"></div>
+                                                <div class="city-marker marker-mid"></div>
                                                 <div class="travel-line"></div>
                                                 <div class="city-marker marker-end"></div>
                                             </div>
@@ -215,10 +230,11 @@
                                         
                                         <!-- Loading state messages -->
                                         <div id="loadingMessages" class="loading-messages">
-                                            <p class="loading-message active">Searching for matches...</p>
-                                            <p class="loading-message">Planning optimal routes...</p>
-                                            <p class="loading-message">Calculating travel times...</p>
-                                            <p class="loading-message">Finalizing your trip options...</p>
+                                            <p class="loading-message active">Searching for football matches...</p>
+                                            <p class="loading-message">Planning optimal routes across Germany...</p>
+                                            <p class="loading-message">Calculating efficient travel times...</p>
+                                            <p class="loading-message">Arranging the perfect itinerary...</p>
+                                            <p class="loading-message">Finalizing your football adventure...</p>
                                         </div>
                                         
                                         <!-- Cancel button for loading state -->

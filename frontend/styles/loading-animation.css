@@ -23,84 +23,139 @@
   text-align: center;
 }
 
-/* Football animation */
+/* Improved Loading Animation CSS */
+
+/* Container spacing and layout improvements */
 .loading-animation {
   position: relative;
-  width: 200px;
-  height: 120px;
-  margin-bottom: 1.5rem;
+  width: 220px; /* Slightly wider to avoid crowding */
+  height: 150px; /* Taller to give more space between elements */
+  margin-bottom: 2.5rem;
 }
 
+/* Replace the current football CSS with this improved transparent version */
 .football {
   position: absolute;
-  width: 60px;
-  height: 60px;
-  background-color: white;
-  border-radius: 50%;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  top: 0;
-  left: 70px;
+  width: 70px;
+  height: 70px;
+  /* Remove background color - make it transparent */
+  background: transparent;
+  /* Remove box-shadow since it's for a white background */
+  box-shadow: none;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
-  animation: bounce 2s infinite;
+  animation: bounce 2.5s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.football-pattern {
+/* Update the football icon to use main blue color */
+.football::before {
+  content: '\f1e3'; /* Football/soccer ball icon */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 400;
+  font-size: 48px; /* Larger size */
+  color: #043d7c; /* Using your primary blue color */
+  animation: rotate 10s linear infinite;
+  display: block;
+  /* Add shadow to the icon text itself for depth */
+  text-shadow: 0 4px 8px rgba(4, 61, 124, 0.2);
+}
+
+/* Better positioned shadow that works with transparent ball */
+.football::after {
+  content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 45px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.15); /* Slightly darker shadow */
   border-radius: 50%;
-  background: 
-    linear-gradient(to right, transparent 0%, transparent 32%, black 32%, black 68%, transparent 68%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, transparent 32%, black 32%, black 68%, transparent 68%, transparent 100%),
-    linear-gradient(45deg, transparent 0%, transparent 40%, black 40%, black 60%, transparent 60%, transparent 100%),
-    linear-gradient(-45deg, transparent 0%, transparent 40%, black 40%, black 60%, transparent 60%, transparent 100%);
-  opacity: 0.2;
-  transform: scale(0.9);
+  filter: blur(5px); /* More blur for softer shadow */
+  z-index: -1;
+  animation: shadow-move 2.5s infinite;
 }
-
-/* Travel path animation */
+/* Improved travel path positioning */
 .travel-path {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px; /* Move up slightly */
   left: 0;
   right: 0;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px; /* More padding on sides */
 }
 
+/* Cleaner city markers */
 .city-marker {
-  width: 24px;
-  height: 24px;
+  width: 30px; /* Slightly larger */
+  height: 30px;
   border-radius: 50%;
-  background-color: var(--primary-color);
   position: relative;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  border: 2px solid white;
+  flex-shrink: 0; /* Prevent squishing */
 }
 
+/* Fix the start marker */
 .marker-start {
-  opacity: 0.8;
-  background-color: var(--secondary-color);
+  background: linear-gradient(135deg, #0066cc, #004d99);
 }
 
+.marker-start::before {
+  content: '\f3c5'; /* Map marker icon */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 12px;
+  color: white;
+}
+
+/* Fix the end marker to be a hotel */
 .marker-end {
-  background-color: var(--accent-color);
-  border: 2px solid var(--primary-color);
+  background: linear-gradient(135deg, #28a745, #218838);
 }
 
+.marker-end::before {
+  content: '\f594'; /* Hotel icon */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 12px;
+  color: white;
+}
+
+/* Use better stadium icon for middle marker */
 .marker-mid {
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, #17a2b8, #138496);
 }
 
+.marker-mid::before {
+  content: '\f145'; 
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 13px; 
+  color: white;
+}
+
+/* Smoother travel line with better gradient */
 .travel-line {
-  height: 3px;
+  height: 4px; /* Slightly thinner */
   flex-grow: 1;
-  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  margin: 0 5px; /* Add margin for spacing */
+  background: linear-gradient(to right, rgba(4, 61, 124, 0.7), rgba(23, 162, 184, 0.7));
   position: relative;
   overflow: hidden;
+  border-radius: 4px;
 }
 
 .travel-line::after {
@@ -111,28 +166,47 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(to right, transparent, white, transparent);
-  animation: travel 2.5s infinite;
+  animation: travel 2s infinite;
 }
 
-/* Loading message animation */
+/* Improved loading messages spacing */
 .loading-messages {
   position: relative;
-  height: 24px;
+  height: 38px; /* Slightly taller */
   overflow: hidden;
-  min-width: 250px;
+  min-width: 300px;
+  margin: 0 auto 20px; /* Center horizontally and add bottom margin */
 }
 
+/* Better message animation and alignment */
 .loading-message {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   margin: 0;
+  padding: 8px 0;
+  color: #043d7c;
   font-weight: 500;
-  color: var(--primary-color);
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.5s, transform 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Improved loading indicator */
+.loading-message::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  background-color: #043d7c;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+  flex-shrink: 0;
 }
 
 .loading-message.active {
@@ -140,9 +214,17 @@
   transform: translateY(0);
 }
 
-/* Pulse animation */
-.pulse {
-  animation: pulse 1.5s infinite;
+/* Improved pulse animation for better visibility */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(4, 61, 124, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(4, 61, 124, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(4, 61, 124, 0);
+  }
 }
 
 /* Cancel button styling */
@@ -184,10 +266,12 @@ body.no-scroll {
 /* Animations */
 @keyframes bounce {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateX(-50%) translateY(-25px);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
@@ -200,15 +284,34 @@ body.no-scroll {
   }
 }
 
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(4, 61, 124, 0.7);
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
   }
-  70% {
-    box-shadow: 0 0 0 10px rgba(4, 61, 124, 0);
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Update rotation animation to work with the icon */
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(4, 61, 124, 0);
+    transform: rotate(360deg);
+  }
+}
+
+/* Shadow animation synchronized with bounce */
+@keyframes shadow-move {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translateX(-50%) scale(0.7);
+    opacity: 0.08;
   }
 }
 
@@ -310,4 +413,3 @@ body.no-scroll {
     padding: 0.75rem 1rem;
   }
 }
-

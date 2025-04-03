@@ -13,6 +13,14 @@ function validateForm() {
         window.DOM.startLocationSelect.classList.remove('is-invalid');
     }
     
+    // For Select2 fields, we need special handling
+    if (!$('#startLocation').val()) {
+        $('#startLocation').next('.select2-container').addClass('is-invalid-select2');
+        isValid = false;
+    } else {
+        $('#startLocation').next('.select2-container').removeClass('is-invalid-select2');
+    }
+    
     // Start date validation (new required field)
     if (!window.DOM.startDateInput.value) {
         isValid = false;

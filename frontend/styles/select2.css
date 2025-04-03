@@ -54,7 +54,10 @@
 /* Selection placeholder */
 .select2-container--default .select2-selection--multiple .select2-selection__placeholder {
     color: #6c757d !important;
-    margin-left: 6px !important;
+    margin: 6px 0 6px 6px !important; /* Better positioning */
+    line-height: 24px !important; /* Match the height of selections */
+    display: inline-block !important;
+    /* Removed float as it conflicts with inline-block */
 }
 
 /* Selected items */
@@ -63,12 +66,14 @@
     color: white !important;
     border: none !important;
     border-radius: 0.25rem !important;
-    padding: 0.2rem 0.5rem 0.2rem 1.8rem !important; /* Increased left padding for X button */
-    margin: 0.25rem 0.35rem 0.25rem 0 !important;
+    padding: 0.2rem 0.5rem 0.2rem 1.8rem !important;
+    margin: 4px 5px 4px 0 !important; /* Consistent margins */
     font-size: 0.9rem !important;
-    position: relative !important; /* For absolute positioning of X button */
+    position: relative !important;
     display: flex !important;
     align-items: center !important;
+    height: 28px !important; /* Fixed height for consistency */
+    max-width: calc(100% - 10px) !important; /* Prevent overflow */
 }
 
 /* Remove button (X) in selections */
@@ -94,6 +99,21 @@
 /* Make the container tall enough for the content */
 .select2-container--default .select2-selection--multiple {
     min-height: 42px !important;
+    height: 42px !important; /* Fixed initial height */
+    transition: height 0.2s ease-out; /* Smooth transition when growing */
+    cursor: pointer; /* Add pointer cursor */
+    overflow: hidden !important; /* Change to hidden */
+    padding: 0 5px !important; /* Add consistent padding to selection area */
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Make the container grow when items are added */
+.select2-container--default .select2-selection--multiple.has-selections {
+    height: auto !important; /* Allow growth when selections are present */
+    min-height: 42px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
 }
 
 /* Ensure text doesn't overlap with remove button */
@@ -103,14 +123,21 @@
 
 /* Selection rendered wrapper */
 .select2-container .select2-selection--multiple .select2-selection__rendered {
-    display: flex !important;
+    display: inline-flex !important;
     flex-wrap: wrap !important;
     padding: 0 !important;
+    width: 100% !important;
+    align-items: center !important;
+    min-height: 32px !important; /* Set minimum height for consistency */
 }
 
-/* Hide the textarea for searching within the selection area */
-.select2-container .select2-selection--multiple .select2-search--inline {
-    display: none !important;
+/* Hide the search input completely - critical fix */
+.select2-search--inline {
+    display: none !important; /* Force hiding the search input */
+}
+
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    display: none !important; /* Double ensure it's hidden */
 }
 
 /* Add special styling when dropdown opens */
@@ -122,4 +149,153 @@
 /* Invalid state */
 .is-invalid + .select2-container .select2-selection {
     border-color: #dc3545 !important;
+}
+
+/* Base styling for select elements before Select2 initialization */
+select.form-select[multiple] {
+    height: 42px !important; /* Match the height of other form controls */
+    opacity: 0.01 !important; /* Not fully transparent but effectively hidden */
+    position: absolute !important;
+    top: 0;
+    left: 0;
+}
+
+/* Container styling to maintain consistent height */
+#preferredLeaguesContainer, 
+#mustTeamsContainer {
+    position: relative;
+    min-height: 42px !important;
+    height: 42px !important; /* Fixed initial height */
+    margin-bottom: 1rem !important;
+    transition: height 0.2s ease-out;
+}
+
+/* Allow containers to grow when selections are made */
+#preferredLeaguesContainer.has-selections,
+#mustTeamsContainer.has-selections {
+    height: auto !important;
+    min-height: 42px !important;
+}
+
+/* Fix the placeholder loading state by reducing z-index */
+#preferredLeaguesContainer::before,
+#mustTeamsContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 42px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    z-index: -1; /* Change from 1 to -1 so it doesn't block clicks */
+}
+
+/* Hide the placeholder once Select2 is initialized */
+.select2-container--default + select + #preferredLeaguesContainer::before,
+.select2-container--default + select + #mustTeamsContainer::before {
+    display: none;
+}
+
+/* Show the select once it's properly initialized */
+.select2-initialized select.form-select[multiple] {
+    opacity: 1;
+}
+
+/* Single select styling to match multiple select */
+.select2-container--default .select2-selection--single {
+    height: 42px !important;
+    padding: 0.375rem 0.75rem !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.375rem !important;
+    background-color: #fff !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Dropdown arrow styling */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 40px !important;
+    width: 30px !important;
+}
+
+/* Text in the single select */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #212529 !important;
+    line-height: 1.5 !important;
+    padding: 0 !important;
+}
+
+/* Focus state for single select */
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--open .select2-selection--single {
+    border-color: #80bdff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
+/* Ensure placeholder text is styled consistently */
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #6c757d !important;
+}
+
+/* Ensure selected option is styled consistently */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-size: 0.9rem !important;
+}
+
+/* Fix height of single-selection dropdown options */
+.select2-results__option {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.9rem !important;
+}
+
+/* Add this to base.css at the top */
+/* Hide selects until fully styled to prevent FOUC */
+.select-hidden {
+    visibility: hidden !important;
+}
+
+/* Also add this class to the body initially */
+body.loading-select2 {
+    overflow-y: scroll !important; /* Prevent layout shift by always showing scrollbar */
+}
+
+/* Add this class to the body to indicate when the page is fully loaded */
+body.select2-ready .select-hidden {
+    visibility: visible !important;
+    transition: visibility 0s;
+}
+
+/* Add these fixes to select2.css */
+
+/* Fix dropdown transparency and visibility */
+.select2-dropdown {
+    background-color: white !important;
+    z-index: 9999 !important; /* Ensure high z-index */
+    opacity: 1 !important;
+}
+
+/* Ensure the dropdown container is properly positioned */
+.select2-container--open {
+    z-index: 9999 !important;
+}
+
+/* Ensure the dropdown menu has a solid background */
+.select2-results {
+    background-color: white !important;
+}
+
+/* Fix any inherited backdrop filters */
+.select2-dropdown,
+.select2-results,
+.select2-results__options {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Add this to ensure dropdowns open on top of the form */
+body.select2-dropdown-open {
+    position: relative;
+    z-index: 1;
 }

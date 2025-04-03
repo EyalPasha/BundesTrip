@@ -8,13 +8,16 @@ function showComponentLoading(element) {
     // Remove any existing spinners first
     hideComponentLoading(element);
     
-    // Add a loading spinner to the component
-    const spinner = document.createElement('div');
-    spinner.className = 'component-spinner position-absolute end-0 top-50 translate-middle-y me-2';
-    spinner.innerHTML = '<div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+    // Instead of adding a spinner, just apply a subtle loading state
+    element.classList.add('is-loading');
+    
+    // Optional: Add a subtle visual indicator without using a spinner
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.className = 'component-loading-state position-absolute end-0 top-50 translate-middle-y me-2';
+    loadingIndicator.style.opacity = '0.6';
     
     element.style.position = 'relative';  // Ensure parent is positioned for absolute positioning
-    element.appendChild(spinner);
+    element.appendChild(loadingIndicator);
 }
 
 /**
@@ -24,9 +27,12 @@ function showComponentLoading(element) {
 function hideComponentLoading(element) {
     if (!element) return;
     
-    // Remove all loading spinners from the component
-    const spinners = element.querySelectorAll('.component-spinner');
-    spinners.forEach(spinner => spinner.remove());
+    // Remove the loading class
+    element.classList.remove('is-loading');
+    
+    // Remove all loading indicators from the component
+    const loadingIndicators = element.querySelectorAll('.component-loading-state');
+    loadingIndicators.forEach(indicator => indicator.remove());
 }
 
 /**

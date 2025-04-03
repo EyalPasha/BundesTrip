@@ -14,6 +14,9 @@ async function handleSearch(e) {
         return;
     }
     
+    // Add a flag to track if we're showing the no results message
+    let noResultsShown = false;
+    
     // Hide results container while searching
     const resultsContainer = document.getElementById('resultsContainer');
     if (resultsContainer) {
@@ -170,8 +173,9 @@ async function handleSearch(e) {
             if (cancelButton) cancelButton.classList.add('d-none');
             if (noResultsMessage) noResultsMessage.classList.remove('d-none');
             
-            // Keep the loading overlay visible, just change its content
-            // Do not attempt to hide the loading indicator as it contains the no results message
+            // Keep the loading overlay visible to show the no results message
+            // Skip hiding the loading indicator in the finally block
+            noResultsShown = true; // Add this flag to track state
         }
         
         // Render the results
@@ -223,12 +227,21 @@ async function handleSearch(e) {
             }
         }
     } finally {
-        // Only restore if not already done by cancel button
-        if (!searchCancelled) {
-            // Hide loading
+        // Only hide the loading indicator if:
+        // 1. The search was cancelled, OR
+        // 2. We have results, OR 
+        // 3. There was an error (not "no results")
+        
+        const shouldHideLoading = searchCancelled || 
+            (response && response.trip_groups && response.trip_groups.length > 0) ||
+            (error && error.message !== "No trips found matching your criteria");
+        
+        if (shouldHideLoading) {
+            // Hide loading and restore scrolling
             window.DOM.loadingIndicator.classList.add('d-none');
-            document.body.classList.remove('no-scroll'); // Restore scrolling
+            document.body.classList.remove('no-scroll');
         }
+        // Otherwise, keep the loading indicator visible with the "No Results" message
     }
 }
 

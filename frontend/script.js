@@ -34,7 +34,6 @@ function initDOMReferences() {
         tripResults: 'tripResults',
         loadingIndicator: 'loading',
         noResultsMessage: 'noResultsMessage',
-        viewListBtn: 'viewList',
         teamFiltersContainer: 'teamFilters',
         cityFiltersContainer: 'cityFilters',
         sortResults: 'sortResults',
@@ -49,7 +48,10 @@ function initDOMReferences() {
         if (element) {
             window.DOM[key] = element;
         } else {
-            console.warn(`DOM element not found: ${id}`);
+            // Only log warnings for required elements
+            if (!['viewListBtn', 'teamFiltersContainer', 'cityFiltersContainer', 'sortResults'].includes(id)) {
+                console.warn(`DOM element not found: ${id}`);
+            }
             window.DOM[key] = null; // Set to null to allow safe checks
         }
     }
@@ -171,31 +173,128 @@ document.addEventListener('DOMContentLoaded', async function() {
         window.DOM.sortResults.addEventListener('change', handleSortResults);
     }
 
-    // Replace the current Select2 configuration with this:
+    // Replace your current Select2 initialization with this expanded version
     $(document).ready(function() {
-        // Configure Preferred Leagues dropdown
-        $('#preferredLeagues').select2({
-            placeholder: 'Select leagues...',
+        // Configure ALL dropdowns with Select2 styling
+        
+        // Starting Location dropdown
+        $('#startLocation').select2({
+            placeholder: 'Select a city',
             width: '100%',
-            dropdownParent: $('#preferredLeaguesContainer'),
-            minimumResultsForSearch: Infinity,
+            minimumResultsForSearch: 10, // Show search only if many options
             selectionCssClass: 'select2-selection--clean',
             dropdownCssClass: 'select2-dropdown--clean'
         });
         
-        // Configure Must Include Teams dropdown
-        $('#mustTeams').select2({
-            placeholder: 'Select teams...',
+        // Trip Duration dropdown
+        $('#tripDuration').select2({
             width: '100%',
-            dropdownParent: $('#mustTeamsContainer'),
-            minimumResultsForSearch: Infinity,
+            minimumResultsForSearch: Infinity, // Hide search
             selectionCssClass: 'select2-selection--clean',
             dropdownCssClass: 'select2-dropdown--clean'
         });
+        
+        // Max Travel Time dropdown
+        $('#maxTravelTime').select2({
+            width: '100%',
+            minimumResultsForSearch: Infinity, // Hide search
+            selectionCssClass: 'select2-selection--clean',
+            dropdownCssClass: 'select2-dropdown--clean'
+        });
+        
+        // Min Games dropdown
+        $('#minGames').select2({
+            width: '100%',
+            minimumResultsForSearch: Infinity, // Hide search
+            selectionCssClass: 'select2-selection--clean',
+            dropdownCssClass: 'select2-dropdown--clean'
+        });
+        
+        // Configure Preferred Leagues dropdown (your existing code)
+        $('#preferredLeagues').select2({
+            placeholder: 'Select leagues...',
+            width: '100%',
+            dropdownParent: $('body'), // Append to body instead of container to avoid clipping
+            minimumResultsForSearch: Infinity,
+            selectionCssClass: 'select2-selection--clean',
+            dropdownCssClass: 'select2-dropdown--clean'
+        }).on('select2:open', function() {
+            document.body.classList.add('select2-initialized');
+            document.body.classList.add('select2-dropdown-open'); // Add class to increase body z-index
+        }).on('select2:close', function() {
+            document.body.classList.remove('select2-dropdown-open');
+        });
+        
+        // Do the same for the mustTeams select
+        $('#mustTeams').select2({
+            placeholder: 'Select teams...',
+            width: '100%',
+            dropdownParent: $('body'), // Append to body instead of container
+            minimumResultsForSearch: Infinity,
+            selectionCssClass: 'select2-selection--clean',
+            dropdownCssClass: 'select2-dropdown--clean'
+        }).on('select2:open', function() {
+            document.body.classList.add('select2-initialized');
+            document.body.classList.add('select2-dropdown-open');
+        }).on('select2:close', function() {
+            document.body.classList.remove('select2-dropdown-open');
+        });
+        
+        // Mark as initialized immediately to prevent flicker
+        document.body.classList.add('select2-initialized');
+    });
+
+    // Add this to your script.js file to handle selection changes
+    $(document).ready(function() {
+        // Handle preferred leagues selection changes
+        $('#preferredLeagues').on('select2:select select2:unselect', function(e) {
+            updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
+        });
+        
+        // Handle must teams selection changes
+        $('#mustTeams').on('select2:select select2:unselect', function(e) {
+            updateSelectionClasses($(this), $('#mustTeamsContainer'));
+        });
+        
+        // Update classes based on selection state
+        function updateSelectionClasses(selectElement, containerElement) {
+            // Check if there are any selections
+            const hasSelections = selectElement.val() && selectElement.val().length > 0;
+            
+            // Add or remove classes based on selection state
+            if (hasSelections) {
+                selectElement.next('.select2-container').find('.select2-selection--multiple')
+                    .addClass('has-selections');
+                containerElement.addClass('has-selections');
+            } else {
+                selectElement.next('.select2-container').find('.select2-selection--multiple')
+                    .removeClass('has-selections');
+                containerElement.removeClass('has-selections');
+            }
+        }
+        
+        // Run once initially to set the correct state on page load
+        setTimeout(function() {
+            updateSelectionClasses($('#preferredLeagues'), $('#preferredLeaguesContainer'));
+            updateSelectionClasses($('#mustTeams'), $('#mustTeamsContainer'));
+        }, 300);
     });
 
     // Initialize loading animation
-    initLoadingAnimation();
+    const loadingIndicator = document.getElementById('loading');
+    if (loadingIndicator) {
+        // Initialize animation when loading becomes visible
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class' && 
+                    !loadingIndicator.classList.contains('d-none')) {
+                    initLoadingAnimation();
+                }
+            });
+        });
+        
+        observer.observe(loadingIndicator, { attributes: true });
+    }
 });
 
 // Sort results by selected criteria
@@ -232,26 +331,61 @@ function handleSortResults() {
     });
 }
 
+// Enhanced loading animation function - add to script.js
 function initLoadingAnimation() {
-  // Rotate through loading messages
   const messages = document.querySelectorAll('.loading-message');
   let currentIndex = 0;
   
+  // Clear any existing animation
+  if (window.loadingMessageInterval) {
+    clearInterval(window.loadingMessageInterval);
+  }
+  
+  // Reset all messages
+  messages.forEach(msg => {
+    msg.classList.remove('active');
+    msg.style.opacity = '0';
+    msg.style.transform = 'translateY(20px)';
+  });
+  
+  // Activate first message immediately
   if (messages.length > 0) {
-    setInterval(() => {
-      // Remove active class from current message
+    messages[0].classList.add('active');
+    messages[0].style.opacity = '1';
+    messages[0].style.transform = 'translateY(0)';
+    
+    // Set up message rotation with better timing
+    window.loadingMessageInterval = setInterval(() => {
+      // Hide current message
       messages[currentIndex].classList.remove('active');
+      messages[currentIndex].style.opacity = '0';
+      messages[currentIndex].style.transform = 'translateY(-20px)';
       
       // Move to next message
       currentIndex = (currentIndex + 1) % messages.length;
       
-      // Add active class to new message
-      messages[currentIndex].classList.add('active');
-    }, 2500);
+      // Show next message
+      setTimeout(() => {
+        messages[currentIndex].classList.add('active');
+        messages[currentIndex].style.opacity = '1';
+        messages[currentIndex].style.transform = 'translateY(0)';
+      }, 300);
+      
+    }, 3000); // Show each message for 3 seconds
   }
 }
 
+// Add a cleanup function to clear intervals when loading is hidden
+function cleanupLoadingAnimation() {
+  if (window.messageInterval) {
+    clearInterval(window.messageInterval);
+  }
+}
+
+// Update returnToSearch to use this cleanup
 function returnToSearch() {
+    cleanupLoadingAnimation();
+    
     // Hide the loading container
     if (window.DOM.loadingIndicator) {
         window.DOM.loadingIndicator.classList.add('d-none');
@@ -267,6 +401,11 @@ function returnToSearch() {
     if (loadingMessages) loadingMessages.classList.remove('d-none');
     if (cancelButton) cancelButton.classList.remove('d-none');
     if (noResultsMessage) noResultsMessage.classList.add('d-none');
+    
+    // IMPORTANT: Hide the entire results section to prevent white space
+    if (window.DOM.resultsSection) {
+        window.DOM.resultsSection.classList.add('d-none');
+    }
     
     // Enable scrolling
     document.body.classList.remove('no-scroll');
