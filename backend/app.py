@@ -1109,19 +1109,16 @@ def get_cities():
 
 
 @app.get("/available-dates",
-         summary="Get dates with available matches",
-         description="Returns a list of dates that have scheduled matches, optionally filtered by league",
+         summary="Get all dates with available matches",
+         description="Returns a list of all future dates that have scheduled matches, optionally filtered by league or team",
          tags=["Reference Data"])
 def get_available_dates(
     league: Optional[str] = Query(None, description="Filter dates by league"),
-    team: Optional[str] = Query(None, description="Filter dates by team"),
-    days: int = Query(60, description="Number of days to look ahead")
+    team: Optional[str] = Query(None, description="Filter dates by team")
 ):
-    """Get dates with available matches for the date picker."""
-    start_date = datetime.now().date()
-    end_date = start_date + timedelta(days=days)
-    
+    """Get all future dates with available matches for the date picker."""
     date_matches = {}
+    today = datetime.now().date()
     
     # Process regular games
     for game in games:
@@ -1129,7 +1126,45 @@ def get_available_dates(
             continue
             
         game_date = game.date.date()
-        if game_date < start_date or game_date > end_date:
+        
+        # Skip dates that have passed
+        if game_date < today:
+            continue
+            
+        # Apply league filter if specified
+        if league and hasattr(game, 'league') and game.league != league:
+            continue
+            
+        # Apply team filter if specified
+        if team:
+            team_lower = team.lower()
+            if not ((hasattr(game, 'home_team') and game.home_team.lower() == team_lower) or
+                   (hasattr(game, 'away_team') and game.away_team.lower() == team_lower)):
+                continue
+        
+        # Format date as string
+        date_str = game_date.strftime("%Y-%m-%d")
+        
+        if date_str not in date_matches:
+            date_matches[date_str] = {
+                "date": game_date.strftime("%d %B"),
+                "count": 0,
+                "leagues": set()
+            }
+            
+        date_matches[date_str]["count"] += 1
+        if hasattr(game, 'league'):
+            date_matches[date_str]["leagues"].add(game.league)
+    
+    # Process TBD games
+    for game in tbd_games:
+        if not hasattr(game, 'date'):
+            continue
+            
+        game_date = game.date.date()
+        
+        # Skip dates that have passed
+        if game_date < today:
             continue
             
         # Apply league filter if specified
@@ -1226,19 +1261,16 @@ def get_city_connections(
         "count": len(connections)
     }
 
-
 @app.get("/team-schedule/{team}",
-         summary="Get a team's schedule",
-         description="Returns the schedule for a specific team",
+         summary="Get a team's complete schedule",
+         description="Returns the future schedule for a specific team",
          tags=["Team Data"])
 def get_team_schedule(
-    team: str = Path(..., description="The team name"),
-    days: int = Query(60, description="Number of days to look ahead")
+    team: str = Path(..., description="The team name")
 ):
-    """Get upcoming schedule for a specific team."""
-    start_date = datetime.now().date()
-    end_date = start_date + timedelta(days=days)
+    """Get future games schedule for a specific team."""
     team_lower = team.lower()
+    today = datetime.now().date()
     
     # Find matching team with correct capitalization
     team_name = None
@@ -1260,14 +1292,16 @@ def get_team_schedule(
             status_code=404
         )
     
-    # Find all matches for this team
+    # Find all future matches for this team
     upcoming_matches = []
     for game in games:
         if not (hasattr(game, 'date') and hasattr(game, 'home_team') and hasattr(game, 'away_team')):
             continue
             
         game_date = game.date.date()
-        if game_date < start_date or game_date > end_date:
+        
+        # Skip dates that have passed
+        if game_date < today:
             continue
             
         is_home = hasattr(game, 'home_team') and game.home_team.lower() == team_lower
@@ -1286,14 +1320,16 @@ def get_team_schedule(
             "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown"
         })
     
-    # Also add TBD games
+    # Also add future TBD games
     tbd_matches = []
     for game in tbd_games:
         if not (hasattr(game, 'date') and hasattr(game, 'home_team') and hasattr(game, 'away_team')):
             continue
             
         game_date = game.date.date()
-        if game_date < start_date or game_date > end_date:
+        
+        # Skip dates that have passed
+        if game_date < today:
             continue
             
         is_home = hasattr(game, 'home_team') and game.home_team.lower() == team_lower
@@ -1317,7 +1353,6 @@ def get_team_schedule(
         "tbd_matches": sorted(tbd_matches, key=lambda x: x["date"]),
         "total_matches": len(upcoming_matches) + len(tbd_matches)
     }
-
 
 @app.get("/health", 
          summary="Health check",
@@ -1400,53 +1435,81 @@ def search(
 def get_game_details(
     league: str = Path(..., description="The league name"),
     date: str = Path(..., description="The date in YYYY-MM-DD format"),
+    include_past: bool = Query(False, description="Include games from past dates")
 ):
     """Get detailed game information for a specific date and league."""
     try:
         target_date = datetime.strptime(date, "%Y-%m-%d").date()
+        today = datetime.now().date()
+        
+        # Check if the date is in the past and if past dates should be excluded
+        if target_date < today and not include_past:
+            return {
+                "league": league,
+                "date": date,
+                "display_date": target_date.strftime("%d %B %Y"),
+                "games": [],
+                "count": 0,
+                "is_past_date": True,
+                "message": "This date has passed. Set include_past=true to see historical games."
+            }
+            
+        # Filter games by league and date
+        day_games = []
+        
+        # Process regular games
+        for game in games:
+            if not (hasattr(game, 'date') and hasattr(game, 'league')):
+                continue
+                
+            game_date = game.date.date()
+            if game_date == target_date and game.league == league:
+                day_games.append({
+                    "match": f"{game.home_team} vs {game.away_team}",
+                    "time": game.time if hasattr(game, 'time') else "TBD",
+                    "location": game.hbf_location if hasattr(game, 'hbf_location') else "Unknown",
+                    "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown",
+                    "league": game.league
+                })
+        
+        # Process TBD games
+        for game in tbd_games:
+            if not (hasattr(game, 'date') and hasattr(game, 'league')):
+                continue
+                
+            game_date = game.date.date()
+            if game_date == target_date and game.league == league:
+                day_games.append({
+                    "match": f"{game.home_team} vs {game.away_team}",
+                    "time": "TBD",
+                    "location": game.hbf_location if hasattr(game, 'hbf_location') else "Unknown",
+                    "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown",
+                    "league": game.league
+                })
+        
+        return {
+            "league": league,
+            "date": date,
+            "display_date": target_date.strftime("%d %B %Y"),
+            "games": day_games,
+            "count": len(day_games),
+            "is_past_date": target_date < today
+        }
     except ValueError:
         return JSONResponse(
             content={"error": "Invalid date format. Please use YYYY-MM-DD."},
             status_code=400
         )
-    
-    # Filter games by league and date
-    day_games = []
-    
-    for game in games:
-        if not (hasattr(game, 'date') and hasattr(game, 'league')):
-            continue
-            
-        game_date = game.date.date()
-        if game_date == target_date and game.league == league:
-            day_games.append({
-                "match": f"{game.home_team} vs {game.away_team}",
-                "time": game.time if hasattr(game, 'time') else "TBD",
-                "location": game.hbf_location if hasattr(game, 'hbf_location') else "Unknown",
-                "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown",
-                "league": game.league
-            })
-    
-    return {
-        "league": league,
-        "date": date,
-        "display_date": target_date.strftime("%d %B %Y"),
-        "games": day_games,
-        "count": len(day_games)
-    }
-
 
 @app.get("/league-schedule/{league}",
-         summary="Get a league's schedule",
-         description="Returns the schedule for a specific league",
+         summary="Get a league's complete schedule",
+         description="Returns the future schedule for a specific league",
          tags=["League Data"])
 def get_league_schedule(
-    league: str = Path(..., description="The league name"),
-    days: int = Query(60, description="Number of days to look ahead")
+    league: str = Path(..., description="The league name")
 ):
-    """Get upcoming schedule for a specific league."""
-    start_date = datetime.now().date()
-    end_date = start_date + timedelta(days=days)
+    """Get future games schedule for a specific league."""
+    today = datetime.now().date()
     
     # Find matching league with correct capitalization
     league_name = None
@@ -1468,12 +1531,16 @@ def get_league_schedule(
     
     # Group games by date
     dates_with_games = {}
+    
+    # Process regular games
     for game in games:
         if not (hasattr(game, 'date') and hasattr(game, 'league') and game.league == league_name):
             continue
             
         game_date = game.date.date()
-        if game_date < start_date or game_date > end_date:
+        
+        # Skip dates that have passed
+        if game_date < today:
             continue
             
         date_str = game_date.strftime("%Y-%m-%d")
@@ -1486,6 +1553,30 @@ def get_league_schedule(
         dates_with_games[date_str]["games"].append({
             "match": f"{game.home_team} vs {game.away_team}",
             "time": game.time if hasattr(game, 'time') else "TBD",
+            "location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown"
+        })
+    
+    # Process TBD games
+    for game in tbd_games:
+        if not (hasattr(game, 'date') and hasattr(game, 'league') and game.league == league_name):
+            continue
+            
+        game_date = game.date.date()
+        
+        # Skip dates that have passed
+        if game_date < today:
+            continue
+            
+        date_str = game_date.strftime("%Y-%m-%d")
+        if date_str not in dates_with_games:
+            dates_with_games[date_str] = {
+                "date": game_date.strftime("%d %B %Y"),
+                "games": []
+            }
+        
+        dates_with_games[date_str]["games"].append({
+            "match": f"{game.home_team} vs {game.away_team}",
+            "time": "TBD",
             "location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown"
         })
     
@@ -1506,9 +1597,8 @@ def get_league_schedule(
         "schedule": schedule,
         "total_matchdays": len(schedule),
         "total_games": sum(day["game_count"] for day in schedule)
-    }
-
-
+    } 
+    
 @app.get("/airport-information",
          summary="Get airport information",
          description="Returns information about airports and their connections to cities",
@@ -1681,54 +1771,89 @@ def get_travel_stats():
          tags=["Game Data"])
 def get_games_by_date(
     date: str = Path(..., description="The date in YYYY-MM-DD format"),
-    league: Optional[str] = Query(None, description="Filter by league")
+    league: Optional[str] = Query(None, description="Filter by league"),
+    include_past: bool = Query(False, description="Include games from past dates")
 ):
     """Get all games scheduled for a specific date."""
     try:
         target_date = datetime.strptime(date, "%Y-%m-%d").date()
+        today = datetime.now().date()
+        
+        # Check if the date is in the past and if past dates should be excluded
+        if target_date < today and not include_past:
+            return {
+                "date": date,
+                "display_date": target_date.strftime("%d %B %Y"),
+                "total_games": 0,
+                "games_by_league": {},
+                "leagues": [],
+                "is_past_date": True,
+                "message": "This date has passed. Set include_past=true to see historical games."
+            }
+            
+        # Filter games by date
+        day_games = []
+        
+        # Process regular games
+        for game in games:
+            if not hasattr(game, 'date'):
+                continue
+                
+            game_date = game.date.date()
+            if game_date == target_date:
+                # Apply league filter if specified
+                if league and hasattr(game, 'league') and game.league != league:
+                    continue
+                    
+                day_games.append({
+                    "match": f"{game.home_team} vs {game.away_team}",
+                    "time": game.time if hasattr(game, 'time') else "TBD",
+                    "location": game.hbf_location if hasattr(game, 'hbf_location') else "Unknown",
+                    "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown",
+                    "league": game.league if hasattr(game, 'league') else "Unknown"
+                })
+        
+        # Process TBD games
+        for game in tbd_games:
+            if not hasattr(game, 'date'):
+                continue
+                
+            game_date = game.date.date()
+            if game_date == target_date:
+                # Apply league filter if specified
+                if league and hasattr(game, 'league') and game.league != league:
+                    continue
+                    
+                day_games.append({
+                    "match": f"{game.home_team} vs {game.away_team}",
+                    "time": "TBD",
+                    "location": game.hbf_location if hasattr(game, 'hbf_location') else "Unknown",
+                    "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown",
+                    "league": game.league if hasattr(game, 'league') else "Unknown"
+                })
+        
+        # Group by league
+        by_league = {}
+        for game in day_games:
+            league_name = game["league"]
+            if league_name not in by_league:
+                by_league[league_name] = []
+            by_league[league_name].append(game)
+        
+        return {
+            "date": date,
+            "display_date": target_date.strftime("%d %B %Y"),
+            "total_games": len(day_games),
+            "games_by_league": by_league,
+            "leagues": list(by_league.keys()),
+            "is_past_date": target_date < today
+        }
     except ValueError:
         return JSONResponse(
             content={"error": "Invalid date format. Please use YYYY-MM-DD."},
             status_code=400
-        )
+        )  
     
-    # Filter games by date
-    day_games = []
-    
-    for game in games:
-        if not hasattr(game, 'date'):
-            continue
-            
-        game_date = game.date.date()
-        if game_date == target_date:
-            # Apply league filter if specified
-            if league and hasattr(game, 'league') and game.league != league:
-                continue
-                
-            day_games.append({
-                "match": f"{game.home_team} vs {game.away_team}",
-                "time": game.time if hasattr(game, 'time') else "TBD",
-                "location": game.hbf_location if hasattr(game, 'hbf_location') else "Unknown",
-                "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown",
-                "league": game.league if hasattr(game, 'league') else "Unknown"
-            })
-    
-    # Group by league
-    by_league = {}
-    for game in day_games:
-        league_name = game["league"]
-        if league_name not in by_league:
-            by_league[league_name] = []
-        by_league[league_name].append(game)
-    
-    return {
-        "date": date,
-        "display_date": target_date.strftime("%d %B %Y"),
-        "total_games": len(day_games),
-        "games_by_league": by_league,
-        "leagues": list(by_league.keys())
-    }
-
 @app.post("/admin/refresh-data",
          summary="Refresh game and travel data",
          description="Reloads game schedules and train times from data files without restarting the server",
@@ -1767,5 +1892,72 @@ def refresh_data(api_key: str = Query(..., description="API key for admin operat
         traceback.print_exc()
         return JSONResponse(
             content={"error": f"Failed to refresh data: {str(e)}"},
+            status_code=500
+        )
+        
+
+@app.get("/tbd-games",
+         summary="Get all future TBD games",
+         description="Returns all future games without confirmed times, optionally filtered by league and team",
+         tags=["Game Data"])
+def get_tbd_games(
+    league: Optional[str] = Query(None, description="Filter by league"),
+    team: Optional[str] = Query(None, description="Filter by team")
+):
+    """Get all future games without confirmed times."""
+    try:
+        filtered_games = []
+        today = datetime.now().date()
+        
+        for game in tbd_games:
+            if not hasattr(game, 'date'):
+                continue
+                
+            game_date = game.date.date()
+            
+            # Skip dates that have passed
+            if game_date < today:
+                continue
+                
+            # Apply league filter if specified
+            if league and hasattr(game, 'league') and game.league.lower() != league.lower():
+                continue
+                
+            # Apply team filter if specified
+            if team and not ((hasattr(game, 'home_team') and game.home_team.lower() == team.lower()) or 
+                           (hasattr(game, 'away_team') and game.away_team.lower() == team.lower())):
+                continue
+                
+            # Format the game for response
+            game_info = {
+                "match": f"{game.home_team} vs {game.away_team}",
+                "date": game_date.strftime("%d %B %Y"),
+                "league": game.league if hasattr(game, 'league') else "Unknown",
+                "location": game.hbf_location if hasattr(game, 'hbf_location') else "Unknown",
+                "display_location": game.hbf_location.replace(" hbf", "") if hasattr(game, 'hbf_location') else "Unknown"
+            }
+            
+            filtered_games.append(game_info)
+            
+        # Sort by date
+        sorted_games = sorted(filtered_games, key=lambda x: x["date"])
+        
+        # Group by league
+        by_league = {}
+        for game in sorted_games:
+            league_name = game["league"]
+            if league_name not in by_league:
+                by_league[league_name] = []
+            by_league[league_name].append(game)
+        
+        return {
+            "total": len(sorted_games),
+            "games": sorted_games,
+            "games_by_league": by_league,
+            "leagues": list(by_league.keys())
+        }
+    except Exception as e:
+        return JSONResponse(
+            content={"error": f"Failed to retrieve TBD games: {str(e)}"},
             status_code=500
         )

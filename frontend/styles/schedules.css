@@ -1,0 +1,1423 @@
+/* Schedule page specific styles */
+
+/* Schedule card styling */
+.match-card {
+    border-left: 4px solid #043d7c;
+    transition: transform 0.2s ease-in-out;
+}
+
+.match-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.match-card.home-match {
+    border-left-color: #043d7c;
+}
+
+.match-card.away-match {
+    border-left-color: #c71a2e;
+}
+
+.match-date {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.match-time {
+    font-weight: 700;
+    color: #212529;
+}
+
+.match-league {
+    display: inline-block;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    background-color: #ffffff;
+    border-radius: 0.25rem;
+}
+
+.match-location {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.team-badge {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+/* Calendar view styles */
+.calendar-view {
+    margin-top: 1rem;
+    padding: 1rem 0;
+}
+
+.calendar-month {
+    margin-bottom: 2rem;
+}
+
+.month-title {
+    color: #043d7c;
+    font-weight: 600;
+    border-bottom: 2px solid #043d7c;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.calendar-grid {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-row {
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-row:last-child {
+    border-bottom: none;
+}
+
+.calendar-cell {
+    flex: 1;
+    min-height: 100px;
+    padding: 0.5rem;
+    border-right: 1px solid #dee2e6;
+    position: relative;
+    text-align: center;
+}
+
+.calendar-cell:last-child {
+    border-right: none;
+}
+
+.calendar-day-header {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    text-align: center;
+    min-height: 0;
+    padding: 0.5rem;
+}
+
+.day-number {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    font-weight: 500;
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.calendar-day.empty {
+    background-color: #f8f9fa;
+    color: #adb5bd;
+    cursor: default;
+}
+
+.calendar-day.has-matches {
+    background-color: #f0f8ff;
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
+.calendar-day.current-day {
+    background-color: rgba(4, 61, 124, 0.1);
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.calendar-day.current-day .day-number {
+    color: #fff;
+    background-color: #043d7c;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0d6efd;
+    width: 26px;
+    height: 26px;
+    margin: 0 auto;
+}
+
+.day-matches {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+}
+
+.match-item {
+    background-color: #fff;
+    border-left: 3px solid #043d7c;
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.match-item.tbd-match {
+    border-left-color: #ffc107;
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.match-item .match-time {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.match-item .match-teams {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Weekly calendar for date view */
+.weekly-calendar {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.week-row {
+    display: flex;
+    width: 100%;
+}
+
+.week-day {
+    flex: 1;
+    min-height: 200px;
+    border-right: 1px solid #dee2e6;
+    padding: 0;
+}
+
+.week-day:last-child {
+    border-right: none;
+}
+
+.week-day-header {
+    background-color: #f8f9fa;
+    padding: 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.week-day.selected-day .week-day-header {
+    background-color: #043d7c;
+    color: white;
+}
+
+.day-games {
+    padding: 0.5rem;
+    max-height: calc(100vh - 400px);
+    overflow-y: auto;
+}
+
+.league-games {
+    border-radius: 0.25rem;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+}
+
+.league-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.league-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.25rem;
+}
+
+.game-item {
+    border-bottom: 1px solid #dee2e6;
+    background-color: white;
+}
+
+.game-item:last-child {
+    border-bottom: none;
+}
+
+.game-time {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.team-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.25rem;
+}
+
+.vs {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6c757d;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.game-location {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.no-games {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #adb5bd;
+    font-size: 0.875rem;
+}
+
+/* League schedule view */
+.league-info {
+    background-color: #f8f9fa;
+    border-left: 4px solid #043d7c;
+}
+
+.league-logo {
+    width: 40px;
+    height: 40px;
+}
+
+/* Game cards for league view */
+.game-card {
+    border-left: 4px solid #043d7c;
+    transition: transform 0.2s ease-in-out;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    border-color: rgba(0,0,0,0.1);
+}
+
+.game-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.game-card:first-child {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.game-card:last-child {
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.game-card .match-time {
+    font-weight: 600;
+    color: #444;
+}
+
+.game-card .match-teams {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.game-card .team-badge {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.game-card .match-location {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.game-card .vs {
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.highlighted-game {
+    background-color: rgba(25, 135, 84, 0.05);
+    border-color: rgba(25, 135, 84, 0.2) !important;
+}
+
+.team-wrapper {
+    display: flex;
+    align-items: center;
+    width: 45%;
+    overflow: visible;
+    white-space: normal;
+}
+
+.team-wrapper.home-team {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.team-wrapper.away-team {
+    justify-content: flex-start;
+    text-align: left;
+}
+
+/* Team name styling - ensure full display */
+.team-name {
+    overflow: visible;
+    white-space: normal;
+    word-break: break-word;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    max-width: none;
+  }
+
+.score-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+    min-width: 40px;
+}
+
+/* VS styling */
+.vs-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 60px;
+  }
+
+.vs {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6c757d;
+  }
+
+/* Date view styling */
+.date-header {
+    background-color: #f8f9fa;
+    border-left: 4px solid #043d7c;
+    padding: 1rem 0;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+}
+
+.date-header i {
+    color: #0d6efd;
+}
+
+.date-header .date-stats {
+    margin-top: 0.5rem;
+    color: #6c757d;
+}
+
+.league-tab-logo {
+    width: 20px;
+    height: 20px;
+}
+
+.nav-tabs .nav-link {
+    color: #495057;
+}
+
+.nav-tabs .nav-link.active {
+    color: #043d7c;
+    font-weight: 500;
+    border-bottom-color: #043d7c;
+    border-bottom-width: 2px;
+}
+
+/* TBD match styling */
+.match-card.tbd-match {
+    border-left-color: #ffc107;
+    opacity: 0.9;
+}
+
+.tbd-badge {
+    background-color: #ffc107;
+    color: #212529;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Filter controls */
+.form-range::-webkit-slider-thumb {
+    background-color: #043d7c;
+}
+
+.form-range::-moz-range-thumb {
+    background-color: #043d7c;
+}
+
+/* View toggle buttons */
+.btn-group .btn.active {
+    background-color: #043d7c;
+    color: white;
+    border-color: #043d7c;
+}
+
+/* League badge styling */
+.league-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+}
+
+.league-badge img {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+}
+
+.bundesliga {
+    background-color: #e9ecef;
+    color: #212529;
+}
+
+.champions-league {
+    background-color: #03234f;
+    color: #212529;
+}
+
+.dfb-pokal {
+    background-color: #c71a2e;
+    color: #212529;
+}
+
+.europa-league {
+    background-color: #ff6900;
+    color: #212529;
+}
+
+.liga2 {
+    background-color: #78be20;
+    color: #212529;
+}
+
+.liga3 {
+    background-color: #dce714;
+    color: #212529;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .calendar-day {
+        min-height: 80px;
+        height: 60px;
+    }
+    
+    .day-matches {
+        margin-top: 1rem;
+    }
+    
+    .calendar-cell {
+        padding: 0.25rem;
+    }
+    
+    .day-number {
+        top: 0.1rem;
+        right: 0.25rem;
+    }
+    
+    .team-wrapper {
+        flex-direction: column;
+        font-size: 0.75rem;
+    }
+    
+    .team-name {
+        max-width: 80px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .week-day {
+        min-height: 150px;
+    }
+
+    .game-card .team-badge {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .game-card .match-time {
+        font-size: 0.9rem;
+    }
+
+    .team-name {
+        font-size: 0.8rem;
+        display: block !important;
+    }
+    
+    .vs-container {
+        width: 30px;
+        min-width: 30px;
+    }
+    
+    .team-wrapper {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .team-wrapper.home-team {
+        justify-content: flex-end;
+    }
+    
+    .team-wrapper.away-team {
+        justify-content: flex-start;
+    }
+}
+
+/* Schedules Page Styles */
+
+/* Filter bar */
+.filter-bar {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* Active filters */
+#activeFilters .badge {
+    height: 28px;
+    padding: 0.25rem 0.75rem;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+#activeFilters .btn-close {
+    font-size: 0.75rem;
+    padding: 0.15rem;
+    opacity: 0.8;
+}
+
+#activeFilters img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+/* Game cards */
+.game-card {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    border-color: rgba(0,0,0,0.1);
+}
+
+.game-card:first-child {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.game-card:last-child {
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.game-card .match-time {
+    font-weight: 600;
+    color: #444;
+}
+
+.game-card .match-teams {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.game-card .team-badge {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.game-card .match-location {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.game-card .vs {
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.highlighted-game {
+    background-color: rgba(25, 135, 84, 0.05);
+    border-color: rgba(25, 135, 84, 0.2) !important;
+}
+
+/* League sections */
+.league-header {
+    border-radius: 4px 4px 0 0;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.league-header img {
+    object-fit: contain;
+}
+
+/* League colors */
+.league-header.bundesliga {
+    background-color: rgba(228, 30, 38, 0.05);
+    border-bottom-color: rgba(228, 30, 38, 0.5);
+}
+
+.league-header.liga2 {
+    background-color: rgba(26, 93, 168, 0.05);
+    border-bottom-color: rgba(26, 93, 168, 0.5);
+}
+
+.league-header.liga3 {
+    background-color: rgba(240, 237, 61, 0.05);
+    border-bottom-color: rgba(171, 207, 10, 0.5);
+}
+
+.league-header.champions-league {
+    background-color: rgba(0, 50, 138, 0.05);
+    border-bottom-color: rgba(0, 50, 138, 0.5);
+}
+
+.league-header.europa-league {
+    background-color: rgba(247, 148, 30, 0.05);
+    border-bottom-color: rgba(247, 148, 30, 0.5);
+}
+
+.league-header.dfb-pokal {
+    background-color: rgba(236, 255, 96, 0.05);
+    border-bottom-color: rgba(183, 255, 0, 0.5);
+}
+
+/* Month section */
+.month-section {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.month-section:last-child {
+    border-bottom: none;
+}
+
+/* Calendar view */
+.calendar-view {
+    padding: 1rem 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.calendar-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid #dee2e6;
+}
+
+.calendar-row:last-child {
+    border-bottom: none;
+}
+
+.calendar-cell {
+    padding: 0.5rem;
+    text-align: center;
+    border-right: 1px solid #dee2e6;
+}
+
+.calendar-cell:last-child {
+    border-right: none;
+}
+
+.calendar-day-header {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    padding: 0.5rem;
+}
+
+.calendar-day {
+    height: 80px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.calendar-day:hover {
+    background-color: #f8f9fa;
+}
+
+.calendar-day.empty {
+    background-color: #f8f9fa;
+    cursor: default;
+}
+
+.calendar-day.current-day {
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.calendar-day.current-day .day-number {
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.calendar-day.has-matches {
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
+.calendar-day .day-number {
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.calendar-day .game-count {
+    margin-top: 0.5rem;
+}
+
+.calendar-day .game-count .badge {
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+/* Date header */
+.date-header {
+    padding: 1rem 0;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+}
+
+.date-header i {
+    color: #0d6efd;
+}
+
+.date-header .date-stats {
+    margin-top: 0.5rem;
+    color: #6c757d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .calendar-day {
+        height: 60px;
+    }
+    
+    .game-card .team-badge {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .game-card .match-time {
+        font-size: 0.9rem;
+    }
+}
+
+/* Load more button */
+#loadMoreGames {
+    transition: all 0.2s ease;
+}
+
+#loadMoreGames:hover {
+    transform: translateY(-2px);
+}
+
+/* Animations */
+.schedule-feed {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Main schedule page styles */
+.schedule-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Filter section styles */
+.filters-section {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure filter boxes don't disappear */
+.filter-group {
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 10;
+}
+
+/* Fix for Select2 dropdowns */
+.select2-container {
+    width: 100% !important;
+    z-index: 1051 !important;
+}
+
+.select2-selection--clean {
+    border: 1px solid #ced4da !important;
+    border-radius: 0.375rem !important;
+    padding: 0.375rem 0.75rem !important;
+    height: auto !important;
+    min-height: 38px !important;
+}
+
+.select2-dropdown--clean {
+    border: 1px solid #ced4da !important;
+    border-radius: 0.375rem !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Date filter */
+.date-filter-wrapper {
+    position: relative;
+}
+
+.date-filter {
+    padding-right: 32px;
+}
+
+.date-filter-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Calendar styles */
+.custom-calendar-view {
+    margin-top: 2rem;
+}
+
+.calendar-month {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.month-title {
+    background: #2d3748;
+    color: white;
+    padding: 15px 20px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.calendar-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.calendar-row {
+    display: flex;
+    width: 100%;
+}
+
+.calendar-cell {
+    flex: 1;
+    padding: 10px;
+    min-height: 80px;
+    border: 1px solid #e2e8f0;
+}
+
+.calendar-day-header {
+    background: #edf2f7;
+    font-weight: 600;
+    padding: 10px;
+    text-align: center;
+    min-height: 0;
+}
+
+.calendar-day {
+    position: relative;
+    background: #ffffff;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.calendar-day:hover {
+    background: #f7fafc;
+}
+
+.calendar-day.empty {
+    background: #f9fafb;
+    cursor: default;
+}
+
+.calendar-day.current-day {
+    background: #ebf8ff;
+}
+
+.calendar-day.has-matches {
+    background: #f0fff4;
+}
+
+.calendar-day.has-matches:hover {
+    background: #e6fffa;
+}
+
+.day-number {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.game-count {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+/* Improved styling for games badge */
+.games-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    background-color: #4a5568;
+    color: white;
+    display: inline-block;
+}
+
+/* Game card styles */
+.game-card {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    border-top: none;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 0;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.game-card:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.game-card:last-child {
+    border-bottom: none;
+}
+
+.highlighted-game {
+    background-color: #fff8e1;
+}
+
+/* Match specific styles */
+.match-time {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+/* Fixed match display layout */
+.match-teams {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  width: 100%;
+  position: relative;
+}
+
+/* Center VS element with fixed position */
+.vs-container {
+  width: 60px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 0 auto;
+}
+
+.vs {
+  font-weight: 600;
+  color: #6c757d;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Home team - right aligned with name then logo */
+.home-team {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Away team - left aligned with logo then name */
+.away-team {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Team badges fixed distance from center */
+.home-team .team-badge {
+  margin-left: 10px;
+}
+
+.away-team .team-badge {
+  margin-right: 10px;
+}
+
+/* Make team names expand within their space */
+.team-name {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: visible;
+  font-weight: 500;
+}
+
+/* Home team styling */
+.home-team {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    padding-right: 8px;
+    text-align: right;
+}
+
+/* Away team styling */
+.away-team {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding-left: 8px;
+    text-align: left;
+}
+
+.home-team {
+    justify-content: flex-end;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.away-team {
+    justify-content: flex-start;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.team-name {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    max-width: none;
+    font-weight: 500;
+}
+
+.team-badge {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.score-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+}
+
+.vs {
+    font-weight: bold;
+    color: #718096;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.match-location {
+    color: #718096;
+    font-size: 0.875rem;
+}
+
+/* League styles */
+.league-section {
+    margin-bottom: 1.5rem;
+}
+
+.league-header {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+/* League-specific styling */
+.league-bundesliga {
+    background-color: #ffffff;
+    border-left: 5px solid #ff0000;
+}
+.league-bundesliga h3, .league-bundesliga h4 {
+    color: #000000;
+    font-weight: 700;
+}
+
+h4.h6.mb-0 {
+    color: black !important;
+  }  
+
+.league-2bundesliga {
+    background-color: #f8f9fa;
+    border-left: 5px solid #0066cc;
+}
+.league-2bundesliga h3, .league-2bundesliga h4 {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.league-3-liga {
+    background-color: #f8f9fa;
+    border-left: 5px solid #ff6600;
+}
+.league-3-liga h3, .league-3-liga h4 {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.league-champions-league {
+    background-color: #f8f9fa;
+    border-left: 5px solid #0033cc;
+}
+.league-champions-league h3, .league-champions-league h4 {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.league-europa-league {
+    background-color: #f8f9fa;
+    border-left: 5px solid #ff9900;
+}
+.league-europa-league h3, .league-europa-league h4 {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.league-conference-league {
+    background-color: #f8f9fa;
+    border-left: 5px solid #00cc66;
+}
+.league-conference-league h3, .league-conference-league h4 {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.league-dfb-pokal {
+    background-color: #f8f9fa;
+    border-left: 5px solid #000000;
+}
+.league-dfb-pokal h3, .league-dfb-pokal h4 {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.league-other {
+    background-color: #f8f9fa;
+    border-left: 5px solid #999999;
+}
+.league-other h3, .league-other h4 {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Active filters display */
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.filter-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #e2e8f0;
+    border-radius: 2rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.remove-filter {
+    margin-left: 0.5rem;
+    cursor: pointer;
+    color: #718096;
+}
+
+.remove-filter:hover {
+    color: #e53e3e;
+}
+
+/* Pagination and loading */
+.load-more-container {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+/* View switcher */
+.view-switcher {
+    margin-bottom: 1rem;
+}
+
+.view-button {
+    padding: 0.375rem 0.75rem;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    color: #6c757d;
+}
+
+.view-button.active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #ffffff;
+}
+
+/* Date header */
+.date-header {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.date-stats {
+    margin-top: 0.5rem;
+}
+
+.date-stats .badge {
+    font-size: 0.875rem;
+    font-weight: normal;
+    padding: 0.35rem 0.65rem;
+}
+
+@media (max-width: 767.98px) {
+    .team-name {
+      font-size: 0.8rem;
+      display: block !important;
+    }
+    .match-teams {
+        grid-template-columns: minmax(80px, auto) 40px minmax(80px, auto);
+    }
+    
+    .vs-container {
+        width: 40px;
+        min-width: 40px;
+    }
+}
+
+/* Fixing flatpickr z-index issues */
+.flatpickr-calendar {
+    z-index: 1052 !important;
+}
+
+.date-header {
+    background-color: #ffffff; /* white background */
+    color: #043d7c;            /* main color for text */
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;         /* slightly smaller text */
+  }
+  
+  /* Icon sizing/color */
+  .date-header i.display-5 {
+    font-size: 1.5rem; 
+    color: #043d7c;
+  }
+  
+  /* Heading adjustments */
+  .date-header h2 {
+    font-size: 1.25rem; 
+    margin: 0;
+  }
+  
+  /* Keep badges on one line, spaced out */
+  .date-header .date-stats {
+    display: flex; 
+    align-items: center;
+    gap: 10px;              /* space between badges */
+  }
+  
+  /* Badges slightly smaller */
+  .date-header .badge {
+    font-size: 0.75rem;
+  }
+
+  
+  .h5.mb-3.d-flex.align-items-center {
+    background-color: #ffffff;   /* white background */
+    color: #043d7c;             /* main text color */
+    padding: 10px;              /* spacing around the element */
+    border-radius: 4px;         /* rounded corners */
+    font-size: 0.9rem;          /* slightly smaller text */
+    margin-bottom: 1rem !important; /* preserve spacing if overrides happen */
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Icon tweaks */
+  .h5.mb-3.d-flex.align-items-center i {
+    font-size: 1.2rem; 
+    color: #043d7c;
+    margin-right: 8px;
+  }
+  
+  /* Badge adjustments */
+  .h5.mb-3.d-flex.align-items-center .badge {
+    font-size: 0.75rem;
+    margin-left: 8px;
+    /* You can also override badge background here if you want: background-color: #043d7c; */
+  }
+  
+  /* Add this to your CSS */
+.highlight-section {
+    animation: highlight-fade 2s ease;
+}
+
+@keyframes highlight-fade {
+    0% { background-color: rgba(13, 110, 253, 0.2); }
+    100% { background-color: transparent; }
+}

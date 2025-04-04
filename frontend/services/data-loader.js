@@ -271,7 +271,11 @@ async function loadAllTeams() {
  */
 async function loadAvailableDates(params = {}) {
     try {
-        const data = await getAvailableDates(params);
+        // No longer passing "days" parameter
+        const data = await getAvailableDates({
+            league: params.league,
+            team: params.team
+        });
         return data.dates || [];
     } catch (error) {
         console.error('Failed to load available dates:', error);

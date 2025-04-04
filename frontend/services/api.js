@@ -184,7 +184,6 @@ async function planTrip(tripData) {
  * @param {object} params - Filter parameters
  * @param {string|null} params.league - League to filter by
  * @param {string|null} params.team - Team to filter by
- * @param {number} params.days - Number of days to look ahead
  * @returns {Promise<Array>} List of dates with match counts
  */
 async function getAvailableDates(params = {}) {
@@ -192,7 +191,7 @@ async function getAvailableDates(params = {}) {
     
     if (params.league) queryParams.append('league', params.league);
     if (params.team) queryParams.append('team', params.team);
-    if (params.days) queryParams.append('days', params.days);
+    // Remove days parameter - no longer supported by backend
     
     const endpoint = `/available-dates${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
     return fetchApi(endpoint);
@@ -211,31 +210,21 @@ async function getCityConnections(city, maxTime = 240) {
 /**
  * Get a team's schedule
  * @param {string} team - Team name
- * @param {number} days - Number of days to look ahead
  * @returns {Promise<object>} Team schedule information
  */
-async function getTeamSchedule(team, days = 60) {
-    return fetchApi(`/team-schedule/${encodeURIComponent(team)}?days=${days}`);
-}
-
-/**
- * Get game details for a specific date and league
- * @param {string} league - League name
- * @param {string} date - Date in YYYY-MM-DD format
- * @returns {Promise<object>} Game details
- */
-async function getGameDetails(league, date) {
-    return fetchApi(`/game-details/${encodeURIComponent(league)}/${date}`);
+async function getTeamSchedule(team) {
+    // No longer using the days parameter
+    return fetchApi(`/team-schedule/${encodeURIComponent(team)}`);
 }
 
 /**
  * Get a league's schedule
  * @param {string} league - League name
- * @param {number} days - Number of days to look ahead
  * @returns {Promise<object>} League schedule
  */
-async function getLeagueSchedule(league, days = 60) {
-    return fetchApi(`/league-schedule/${encodeURIComponent(league)}?days=${days}`);
+async function getLeagueSchedule(league) {
+    // No longer using the days parameter
+    return fetchApi(`/league-schedule/${encodeURIComponent(league)}`);
 }
 
 /**
@@ -260,12 +249,32 @@ async function getTravelStats() {
  * Get all games on a specific date
  * @param {string} date - Date in YYYY-MM-DD format
  * @param {string|null} league - Filter by league
+ * @param {boolean} includePast - Whether to include past games
  * @returns {Promise<object>} Games on date
  */
-async function getGamesByDate(date, league = null) {
-    const endpoint = league 
-        ? `/games-by-date/${date}?league=${encodeURIComponent(league)}`
-        : `/games-by-date/${date}`;
+async function getGamesByDate(date, league = null, includePast = false) {
+    const queryParams = new URLSearchParams();
+    
+    if (league) queryParams.append('league', league);
+    if (includePast) queryParams.append('include_past', 'true');
+    
+    const endpoint = `/games-by-date/${date}${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+    return fetchApi(endpoint);
+}
+
+/**
+ * Get game details for a specific date
+ * @param {string} league - League name
+ * @param {string} date - Date in YYYY-MM-DD format
+ * @param {boolean} includePast - Whether to include past games
+ * @returns {Promise<object>} Game details
+ */
+async function getGameDetails(league, date, includePast = false) {
+    const queryParams = new URLSearchParams();
+    
+    if (includePast) queryParams.append('include_past', 'true');
+    
+    const endpoint = `/game-details/${encodeURIComponent(league)}/${date}${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
     return fetchApi(endpoint);
 }
 
