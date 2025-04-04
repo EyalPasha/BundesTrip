@@ -1,3 +1,5 @@
+import { getTeamLogoUrl } from '../services/team-logos.js';
+
 function renderTripCard(group, index, tripContext = {}) {
     const baseTrip = group.base_trip;
     const tripResults = document.getElementById('tripResults');
@@ -264,13 +266,22 @@ function renderTripCard(group, index, tripContext = {}) {
             </div>
             <div class="match-list">
                 ${allMatches.slice(0, Math.min(3, allMatches.length)).map(match => {
+                    // Extract teams from match text
+                    const teams = match.match.split(' vs ');
+                    const homeTeam = teams[0] || '';
+                    const awayTeam = teams[1] || '';
+                    
                     // First extract just the date part (remove day name)
                     const matchDate = match.date.replace(/^.+,\s*/, '');
                     
                     return `
                         <div class="match-preview-item ${match.contains_must_team ? 'must-match' : ''}">
                             <div class="match-teams-preview">
-                                <strong>${match.match}</strong>
+                                <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo-small" alt="${homeTeam} logo">
+                                <strong>${homeTeam}</strong>
+                                <span class="vs-text">vs</span>
+                                <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo-small" alt="${awayTeam} logo">
+                                <strong>${awayTeam}</strong>
                                 ${match.contains_must_team ? '<span class="must-see-badge">Must-See</span>' : ''}
                             </div>
                             <div class="match-info-compact">
@@ -919,20 +930,28 @@ function renderTbdGames(tbdGames, mustTeams = []) {
         groupedGames[date].forEach(game => {
             const location = game.location.replace(' hbf', '');
             
-            // Use match-preview-item class for consistency with trip cards
+            // Extract teams - assuming game.match contains "Team A vs Team B" format
+            const teams = game.match.split(' vs ');
+            const homeTeam = teams[0] || '';
+            const awayTeam = teams[1] || '';
+            
             const gameItem = document.createElement('div');
-            gameItem.className = `match-preview-item ${game.has_must_team ? 'must-match' : ''}`;
+            gameItem.className = 'match-preview-item' + 
+                (game.has_must_team ? ' must-match' : '');
             
             gameItem.innerHTML = `
                 <div class="match-teams-preview">
-                    <strong>${game.match}</strong>
-                    ${game.has_must_team ? '<span class="must-see-badge ms-2">Must-See</span>' : ''}
+                    <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo-small" alt="${homeTeam} logo">
+                    <strong>${homeTeam}</strong>
+                    <span class="vs-text">vs</span>
+                    <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo-small" alt="${awayTeam} logo">
+                    <strong>${awayTeam}</strong>
+                    ${game.has_must_team ? '<span class="must-see-badge">Must-See</span>' : ''}
                 </div>
                 <div class="match-info-compact">
                     <span class="match-location-inline">
-                        <i class="fas fa-map-marker-alt"></i> ${location}
+                        <i class="fas fa-map-marker-alt"></i> ${game.location || 'TBD'}
                     </span>
-                    <span class="badge bg-secondary">${game.league}</span>
                 </div>
             `;
             
@@ -1076,15 +1095,30 @@ function renderItineraryForVariant(container, group, variantIndex) {
                 matchesContainer.className = 'matches-container ms-4 ps-2 mb-4';
                 
                 dayInfo.matches.forEach(match => {
-                    // Extract the time from the match title
+                    // Extract the time from the match title FIRST
                     const { time, cleanMatch } = extractTimeFromMatch(match.match);
+                    
+                    // THEN split the clean match text (without time)
+                    const teams = cleanMatch.split(' vs ');
+                    const homeTeam = (teams[0] || '').trim();
+                    const awayTeam = (teams[1] || '').trim();
                     
                     const matchItem = document.createElement('div');
                     matchItem.className = match.contains_must_team 
                         ? 'match-item must-team' 
                         : 'match-item';
                     
-                        matchItem.innerHTML = `
+                    matchItem.innerHTML = `
+                        <div class="match-header">
+                            <div class="match-teams">
+                                <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo" alt="${homeTeam} logo">
+                                ${homeTeam}
+                                <span class="vs-text">vs</span>
+                                <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo" alt="${awayTeam} logo">
+                                ${awayTeam}
+                            </div>
+                            ${match.contains_must_team ? '<span class="must-see-tag">Must-See Match</span>' : ''}
+                        </div>
                         <div class="match-details">
                             <div class="match-header">
                                 <strong class="match-teams">${cleanMatch}</strong>

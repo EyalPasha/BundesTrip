@@ -1,6 +1,14 @@
 import { getCities, getLeagues, getTeams, getAvailableDates } from './api.js';
 import { showErrorToast } from './notifications.js';
 import { showComponentLoading, hideComponentLoading } from './ui-helpers.js';
+import { 
+    formatTeamOptionWithLogo, 
+    formatTeamSelectionWithLogo, 
+    getTeamLogoUrl,
+    getLeagueLogoUrl
+} from './team-logos.js';
+
+import { initMustTeamsSelect, initPreferredLeaguesSelect } from './select2-init.js';
 
 // German teams list - this should match the teams in your backend database
 const GERMAN_TEAMS = [
@@ -99,19 +107,14 @@ async function loadLeagues() {
             // Use the display name if available, otherwise use the original
             option.textContent = LEAGUE_DISPLAY_NAMES[league] || league;
             
+            // Add this data attribute to help with logo lookup
+            option.dataset.league = league;
+            
             window.DOM.preferredLeaguesSelect.appendChild(option);
         });
         
         // Initialize Select2 with enhanced styling and templates
-        $(window.DOM.preferredLeaguesSelect).select2({
-            placeholder: 'Select Leagues',
-            width: '100%',
-            closeOnSelect: false,
-            allowClear: true,
-            templateResult: formatLeagueOption,
-            templateSelection: formatLeagueSelection,
-            dropdownParent: $(window.DOM.preferredLeaguesSelect).parent()
-        });
+        initPreferredLeaguesSelect();
         
         // Force the placeholder to appear
         $(window.DOM.preferredLeaguesSelect).val(null).trigger('change');
@@ -139,23 +142,20 @@ async function loadTeams() {
         // IMPORTANT: Filter to only include German teams
         const germanTeams = data.teams.filter(team => GERMAN_TEAMS.includes(team));
         
+        // Add each team to the dropdown
         germanTeams.forEach(team => {
             const option = document.createElement('option');
             option.value = team;
             option.textContent = team;
+            
+            // Add a data attribute to help with logo lookup
+            option.dataset.team = team;
+            
             window.DOM.mustTeamsSelect.appendChild(option);
         });
         
-        // Initialize Select2 with enhanced styling and templates
-        $(window.DOM.mustTeamsSelect).select2({
-            placeholder: 'Select Teams',
-            width: '100%',
-            closeOnSelect: false,
-            allowClear: true,
-            templateResult: formatTeamOption,
-            templateSelection: formatTeamSelection,
-            dropdownParent: $(window.DOM.mustTeamsSelect).parent()
-        });
+        // Initialize Select2 with logo formatting right after loading teams
+        initMustTeamsSelect();
         
     } catch (error) {
         showErrorToast(`Failed to load teams: ${error.message}`);
@@ -204,12 +204,15 @@ async function updateTeamsByLeague() {
             const option = document.createElement('option');
             option.value = team;
             option.textContent = team;
+            option.dataset.team = team; // Add data attribute for logo lookup
             window.DOM.mustTeamsSelect.appendChild(option);
         });
         
         // Restore previously selected teams (if they're still valid)
         $(window.DOM.mustTeamsSelect).val(selectedTeams.filter(team => germanTeams.includes(team)));
         $(window.DOM.mustTeamsSelect).trigger('change');
+        
+        initMustTeamsSelect();
     } catch (error) {
         showErrorToast(`Failed to update teams: ${error.message}`);
     } finally {
@@ -217,6 +220,7 @@ async function updateTeamsByLeague() {
     }
 }
 
+// Also update the loadAllTeams function to do the same
 async function loadAllTeams() {
     // Remember currently selected teams
     const selectedTeams = $(window.DOM.mustTeamsSelect).val() || [];
@@ -240,12 +244,17 @@ async function loadAllTeams() {
             const option = document.createElement('option');
             option.value = team;
             option.textContent = team;
+            option.dataset.team = team; // Add data attribute for logo lookup
             window.DOM.mustTeamsSelect.appendChild(option);
         });
         
         // Restore previously selected teams (if they're still valid)
         $(window.DOM.mustTeamsSelect).val(selectedTeams.filter(team => germanTeams.includes(team)));
         $(window.DOM.mustTeamsSelect).trigger('change');
+        
+        // Initialize Select2 with logo formatting 
+        initMustTeamsSelect();
+        
     } catch (error) {
         showErrorToast(`Failed to load teams: ${error.message}`);
     } finally {
@@ -268,29 +277,6 @@ async function loadAvailableDates(params = {}) {
         console.error('Failed to load available dates:', error);
         return [];
     }
-}
-
-// Format options for Select2 dropdowns - clean modern design
-function formatLeagueOption(league) {
-    if (!league.id) return league.text;
-    // Simple clean design with proper text alignment
-    return $(`<div class="select-option">${league.text}</div>`);
-}
-
-function formatLeagueSelection(league) {
-    if (!league.id) return league.text;
-    return $(`<span class="selected-item">${league.text}</span>`);
-}
-
-function formatTeamOption(team) {
-    if (!team.id) return team.text;
-    // Simple clean design with proper text alignment
-    return $(`<div class="select-option">${team.text}</div>`);
-}
-
-function formatTeamSelection(team) {
-    if (!team.id) return team.text;
-    return $(`<span class="selected-item">${team.text}</span>`);
 }
 
 export {

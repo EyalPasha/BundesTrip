@@ -316,3 +316,28 @@ body.select2-ready .select-hidden {
     visibility: visible !important;
     transition: none !important;
 }
+
+
+/* Fix dropdown rendering under other elements */
+.select2-container--open .select2-dropdown {
+  z-index: 9999 !important;
+}
+
+/* Ensure the dropdown container itself has high z-index */
+.select2-container--open {
+  z-index: 9999 !important;
+}
+
+/* Make sure dropdowns aren't being clipped by any containing elements */
+body.select2-open {
+  overflow: visible !important;
+}
+
+
+/* Adjust text position in selected items (blue boxes) to align with logo */
+.select2-container--default .select2-selection--multiple .select2-selection__choice .select2-selection__choice__display {
+  position: relative;
+  top: 2.5px; /* Move text down 1px to align with logo */
+  display: inline-block;
+}
+

@@ -1,5 +1,6 @@
 import { clearFilters } from './ui-helpers.js';
 import { renderNextBatch } from '../components/results-display.js';
+import { getTeamLogoUrl } from './team-logos.js';
 
 // Global state to track active filters
 const activeFilters = {
@@ -516,12 +517,22 @@ function renderFilters(tripGroups) {
     // Clear existing filters
     teamFiltersContainer.innerHTML = '';
     cityFiltersContainer.innerHTML = '';
-    
+        
     // Team filters
     teams.forEach(team => {
         const badge = document.createElement('span');
         badge.className = 'badge bg-light text-dark border m-1';
-        badge.textContent = team;
+        
+        // Add team logo to badge
+        const logo = document.createElement('img');
+        logo.src = getTeamLogoUrl(team);
+        logo.alt = `${team} logo`;
+        logo.className = 'team-filter-logo';
+        logo.width = 16;
+        logo.height = 16;
+        
+        badge.appendChild(logo);
+        badge.appendChild(document.createTextNode(' ' + team));
         badge.dataset.team = team;
         badge.onclick = () => filterByTeam(team);
         badge.style.cursor = 'pointer';

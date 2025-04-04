@@ -1702,3 +1702,88 @@
   transform: translateY(-2px);
   font-weight: 600; /* Make text bolder on hover */
 }
+
+/* Enhanced match teams display with logos */
+.match-teams-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vs-text {
+  font-size: 0.8rem;
+  color: var(--neutral-text);
+  opacity: 0.7;
+  margin: 0 0.25rem;
+}
+
+/* Team filter badges with logos */
+.team-filter-logo {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 4px;
+    border-radius: 2px;
+}
+
+/* Update team filter badge styling for better alignment */
+#teamFilters .badge, #cityFilters .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    font-weight: 400;
+    transition: all 0.2s ease;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 30px;
+}
+
+/* Make badges look better when active */
+#teamFilters .badge.bg-primary, 
+#cityFilters .badge.bg-primary {
+    box-shadow: 0 3px 8px rgba(4, 61, 124, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Add these rules at the end of your select2.css file */
+
+/* Force proper z-index for team dropdown */
+body.mustteams-dropdown-open .select2-container--open {
+    z-index: 10000 !important;
+}
+
+body.mustteams-dropdown-open .select2-dropdown {
+    z-index: 10000 !important;
+    position: absolute;
+    top: auto !important;
+    left: auto !important;
+}
+
+/* Ensure team logo styles are applied to dropdown options */
+.select2-results__option .team-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Ensure dropdown search box is fully hidden */
+.select2-search.select2-search--dropdown {
+    display: none !important;
+}
+
+/* Fix the positioning when dropdown opens */
+.select2-container--open .select2-dropdown--above {
+    margin-top: 0;
+    margin-bottom: 2px;
+}
+
+.select2-container--open .select2-dropdown {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Ensure dropdowns appear above other elements */
+.select2-dropdown {
+    z-index: 10000 !important;
+}

@@ -5,6 +5,8 @@ import {
     loadAvailableDates
 } from './services/data-loader.js';
 
+import { applyTeamLogoStyles, preloadLogos, formatTeamOptionWithLogo, formatTeamSelectionWithLogo, formatLeagueOptionWithLogo, formatLeagueSelectionWithLogo } from './services/team-logos.js';
+
 import { 
     showComponentLoading, 
     hideComponentLoading,
@@ -15,6 +17,8 @@ import {
 import { handleSearch, initFormHandlers, updateMinGamesOptions } from './services/trip-service.js';
 import { renderResults } from './components/results-display.js';
 import { checkHealth } from './services/api.js';
+
+import { initPreferredLeaguesSelect } from './services/select2-init.js';
 
 // Create a global DOM object to share references between modules
 window.DOM = {};
@@ -61,16 +65,46 @@ function initDOMReferences() {
     }
 }
 
-// Initialize when DOM is ready
+// Find the document.addEventListener('DOMContentLoaded') block and update it:
+
 document.addEventListener('DOMContentLoaded', async function() {
     // Initialize DOM references
     initDOMReferences();
+    
+    // Add these two lines to initialize logos
+    applyTeamLogoStyles();
+    preloadLogos(); // Changed from preloadTeamLogos
     
     // Initialize form handlers
     initFormHandlers();
     
     // Initial update of minGames options based on trip duration
     updateMinGamesOptions();
+    
+    // Load data first
+    await Promise.all([
+        loadCities(),
+        loadLeagues(),
+        loadTeams() // This loads all teams initially
+    ]);
+    
+    // Initialize Preferred Leagues Select2 with logos - add this line
+    initPreferredLeaguesSelect();
+    
+    // Initialize Select2 for mustTeamsSelect with proper formatting
+    // IMPORTANT: This needs to happen AFTER teams are loaded
+    $(window.DOM.mustTeamsSelect).select2({
+        placeholder: 'Select Teams',
+        width: '100%',
+        closeOnSelect: false,
+        allowClear: true,
+        minimumResultsForSearch: Infinity,
+        selectionCssClass: 'select2-selection--clean',
+        dropdownCssClass: 'select2-dropdown--clean',
+        templateResult: formatTeamOptionWithLogo,
+        templateSelection: formatTeamSelectionWithLogo,
+        dropdownParent: $('body') // Change this to body for proper positioning
+    });
     
     // Check API health before initializing UI
     try {
@@ -210,12 +244,30 @@ function hidePreloaders() {
             dropdownCssClass: 'select2-dropdown--clean'
         });
         
-        // Initialize the multi-select dropdowns
-        $('#preferredLeagues, #mustTeams').select2({
-            placeholder: 'Select...',
+        // Initialize ONLY the mustTeams multi-select dropdown - REMOVE preferredLeagues here
+        $('#mustTeams').select2({
+            placeholder: 'Select Teams',
             width: '100%',
+            closeOnSelect: false,
+            allowClear: true,
             dropdownParent: $('body'),
             minimumResultsForSearch: Infinity,
+            templateResult: formatTeamOptionWithLogo,
+            templateSelection: formatTeamSelectionWithLogo, 
+            selectionCssClass: 'select2-selection--clean',
+            dropdownCssClass: 'select2-dropdown--clean'
+        });
+        
+        // Initialize the leagues dropdown separately with its logo formatters
+        $('#preferredLeagues').select2({
+            placeholder: 'Select Leagues',
+            width: '100%',
+            closeOnSelect: false,
+            allowClear: true,
+            dropdownParent: $('body'),
+            minimumResultsForSearch: Infinity,
+            templateResult: formatLeagueOptionWithLogo,
+            templateSelection: formatLeagueSelectionWithLogo,
             selectionCssClass: 'select2-selection--clean',
             dropdownCssClass: 'select2-dropdown--clean'
         });
@@ -415,6 +467,28 @@ $(document).ready(function() {
     // Rest of your existing document.ready code
 });
 
+
+// Add this to the end of your $(document).ready function
+
+$(document).ready(function() {
+    // Fix dropdown position when opened
+    $('select').on('select2:open', function() {
+        document.body.classList.add('select2-open');
+        
+        // Ensure dropdown is properly positioned
+        setTimeout(function() {
+            const dropdown = document.querySelector('.select2-dropdown');
+            if (dropdown) {
+                dropdown.style.zIndex = "9999";
+            }
+        }, 10);
+    });
+    
+    // Clean up when dropdown closes
+    $('select').on('select2:close', function() {
+        document.body.classList.remove('select2-open');
+    });
+});
 
 // Export helper functions to avoid circular dependencies
 export const helpers = {
