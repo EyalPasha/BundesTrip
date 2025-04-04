@@ -176,6 +176,8 @@
   overflow: hidden;
   min-width: 300px;
   margin: 0 auto 20px; /* Center horizontally and add bottom margin */
+  display: flex;
+  justify-content: center;
 }
 
 /* Better message animation and alignment */
@@ -191,9 +193,8 @@
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.5s, transform 0.5s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
+  width: 100%;
   text-align: center;
 }
 
@@ -207,6 +208,10 @@
   border-radius: 50%;
   animation: blink 1s infinite;
   flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
 
 .loading-message.active {

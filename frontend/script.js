@@ -390,6 +390,32 @@ $(document).ready(function() {
     }, 100);
 });
 
+// Add to script.js, after your DOM initialization
+
+// Make key functions available globally to avoid import issues
+window.renderItineraryForVariant = null;
+
+// Import and expose trip-card.js functions globally for easier access
+import('./components/trip-card.js').then(module => {
+    window.renderItineraryForVariant = module.renderItineraryForVariant;
+});
+
+// Add this to the document ready function in script.js
+$(document).ready(function() {
+    // Add event listener for trip duration change
+    $('#tripDuration').on('change', function() {
+        // Import and call the updateMinGamesOptions function
+        import('./services/trip-service.js').then(module => {
+            if (typeof module.updateMinGamesOptions === 'function') {
+                module.updateMinGamesOptions();
+            }
+        });
+    });
+    
+    // Rest of your existing document.ready code
+});
+
+
 // Export helper functions to avoid circular dependencies
 export const helpers = {
     showComponentLoading,

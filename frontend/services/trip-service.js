@@ -7,8 +7,8 @@ import { renderTripCard } from '../components/trip-card.js';
 // Make renderTripCard globally available for API service
 window.renderTripCard = renderTripCard;
 
+// Update the handleSearch function in trip-service.js to fix the error
 async function handleSearch(e) {
-    console.log("Validating form...");
     e.preventDefault();
     if (!validateForm()) {
         return;
@@ -16,6 +16,10 @@ async function handleSearch(e) {
     
     // Add a flag to track if we're showing the no results message
     let noResultsShown = false;
+    
+    // Declare these variables at the top level so they're available in the finally block
+    let response = null;
+    let error = null;
     
     // Hide results container while searching
     const resultsContainer = document.getElementById('resultsContainer');
@@ -123,14 +127,11 @@ async function handleSearch(e) {
             payload.start_date = `${payload.start_date} ${currentYear}`;
         }
         
-        console.log("Sending payload:", payload);
-        
         // Check if search was cancelled during API call
         if (searchCancelled) return;
         
         // Call API
-        const response = await planTrip(payload);
-        console.log("API response received:", response);
+        response = await planTrip(payload);
         
         // Check if search was cancelled while waiting for response
         if (searchCancelled) return;
@@ -199,7 +200,10 @@ async function handleSearch(e) {
             }, 100);
         }
         
-    } catch (error) {
+    } catch (err) {
+        // Store the caught error in our variable
+        error = err;
+        
         if (!searchCancelled) {
             console.error("Error in handleSearch:", error);
             
@@ -272,31 +276,77 @@ function initFormHandlers() {
     
     // Setup other form interactions
     setupFormSubmitOnEnter();
+
+    // Bind the trip duration change event
+    document.getElementById('tripDuration')?.addEventListener('change', updateMinGamesOptions);
+    
+    // Call once to initialize
+    updateMinGamesOptions();
 }
 
-// Function to update minGames dropdown options based on tripDuration
+// Update the updateMinGamesOptions function in trip-service.js
 function updateMinGamesOptions() {
-    const tripDuration = parseInt(window.DOM.tripDurationInput.value);
-    const minGamesSelect = window.DOM.minGamesInput;
-    const currentValue = parseInt(minGamesSelect.value);
+    const tripDurationSelect = document.getElementById('tripDuration');
+    const minGamesSelect = document.getElementById('minGames');
+    
+    if (!tripDurationSelect || !minGamesSelect) {
+        console.warn('Trip duration or min games select not found');
+        return;
+    }
+    
+    // Get the current trip duration value
+    const duration = parseInt(tripDurationSelect.value);
+    
+    // Store current selection if it exists
+    const currentSelection = minGamesSelect.value;
+    
+    // Temporarily destroy Select2 if it exists
+    if ($(minGamesSelect).data('select2')) {
+        $(minGamesSelect).select2('destroy');
+    }
     
     // Clear existing options
     minGamesSelect.innerHTML = '';
     
-    // Add new options based on trip duration
-    for (let i = 1; i <= Math.min(tripDuration, 10); i++) {
+    // Special case: If duration is exactly 2 days
+    if (duration === 2) {
+        // Only allow exactly 2 games (not a range)
         const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i === 1 ? '1 Game' : `${i} Games`; // Capitalize "Games"
+        option.value = 2;
+        option.textContent = '2 Games';
         minGamesSelect.appendChild(option);
+        
+        // Automatically set to 2
+        minGamesSelect.value = '2';
+    } else {
+        // Normal case: Calculate max games (duration - 1)
+        const maxGames = duration - 1;
+        
+        // Add options from 2 to maxGames
+        for (let i = 2; i <= maxGames; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = `${i} ${i === 1 ? 'Game' : 'Games'}`;
+            minGamesSelect.appendChild(option);
+        }
+        
+        // Try to restore previous selection if valid
+        if (currentSelection && parseInt(currentSelection) <= maxGames && parseInt(currentSelection) >= 2) {
+            minGamesSelect.value = currentSelection;
+        } else {
+            // Default to the first option (2 games)
+            minGamesSelect.value = '2';
+        }
     }
     
-    // Restore previous value if possible, otherwise set to 2 or max available
-    if (currentValue <= tripDuration) {
-        minGamesSelect.value = currentValue;
-    } else {
-        minGamesSelect.value = Math.min(2, tripDuration);
-    }
+    // Re-initialize Select2
+    $(minGamesSelect).select2({
+        width: '100%',
+        minimumResultsForSearch: Infinity,
+        selectionCssClass: 'select2-selection--clean',
+        dropdownCssClass: 'select2-dropdown--clean'
+    });
+    
 }
 
 // Call once on page load to set initial options

@@ -9,6 +9,9 @@ const activeFilters = {
   maxHotelChanges: 7
 };
 
+// Make filter state globally available for newly loaded trips
+window.activeFilters = activeFilters;
+
 function filterByTeam(team) {
     const tripCards = document.querySelectorAll('.trip-card');
     
@@ -51,10 +54,130 @@ function filterByGames(minGames) {
     applyAllFilters();
 }
 
+// Add a new function to reorder trip options based on hotel changes
+function reorderTripOptions(tripCard, maxHotelChanges, optionsInfo = null) {
+    const tabButtons = tripCard.querySelectorAll('[data-bs-toggle="tab"]');
+    const tabPanes = tripCard.querySelectorAll('.tab-pane');
+    
+    // Exit early if we don't have multiple options
+    if (tabButtons.length <= 1) return;
+    
+    // Get reference to the itinerary container for this trip
+    const dynamicItineraryContainer = tripCard.querySelector('.dynamic-itinerary-container');
+    if (!dynamicItineraryContainer) return;
+    
+    // If optionsInfo wasn't provided, gather it now
+    const options = optionsInfo || [];
+    if (!optionsInfo) {
+        tabButtons.forEach((button, idx) => {
+            const optionPane = tabPanes[idx];
+            const hotelChanges = extractHotelChanges(optionPane);
+            
+            // Extract travel time 
+            let travelMinutes = 0;
+            const statLabels = optionPane.querySelectorAll('.stat-label');
+            
+            for (let i = 0; i < statLabels.length; i++) {
+                if (statLabels[i].textContent.includes('Total Travel')) {
+                    const valueEl = statLabels[i].nextElementSibling;
+                    if (valueEl && valueEl.classList.contains('stat-value')) {
+                        const timeText = valueEl.textContent;
+                        const hoursMatch = timeText.match(/(\d+)h/);
+                        const minsMatch = timeText.match(/(\d+)m/);
+                        
+                        if (hoursMatch) travelMinutes += parseInt(hoursMatch[1]) * 60;
+                        if (minsMatch) travelMinutes += parseInt(minsMatch[1]);
+                    }
+                }
+            }
+            
+            options.push({
+                button: button,
+                pane: optionPane,
+                hotelChanges: hotelChanges,
+                travelMinutes: travelMinutes,
+                isValid: hotelChanges <= maxHotelChanges,
+                index: idx
+            });
+        });
+    }
+    
+    // Get the trip group data stored as a data attribute 
+    const tripGroupData = JSON.parse(tripCard.dataset.tripGroup || '{}');
+    let selectedVariantIndex = 0; // Default to first variant
+
+    // Sort options according to the specified logic:
+    // 1. If max hotel changes is set to max, sort by travel time
+    const maxPossibleChanges = Math.max(...options.map(o => o.hotelChanges));
+    if (maxHotelChanges >= maxPossibleChanges) {
+        // Sort by travel time (fastest first)
+        options.sort((a, b) => a.travelMinutes - b.travelMinutes);
+    } else {
+        // First show options that meet criteria, sorted by hotelChanges ascending
+        // Then show options that exceed criteria, sorted by original position
+        options.sort((a, b) => {
+            // First separate valid from invalid options
+            if (a.isValid && !b.isValid) return -1;
+            if (!a.isValid && b.isValid) return 1;
+            
+            // For valid options, sort by hotel changes
+            if (a.isValid && b.isValid) {
+                return a.hotelChanges - b.hotelChanges;
+            }
+            
+            // For invalid options, preserve original order
+            return a.index - b.index;
+        });
+    }
+
+    
+    // Reorder the DOM elements
+    const nav = tabButtons[0].parentNode;
+    const content = tabPanes[0].parentNode;
+    
+    // Clear active state from all tabs
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    tabPanes.forEach(pane => {
+        pane.classList.remove('active');
+        pane.classList.remove('show');
+    });
+    
+    // Reattach in the new order
+    options.forEach(option => {
+        nav.appendChild(option.button);
+        content.appendChild(option.pane);
+    });
+    
+    // Activate the first valid option
+    const firstValidOption = options.find(o => o.isValid);
+    if (firstValidOption) {
+        firstValidOption.button.classList.add('active');
+        firstValidOption.pane.classList.add('active');
+        firstValidOption.pane.classList.add('show');
+        
+        // Update the itinerary for the newly selected option
+        selectedVariantIndex = firstValidOption.index;
+        
+        import('../components/trip-card.js').then(module => {
+            if (typeof module.renderItineraryForVariant === 'function' && tripGroupData) {
+                module.renderItineraryForVariant(dynamicItineraryContainer, tripGroupData, selectedVariantIndex);
+            }
+        });
+    }
+}
+
 // New function to filter by hotel changes
 function filterByHotelChanges(maxChanges) {
+    // Update the active filter state
     activeFilters.maxHotelChanges = maxChanges;
+    
+    // Apply all filters to trip cards to hide any that have no valid options
     applyAllFilters();
+    
+    // Process each visible trip card to reorder options
+    document.querySelectorAll('.trip-card:not([style*="display: none"])').forEach(card => {
+        filterTripOptions(card);
+    });
 }
 
 // Update team filter UI
@@ -91,7 +214,7 @@ function updateCityFilterUI() {
     });
 }
 
-// Apply all active filters to the trip cards
+// Update the applyAllFilters function in filters.js to preserve TBD games
 function applyAllFilters() {
     // If we're using pagination, filter the original data
     if (window.tripResults && window.tripResults.allTrips) {
@@ -142,9 +265,21 @@ function applyAllFilters() {
         window.tripResults.renderedCount = 0;
         window.tripResults.hasMoreTrips = filteredTrips.length > 0;
         
-        // Clear the results container
+        // Get the results container
         const container = document.getElementById('tripResults');
-        if (container) container.innerHTML = '';
+        
+        // IMPORTANT: Save the TBD games section before clearing the container
+        const tbdSection = container ? container.querySelector('.card.mt-4.fade-in.shadow-sm.mb-4') : null;
+        
+        // Clear the results container
+        if (container) {
+            container.innerHTML = '';
+            
+            // Re-add the TBD games section if it was found
+            if (tbdSection) {
+                container.appendChild(tbdSection);
+            }
+        }
         
         // Update count display
         const resultsCount = document.getElementById('resultsCount');
@@ -208,61 +343,54 @@ function filterTripOptions(tripCard) {
     const tabPanes = tripCard.querySelectorAll('.tab-pane');
     
     let validOptionFound = false;
-    let firstValidOption = null;
+    const optionsInfo = [];
     
-    // Check each option tab
+    // First pass: collect info about each option without hiding any yet
     tabButtons.forEach((button, idx) => {
         const optionPane = tabPanes[idx];
         const hotelChanges = extractHotelChanges(optionPane);
         
-        if (hotelChanges <= activeFilters.maxHotelChanges) {
-            // This option is valid
-            button.style.display = 'block';
-            if (!firstValidOption) {
-                firstValidOption = button;
-            }
-            validOptionFound = true;
-        } else {
-            // This option exceeds hotel changes limit
-            button.style.display = 'none';
-            
-            // If this tab was active, we need to deactivate it
-            if (button.classList.contains('active')) {
-                button.classList.remove('active');
-                optionPane.classList.remove('show', 'active');
-            }
-        }
+        // Track if this option is valid under current filter
+        const isValid = hotelChanges <= activeFilters.maxHotelChanges;
+        if (isValid) validOptionFound = true;
+        
+        // Store information about each option
+        optionsInfo.push({
+            button: button,
+            pane: optionPane,
+            hotelChanges: hotelChanges,
+            index: idx,
+            isValid: isValid
+        });
     });
     
-    // If we have valid options but none are selected, select the first valid one
-    if (validOptionFound && firstValidOption) {
-        const allActive = tripCard.querySelector('.nav-link.active');
-        if (!allActive) {
-            // Activate first valid option
-            firstValidOption.classList.add('active');
-            
-            // Also activate corresponding tab pane
-            const targetId = firstValidOption.getAttribute('data-bs-target');
-            if (targetId) {
-                const targetPane = tripCard.querySelector(targetId);
-                if (targetPane) {
-                    targetPane.classList.add('show', 'active');
-                }
-            }
-        }
+    // If no valid options found for this trip card, hide the entire card
+    if (!validOptionFound) {
+        tripCard.style.display = 'none';
+        return;
     }
+    
+    // If we're here, show the card
+    tripCard.style.display = 'block';
+    
+    // Now handle reordering the options according to specified rules
+    reorderTripOptions(tripCard, activeFilters.maxHotelChanges, optionsInfo);
 }
 
-// Helper function to extract hotel changes from option pane
+// Helper function to extract hotel changes from option pane - Fix the selector issue
 function extractHotelChanges(optionPane) {
     if (!optionPane) return 0;
     
-    // First try to find explicit hotel changes display
-    const hotelChangesEl = optionPane.querySelector('.stat-label:contains("Hotel Changes")');
-    if (hotelChangesEl) {
-        const valueEl = hotelChangesEl.nextElementSibling;
-        if (valueEl && valueEl.classList.contains('stat-value')) {
-            return parseInt(valueEl.textContent) || 0;
+    // First try to find explicit hotel changes display using proper DOM traversal
+    const statLabels = optionPane.querySelectorAll('.stat-label');
+    
+    // Search through all stat labels to find hotel changes
+    for (let i = 0; i < statLabels.length; i++) {
+        if (statLabels[i].textContent.includes('Hotel Changes')) {
+            const valueEl = statLabels[i].nextElementSibling;
+            if (valueEl && valueEl.classList.contains('stat-value')) {
+                return parseInt(valueEl.textContent) || 0;
+            }
         }
     }
     
@@ -275,7 +403,7 @@ function extractHotelChanges(optionPane) {
     return 0; // Default if we can't find the information
 }
 
-// Enhanced clear filters function
+// Enhanced clear filters function - update this in filters.js
 function clearFiltersEnhanced() {
     // Reset active filters state
     activeFilters.team = null;
@@ -318,9 +446,21 @@ function clearFiltersEnhanced() {
         window.tripResults.renderedCount = 0;
         window.tripResults.hasMoreTrips = window.tripResults.allTrips.length > 0;
         
-        // Clear the results container
+        // Get the results container
         const container = document.getElementById('tripResults');
-        if (container) container.innerHTML = '';
+        
+        // IMPORTANT: Save the TBD games section before clearing the container
+        const tbdSection = container ? container.querySelector('.card.mt-4.fade-in.shadow-sm.mb-4') : null;
+        
+        // Clear the results container
+        if (container) {
+            container.innerHTML = '';
+            
+            // Re-add the TBD games section if it was found
+            if (tbdSection) {
+                container.appendChild(tbdSection);
+            }
+        }
         
         // Update count display
         const resultsCount = document.getElementById('resultsCount');
@@ -562,5 +702,6 @@ export {
     renderFilters,
     clearFiltersEnhanced as clearFilters,
     filterByGames,
-    filterByHotelChanges
+    filterByHotelChanges,
+    filterTripOptions // Add this export
 };

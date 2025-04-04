@@ -37,14 +37,6 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         // Count both trip groups and TBD games if available
         const tripCount = response.trip_groups ? response.trip_groups.length : 0;
         const tbdCount = response.tbd_games ? response.tbd_games.length : 0;
-        
-        if (tripCount > 0) {
-            resultsCount.textContent = `${tripCount} trip${tripCount !== 1 ? 's' : ''} found`;
-        } else if (tbdCount > 0) {
-            resultsCount.textContent = `${tbdCount} upcoming unscheduled game${tbdCount !== 1 ? 's' : ''}`;
-        } else {
-            resultsCount.textContent = 'No results found';
-        }
     }
     
     // Show TBD games FIRST if available
@@ -192,7 +184,7 @@ function extractTeams(tripGroups) {
     return [...teams].sort();
 }
 
-// Update the renderNextBatch function
+// Update the renderNextBatch function in components/results-display.js
 function renderNextBatch() {
     const state = window.tripResults;
     if (!state || !state.allTrips) return;
@@ -212,6 +204,22 @@ function renderNextBatch() {
     // Update the rendered count
     state.renderedCount = end;
     state.hasMoreTrips = state.renderedCount < state.allTrips.length;
+    
+    // IMPORTANT: Apply current filters to newly loaded trip cards
+    import('../services/filters.js').then(module => {
+        // Get only the newly added trip cards
+        const newCards = document.querySelectorAll('.trip-card:nth-child(n+' + (start + 1) + '):nth-child(-n+' + end + ')');
+        
+        // Apply hotel changes filter if it's active
+        if (window.activeFilters && window.activeFilters.maxHotelChanges < 7) {
+            newCards.forEach(card => {
+                // Process each newly loaded card
+                if (typeof module.filterTripOptions === 'function') {
+                    module.filterTripOptions(card);
+                }
+            });
+        }
+    });
     
     // Remove any existing load more button
     const existingButton = document.getElementById('loadMoreTrips');
@@ -245,4 +253,5 @@ function renderNextBatch() {
         resultsContainer.appendChild(noMoreTrips);
     }
 }
+
 export { renderResults, extractCities, extractTeams, renderNextBatch };

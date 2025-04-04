@@ -15,6 +15,7 @@ function renderTripCard(group, index, tripContext = {}) {
     tripCard.className = 'card trip-card fade-in mb-4 shadow-sm';
     tripCard.dataset.teams = defaultVariant.teams?.join(',') || '';
     tripCard.dataset.cities = defaultVariant.cities?.join(',') || '';
+    tripCard.dataset.tripGroup = JSON.stringify(group);
     
     // Trip header - enhanced with more information
     const header = document.createElement('div');
@@ -820,6 +821,7 @@ function renderAirportDistances(airportData) {
     return airportSection;
 }
 
+// Updated renderTbdGames function with accordion adjustments
 function renderTbdGames(tbdGames, mustTeams = []) {
     if (!tbdGames || tbdGames.length === 0) return;
     
@@ -830,29 +832,33 @@ function renderTbdGames(tbdGames, mustTeams = []) {
     if (!tripResults) return; // Safety check
     
     const tbdSection = document.createElement('div');
-    tbdSection.className = 'card mt-4 fade-in shadow-sm mb-4'; // Added mb-4 for spacing
+    tbdSection.className = 'card trip-card fade-in shadow-sm mb-4'; // Use trip-card class for consistency
     
-    // TBD header with better styling
+    // Updated TBD header with consistent styling
     const tbdHeader = document.createElement('div');
-    tbdHeader.className = 'card-header bg-light d-flex justify-content-between align-items-center';
+    tbdHeader.className = 'trip-header position-relative';
     tbdHeader.innerHTML = `
-        <h4 class="mb-0">
-            <i class="fas fa-calendar-alt text-warning me-2"></i> 
-            Upcoming Unscheduled Games
-        </h4>
-        <span class="badge bg-warning text-dark">${tbdGames.length} games</span>
+        <div class="trip-header-main">
+            <h3><i class="fas fa-calendar-alt text-secondary me-2"></i>Upcoming Unscheduled Games</h3>
+            <span class="match-count-badge">${tbdGames.length} games</span>
+        </div>
+        <div class="trip-header-meta">
+            <div class="trip-meta-item">
+                <i class="fas fa-info-circle"></i>
+                <span>These games don't have confirmed times yet but might be included in your trip once scheduled</span>
+            </div>
+        </div>
     `;
     
-    // TBD content with enhanced styling
+    // TBD content with improved styling matching trip cards
     const tbdContent = document.createElement('div');
-    tbdContent.className = 'card-body';
+    tbdContent.className = 'p-3';
     
     // Group TBD games by date
     const groupedGames = {};
     tbdGames.forEach(game => {
         // Check if game contains must-see team
         if (!game.has_must_team && mustTeamsLower.length > 0) {
-            // Parse teams from match string
             const matchParts = game.match.split(' vs ');
             if (matchParts.length === 2) {
                 const homeTeam = matchParts[0].toLowerCase();
@@ -867,15 +873,9 @@ function renderTbdGames(tbdGames, mustTeams = []) {
         groupedGames[game.date].push(game);
     });
     
-    // Intro text
-    const introText = document.createElement('p');
-    introText.className = 'lead';
-    introText.innerHTML = `These games don't have confirmed times yet but might be included in your trip once scheduled:`;
-    tbdContent.appendChild(introText);
-    
     // Create accordion for grouped games
     const accordion = document.createElement('div');
-    accordion.className = 'accordion mt-3';
+    accordion.className = 'accordion';
     accordion.id = 'tbd-accordion';
     
     let dateCounter = 0;
@@ -883,46 +883,55 @@ function renderTbdGames(tbdGames, mustTeams = []) {
         dateCounter++;
         const dateId = `tbd-date-${dateCounter}`;
         
-        // Create accordion item
+        // Create accordion item with styling that matches trip cards
         const accordionItem = document.createElement('div');
-        accordionItem.className = 'accordion-item';
+        accordionItem.className = 'accordion-item border-0 mb-2';
         
-        // Header
+        // Header styling that matches other elements - all collapsed by default now
         const accordionHeader = document.createElement('h2');
         accordionHeader.className = 'accordion-header';
         accordionHeader.innerHTML = `
-            <button class="accordion-button ${dateCounter > 1 ? 'collapsed' : ''}" type="button" 
-                    data-bs-toggle="collapse" data-bs-target="#${dateId}">
-                <strong>${date}</strong> 
-                <span class="badge bg-secondary ms-2">${groupedGames[date].length} games</span>
+            <button class="accordion-button collapsed" 
+                    style="background: var(--primary-light); border-radius: 8px; color: var(--primary-color);"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#${dateId}">
+                <div class="d-flex align-items-center justify-content-between w-100">
+                    <div>
+                        <i class="fas fa-calendar-day me-2"></i>
+                        <strong>${date}</strong>
+                    </div> 
+                    <span class="badge bg-primary me-4">${groupedGames[date].length} games</span>
+                </div>
             </button>
         `;
         
-        // Body
+        // Body with consistent styling - all collapsed by default
         const accordionBody = document.createElement('div');
         accordionBody.id = dateId;
-        accordionBody.className = `accordion-collapse collapse ${dateCounter === 1 ? 'show' : ''}`;
+        accordionBody.className = 'accordion-collapse collapse'; // Remove 'show' class
         
         const bodyContent = document.createElement('div');
-        bodyContent.className = 'accordion-body p-0';
+        bodyContent.className = 'accordion-body p-2';
         
-        // Games list
-        const gamesList = document.createElement('ul');
-        gamesList.className = 'list-group list-group-flush';
+        // Games list styled like match preview items
+        const gamesList = document.createElement('div');
+        gamesList.className = 'match-preview';
         
         groupedGames[date].forEach(game => {
-            const gameItem = document.createElement('li');
-            gameItem.className = `list-group-item ${game.has_must_team ? 'list-group-item-warning' : ''}`;
-            
             const location = game.location.replace(' hbf', '');
             
+            // Use match-preview-item class for consistency with trip cards
+            const gameItem = document.createElement('div');
+            gameItem.className = `match-preview-item ${game.has_must_team ? 'must-match' : ''}`;
+            
             gameItem.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        ${game.has_must_team ? '<i class="fas fa-star text-warning me-2"></i>' : ''}
-                        <strong>${game.match}</strong> 
-                        <span class="text-muted">@ ${location}</span>
-                    </div>
+                <div class="match-teams-preview">
+                    <strong>${game.match}</strong>
+                    ${game.has_must_team ? '<span class="must-see-badge ms-2">Must-See</span>' : ''}
+                </div>
+                <div class="match-info-compact">
+                    <span class="match-location-inline">
+                        <i class="fas fa-map-marker-alt"></i> ${location}
+                    </span>
                     <span class="badge bg-secondary">${game.league}</span>
                 </div>
             `;
@@ -940,18 +949,11 @@ function renderTbdGames(tbdGames, mustTeams = []) {
     
     tbdContent.appendChild(accordion);
     
-    // Add footer with tip
-    const tbdFooter = document.createElement('div');
-    tbdFooter.className = 'card-footer text-center text-muted';
-    tbdFooter.innerHTML = `
-        <i class="fas fa-info-circle me-1"></i>
-        Check back later for updated schedules. These games may become options for your trip once times are confirmed.
-    `;
-    
     tbdSection.appendChild(tbdHeader);
     tbdSection.appendChild(tbdContent);
-    tbdSection.appendChild(tbdFooter);
     
+    // Insert at the beginning of the results, but make it properly preserved during filtering
+    tbdSection.id = 'tbdGamesSection';
     tripResults.insertBefore(tbdSection, tripResults.firstChild);
 }
 
