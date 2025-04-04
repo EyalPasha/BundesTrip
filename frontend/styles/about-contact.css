@@ -1,0 +1,130 @@
+/* Team member styling */
+.team-avatar {
+    width: 60px;
+    height: 60px;
+    background-color: var(--bs-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.team-avatar:hover {
+    transform: scale(1.05);
+}
+
+/* Contact icon styling */
+.contact-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.contact-icon i {
+    transition: transform 0.3s ease;
+}
+
+.contact-icon:hover i {
+    transform: scale(1.15);
+}
+
+/* Social link buttons */
+.social-links .btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border-width: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.social-links .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Content section styling */
+.feature-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.story-section {
+    position: relative;
+    border-radius: 12px;
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.stats-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.stats-item:hover {
+    transform: translateX(5px);
+}
+
+.stats-item:last-child {
+    border-bottom: none;
+}
+
+.stats-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--bs-primary);
+}
+
+.section-divider {
+    height: 4px;
+    width: 60px;
+    background-color: var(--bs-primary);
+    margin: 2rem 0;
+    border-radius: 2px;
+}
+
+/* Hero section for about page */
+.about-hero {
+    background-color: rgba(var(--bs-primary-rgb), 0.05);
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+    border-radius: 0 0 30px 30px;
+}
+
+.about-hero h1 {
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.about-hero p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
