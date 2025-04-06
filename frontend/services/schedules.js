@@ -1,7 +1,6 @@
 import { applyTeamLogoStyles, preloadLogos, formatTeamOptionWithLogo, formatLeagueOptionWithLogo, getTeamLogoUrl, getLeagueLogoUrl } from './team-logos.js';
 import { fetchAllTeams, fetchLeagues, fetchAvailableDates, fetchGamesByDate, fetchTeamSchedule } from './schedule-service.js';
 import { GERMAN_TEAMS } from './data-loader.js';
-import { showErrorToast } from './notifications.js';
 
 // DOM Elements
 const DOM = {
@@ -34,8 +33,17 @@ const state = {
     },
 };
 
+// Restore the desktop date filter functionality
 function initializeFlatpickr() {
-    // Initialize the date picker with custom styling
+    // Skip if we're on mobile
+    if (window.innerWidth < 768 || !DOM.dateFilter) {
+        console.log('Skipping flatpickr initialization for desktop filters on mobile');
+        return;
+    }
+    
+    console.log('Initializing flatpickr for desktop date filter');
+    
+    // Initialize flatpickr on the date filter
     flatpickr(DOM.dateFilter, {
         dateFormat: "F j, Y",
         altInput: true,
@@ -51,51 +59,129 @@ function initializeFlatpickr() {
         locale: {
             firstDayOfWeek: 1 // Start with Monday
         },
-        // Add these options for styling
-        onReady: function() {
-            // Add classes for styling
-            document.querySelector('.flatpickr-calendar').classList.add('custom-calendar');
-            DOM.dateFilter.classList.add('flatpickr-ready');
-            
-            // Set CSS variable for primary color
-            document.documentElement.style.setProperty('--primary-color', '#043d7c');
-            document.documentElement.style.setProperty('--accent-color', '#ff6b00');
-        },
-        // Customize the date appearance to show game counts
-        onDayCreate: function(dObj, dStr, fp, dayElem) {
-
+        onClose: function(selectedDates, dateStr, instance) {
+            // Reset the selected date when calendar closes
+            setTimeout(() => {
+                instance.clear();
+            }, 100);
         }
     });
-    
-    // Add a class to body after initialization
-    setTimeout(() => {
-        document.body.classList.add('flatpickr-ready');
-    }, 300);
 }
 
 // Initialize the page when DOM is ready
 document.addEventListener('DOMContentLoaded', async function() {
+    console.log('Schedule page initialized');
+    
+    // Pre-hide filters with inline styles to prevent flash
+    document.head.insertAdjacentHTML('beforeend', `
+        <style id="initial-hide-filters">
+            .filter-bar { 
+                opacity: 0 !important; 
+                pointer-events: none !important; 
+                visibility: hidden !important;
+            }
+            .filter-btn, .calendar-btn {
+                opacity: 0 !important;
+                pointer-events: none !important;
+                visibility: hidden !important;
+            }
+        </style>
+    `);
+    
     // Initialize logos
     applyTeamLogoStyles();
     preloadLogos();
     
-    // Setup event listeners
+    // Setup event listeners (but don't show filters yet)
     setupEventListeners();
     
-    // Load data first
-    await Promise.all([
-        loadTeams(),
-        loadLeagues()
-    ]);
-    
-    // Remove this line:
-    // initializeSelect2();
-    
-    initializeFlatpickr();
-    
-    // Load initial games
-    loadAllGames();
+    try {
+        // Show enhanced loading immediately
+        DOM.scheduleLoading.innerHTML = `
+            <div class="enhanced-loading">
+                <div class="loading-ball"></div>
+                <div class="loading-shadow"></div>
+                <div class="loading-text">Loading Schedule</div>
+            </div>
+        `;
+        
+        // Load data first with proper timing
+        console.log('Loading teams and leagues...');
+        const [teams, leagues] = await Promise.all([
+            loadTeams(),
+            loadLeagues()
+        ]);
+        
+        console.log(`Successfully loaded ${teams.length} teams and ${leagues.length} leagues`);
+        
+        // Initialize flatpickr after data is loaded
+        initializeFlatpickr();
+        
+        // Load initial games
+        await loadAllGames();
+        
+        // Now show all filters since everything is loaded
+        showAllFilters();
+        
+    } catch (error) {
+        console.error('Error during initialization:', error);
+        // Even on error, show filters so users can interact
+        showAllFilters();
+    }
 });
+
+// Function to show all filters after loading
+function showAllFilters() {
+    console.log('Showing filters after loading');
+    
+    // Remove the initial hiding style
+    const initialStyle = document.getElementById('initial-hide-filters');
+    if (initialStyle) {
+        initialStyle.remove();
+    }
+    
+    // Show desktop filters with a smooth transition
+    const filterBar = document.querySelector('.filter-bar');
+    if (filterBar) {
+        filterBar.style.transition = 'opacity 0.5s ease';
+        filterBar.style.opacity = '1';
+        filterBar.style.visibility = 'visible';
+        filterBar.style.pointerEvents = 'auto';
+    }
+    
+    // Show mobile buttons with animations
+    setTimeout(() => {
+        const buttons = document.querySelectorAll('.filter-btn, .calendar-btn');
+        buttons.forEach((btn, index) => {
+            btn.style.transition = 'opacity 0.5s ease, transform 0.3s ease';
+            btn.style.opacity = '1';
+            btn.style.visibility = 'visible';
+            btn.style.pointerEvents = 'auto';
+            
+            // Add entrance animation
+            if (btn.classList.contains('filter-btn')) {
+                btn.style.animation = 'slideInRight 0.5s ease forwards';
+            } else if (btn.classList.contains('calendar-btn')) {
+                btn.style.animation = 'slideInLeft 0.5s ease forwards';
+            }
+        });
+        
+        // Add animation keyframes
+        document.head.insertAdjacentHTML('beforeend', `
+            <style>
+                @keyframes slideInRight {
+                    from { transform: translateX(50px); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                
+                @keyframes slideInLeft {
+                    from { transform: translateX(-50px); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            </style>
+        `);
+    }, 100);
+}
 
 // Load teams into the filter dropdown
 async function loadTeams() {
@@ -103,14 +189,21 @@ async function loadTeams() {
         // First try to get teams from global state if loaded by main page
         let teams = [];
         if (window.globalTeamsData && window.globalTeamsData.teams) {
+            console.log('Using teams from global state:', window.globalTeamsData.teams.length);
             teams = window.globalTeamsData.teams;
         } else {
+            console.log('Fetching teams from API');
             teams = await fetchAllTeams();
+            console.log('Fetched teams from API:', teams.length);
         }
         
         // Filter to only German teams
         const germanTeams = teams.filter(team => GERMAN_TEAMS.includes(team));
         state.teams = germanTeams;
+        
+        if (germanTeams.length === 0) {
+            console.warn('No German teams found in the data');
+        }
         
         // Clear and populate the select
         DOM.teamFilter.innerHTML = '<option value="all">All Teams</option>';
@@ -122,8 +215,16 @@ async function loadTeams() {
             option.textContent = team;
             DOM.teamFilter.appendChild(option);
         });
+        
+        console.log(`Team filter populated with ${germanTeams.length} teams`);
+        
+        // Trigger an event that mobile filters can listen for
+        document.dispatchEvent(new CustomEvent('teamsLoaded'));
+        
+        return germanTeams;
     } catch (error) {
         console.error('Failed to load teams:', error);
+        return [];
     }
 }
 
@@ -133,12 +234,19 @@ async function loadLeagues() {
         // First try to get leagues from global state if loaded by main page
         let leagues = [];
         if (window.globalLeaguesData && window.globalLeaguesData.leagues) {
+            console.log('Using leagues from global state:', window.globalLeaguesData.leagues);
             leagues = window.globalLeaguesData.leagues;
         } else {
+            console.log('Fetching leagues from API');
             leagues = await fetchLeagues();
+            console.log('Fetched leagues from API:', leagues);
         }
         
         state.leagues = leagues;
+        
+        if (leagues.length === 0) {
+            console.warn('No leagues found in the data');
+        }
         
         // Clear and populate the select
         DOM.leagueFilter.innerHTML = '<option value="all">All Leagues</option>';
@@ -150,8 +258,16 @@ async function loadLeagues() {
             option.textContent = getLeagueDisplayName(league);
             DOM.leagueFilter.appendChild(option);
         });
+        
+        console.log(`League filter populated with ${leagues.length} leagues`);
+        
+        // Trigger an event that mobile filters can listen for
+        document.dispatchEvent(new CustomEvent('leaguesLoaded'));
+        
+        return leagues;
     } catch (error) {
         console.error('Failed to load leagues:', error);
+        return [];
     }
 }
 
@@ -180,11 +296,10 @@ window.applyScheduleFilters = function(type, value) {
 };
 
 // Set up event listeners
+// Modify the existing function to no longer include date picker
 function setupEventListeners() {
     // Clear filters
     DOM.clearFilters.addEventListener('click', clearFilters);
-    
-    // Remove the view toggle buttons code completely
     
     // Make filters sticky
     const filterBar = document.querySelector('.filter-bar');
@@ -205,101 +320,317 @@ function setupEventListeners() {
     addStickyStyles();
 }
 
-// Add sticky styles to the document
-// Add sticky styles to the document
+// Update the CSS styles to hide calendar button on desktop
 function addStickyStyles() {
     const styleElement = document.createElement('style');
     styleElement.textContent = `
-        .sticky-filters {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background-color: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-top: 0;
-            padding-top: 15px;
-            padding-bottom: 15px;
-            transition: box-shadow 0.3s ease;
-        }
-        
-        .sticky-active-filters {
-            position: sticky;
-            top: 80px;
-            z-index: 999;
-            background-color: #fff;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-        
-        /* Center the filter row with equal margins */
-        .filter-bar .row {
-            justify-content: center;
-        }
-        
-        /* Add equal spacing between filter elements */
-        .filter-bar .col-md-4,
-        .filter-bar .col-md-3 {
-            padding: 0 15px;
-        }
-        
-        @media (max-width: 768px) {
+        /* Desktop filters - keep sticky behavior */
+        @media (min-width: 768px) {
             .sticky-filters {
-                padding-top: 10px;
-                padding-bottom: 10px;
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                background-color: #fff;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                margin-top: 0;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                transition: box-shadow 0.3s ease;
             }
             
             .sticky-active-filters {
-                top: 120px;
+                position: sticky;
+                top: 80px;
+                z-index: 999;
+                background-color: #fff;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                margin-bottom: 15px;
             }
             
-            /* Adjust spacing for mobile */
+            /* Center the filter row with equal margins */
+            .filter-bar .row {
+                justify-content: center;
+            }
+            
+            /* Add equal spacing between filter elements */
             .filter-bar .col-md-4,
             .filter-bar .col-md-3 {
-                padding: 0 10px;
-                margin-bottom: 10px;
+                padding: 0 15px;
+            }
+            
+            /* Highlight animation for the date jumping */
+            .highlight-section {
+                animation: highlight-fade 2s ease;
+            }
+            
+            @keyframes highlight-fade {
+                0%, 30% { background-color: rgba(13, 110, 253, 0.15); }
+                100% { background-color: transparent; }
+            }
+            
+            /* Hide calendar button on desktop */
+            .calendar-btn {
+                display: none;
             }
         }
         
-        /* Highlight animation for the date jumping */
-        .highlight-section {
-            animation: highlight-fade 2s ease;
-        }
-        
-        @keyframes highlight-fade {
-            0%, 30% { background-color: rgba(13, 110, 253, 0.15); }
-            100% { background-color: transparent; }
-        }
-        
-        /* Ensure the schedule content has enough padding to avoid initial overlap */
-        #scheduleContent {
-            padding-top: 10px;
-        }
-
-        /* Highlight animation for the date jumping */
-        .highlight-section {
-            animation: highlight-fade 2s ease;
-        }
-        
-        @keyframes highlight-fade {
-            0%, 30% { background-color: rgba(13, 110, 253, 0.15); }
-            100% { background-color: transparent; }
-        }
-        
-        /* Ensure the schedule content has enough padding to avoid initial overlap */
-        #scheduleContent {
-            padding-top: 10px;
-        }
-        
-        /* Fix the active filters overlap issue */
-        .sticky-active-filters {
-            top: 100px !important;
-            margin-top: 20px;
-            padding-top: 15px;
-        }
+        /* Mobile filter button and drawer */
+        @media (max-width: 767.98px) {
+            /* Hide the original filter bar */
+            .filter-bar {
+                display: none !important;
+            }
             
+            /* Hide the active filters display (will show in a different way) */
+            .sticky-active-filters {
+                display: none !important;
+            }
+            
+            /* Filter toggle button */
+            .filter-btn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background-color: #043d7c;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+                z-index: 1000;
+                border: none;
+                font-size: 1.2rem;
+                transition: transform 0.2s;
+            }
+            
+            .filter-btn:active {
+                transform: scale(0.95);
+            }
+            
+            /* Calendar button (mobile) */
+            .calendar-btn {
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background-color: #043d7c;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+                z-index: 1000;
+                border: none;
+                font-size: 1.2rem;
+                transition: transform 0.2s;
+            }
+            
+            .calendar-btn:active {
+                transform: scale(0.95);
+            }
+            
+            /* Filter count badge */
+            .filter-count {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                background-color: #ff6b00;
+                color: white;
+                border-radius: 50%;
+                width: 22px;
+                height: 22px;
+                font-size: 0.7rem;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid white;
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            
+            .filter-count.has-filters {
+                opacity: 1;
+            }
+            
+            /* Drawer overlay */
+            .drawer-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 1001;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s;
+            }
+            
+            .drawer-overlay.open {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            /* Filter drawer */
+            .filter-drawer {
+                position: fixed;
+                top: 0;
+                right: -85%;
+                width: 85%;
+                height: 100%;
+                background-color: white;
+                z-index: 1002;
+                box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+                transition: right 0.3s;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .filter-drawer.open {
+                right: 0;
+            }
+            
+            /* Drawer header */
+            .drawer-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 15px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .drawer-title {
+                font-size: 1.2rem;
+                font-weight: 500;
+                margin: 0;
+                color: #043d7c;
+            }
+            
+            .drawer-close {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                line-height: 1;
+                color: #666;
+                padding: 0;
+            }
+            
+            /* Drawer content */
+            .drawer-content {
+                padding: 15px;
+                flex-grow: 1;
+                overflow-y: auto;
+            }
+            
+            /* Filter group */
+            .drawer-filter-group {
+                margin-bottom: 20px;
+            }
+            
+            .drawer-filter-label {
+                font-weight: 600;
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+                color: #333;
+            }
+            
+            /* Active filters */
+            .mobile-active-filters {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin: 10px 0 20px;
+            }
+            
+            .mobile-filter-badge {
+                background-color: #f0f4f8;
+                color: #043d7c;
+                border-radius: 20px;
+                padding: 5px 12px;
+                font-size: 0.8rem;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                border: 1px solid #d0e0f0;
+            }
+            
+            .badge-remove {
+                background: none;
+                border: none;
+                color: #999;
+                padding: 0;
+                font-size: 0.9rem;
+            }
+            
+            /* Action buttons */
+            .drawer-actions {
+                padding: 15px;
+                border-top: 1px solid #eee;
+                display: flex;
+                gap: 10px;
+            }
+            
+            .drawer-actions button {
+                flex: 1;
+                padding: 10px;
+            }
+            
+            /* Ensure the schedule content has enough padding to avoid initial overlap */
+            #scheduleContent {
+                padding-top: 10px;
+            }
+            
+            /* Highlight animation for the date jumping */
+            .highlight-section {
+                animation: highlight-fade 2s ease;
+            }
+            
+            @keyframes highlight-fade {
+                0%, 30% { background-color: rgba(13, 110, 253, 0.15); }
+                100% { background-color: transparent; }
+        /* Mobile team header fixes */
+        @media (max-width: 767.98px) {
+            .team-header {
+                padding: 0.75rem !important;
+            }
+            
+            .team-header h2.h3 {
+                font-size: 1.1rem !important;
+                margin-right: 0.5rem;
+            }
+            
+            .team-header .badge {
+                font-size: 0.65rem !important;
+                padding: 0.15rem 0.4rem !important;
+            }
+            
+            .fs-7 {
+                font-size: 0.7rem !important;
+            }
+            
+            /* Ensure badges don't wrap awkwardly */
+            .team-header .d-flex.flex-wrap {
+                margin-left: 0 !important;
+            }
+        }
     `;
     document.head.appendChild(styleElement);
+    
+    // Create the calendar button (now only for mobile)
+    createCalendarButton();
+    
+    // Only create mobile filter button on mobile screens
+    if (window.innerWidth < 768) {
+        createMobileFilterButton();
+    }
     
     // Add scroll event listener to close dropdowns when scrolling
     window.addEventListener('scroll', function() {
@@ -327,10 +658,380 @@ function addStickyStyles() {
     }, { passive: true });
 }
 
+// Create floating calendar button - mobile only
+function createCalendarButton() {
+    // Only create for mobile devices
+    if (window.innerWidth >= 768) {
+        return; // Skip creation on desktop
+    }
+    
+    const calendarButton = document.createElement('button');
+    calendarButton.className = 'calendar-btn';
+    calendarButton.innerHTML = '<i class="fas fa-calendar-alt"></i>';
+    calendarButton.setAttribute('aria-label', 'Jump to date');
+    
+    // Append to document
+    document.body.appendChild(calendarButton);
+    
+    // Setup calendar functionality with reset on close
+    flatpickr(calendarButton, {
+        dateFormat: "F j, Y",
+        inline: false,
+        minDate: "today",
+        maxDate: new Date().fp_incr(120), // 120 days from now
+        onChange: function(selectedDates) {
+            if (selectedDates.length > 0) {
+                jumpToDate(selectedDates[0]);
+            }
+        },
+        disableMobile: "true",
+        locale: {
+            firstDayOfWeek: 1 // Start with Monday
+        },
+        onReady: function(dateObj, dateStr, instance) {
+            // Add custom class for styling
+            instance.calendarContainer.classList.add('floating-calendar');
+        },
+        onClose: function(selectedDates, dateStr, instance) {
+            // Reset the selected date when calendar closes
+            setTimeout(() => {
+                instance.clear();
+            }, 100);
+        }
+    });
+}
+
+// Create mobile filter button and drawer
+function createMobileFilterButton() {
+    // Create filter button
+    const filterButton = document.createElement('button');
+    filterButton.className = 'filter-btn';
+    filterButton.innerHTML = '<i class="fas fa-filter"></i>';
+    filterButton.setAttribute('aria-label', 'Filter games');
+    
+    // Add filter count badge
+    const filterCount = document.createElement('span');
+    filterCount.className = 'filter-count';
+    filterCount.textContent = '0';
+    filterButton.appendChild(filterCount);
+    
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'drawer-overlay';
+    
+    // Create drawer
+    const drawer = document.createElement('div');
+    drawer.className = 'filter-drawer';
+    drawer.innerHTML = `
+        <div class="drawer-header">
+            <h3 class="drawer-title">Filter Games</h3>
+            <button class="drawer-close" aria-label="Close filter menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <div class="mobile-active-filters"></div>
+            
+            <div class="drawer-filter-group">
+                <label class="drawer-filter-label" for="mobileLeagueFilter">
+                    <i class="fas fa-trophy me-2"></i> League
+                </label>
+                <select class="form-select" id="mobileLeagueFilter">
+                    <option value="all">All Leagues</option>
+                </select>
+            </div>
+            
+            <div class="drawer-filter-group">
+                <label class="drawer-filter-label" for="mobileTeamFilter">
+                    <i class="fas fa-futbol me-2"></i> Team
+                </label>
+                <select class="form-select" id="mobileTeamFilter">
+                    <option value="all">All Teams</option>
+                </select>
+            </div>
+        </div>
+        <div class="drawer-actions">
+            <button class="btn btn-outline-secondary" id="clearMobileFilters">
+                <i class="fas fa-times me-2"></i> Clear All
+            </button>
+            <button class="btn btn-primary" id="applyMobileFilters">
+                <i class="fas fa-check me-2"></i> Apply Filters
+            </button>
+        </div>
+    `;
+    
+    // Add to document
+    document.body.appendChild(filterButton);
+    document.body.appendChild(overlay);
+    document.body.appendChild(drawer);
+    
+    // Initialize flatpickr for mobile date filter
+    const mobileDateFilter = document.getElementById('mobileDateFilter');
+    if (mobileDateFilter) {
+        flatpickr(mobileDateFilter, {
+            dateFormat: "F j, Y",
+            minDate: "today",
+            maxDate: new Date().fp_incr(120),
+            disableMobile: "true"
+        });
+    }
+    
+    // Update filter count
+    function updateFilterCount() {
+        let count = 0;
+        if (state.filters.league !== 'all') count++;
+        if (state.filters.team !== 'all') count++;
+        
+        filterCount.textContent = count;
+        if (count > 0) {
+            filterCount.classList.add('has-filters');
+        } else {
+            filterCount.classList.remove('has-filters');
+        }
+        
+        // Update mobile active filters
+        updateMobileActiveFilters();
+    }
+    
+    // Update mobile active filters display
+    function updateMobileActiveFilters() {
+        const mobileFiltersContainer = document.querySelector('.mobile-active-filters');
+        if (!mobileFiltersContainer) return;
+        
+        mobileFiltersContainer.innerHTML = '';
+        
+        if (state.filters.league !== 'all') {
+            const leagueName = getLeagueDisplayName(state.filters.league);
+            const badge = createMobileFilterBadge('league', leagueName);
+            mobileFiltersContainer.appendChild(badge);
+        }
+        
+        if (state.filters.team !== 'all') {
+            const badge = createMobileFilterBadge('team', state.filters.team);
+            mobileFiltersContainer.appendChild(badge);
+        }
+    }
+    
+    // Create mobile filter badge
+    function createMobileFilterBadge(type, text) {
+        const badge = document.createElement('div');
+        badge.className = 'mobile-filter-badge';
+        badge.innerHTML = `
+            <span>${text}</span>
+            <button class="badge-remove" data-filter-type="${type}" aria-label="Remove ${type} filter">
+                <i class="fas fa-times-circle"></i>
+            </button>
+        `;
+        
+        // Add click handler to remove filter
+        badge.querySelector('.badge-remove').addEventListener('click', (e) => {
+            e.stopPropagation();
+            removeFilter(type);
+            
+            // Update select values in mobile drawer
+            const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
+            const mobileTeamFilter = document.getElementById('mobileTeamFilter');
+            
+            if (type === 'league' && mobileLeagueFilter) {
+                mobileLeagueFilter.value = 'all';
+            } else if (type === 'team' && mobileTeamFilter) {
+                mobileTeamFilter.value = 'all';
+            }
+            
+            updateFilterCount();
+        });
+        
+        return badge;
+    }
+    
+    // Event Listeners
+    filterButton.addEventListener('click', () => {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden'; 
+        
+        // Set current values - ensure these elements exist first
+        const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
+        const mobileTeamFilter = document.getElementById('mobileTeamFilter');
+        
+        if (mobileLeagueFilter) mobileLeagueFilter.value = state.filters.league;
+        if (mobileTeamFilter) mobileTeamFilter.value = state.filters.team;
+        
+        // Update mobile active filters
+        updateMobileActiveFilters();
+    });
+    
+    document.querySelector('.drawer-close').addEventListener('click', () => {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    });
+    
+    overlay.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    });
+    
+    // Apply filters button
+    document.getElementById('applyMobileFilters').addEventListener('click', () => {
+        // Update state with mobile filter values
+        const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
+        const mobileTeamFilter = document.getElementById('mobileTeamFilter');
+        
+        if (mobileLeagueFilter) state.filters.league = mobileLeagueFilter.value;
+        if (mobileTeamFilter) state.filters.team = mobileTeamFilter.value;
+        
+        // Sync with main filters
+        if (DOM.leagueFilter) DOM.leagueFilter.value = state.filters.league;
+        if (DOM.teamFilter) DOM.teamFilter.value = state.filters.team;
+        
+        // Apply filters
+        applyFilters();
+        
+        // Close drawer
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        
+        // Update filter count
+        updateFilterCount();
+    });
+    
+    // Clear filters button
+    document.getElementById('clearMobileFilters').addEventListener('click', () => {
+        // Reset mobile filters
+        const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
+        const mobileTeamFilter = document.getElementById('mobileTeamFilter');
+        
+        if (mobileLeagueFilter) mobileLeagueFilter.value = 'all';
+        if (mobileTeamFilter) mobileTeamFilter.value = 'all';
+        
+        // Reset state
+        state.filters.league = 'all';
+        state.filters.team = 'all';
+        state.filters.date = null;
+        
+        // Sync with main filters
+        if (DOM.leagueFilter) DOM.leagueFilter.value = 'all';
+        if (DOM.teamFilter) DOM.teamFilter.value = 'all';
+        
+        // Update UI
+        updateMobileActiveFilters();
+        updateFilterCount();
+        
+        // Load all games
+        loadAllGames();
+        
+        // Close drawer
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    });
+    
+    // Jump to date when selected in mobile drawer
+    if (mobileDateFilter && mobileDateFilter._flatpickr) {
+        mobileDateFilter._flatpickr.config.onChange.push(function(selectedDates) {
+            if (selectedDates.length > 0) {
+                jumpToDate(selectedDates[0]);
+                
+                // Close drawer
+                drawer.classList.remove('open');
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    
+    // Initialize filter count
+    updateFilterCount();
+    
+    // Modify updateActiveFiltersDisplay to also update mobile filter count
+    const originalUpdateFilters = updateActiveFiltersDisplay;
+    updateActiveFiltersDisplay = function() {
+        originalUpdateFilters();
+        updateFilterCount();
+    };
+
+    // More reliable method to populate filters after Select2 initialization
+    function populateMobileFilters() {
+        console.log('Populating mobile filters');
+        
+        // Get references to the mobile filter elements
+        const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
+        const mobileTeamFilter = document.getElementById('mobileTeamFilter');
+        
+        if (!mobileLeagueFilter || !mobileTeamFilter) {
+            console.error('Mobile filters not found in the DOM');
+            return;
+        }
+        
+        // Clear existing options
+        mobileLeagueFilter.innerHTML = '<option value="all">All Leagues</option>';
+        mobileTeamFilter.innerHTML = '<option value="all">All Teams</option>';
+        
+        // Clone options from main filters
+        if (DOM.leagueFilter) {
+            console.log(`League filter has ${DOM.leagueFilter.options.length} options`);
+            Array.from(DOM.leagueFilter.options).forEach(option => {
+                const newOption = document.createElement('option');
+                newOption.value = option.value;
+                newOption.textContent = option.textContent;
+                mobileLeagueFilter.appendChild(newOption);
+            });
+        } else {
+            console.warn('Main league filter not found');
+        }
+        
+        if (DOM.teamFilter) {
+            console.log(`Team filter has ${DOM.teamFilter.options.length} options`);
+            Array.from(DOM.teamFilter.options).forEach(option => {
+                const newOption = document.createElement('option');
+                newOption.value = option.value;
+                newOption.textContent = option.textContent;
+                mobileTeamFilter.appendChild(newOption);
+            });
+        } else {
+            console.warn('Main team filter not found');
+        }
+        
+        console.log(`Populated mobile filters. League options: ${mobileLeagueFilter.options.length}, Team options: ${mobileTeamFilter.options.length}`);
+    }
+    
+    // Listen for teams and leagues loading events
+    document.addEventListener('teamsLoaded', function() {
+        console.log('Teams loaded event received, updating mobile filters');
+        populateMobileFilters();
+    });
+    
+    document.addEventListener('leaguesLoaded', function() {
+        console.log('Leagues loaded event received, updating mobile filters');
+        populateMobileFilters();
+    });
+    
+    // Listen for Select2 initialization to repopulate
+    document.addEventListener('select2Initialized', function() {
+        console.log('Select2 initialized event received, updating mobile filters');
+        populateMobileFilters();
+    });
+    
+    // Initial attempt at population
+    setTimeout(() => {
+        populateMobileFilters();
+    }, 500);
+}
+
 // Load all upcoming games
 async function loadAllGames() {
-    // Show loading
+    // Show enhanced loading
     DOM.scheduleLoading.classList.remove('d-none');
+    DOM.scheduleLoading.innerHTML = `
+        <div class="enhanced-loading">
+            <div class="loading-ball"></div>
+            <div class="loading-shadow"></div>
+            <div class="loading-text">Loading Schedule</div>
+        </div>
+    `;
     DOM.scheduleResults.classList.add('d-none');
     DOM.noSchedule.classList.add('d-none');
     
@@ -356,10 +1057,12 @@ async function loadAllGames() {
         DOM.scheduleLoading.classList.add('d-none');
         DOM.scheduleResults.classList.remove('d-none');
         
+        return data; // Return data to allow for proper async await chain
+        
     } catch (error) {
         console.error('Error loading games:', error);
-        showErrorToast(`Error loading game schedule: ${error.message}`);
         showNoGames();
+        throw error; // Rethrow to allow for proper error handling
     }
 }
 
@@ -461,7 +1164,6 @@ async function applyFilters() {
         
     } catch (error) {
         console.error('Error applying filters:', error);
-        showErrorToast(`Error filtering games: ${error.message}`);
         showNoGames();
     }
 }
@@ -591,7 +1293,6 @@ function jumpToDate(date) {
     const allDateSections = document.querySelectorAll('.date-section[id^="date-"]');
     if (allDateSections.length === 0) {
         // No dates available, show a message
-        showErrorToast(`No scheduled games found near ${formattedDate}`);
         return;
     }
     
@@ -648,7 +1349,6 @@ function jumpToDate(date) {
     }
     
     if (!closest) {
-        showErrorToast(`No scheduled games found near ${formattedDate}`);
         return;
     }
     
@@ -671,7 +1371,6 @@ function jumpToDate(date) {
             day: 'numeric'
         });
         
-        showErrorToast(`No games on ${formattedDate}. Showing closest available date: ${closestFormatted}`);
     }
 }
 
@@ -756,11 +1455,13 @@ function renderListView(games) {
 
 // Fetch and render games for a specific date
 function fetchGamesForDate(dateStr, container) {
-    // Add loading indicator
+    // Add enhanced loading indicator
     container.innerHTML = `
-        <div class="text-center py-3">
-            <div class="spinner-border spinner-border-sm text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
+        <div class="date-loading">
+            <div class="loading-pulse">
+                <div class="loading-card"></div>
+                <div class="loading-line"></div>
+                <div class="loading-line short"></div>
             </div>
         </div>
     `;
@@ -890,7 +1591,6 @@ function fetchGamesForDate(dateStr, container) {
             // Add games
             leagueGames.forEach(game => {
                 const gameCard = createGameCard(game);
-                gameCard.classList.add('highlighted-game'); // Highlight all games since we're filtering by team
                 leagueSection.appendChild(gameCard);
             });
             
@@ -1022,14 +1722,6 @@ function createGameCard(game) {
         }
     }
     
-    // Check if this game includes the filtered team
-    const isHighlighted = state.filters.team !== 'all' && 
-                         (homeTeam === state.filters.team || awayTeam === state.filters.team);
-    
-    if (isHighlighted) {
-        card.classList.add('highlighted-game');
-    }
-    
     // Absolutely ensure game time is never undefined or null in display
     let displayTime = 'TBD';
     if (game.time && game.time !== 'null' && game.time.trim() !== '') {
@@ -1044,43 +1736,82 @@ function createGameCard(game) {
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body py-3';
     
-    // Fixed VS position layout
-    cardBody.innerHTML = `
-        <div class="row align-items-center">
-            <div class="col-md-2 col-3">
-                <div class="match-time text-center ${displayTime === 'TBD' ? 'text-muted fst-italic' : ''}">
-                    ${displayTime}
+    // Desktop view - show time in main content (will be hidden in mobile via CSS)
+    const desktopTimeDisplay = document.createElement('div');
+    desktopTimeDisplay.className = 'desktop-time-display';
+    desktopTimeDisplay.innerHTML = `
+        <div class="match-time ${displayTime === 'TBD' ? 'text-muted fst-italic' : ''}">
+            ${displayTime}
+        </div>
+    `;
+    
+    // Main content - teams and match info
+    const mainContent = document.createElement('div');
+    mainContent.className = 'match-main-content';
+    
+    // Teams display (simplified for mobile)
+    mainContent.innerHTML = `
+        <div class="match-teams-container">
+            <div class="match-teams">
+                <div class="home-team">
+                    <span class="team-name">${homeTeam}</span>
+                    <img src="${getTeamLogoUrl(homeTeam)}" alt="${homeTeam}" class="team-badge">
                 </div>
-            </div>
-            
-            <div class="col-md-8 col-6">
-                <div class="match-teams">
-                    <div class="home-team">
-                        <span class="team-name">${homeTeam}</span>
-                        <img src="${getTeamLogoUrl(homeTeam)}" alt="${homeTeam}" class="team-badge">
-                    </div>
-                    
-                    <div class="vs-container">
-                        <span class="vs">vs</span>
-                    </div>
-                    
-                    <div class="away-team">
-                        <img src="${getTeamLogoUrl(awayTeam)}" alt="${awayTeam}" class="team-badge">
-                        <span class="team-name">${awayTeam}</span>
-                    </div>
+                
+                <div class="vs-container">
+                    <span class="vs">vs</span>
                 </div>
-            </div>
-            
-            <div class="col-md-2 col-3 text-end">
-                <div class="match-location">
-                    <i class="fas fa-map-marker-alt me-1"></i>
-                    <span>${game.display_location || game.location}</span>
+                
+                <div class="away-team">
+                    <img src="${getTeamLogoUrl(awayTeam)}" alt="${awayTeam}" class="team-badge">
+                    <span class="team-name">${awayTeam}</span>
                 </div>
             </div>
         </div>
     `;
     
+    // Desktop location display - will be hidden on mobile
+    const desktopLocationDisplay = document.createElement('div');
+    desktopLocationDisplay.className = 'desktop-location-display';
+    desktopLocationDisplay.innerHTML = `
+        <div class="match-location text-end">
+            <i class="fas fa-map-marker-alt me-1"></i>
+            <span>${game.display_location || game.location}</span>
+        </div>
+    `;
+    
+    // Collapsible details section
+    const detailsSection = document.createElement('div');
+    detailsSection.className = 'match-details-section collapse';
+    detailsSection.innerHTML = `
+        <div class="match-details-content">
+            <div class="match-time-detail">
+                <i class="far fa-clock"></i> ${displayTime}
+            </div>
+            <div class="match-location-detail">
+                <i class="fas fa-map-marker-alt"></i> ${game.display_location || game.location}
+            </div>
+        </div>
+    `;
+    
+    // Add click event to toggle details on mobile
+    mainContent.addEventListener('click', function(e) {
+        // Only handle clicks on mobile
+        if (window.innerWidth <= 767.98) {
+            detailsSection.classList.toggle('show');
+            card.classList.toggle('details-expanded');
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    });
+    
+    // Add elements to card
+    cardBody.appendChild(desktopTimeDisplay);
+    cardBody.appendChild(mainContent);
+    cardBody.appendChild(desktopLocationDisplay); // Add location display for desktop
+    cardBody.appendChild(detailsSection);
     card.appendChild(cardBody);
+    
     return card;
 }
 
@@ -1268,19 +1999,20 @@ function displayTeamGames(teamData) {
     
     const teamName = teamData.team;
     
-    // Create header
+    // Create header with improved mobile layout
     const teamHeader = document.createElement('div');
     teamHeader.className = 'team-header mb-4 pb-2 border-bottom';
     teamHeader.innerHTML = `
-        <div class="d-flex align-items-center mb-3">
-            <img src="${getTeamLogoUrl(teamName)}" class="me-3" width="60" height="60" alt="${teamName}">
-            <div>
-                <h2 class="h3 mb-1">${teamName}</h2>
-                <div class="d-flex gap-2">
-                    <span class="badge bg-primary rounded-pill">${teamData.total_matches} Total Matches</span>
-                    <span class="badge bg-success rounded-pill">${teamData.matches.length} Scheduled</span>
-                    <span class="badge bg-warning text-dark rounded-pill">${teamData.tbd_matches.length} TBD</span>
-                </div>
+        <div class="d-flex flex-column flex-md-row">
+            <div class="d-flex align-items-center mb-2 mb-md-0">
+                <img src="${getTeamLogoUrl(teamName)}" class="me-3" width="48" height="48" alt="${teamName}" 
+                    style="width: 48px; height: 48px; object-fit: contain;">
+                <h2 class="h3 mb-0">${teamName}</h2>
+            </div>
+            <div class="d-flex flex-wrap gap-2 ms-md-auto mt-2 mt-md-0 align-items-md-center">
+                <span class="badge bg-primary rounded-pill fs-7">${teamData.total_matches} Total</span>
+                <span class="badge bg-success rounded-pill fs-7">${teamData.matches.length} Scheduled</span>
+                <span class="badge bg-warning text-dark rounded-pill fs-7">${teamData.tbd_matches.length} TBD</span>
             </div>
         </div>
     `;
@@ -1448,54 +2180,18 @@ function displayTeamGames(teamData) {
                 
                 // Add matches
                 leagueMatches.forEach(match => {
-                    // Create game card
-                    const gameCard = document.createElement('div');
-                    gameCard.className = 'card game-card highlighted-game mb-2';
+                    // Use the standard game card function instead of custom HTML
+                    const game = {
+                        match: match.is_home ? 
+                            `${teamName} vs ${match.opponent}` : 
+                            `${match.opponent} vs ${teamName}`,
+                        time: match.time || 'TBD',
+                        location: match.location,
+                        display_location: match.display_location || match.location,
+                        league: match.league
+                    };
                     
-                    const matchTime = match.time || 'TBD';
-                    const timeClass = matchTime === 'TBD' ? 'text-muted fst-italic' : '';
-                    
-                    const cardBody = document.createElement('div');
-                    cardBody.className = 'card-body py-3';
-                    
-                    cardBody.innerHTML = `
-                        <div class="row align-items-center">
-                            <div class="col-md-2 col-3">
-                                <div class="match-time text-center ${timeClass}">
-                                    ${matchTime}
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-8 col-6">
-                                <div class="match-teams">
-                                    <div class="home-team">
-                                        <span class="team-name">${match.is_home ? teamName : match.opponent}</span>
-                                        <img src="${getTeamLogoUrl(match.is_home ? teamName : match.opponent)}" 
-                                             alt="${match.is_home ? teamName : match.opponent}" class="team-badge">
-                                    </div>
-                                    
-                                    <div class="vs-container">
-                                        <span class="vs">vs</span>
-                                    </div>
-                                    
-                                    <div class="away-team">
-                                        <img src="${getTeamLogoUrl(match.is_home ? match.opponent : teamName)}" 
-                                             alt="${match.is_home ? match.opponent : teamName}" class="team-badge">
-                                        <span class="team-name">${match.is_home ? match.opponent : teamName}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-2 col-3 text-end">
-                                <div class="match-location">
-                                    <i class="fas fa-map-marker-alt me-1"></i>
-                                    <span>${match.display_location || match.location}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    gameCard.appendChild(cardBody);
+                    const gameCard = createGameCard(game);
                     leagueSection.appendChild(gameCard);
                 });
                 

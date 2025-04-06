@@ -490,6 +490,76 @@ $(document).ready(function() {
     });
 });
 
+// Update the following function in script.js to modify the form section structure
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if we're on mobile
+    const isMobile = window.innerWidth < 768;
+    
+    if(isMobile) {
+        // Make form sections collapsible on mobile with custom titles
+        const formSections = document.querySelectorAll('.form-section');
+        
+        // Set custom titles for sections
+        const sectionTitles = [
+            "Starting Location", // First section remains visible
+            "Times and Duration",
+            "Additional Filters"
+        ];
+
+        // First, let's restructure the DOM to move the startDate to the second section
+        const startDateContainer = document.querySelector('#startDate').closest('.mb-3');
+        const firstSection = document.querySelector('.form-section:first-child');
+        const secondSection = document.querySelector('.form-section:nth-child(2)');
+        
+        // Only move if we found both elements
+        if (startDateContainer && secondSection) {
+            // Move the start date to the beginning of the second section
+            secondSection.prepend(startDateContainer);
+        }
+        
+        // Now proceed with making the sections collapsible
+        formSections.forEach((section, index) => {
+            // Skip the first section - keep it visible
+            if(index > 0) {
+                // Create collapsible header with custom title
+                const header = document.createElement('div');
+                header.className = 'form-section-header';
+                header.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center py-2">
+                        <span class="section-title">${sectionTitles[index]}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                `;
+                
+                // Insert header before section content
+                section.prepend(header);
+                
+                // Hide section content initially
+                const content = document.createElement('div');
+                content.className = 'form-section-content collapse';
+                
+                // Move all content except header into this container
+                while(section.childNodes.length > 1) {
+                    content.appendChild(section.childNodes[1]);
+                }
+                section.appendChild(content);
+                
+                // Toggle section on click
+                header.addEventListener('click', function() {
+                    const isOpen = content.classList.contains('show');
+                    header.querySelector('i').className = isOpen ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+                    
+                    if(isOpen) {
+                        content.classList.remove('show');
+                    } else {
+                        content.classList.add('show');
+                    }
+                });
+            }
+        });
+    }
+});
+
 // Export helper functions to avoid circular dependencies
 export const helpers = {
     showComponentLoading,
@@ -497,3 +567,4 @@ export const helpers = {
     showListView,
     clearFilters
 };
+

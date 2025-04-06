@@ -27,6 +27,7 @@
         <link rel="stylesheet" href="styles/calendar.css">
         <link rel="stylesheet" href="styles/trip-cards.css">
         <link rel="stylesheet" href="styles/loading-animation.css">
+        <link rel="stylesheet" href="styles/mobile.css">
     </head>
 <body>
 <!-- Update the navigation section in index.html -->
@@ -66,105 +67,112 @@
                         <div class="card-body">
                             <h2 class="card-title mb-4">Find Your Trip</h2>
                             <form id="tripSearchForm">
-                                <div class="mb-3">
-                                    <label for="startLocation" class="form-label">
-                                        <i class="fas fa-map-marker-alt icon"></i> Starting Location <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="form-select select-hidden" id="startLocation" required>
-                                        <option value="" selected disabled>Select a city</option>
-                                        <!-- Cities will be loaded dynamically -->
-                                    </select>
-                                    <div class="invalid-feedback">Please select a starting location</div>
+                                <!-- Wrap form sections for better mobile organization -->
+                                <div class="form-section">
+                                    <div class="mb-3">
+                                        <label for="startLocation" class="form-label">
+                                            <i class="fas fa-map-marker-alt icon"></i> Starting Location <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-select select-hidden" id="startLocation" required>
+                                            <option value="" selected disabled>Select a city</option>
+                                            <!-- Cities will be loaded dynamically -->
+                                        </select>
+                                        <div class="invalid-feedback">Please select a starting location</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="startDate" class="form-label">
+                                            <i class="fas fa-calendar-alt icon"></i> Start Date <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control select-hidden" id="startDate" placeholder="Select date" required>
+                                        <div class="invalid-feedback">Please select a start date</div>
+                                    </div>
                                 </div>
                                 
-                                <div class="mb-3">
-                                    <label for="startDate" class="form-label">
-                                        <i class="fas fa-calendar-alt icon"></i> Start Date <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control select-hidden" id="startDate" placeholder="Select date" required>
-                                    <div class="invalid-feedback">Please select a start date</div>
+                                <div class="form-section">
+                                    <!-- Trip Duration (days) - Dropdown -->
+                                    <div class="mb-3">
+                                        <label for="tripDuration" class="form-label">
+                                            <i class="fas fa-clock icon"></i> Trip Duration <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-select select-hidden" id="tripDuration">
+                                            <!-- Options 2-10 days -->
+                                            <option value="2">2 Days</option>
+                                            <option value="3" selected>3 Days</option>
+                                            <option value="4">4 Days</option>
+                                            <option value="5">5 Days</option>
+                                            <option value="6">6 Days</option>
+                                            <option value="7">7 Days</option>
+                                            <option value="8">8 Days</option>
+                                            <option value="9">9 Days</option>
+                                            <option value="10">10 Days</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Max Travel Time (min) - Dropdown -->
+                                    <div class="mb-3">
+                                        <label for="maxTravelTime" class="form-label">
+                                            <i class="fas fa-route icon"></i> Max Travel Time <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-select select-hidden" id="maxTravelTime">
+                                            <option value="30">30 Minutes</option>
+                                            <option value="45">45 Minutes</option>
+                                            <option value="60">1 Hour </option>
+                                            <option value="75">1 Hour 15 Minutes</option>
+                                            <option value="90">1 Hour 30 Minutes</option>
+                                            <option value="105">1 Hour 45 Minutes</option>
+                                            <option value="120" selected>2 Hours</option>
+                                            <option value="135">2 Hours 15 Minutes</option>
+                                            <option value="150">2 Hours 30 Minutes</option>
+                                            <option value="165">2 Hours 45 Minutes</option>
+                                            <option value="180">3 Hours</option>
+                                            <option value="210">3 Hours 30 Minutes</option>
+                                            <option value="240">4 Hours</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 
-                                <!-- Trip Duration (days) - Dropdown -->
-                                <div class="mb-3">
-                                    <label for="tripDuration" class="form-label">
-                                        <i class="fas fa-clock icon"></i> Trip Duration <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="form-select select-hidden" id="tripDuration">
-                                        <!-- Options 2-10 days -->
-                                        <option value="2">2 Days</option>
-                                        <option value="3" selected>3 Days</option>
-                                        <option value="4">4 Days</option>
-                                        <option value="5">5 Days</option>
-                                        <option value="6">6 Days</option>
-                                        <option value="7">7 Days</option>
-                                        <option value="8">8 Days</option>
-                                        <option value="9">9 Days</option>
-                                        <option value="10">10 Days</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- Max Travel Time (min) - Dropdown -->
-                                <div class="mb-3">
-                                    <label for="maxTravelTime" class="form-label">
-                                        <i class="fas fa-route icon"></i> Max Travel Time <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="form-select select-hidden" id="maxTravelTime">
-                                        <option value="30">30 Minutes</option>
-                                        <option value="45">45 Minutes</option>
-                                        <option value="60">1 Hour </option>
-                                        <option value="75">1 Hour 15 Minutes</option>
-                                        <option value="90">1 Hour 30 Minutes</option>
-                                        <option value="105">1 Hour 45 Minutes</option>
-                                        <option value="120" selected>2 Hours</option>
-                                        <option value="135">2 Hours 15 Minutes</option>
-                                        <option value="150">2 Hours 30 Minutes</option>
-                                        <option value="165">2 Hours 45 Minutes</option>
-                                        <option value="180">3 Hours</option>
-                                        <option value="210">3 Hours 30 Minutes</option>
-                                        <option value="240">4 Hours</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- Minimum Games - Dropdown -->
-                                <div class="mb-3">
-                                    <label for="minGames" class="form-label">
-                                        <i class="fas fa-ticket-alt icon"></i> Min. Games Per Trip
-                                    </label>
-                                    <select class="form-select select-hidden" id="minGames">
-                                        <option value="1">1 Game</option>
-                                        <option value="2" selected>2 Games</option>
-                                        <option value="3">3 Games</option>
-                                        <option value="4">4 Games</option>
-                                        <option value="5">5 Games</option>
-                                        <!-- More options will be adjusted dynamically based on trip duration -->
-                                    </select>
-                                </div>
+                                <div class="form-section">
+                                    <!-- Minimum Games - Dropdown -->
+                                    <div class="mb-3">
+                                        <label for="minGames" class="form-label">
+                                            <i class="fas fa-ticket-alt icon"></i> Min. Games Per Trip
+                                        </label>
+                                        <select class="form-select select-hidden" id="minGames">
+                                            <option value="1">1 Game</option>
+                                            <option value="2" selected>2 Games</option>
+                                            <option value="3">3 Games</option>
+                                            <option value="4">4 Games</option>
+                                            <option value="5">5 Games</option>
+                                            <!-- More options will be adjusted dynamically based on trip duration -->
+                                        </select>
+                                    </div>
 
-                                <!-- Update the Preferred Leagues section -->
-                                <div class="mb-3">
-                                    <label for="preferredLeagues" class="form-label">
-                                        <i class="fas fa-trophy icon"></i> Preferred Leagues
-                                    </label>
-                                    <div id="preferredLeaguesContainer" class="position-relative">
-                                        <select class="form-select select-hidden" id="preferredLeagues" multiple="multiple">
-                                            <!-- Options will be loaded dynamically -->
-                                        </select>
+                                    <!-- Update the Preferred Leagues section -->
+                                    <div class="mb-3">
+                                        <label for="preferredLeagues" class="form-label">
+                                            <i class="fas fa-trophy icon"></i> Preferred Leagues
+                                        </label>
+                                        <div id="preferredLeaguesContainer" class="position-relative">
+                                            <select class="form-select select-hidden" id="preferredLeagues" multiple="multiple">
+                                                <!-- Options will be loaded dynamically -->
+                                            </select>
+                                        </div>
+                                        <div class="form-text">Select none to include all leagues</div>
                                     </div>
-                                    <div class="form-text">Select none to include all leagues</div>
-                                </div>
-                                
-                                <!-- Update the Must Include Teams section -->
-                                <div class="mb-3">
-                                    <label for="mustTeams" class="form-label">
-                                        <i class="fas fa-futbol icon"></i> Must Include Teams
-                                    </label>
-                                    <div id="mustTeamsContainer" class="position-relative">
-                                        <select class="form-select select-hidden" id="mustTeams" multiple="multiple">
-                                            <!-- Options will be loaded dynamically -->
-                                        </select>
+                                    
+                                    <!-- Update the Must Include Teams section -->
+                                    <div class="mb-3">
+                                        <label for="mustTeams" class="form-label">
+                                            <i class="fas fa-futbol icon"></i> Must Include Teams
+                                        </label>
+                                        <div id="mustTeamsContainer" class="position-relative">
+                                            <select class="form-select select-hidden" id="mustTeams" multiple="multiple">
+                                                <!-- Options will be loaded dynamically -->
+                                            </select>
+                                        </div>
+                                        <div class="form-text">Teams you absolutely want to see play</div>
                                     </div>
-                                    <div class="form-text">Teams you absolutely want to see play</div>
                                 </div>
                                 
                                 <button type="submit" class="btn btn-primary w-100 py-2">

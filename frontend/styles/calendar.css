@@ -394,3 +394,117 @@ body.select2-ready .flatpickr-input,
 body.select2-ready .flatpickr-calendar {
     opacity: 1;
 }
+
+@media (max-width: 767.98px) {
+  /* More aggressive fixes for month/year display on mobile */
+  .flatpickr-current-month {
+    font-size: 14px !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    height: auto !important;
+    line-height: 1.2 !important;
+    width: 70% !important; 
+    left: 15% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+  }
+  
+  /* Fix month dropdown */
+  .flatpickr-current-month .flatpickr-monthDropdown-months {
+    font-size: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+    width: auto !important;
+    max-width: 45% !important;
+  }
+  
+  /* Fix year input */
+  .numInputWrapper {
+    width: auto !important;
+    max-width: 45% !important;
+  }
+  
+  .flatpickr-current-month .numInputWrapper input.cur-year {
+    font-size: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+    width: 50px !important; /* Force fixed width */
+    max-width: 100% !important;
+    display: inline-block !important;
+  }
+  
+  /* Create more space in the header */
+  .flatpickr-months {
+    padding: 10px 8px !important;
+    height: auto !important;
+    min-height: 45px !important;
+  }
+  
+  /* Move navigation arrows to give more space */
+  .flatpickr-months .flatpickr-prev-month,
+  .flatpickr-months .flatpickr-next-month {
+    padding: 6px !important;
+    height: 32px !important;
+    width: 32px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+  
+  .flatpickr-months .flatpickr-prev-month {
+    left: 0px !important;
+  }
+  
+  .flatpickr-months .flatpickr-next-month {
+    right: 0px !important;
+  }
+
+  /* Fix calendar container */
+  .flatpickr-calendar.open {
+    z-index: 99999 !important;
+    max-width: 300px !important;
+    width: calc(100% - 20px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    position: fixed !important;
+  }
+  
+  /* Force display of year */
+  .cur-month:after {
+    content: none !important;
+  }
+  
+  /* Override any built-in mobile styles */
+  .flatpickr-current-month {
+    display: flex !important;
+  }
+  
+  .flatpickr-current-month .flatpickr-monthDropdown-months,
+  .flatpickr-current-month .numInputWrapper {
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* Specific fix for floating calendar button */
+.calendar-btn + .flatpickr-calendar {
+  transform-origin: center bottom !important;
+}
+
+@media (max-width: 767.98px) {
+  .calendar-btn + .flatpickr-calendar.open {
+    bottom: 80px !important;
+    top: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* Add this class to the calendar that's attached to the button */
+.floating-calendar {
+  box-shadow: 0 -2px 15px rgba(0,0,0,0.2) !important;
+}

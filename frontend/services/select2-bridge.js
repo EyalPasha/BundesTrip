@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
       // Add the select2-ready class to make elements visible
       document.body.classList.add('select2-ready');
       
+      // Dispatch an event that the mobile filter can listen for
+      document.dispatchEvent(new CustomEvent('select2Initialized'));
+      
       console.log('Select2 bridge initialized with logos and filters connected');
     }).catch(error => {
       console.error('Failed to load team-logos module:', error);
@@ -51,5 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     document.body.classList.add('select2-ready');
+    
+    // Dispatch an event even in fallback mode
+    document.dispatchEvent(new CustomEvent('select2Initialized'));
   }
 });

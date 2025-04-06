@@ -23,6 +23,109 @@
     <link rel="stylesheet" href="./styles/select2.css">
     <link rel="stylesheet" href="./styles/schedules.css">
     <link rel="stylesheet" href="./styles/calendar.css">
+    <link rel="stylesheet" href="./styles/mobile.css">
+
+    <!-- Add this style tag before other scripts -->
+    <style>
+        /* Enhanced loading animations - added early to prevent default spinner flash */
+        .hidden-filter-bar {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+        .enhanced-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+        
+        .loading-ball {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            animation: bounce 1.5s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Use Font Awesome icon for football */
+        .loading-ball::before {
+            content: '\f1e3'; /* Football/soccer ball icon */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 400;
+            font-size: 48px;
+            color: #043d7c;
+            animation: rotate 10s linear infinite;
+            display: block;
+            text-shadow: 0 4px 8px rgba(4, 61, 124, 0.2);
+        }
+        
+        .loading-shadow {
+            width: 60px;
+            height: 10px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 50%;
+            margin-top: 10px;
+            filter: blur(3px);
+            animation: shadow-move 1.5s infinite ease-in-out;
+        }
+        
+        .loading-text {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #043d7c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: translateY(-20px);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+        
+        @keyframes shadow-move {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(0.7);
+                opacity: 0.1;
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Hide default spinner */
+        .spinner-border {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -59,7 +162,7 @@
 
     <main class="container mt-4">
         <!-- Filters Bar -->
-        <div class="filter-bar mb-4 p-3 bg-white rounded shadow-sm">
+        <div class="filter-bar mb-4 p-3 bg-white rounded shadow-sm hidden-filter-bar">
             <div class="row g-3 align-items-end">
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
@@ -103,10 +206,10 @@
         
         <!-- Loading indicator -->
         <div id="scheduleLoading">
-            <div class="d-flex justify-content-center my-5">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+            <div class="enhanced-loading">
+                <div class="loading-ball"></div>
+                <div class="loading-shadow"></div>
+                <div class="loading-text">Loading Schedule</div>
             </div>
         </div>
         
