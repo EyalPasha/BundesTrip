@@ -1,5 +1,5 @@
 import { applyTeamLogoStyles, preloadLogos, formatTeamOptionWithLogo, formatLeagueOptionWithLogo, getTeamLogoUrl, getLeagueLogoUrl } from './team-logos.js';
-import { fetchAllTeams, fetchLeagues } from './schedule-service.js';
+import { fetchAllTeams, fetchLeagues, fetchAvailableDates, fetchGamesByDate, fetchTeamSchedule } from './schedule-service.js';
 import { GERMAN_TEAMS } from './data-loader.js';
 import { showErrorToast } from './notifications.js';
 
@@ -335,16 +335,8 @@ async function loadAllGames() {
     DOM.noSchedule.classList.add('d-none');
     
     try {
-        // Remove this line:
-        // state.pagination.currentPage = 1;
-        
-        // Fetch all upcoming games without day limitation
-        const response = await fetch(`http://localhost:8000/available-dates`);
-        if (!response.ok) {
-            throw new Error('Failed to load game schedule');
-        }
-        
-        const data = await response.json();
+        // Use the imported service function instead of direct fetch
+        const data = await fetchAvailableDates();
         
         if (!data.dates || data.dates.length === 0) {
             showNoGames();
@@ -425,12 +417,7 @@ async function applyFilters() {
             console.log(`Fetching schedule for team: ${teamName}`);
             
             // Use dedicated API endpoint for team schedules
-            const response = await fetch(`http://localhost:8000/team-schedule/${encodeURIComponent(teamName)}`);
-            if (!response.ok) {
-                throw new Error(`Failed to load team schedule: ${response.status}`);
-            }
-            
-            const teamData = await response.json();
+            const teamData = await fetchTeamSchedule(teamName);
             console.log('Team schedule data structure:', JSON.stringify(teamData, null, 2));
             
             // Check if we have matches
@@ -911,14 +898,8 @@ function fetchGamesForDate(dateStr, container) {
         }
     } else {
         // Fetch games for this date normally if no team filter or no cached data
-        fetch(`http://localhost:8000/games-by-date/${dateStr}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load games for this date');
-                }
-                return response.json();
-            })
-            .then(data => {
+        fetchGamesByDate(dateStr)
+            .then(data => { // Remove the response.json() step - data is already parsed
                 // Clear loading indicator
                 container.innerHTML = '';
                 
