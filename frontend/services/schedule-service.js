@@ -1,9 +1,6 @@
 import { fetchApi } from './api.js';
 import { showErrorToast } from './notifications.js';
 
-// Use the same API_BASE_URL as api.js
-const API_BASE_URL = 'https://a582-2a06-c701-4572-4000-7c2a-f9b5-463d-9e0b.ngrok-free.app';
-
 /**
  * Service for fetching schedule data
  */
