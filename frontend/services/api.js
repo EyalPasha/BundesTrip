@@ -1,6 +1,5 @@
 // API Base URL - adjust as needed for production
-const API_BASE_URL = 'http://localhost:8000';
-
+const API_BASE_URL = 'https://6c4e-2a06-c701-4572-4000-7c2a-f9b5-463d-9e0b.ngrok-free.app';
 /**
  * Make an API request with built-in error handling and retry logic
  * @param {string} endpoint - API endpoint to call
@@ -22,6 +21,8 @@ async function fetchApi(endpoint, options = {}, retries = 2) {
             ...options,
         };
         
+        console.log(`Fetching ${API_BASE_URL}${endpoint}...`);
+        
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             ...cacheOptions,
             signal: controller.signal,
@@ -30,11 +31,21 @@ async function fetchApi(endpoint, options = {}, retries = 2) {
                 'X-Client-Source': 'web-interface', // Help server identify source
                 'Connection': 'keep-alive',
                 'Accept': 'application/json',
+                'Ngrok-Skip-Browser-Warning': 'true', // Add this to bypass ngrok's browser warning page
                 ...options.headers
-            }
+            },
+            // Add mode: 'cors' to explicitly request CORS
+            mode: 'cors'
         });
         
         clearTimeout(timeoutId);        
+        // Check if we're getting HTML instead of JSON
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+            console.error(`Received HTML response instead of JSON for ${endpoint}`);
+            throw new Error('Server returned HTML instead of JSON. This may indicate a CORS or server configuration issue.');
+        }
+        
         // Enhanced error handling with user-friendly messages
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
