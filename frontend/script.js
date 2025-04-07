@@ -65,153 +65,369 @@ function initDOMReferences() {
     }
 }
 
-// Find the document.addEventListener('DOMContentLoaded') block and update it:
+// CONSOLIDATED APP INITIALIZATION
+document.addEventListener('DOMContentLoaded', function() {
+    // Use a structured promise chain for proper sequencing
+    initializeApp()
+        .catch(error => {
+            console.error("App initialization error:", error);
+            showErrorToast("Failed to initialize application. Please refresh the page.");
+        });
+});
 
-document.addEventListener('DOMContentLoaded', async function() {
-    // Initialize DOM references
+// Main application initialization flow
+async function initializeApp() {
+    console.log("Starting application initialization...");
+    
+    // Step 1: Initialize DOM references first
+    console.log("Step 1: Initializing DOM references");
     initDOMReferences();
     
-    // Add these two lines to initialize logos
+    // Step 2: Apply visual styles and preload resources
+    console.log("Step 2: Applying visual styles");
+    document.body.classList.add('loading-select2');
     applyTeamLogoStyles();
-    preloadLogos(); // Changed from preloadTeamLogos
+    preloadLogos();
     
-    // Initialize form handlers
+    // Step 3: Initialize form handlers and basic event listeners
+    console.log("Step 3: Setting up form handlers");
     initFormHandlers();
-    
-    // Initial update of minGames options based on trip duration
     updateMinGamesOptions();
     
-    // Load data first
-    await Promise.all([
-        loadCities(),
-        loadLeagues(),
-        loadTeams() // This loads all teams initially
-    ]);
+    // Step 4: Load required data from API
+    console.log("Step 4: Loading data from API");
+    try {
+        const [cities, leagues, teams, availableDates] = await Promise.all([
+            loadCities(),
+            loadLeagues(),
+            loadTeams(),
+            loadAvailableDates(),
+            checkApiHealth() // Also check API health in parallel
+        ]);
+        console.log("Data loading complete");
+    } catch (error) {
+        console.error("Error loading initial data:", error);
+        // Continue with initialization even if some data fails to load
+    }
     
-    // Initialize Preferred Leagues Select2 with logos - add this line
-    initPreferredLeaguesSelect();
+    // Step 5: Initialize UI components
+    console.log("Step 5: Initializing UI components");
+    await initializeUIComponents();
     
-    // Initialize Select2 for mustTeamsSelect with proper formatting
-    // IMPORTANT: This needs to happen AFTER teams are loaded
-    $(window.DOM.mustTeamsSelect).select2({
-        placeholder: 'Select Teams',
+    // Step 6: Apply mobile-specific layout adjustments
+    console.log("Step 6: Applying mobile layout adjustments");
+    initializeMobileLayout();
+    
+    // Step 7: Set up remaining event listeners
+    console.log("Step 7: Setting up remaining event listeners");
+    setupEventListeners();
+    
+    // Step 8: Final UI adjustments and show the form
+    console.log("Step 8: Final UI preparation");
+    document.body.classList.add('select2-ready');
+    document.body.classList.remove('loading-select2');
+    
+    console.log("Application initialization complete");
+}
+
+// Initialize all UI components (Select2, flatpickr, etc.)
+async function initializeUIComponents() {
+    // Initialize basic Select2 dropdowns
+    $('#startLocation, #tripDuration, #maxTravelTime, #minGames').select2({
         width: '100%',
-        closeOnSelect: false,
-        allowClear: true,
         minimumResultsForSearch: Infinity,
         selectionCssClass: 'select2-selection--clean',
-        dropdownCssClass: 'select2-dropdown--clean',
-        templateResult: formatTeamOptionWithLogo,
-        templateSelection: formatTeamSelectionWithLogo,
-        dropdownParent: $('body') // Change this to body for proper positioning
+        dropdownCssClass: 'select2-dropdown--clean'
     });
     
-    // Check API health before initializing UI
+    // Initialize flatpickr date picker once
+    const availableDates = await loadAvailableDates();
+    if(window.DOM.startDateInput) {
+        flatpickr(window.DOM.startDateInput, {
+            dateFormat: "d F Y",
+            minDate: "today",
+            disableMobile: true,
+            allowInput: false,
+            onChange: function(selectedDates, dateStr) {
+                if (dateStr) {
+                    window.DOM.startDateInput.classList.remove('is-invalid');
+                }
+            },
+            onDayCreate: function(dObj, dStr, fp, dayElem) {
+                if (availableDates && availableDates.length > 0) {
+                    const dateStr = dayElem.dateObj.toISOString().split('T')[0];
+                    const matchDate = availableDates.find(d => d.date === dateStr);
+                    
+                    if (matchDate && matchDate.count) {
+                        dayElem.classList.add('has-matches');
+                        
+                        const badge = document.createElement('span');
+                        badge.className = 'date-badge';
+                        badge.textContent = matchDate.count;
+                        dayElem.appendChild(badge);
+                    }
+                }
+            },
+            onReady: function() {
+                setTimeout(function() {
+                    if(document.querySelector('#startDate')) {
+                        document.querySelector('#startDate').classList.add('flatpickr-ready');
+                    }
+                }, 100);
+            }
+        });
+    }
+    
+    // Initialize Preferred Leagues Select2
+    initPreferredLeaguesSelect();
+    
+    // Initialize Must Teams Select2
+    if(window.DOM.mustTeamsSelect) {
+        $(window.DOM.mustTeamsSelect).select2({
+            placeholder: 'Select Teams',
+            width: '100%',
+            closeOnSelect: false,
+            allowClear: true,
+            minimumResultsForSearch: Infinity,
+            selectionCssClass: 'select2-selection--clean',
+            dropdownCssClass: 'select2-dropdown--clean',
+            templateResult: formatTeamOptionWithLogo,
+            templateSelection: formatTeamSelectionWithLogo,
+            dropdownParent: $('body')
+        });
+    }
+    
+    // Update selection classes after a short delay to ensure Select2 is ready
+    setTimeout(function() {
+        updateSelectionClasses($('#preferredLeagues'), $('#preferredLeaguesContainer'));
+        updateSelectionClasses($('#mustTeams'), $('#mustTeamsContainer'));
+    }, 300);
+    
+    // Return a promise that resolves when everything is initialized
+    return new Promise(resolve => {
+        // Hide preloaders with a slight delay to ensure components are ready
+        setTimeout(() => {
+            hidePreloaders();
+            resolve();
+        }, 300);
+    });
+}
+
+// Check API health and show toast if there's an issue
+async function checkApiHealth() {
     try {
         const health = await checkHealth();
         console.log("API Health:", health);
         if (health.status !== 'ok') {
             console.warn("API not fully operational - some features may be limited");
         }
+        return health;
     } catch (error) {
         console.error("API health check failed:", error);
-        
-        // Create and show toast
-        const toastContainer = document.getElementById('toastContainer') || document.createElement('div');
-        if (!toastContainer.id) {
-            toastContainer.id = 'toastContainer';
-            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
-            document.body.appendChild(toastContainer);
-        }
-        
-        const toastId = `toast-${Date.now()}`;
-        const toast = document.createElement('div');
-        toast.className = 'toast show';
-        toast.setAttribute('role', 'alert');
-        toast.setAttribute('aria-live', 'assertive');
-        toast.setAttribute('aria-atomic', 'true');
-        toast.id = toastId;
-        
-        toast.innerHTML = `
-            <div class="toast-header bg-danger text-white">
-                <strong class="me-auto">Connection Error</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                Unable to connect to the server. Some features may be limited.
-            </div>
-        `;
-        
-        toastContainer.appendChild(toast);
-        
-        // Auto-dismiss after 5 seconds
-        setTimeout(() => {
-            const toastEl = document.getElementById(toastId);
-            if (toastEl) {
+        showErrorToast("Unable to connect to the server. Some features may be limited.");
+        return { status: 'error', error };
+    }
+}
+
+// Show error toast message
+function showErrorToast(message) {
+    const toastContainer = document.getElementById('toastContainer') || document.createElement('div');
+    if (!toastContainer.id) {
+        toastContainer.id = 'toastContainer';
+        toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+        document.body.appendChild(toastContainer);
+    }
+    
+    const toastId = `toast-${Date.now()}`;
+    const toast = document.createElement('div');
+    toast.className = 'toast show';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+    toast.id = toastId;
+    
+    toast.innerHTML = `
+        <div class="toast-header bg-danger text-white">
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${message}
+        </div>
+    `;
+    
+    toastContainer.appendChild(toast);
+    
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+        const toastEl = document.getElementById(toastId);
+        if (toastEl) {
+            if (typeof bootstrap !== 'undefined') {
                 const bsToast = new bootstrap.Toast(toastEl);
                 bsToast.hide();
-            }
-        }, 5000);
-    }
-
-    // Initialize date picker with all dates available
-    const availableDates = await loadAvailableDates();
-    flatpickr(window.DOM.startDateInput, {
-        dateFormat: "d F Y",  // Include year in date format
-        minDate: "today",
-        disableMobile: true,
-        allowInput: false,  // Prevent manual text entry to ensure valid dates
-        // Add onChange handler to clear validation error if present
-        onChange: function(selectedDates, dateStr) {
-            if (dateStr) {
-                window.DOM.startDateInput.classList.remove('is-invalid');
-            }
-        },
-        // Remove the 'enable' property to allow all dates
-        // Instead, highlight dates with games using the onDayCreate callback
-        onDayCreate: function(dObj, dStr, fp, dayElem) {
-            if (availableDates && availableDates.length > 0) {
-                const dateStr = dayElem.dateObj.toISOString().split('T')[0];
-                const matchDate = availableDates.find(d => d.date === dateStr);
-                
-                if (matchDate && matchDate.count) {
-                    // Add a visual indicator for dates with games
-                    dayElem.classList.add('has-matches');
-                    
-                    // Create badge with proper positioning
-                    const badge = document.createElement('span');
-                    badge.className = 'date-badge';
-                    badge.textContent = matchDate.count;
-                    dayElem.appendChild(badge);
-                }
+            } else {
+                toastEl.remove();
             }
         }
+    }, 5000);
+}
+
+// Add all remaining event listeners
+function setupEventListeners() {
+    // Form submission
+    if(window.DOM.tripSearchForm) {
+        window.DOM.tripSearchForm.addEventListener('submit', handleSearch);
+    }
+    
+    // Trip duration change
+    $('#tripDuration').on('change', function() {
+        updateMinGamesOptions();
     });
     
-    // Initialize selects
-    await Promise.all([
-        loadCities(),
-        loadLeagues(),
-        loadTeams()
-    ]);
+    // Handle preferred leagues selection changes
+    $('#preferredLeagues').on('select2:select select2:unselect', function(e) {
+        updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
+    });
     
-    // Initialize event listeners
-    window.DOM.tripSearchForm.addEventListener('submit', handleSearch);
+    // Handle must teams selection changes
+    $('#mustTeams').on('select2:select select2:unselect', function(e) {
+        updateSelectionClasses($(this), $('#mustTeamsContainer'));
+    });
     
-    // Make these globally available for other modules that might need them
-    window.appHelpers = {
-        showComponentLoading,
-        hideComponentLoading,
-        showListView,
-        clearFilters
-    };
-
-    // Replace your current Select2 initialization code
-    $(document).ready(function() {
-        // Add loading class to body
-        document.body.classList.add('loading-select2');
+    // Fix dropdown position when opened
+    $('select').on('select2:open', function() {
+        document.body.classList.add('select2-open');
         
-        // Hide preloaders once real components are ready
+        // Ensure dropdown is properly positioned
+        setTimeout(function() {
+            const dropdown = document.querySelector('.select2-dropdown');
+            if (dropdown) {
+                dropdown.style.zIndex = "9999";
+            }
+        }, 10);
+    });
+    
+    // Clean up when dropdown closes
+    $('select').on('select2:close', function() {
+        document.body.classList.remove('select2-open');
+    });
+    
+    // Initialize loading animation observer
+    const loadingIndicator = document.getElementById('loading');
+    if (loadingIndicator) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class' && 
+                    !loadingIndicator.classList.contains('d-none')) {
+                    initLoadingAnimation();
+                }
+            });
+        });
+        
+        observer.observe(loadingIndicator, { attributes: true });
+    }
+}
+
+// Initialize mobile-specific layouts
+function initializeMobileLayout() {
+    // Check if we're on mobile
+    const isMobile = window.innerWidth < 768;
+    
+    if(isMobile) {
+        console.log("Mobile layout detected - initializing mobile UI");
+        
+        // Make form sections collapsible on mobile with custom titles
+        const formSections = document.querySelectorAll('.form-section');
+        
+        // Set custom titles for sections
+        const sectionTitles = [
+            "Starting Location", // First section remains visible
+            "Times and Duration",
+            "Additional Filters"
+        ];
+        
+        // First step: Get the start date container BEFORE changing the DOM structure
+        // This avoids potential issues where the selector cannot find the element later
+        const startDateContainer = document.querySelector('#startDate').closest('.mb-3');
+        
+        // Second step: Remove the start date container from its original location
+        if (startDateContainer) {
+            startDateContainer.parentNode.removeChild(startDateContainer);
+            console.log("✅ Start date removed from original location");
+        } else {
+            console.error("❌ Could not find start date container");
+            // If we can't find it, return early to avoid breaking the layout
+            return;
+        }
+
+        // Third step: Create collapsible sections
+        formSections.forEach((section, index) => {
+            // Skip the first section - keep it visible
+            if(index > 0) {
+                // Create collapsible header with custom title
+                const header = document.createElement('div');
+                header.className = 'form-section-header';
+                header.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center py-1">
+                        <span class="section-title">${sectionTitles[index]}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                `;
+                
+                // Insert header before section content
+                section.prepend(header);
+                
+                // Hide section content initially
+                const content = document.createElement('div');
+                content.className = 'form-section-content collapse';
+                
+                // Move all content except header into this container
+                while(section.childNodes.length > 1) {
+                    content.appendChild(section.childNodes[1]);
+                }
+                section.appendChild(content);
+                
+                // Toggle section on click
+                header.addEventListener('click', function() {
+                    const isOpen = content.classList.contains('show');
+                    header.querySelector('i').className = isOpen ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+                    
+                    if(isOpen) {
+                        content.classList.remove('show');
+                    } else {
+                        content.classList.add('show');
+                    }
+                });
+                
+                // Fourth step: If this is the "Times and Duration" section, insert the start date
+                if (index === 1 && startDateContainer) {
+                    // Insert at the beginning of the content container
+                    content.insertBefore(startDateContainer, content.firstChild);
+                    console.log("✅ Start date successfully moved to Times and Duration section");
+                }
+            }
+        });
+    }
+}
+
+// Update selection classes function
+function updateSelectionClasses(selectElement, containerElement) {
+    // Check if there are any selections
+    const hasSelections = selectElement.val() && selectElement.val().length > 0;
+    
+    // Add or remove classes based on selection state
+    if (hasSelections) {
+        selectElement.next('.select2-container').find('.select2-selection--multiple')
+            .addClass('has-selections');
+        containerElement.addClass('has-selections');
+    } else {
+        selectElement.next('.select2-container').find('.select2-selection--multiple')
+            .removeClass('has-selections');
+        containerElement.removeClass('has-selections');
+    }
+}
+
+// Hide preloaders function
 function hidePreloaders() {
     // First synchronize styling
     document.querySelectorAll('.select2-preloader, .select2-preloader-multi').forEach(el => {
@@ -225,111 +441,16 @@ function hidePreloaders() {
     setTimeout(() => {
         // Now fade in the real elements
         document.querySelectorAll('#startLocation, #tripDuration, #maxTravelTime, #minGames, #preferredLeaguesContainer, #mustTeamsContainer').forEach(el => {
-            el.style.opacity = '1';
-            el.style.position = 'relative';
-            el.style.zIndex = '1';
+            if(el) {
+                el.style.opacity = '1';
+                el.style.position = 'relative';
+                el.style.zIndex = '1';
+            }
         });
-        
-        // Mark the body as ready
-        document.body.classList.add('select2-ready');
-        document.body.classList.remove('loading-select2');
     }, 50);
 }
 
-        // Initialize all Select2 dropdowns at once
-        $('#startLocation, #tripDuration, #maxTravelTime, #minGames').select2({
-            width: '100%',
-            minimumResultsForSearch: Infinity,
-            selectionCssClass: 'select2-selection--clean',
-            dropdownCssClass: 'select2-dropdown--clean'
-        });
-        
-        // Initialize ONLY the mustTeams multi-select dropdown - REMOVE preferredLeagues here
-        $('#mustTeams').select2({
-            placeholder: 'Select Teams',
-            width: '100%',
-            closeOnSelect: false,
-            allowClear: true,
-            dropdownParent: $('body'),
-            minimumResultsForSearch: Infinity,
-            templateResult: formatTeamOptionWithLogo,
-            templateSelection: formatTeamSelectionWithLogo, 
-            selectionCssClass: 'select2-selection--clean',
-            dropdownCssClass: 'select2-dropdown--clean'
-        });
-        
-        // Initialize the leagues dropdown separately with its logo formatters
-        $('#preferredLeagues').select2({
-            placeholder: 'Select Leagues',
-            width: '100%',
-            closeOnSelect: false,
-            allowClear: true,
-            dropdownParent: $('body'),
-            minimumResultsForSearch: Infinity,
-            templateResult: formatLeagueOptionWithLogo,
-            templateSelection: formatLeagueSelectionWithLogo,
-            selectionCssClass: 'select2-selection--clean',
-            dropdownCssClass: 'select2-dropdown--clean'
-        });
-        
-        // Allow a slightly longer timeout to ensure everything is ready
-        setTimeout(hidePreloaders, 300);
-    });
-
-    // Add this to your script.js file to handle selection changes
-    $(document).ready(function() {
-        // Handle preferred leagues selection changes
-        $('#preferredLeagues').on('select2:select select2:unselect', function(e) {
-            updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
-        });
-        
-        // Handle must teams selection changes
-        $('#mustTeams').on('select2:select select2:unselect', function(e) {
-            updateSelectionClasses($(this), $('#mustTeamsContainer'));
-        });
-        
-        // Update classes based on selection state
-        function updateSelectionClasses(selectElement, containerElement) {
-            // Check if there are any selections
-            const hasSelections = selectElement.val() && selectElement.val().length > 0;
-            
-            // Add or remove classes based on selection state
-            if (hasSelections) {
-                selectElement.next('.select2-container').find('.select2-selection--multiple')
-                    .addClass('has-selections');
-                containerElement.addClass('has-selections');
-            } else {
-                selectElement.next('.select2-container').find('.select2-selection--multiple')
-                    .removeClass('has-selections');
-                containerElement.removeClass('has-selections');
-            }
-        }
-        
-        // Run once initially to set the correct state on page load
-        setTimeout(function() {
-            updateSelectionClasses($('#preferredLeagues'), $('#preferredLeaguesContainer'));
-            updateSelectionClasses($('#mustTeams'), $('#mustTeamsContainer'));
-        }, 300);
-    });
-
-    // Initialize loading animation
-    const loadingIndicator = document.getElementById('loading');
-    if (loadingIndicator) {
-        // Initialize animation when loading becomes visible
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.attributeName === 'class' && 
-                    !loadingIndicator.classList.contains('d-none')) {
-                    initLoadingAnimation();
-                }
-            });
-        });
-        
-        observer.observe(loadingIndicator, { attributes: true });
-    }
-});
-
-// Enhanced loading animation function - add to script.js
+// Enhanced loading animation function
 function initLoadingAnimation() {
   const messages = document.querySelectorAll('.loading-message');
   let currentIndex = 0;
@@ -373,14 +494,14 @@ function initLoadingAnimation() {
   }
 }
 
-// Add a cleanup function to clear intervals when loading is hidden
+// Cleanup function for loading animation
 function cleanupLoadingAnimation() {
-  if (window.messageInterval) {
-    clearInterval(window.messageInterval);
+  if (window.loadingMessageInterval) {
+    clearInterval(window.loadingMessageInterval);
   }
 }
 
-// Update returnToSearch function to reset pagination state
+// Return to search function
 function returnToSearch() {
     cleanupLoadingAnimation();
     
@@ -404,7 +525,7 @@ function returnToSearch() {
     if (cancelButton) cancelButton.classList.remove('d-none');
     if (noResultsMessage) noResultsMessage.classList.add('d-none');
     
-    // IMPORTANT: Hide the entire results section to prevent white space
+    // Hide the entire results section to prevent white space
     if (window.DOM.resultsSection) {
         window.DOM.resultsSection.classList.add('d-none');
     }
@@ -416,148 +537,15 @@ function returnToSearch() {
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
-// Make returnToSearch globally available so onclick can find it
+// Make returnToSearch globally available
 window.returnToSearch = returnToSearch;
 
-// Add this to your document.ready function in script.js
-$(document).ready(function() {
-    // Initialize flatpickr with consistent styling and timing
-    const datePicker = flatpickr("#startDate", {
-        dateFormat: "Y-m-d",
-        minDate: "today",
-        disableMobile: true,
-        // Don't show it immediately to maintain consistent transition
-        onReady: function() {
-            // Delay showing until select2 is also ready
-            setTimeout(function() {
-                document.querySelector('#startDate').classList.add('flatpickr-ready');
-            }, 100);
-        },
-    });
-    
-    // This should be at the end of your ready handler, after all Select2 and flatpickr initializations
-    setTimeout(function() {
-        document.body.classList.add('select2-ready');
-        document.body.classList.remove('loading-select2');
-    }, 100);
-});
-
-// Add to script.js, after your DOM initialization
-
-// Make key functions available globally to avoid import issues
+// Make key functions available globally
 window.renderItineraryForVariant = null;
 
-// Import and expose trip-card.js functions globally for easier access
+// Import and expose trip-card.js functions globally
 import('./components/trip-card.js').then(module => {
     window.renderItineraryForVariant = module.renderItineraryForVariant;
-});
-
-// Add this to the document ready function in script.js
-$(document).ready(function() {
-    // Add event listener for trip duration change
-    $('#tripDuration').on('change', function() {
-        // Import and call the updateMinGamesOptions function
-        import('./services/trip-service.js').then(module => {
-            if (typeof module.updateMinGamesOptions === 'function') {
-                module.updateMinGamesOptions();
-            }
-        });
-    });
-    
-    // Rest of your existing document.ready code
-});
-
-
-// Add this to the end of your $(document).ready function
-
-$(document).ready(function() {
-    // Fix dropdown position when opened
-    $('select').on('select2:open', function() {
-        document.body.classList.add('select2-open');
-        
-        // Ensure dropdown is properly positioned
-        setTimeout(function() {
-            const dropdown = document.querySelector('.select2-dropdown');
-            if (dropdown) {
-                dropdown.style.zIndex = "9999";
-            }
-        }, 10);
-    });
-    
-    // Clean up when dropdown closes
-    $('select').on('select2:close', function() {
-        document.body.classList.remove('select2-open');
-    });
-});
-
-// Update the following function in script.js to modify the form section structure
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if we're on mobile
-    const isMobile = window.innerWidth < 768;
-    
-    if(isMobile) {
-        // Make form sections collapsible on mobile with custom titles
-        const formSections = document.querySelectorAll('.form-section');
-        
-        // Set custom titles for sections
-        const sectionTitles = [
-            "Starting Location", // First section remains visible
-            "Times and Duration",
-            "Additional Filters"
-        ];
-
-        // First, let's restructure the DOM to move the startDate to the second section
-        const startDateContainer = document.querySelector('#startDate').closest('.mb-3');
-        const firstSection = document.querySelector('.form-section:first-child');
-        const secondSection = document.querySelector('.form-section:nth-child(2)');
-        
-        // Only move if we found both elements
-        if (startDateContainer && secondSection) {
-            // Move the start date to the beginning of the second section
-            secondSection.prepend(startDateContainer);
-        }
-        
-        // Now proceed with making the sections collapsible
-        formSections.forEach((section, index) => {
-            // Skip the first section - keep it visible
-            if(index > 0) {
-                // Create collapsible header with custom title
-                const header = document.createElement('div');
-                header.className = 'form-section-header';
-                header.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center py-2">
-                        <span class="section-title">${sectionTitles[index]}</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                `;
-                
-                // Insert header before section content
-                section.prepend(header);
-                
-                // Hide section content initially
-                const content = document.createElement('div');
-                content.className = 'form-section-content collapse';
-                
-                // Move all content except header into this container
-                while(section.childNodes.length > 1) {
-                    content.appendChild(section.childNodes[1]);
-                }
-                section.appendChild(content);
-                
-                // Toggle section on click
-                header.addEventListener('click', function() {
-                    const isOpen = content.classList.contains('show');
-                    header.querySelector('i').className = isOpen ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
-                    
-                    if(isOpen) {
-                        content.classList.remove('show');
-                    } else {
-                        content.classList.add('show');
-                    }
-                });
-            }
-        });
-    }
 });
 
 // Export helper functions to avoid circular dependencies
@@ -567,4 +555,3 @@ export const helpers = {
     showListView,
     clearFilters
 };
-

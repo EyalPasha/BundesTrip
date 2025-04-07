@@ -31,21 +31,49 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         window.tripResults = null;
     }
     
-    // Update the results count if it exists
-    const resultsCount = document.getElementById('resultsCount');
-    if (resultsCount) {
-        // Count both trip groups and TBD games if available
-        const tripCount = response.trip_groups ? response.trip_groups.length : 0;
-        const tbdCount = response.tbd_games ? response.tbd_games.length : 0;
+    // Check if we have both no trips AND TBD games - this is our special case
+    const noTrips = !response.trip_groups || response.trip_groups.length === 0;
+    const hasTbdGames = response.tbd_games && response.tbd_games.length > 0;
+    
+    // If we have no trips but have TBD games, show the animation instead of the TBD games
+    if (noTrips && hasTbdGames) {
+        // Create the animation container
+        const noTripsAnimation = document.createElement('div');
+        noTripsAnimation.className = 'custom-loading-container fade-in';
+        noTripsAnimation.style.position = 'relative'; // Not fixed, relative to container
+        noTripsAnimation.style.minHeight = '400px'; // Give it some height
+        noTripsAnimation.style.backgroundColor = 'transparent'; // Make background transparent
+        noTripsAnimation.style.backdropFilter = 'none'; // Remove blur
+        
+        noTripsAnimation.innerHTML = `
+            <div class="loading-content">
+                <div class="no-results-message">
+                    <i class="fas fa-info-circle"></i>
+                    <h4>No Trips Available</h4>
+                    <p>We couldn't find any trips matching your criteria.</p>
+                    <p>Try adjusting your search filters for better results.</p>
+                </div>
+            </div>
+        `;
+        
+        tripResults.appendChild(noTripsAnimation);
+        
+        // Don't render the TBD games - pass true to indicate noTripsFound
+        if (hasTbdGames) {
+            // We're explicitly NOT rendering the TBD games here
+            // renderTbdGames(response.tbd_games, response.must_teams || [], true);
+        }
+        
+        return; // Exit early
     }
     
-    // Show TBD games FIRST if available
-    if (response.tbd_games && response.tbd_games.length > 0) {
-        renderTbdGames(response.tbd_games, response.must_teams || []);
+    // Show TBD games if available (normal case - we have trips)
+    if (hasTbdGames) {
+        renderTbdGames(response.tbd_games, response.must_teams || [], false);
     }
     
     // Process trip groups (if any)
-    if (response.trip_groups && response.trip_groups.length > 0) {
+    if (!noTrips) {
         // Show filter card
         const filterResultsCard = document.getElementById('filterResultsCard');
         if (filterResultsCard) {

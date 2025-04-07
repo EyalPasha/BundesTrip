@@ -1,5 +1,5 @@
 // API Base URL - adjust as needed for production
-const API_BASE_URL = 'https://9417-2a06-c701-4572-4000-f515-175-e579-ba36.ngrok-free.app';
+const API_BASE_URL = 'http://10.0.0.28:8000';
 /**
  * Make an API request with built-in error handling and retry logic
  * @param {string} endpoint - API endpoint to call

@@ -1061,6 +1061,217 @@
   animation: fadeInUp 0.3s ease-out forwards;
 }
 
+/* ===== Filter Drawer & Button Styling ===== */
+/* Filter drawer and button for both mobile and desktop */
+
+.filter-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  border: none;
+  font-size: 1.2rem;
+  transition: transform 0.2s;
+}
+
+.filter-btn:active {
+  transform: scale(0.95);
+}
+
+/* Filter count badge */
+.filter-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.filter-count.has-filters {
+  opacity: 1;
+}
+
+/* Drawer overlay */
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1001;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+}
+
+.drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Filter drawer */
+.filter-drawer {
+  position: fixed;
+  top: 0;
+  right: -85%;
+  width: 85%;
+  height: 100%;
+  background-color: white;
+  z-index: 1002;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+  transition: right 0.3s;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-drawer.open {
+  right: 0;
+}
+
+/* Drawer header */
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.drawer-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.drawer-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #666;
+  padding: 0;
+}
+
+/* Drawer content */
+.drawer-content {
+  padding: 15px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* Filter group */
+.drawer-filter-group {
+  margin-bottom: 20px;
+}
+
+.drawer-filter-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Active filters */
+.drawer-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 20px;
+}
+
+.drawer-filter-badge {
+  background-color: #f0f4f8;
+  color: var(--primary-color);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #d0e0f0;
+}
+
+.badge-remove {
+  background: none;
+  border: none;
+  color: #999;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+/* Action buttons */
+.drawer-actions {
+  padding: 15px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+}
+
+.drawer-actions button {
+  flex: 1;
+  padding: 10px;
+}
+
+/* Filter group sliders */
+.filter-slider-group {
+  margin-bottom: 1.5rem;
+}
+
+.filter-slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.filter-slider-label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--neutral-text);
+}
+
+.filter-slider-value {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  background: var(--primary-light);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Hide the original filter results card */
+#filterResultsCard {
+  display: none !important;
+}
+
+/* Center trip cards now that the filter card is gone */
+#resultsContainer .row {
+  justify-content: center;
+}
+
 /* ===== Improve Responsive Handling ===== */
 @media (max-width: 768px) {
   .match-preview-item {
@@ -1787,3 +1998,159 @@ body.mustteams-dropdown-open .select2-dropdown {
 .select2-dropdown {
     z-index: 10000 !important;
 }
+
+/* TBD Games Grid Layout - Fixed alignment for Name-Logo-VS-Logo-Name layout */
+.tbd-match-teams-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24px 40px 24px minmax(0, 1fr);
+  gap: 6px;
+  width: 100%;
+  align-items: center;
+  height: 24px; /* Fixed height to ensure consistent alignment */
+  margin-bottom: 4px; /* Add spacing below the team grid */
+}
+
+/* Home team name */
+.tbd-home-team {
+  grid-column: 1;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  white-space: nowrap;
+  height: 20px; /* Fixed height */
+  line-height: 20px; /* Match height for vertical centering */
+}
+
+/* Away team name */
+.tbd-away-team {
+  grid-column: 5;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  white-space: nowrap;
+  height: 20px; /* Fixed height */
+  line-height: 20px; /* Match height for vertical centering */
+}
+
+/* VS container styles */
+.tbd-vs-container {
+  grid-column: 3;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #777;
+  width: 40px;
+  min-width: 40px;
+  height: 20px;
+  line-height: 20px; /* Match height for vertical centering */
+}
+
+/* Logo styles - simplified for proper alignment */
+.tbd-home-logo {
+  grid-column: 2;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  justify-self: center;
+  display: block; /* Not flex */
+}
+
+.tbd-away-logo {
+  grid-column: 4;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  justify-self: center;
+  display: block; /* Not flex */
+}
+
+/* Must-see badge positioning */
+.tbd-must-see-badge {
+  grid-column: 1 / span 5;
+  grid-row: 2;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.3rem;
+  background: #ffb700;
+  color: #000;
+  border-radius: 4px;
+  display: inline-block;
+  font-weight: 500;
+  margin-top: 4px;
+  justify-self: center;
+}
+
+@media (max-width: 767.98px) {
+  .tbd-match-teams-grid {
+    grid-template-columns: minmax(0, 1fr) 18px 30px 18px minmax(0, 1fr);
+    gap: 4px;
+    height: 26px; /* Adjusted for mobile */
+  }
+  
+  .tbd-home-logo, .tbd-away-logo {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .tbd-vs-container {
+    width: 30px;
+    min-width: 30px;
+    font-size: 0.7rem;
+    height: 20px;
+    line-height: 20px;
+  }
+  
+  /* Make team names smaller on mobile */
+  .tbd-home-team, .tbd-away-team {
+    font-size: 0.75rem; /* Smaller text on mobile */
+    height: 20px;
+    line-height: 20px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 374px) {
+  .tbd-match-teams-grid {
+    grid-template-columns: minmax(0, 1fr) 16px 24px 16px minmax(0, 1fr);
+    gap: 3px;
+    height: 24px; /* Adjusted for very small screens */
+  }
+  
+  .tbd-home-logo, .tbd-away-logo {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .tbd-vs-container {
+    width: 24px;
+    min-width: 24px;
+    font-size: 0.65rem;
+  }
+  
+  /* Even smaller text for tiny screens */
+  .tbd-home-team, .tbd-away-team {
+    font-size: 0.7rem; /* Further reduced for very small screens */
+    height: 18px;
+    line-height: 18px;
+  }
+}
+
+#tbdGamesSection .accordion-button .d-flex {
+  width: calc(100% - 20px) !important; /* Make room for the arrow */
+}
+
+#tbdGamesSection .accordion-button .badge {
+  margin-right: 8px !important; /* Add more space between badge and arrow */
+}
+
+#tbdGamesSection .accordion-button::after {
+  position: absolute;
+  right: 10px;
+}
+
+/* Ensure the badge doesn't get hidden behind dropdown arrow */
+#tbdGamesSection .accordion-button .d-flex .justify-content-between {
+  width: 100%;
+  padding-right: 10px;
+}
+

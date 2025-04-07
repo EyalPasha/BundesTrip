@@ -1,11 +1,22 @@
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/logos/back.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../logos/back.jpg');
     background-size: cover;
     background-position: center;
     color: white;
-    padding: 100px 0;
-    margin-bottom: 30px;
+    padding: 100px 0 70px; /* Reduced bottom padding */
+    margin-bottom: 0; /* Remove margin */
+}
+
+/* Fix spacing between hero and about section */
+#about {
+    padding-top: 0; /* Remove top padding */
+    margin-top: 0;
+}
+
+/* Pull up the main content */
+main {
+    margin-top: -20px; /* Negative margin to remove gap */
 }
 
 /* Modern 2025 Search Form Card */
@@ -189,7 +200,16 @@
 /* Responsive */
 @media (max-width: 768px) {
     .hero {
-        padding: 60px 0;
+        padding: 60px 0 40px; /* Reduced padding for mobile */
+        margin-bottom: 0;
+    }
+    
+    main {
+        margin-top: -10px; /* Smaller negative margin for mobile */
+    }
+    
+    #about {
+        padding-top: 0;
     }
     
     .search-card {

@@ -72,7 +72,7 @@ const LEAGUE_LOGO_MAPPING = {
 };
 
 // Base path for logo files
-const LOGO_BASE_PATH = '../logos/';
+const LOGO_BASE_PATH = './logos/';
 const DEFAULT_LOGO = 'soccer-1.png'; // Fallback logo
 
 /**

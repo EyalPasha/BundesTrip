@@ -832,9 +832,15 @@ function renderAirportDistances(airportData) {
     return airportSection;
 }
 
-// Updated renderTbdGames function with accordion adjustments
-function renderTbdGames(tbdGames, mustTeams = []) {
+function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
     if (!tbdGames || tbdGames.length === 0) return;
+    
+    // If no trips found, don't render the TBD games
+    if (noTripsFound) {
+        // Just return without rendering anything
+        // The no trips animation will be handled by the results-display.js file
+        return;
+    }
     
     // Convert mustTeams to lowercase for case-insensitive comparison
     const mustTeamsLower = mustTeams.map(team => team.toLowerCase());
@@ -843,27 +849,28 @@ function renderTbdGames(tbdGames, mustTeams = []) {
     if (!tripResults) return; // Safety check
     
     const tbdSection = document.createElement('div');
-    tbdSection.className = 'card trip-card fade-in shadow-sm mb-4'; // Use trip-card class for consistency
+    tbdSection.className = 'card trip-card fade-in shadow-sm mb-4'; 
+    tbdSection.id = 'tbdGamesSection';
     
-    // Updated TBD header with consistent styling
+    // More compact TBD header
     const tbdHeader = document.createElement('div');
     tbdHeader.className = 'trip-header position-relative';
     tbdHeader.innerHTML = `
         <div class="trip-header-main">
-            <h3><i class="fas fa-calendar-alt text-secondary me-2"></i>Upcoming Unscheduled Games</h3>
-            <span class="match-count-badge">${tbdGames.length} games</span>
+            <h3><i class="fas fa-calendar-alt text-secondary"></i>Upcoming Games</h3>
+            <span class="match-count-badge">${tbdGames.length}</span>
         </div>
         <div class="trip-header-meta">
             <div class="trip-meta-item">
                 <i class="fas fa-info-circle"></i>
-                <span>These games don't have confirmed times yet but might be included in your trip once scheduled</span>
+                <span>Games with unconfirmed times that may be included once scheduled</span>
             </div>
         </div>
     `;
     
     // TBD content with improved styling matching trip cards
     const tbdContent = document.createElement('div');
-    tbdContent.className = 'p-3';
+    tbdContent.className = 'p-2';
     
     // Group TBD games by date
     const groupedGames = {};
@@ -894,23 +901,22 @@ function renderTbdGames(tbdGames, mustTeams = []) {
         dateCounter++;
         const dateId = `tbd-date-${dateCounter}`;
         
-        // Create accordion item with styling that matches trip cards
+        // Create accordion item with more compact styling
         const accordionItem = document.createElement('div');
         accordionItem.className = 'accordion-item border-0 mb-2';
         
-        // Header styling that matches other elements - all collapsed by default now
+        // Header styling - all collapsed by default
         const accordionHeader = document.createElement('h2');
         accordionHeader.className = 'accordion-header';
         accordionHeader.innerHTML = `
-            <button class="accordion-button collapsed" 
-                    style="background: var(--primary-light); border-radius: 8px; color: var(--primary-color);"
+            <button class="accordion-button collapsed shadow-sm" 
                     type="button" data-bs-toggle="collapse" data-bs-target="#${dateId}">
                 <div class="d-flex align-items-center justify-content-between w-100">
                     <div>
-                        <i class="fas fa-calendar-day me-2"></i>
-                        <strong>${date}</strong>
+                        <i class="fas fa-calendar-day me-1"></i>
+                        <span>${date}</span>
                     </div> 
-                    <span class="badge bg-primary me-4">${groupedGames[date].length} games</span>
+                    <span class="badge bg-primary">${groupedGames[date].length}</span>
                 </div>
             </button>
         `;
@@ -918,7 +924,7 @@ function renderTbdGames(tbdGames, mustTeams = []) {
         // Body with consistent styling - all collapsed by default
         const accordionBody = document.createElement('div');
         accordionBody.id = dateId;
-        accordionBody.className = 'accordion-collapse collapse'; // Remove 'show' class
+        accordionBody.className = 'accordion-collapse collapse'; 
         
         const bodyContent = document.createElement('div');
         bodyContent.className = 'accordion-body p-2';
@@ -938,15 +944,16 @@ function renderTbdGames(tbdGames, mustTeams = []) {
             const gameItem = document.createElement('div');
             gameItem.className = 'match-preview-item' + 
                 (game.has_must_team ? ' must-match' : '');
-            
+                        
+            // New grid-based layout with proper team-logo-vs-logo-team order
             gameItem.innerHTML = `
-                <div class="match-teams-preview">
-                    <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo-small" alt="${homeTeam} logo">
-                    <strong>${homeTeam}</strong>
-                    <span class="vs-text">vs</span>
-                    <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo-small" alt="${awayTeam} logo">
-                    <strong>${awayTeam}</strong>
-                    ${game.has_must_team ? '<span class="must-see-badge">Must-See</span>' : ''}
+                <div class="tbd-match-teams-grid">
+                    <div class="tbd-home-team">${homeTeam}</div>
+                    <img src="${getTeamLogoUrl(homeTeam)}" class="tbd-home-logo" alt="${homeTeam} logo">
+                    <div class="tbd-vs-container">vs</div>
+                    <img src="${getTeamLogoUrl(awayTeam)}" class="tbd-away-logo" alt="${awayTeam} logo">
+                    <div class="tbd-away-team">${awayTeam}</div>
+                    ${game.has_must_team ? '<span class="tbd-must-see-badge">Must-See</span>' : ''}
                 </div>
                 <div class="match-info-compact">
                     <span class="match-location-inline">
@@ -971,9 +978,32 @@ function renderTbdGames(tbdGames, mustTeams = []) {
     tbdSection.appendChild(tbdHeader);
     tbdSection.appendChild(tbdContent);
     
-    // Insert at the beginning of the results, but make it properly preserved during filtering
-    tbdSection.id = 'tbdGamesSection';
+    // Insert at the beginning of the results
     tripResults.insertBefore(tbdSection, tripResults.firstChild);
+    
+    // Add "No trips found" message if specified
+    if (noTripsFound) {
+        const noTripsMessage = document.createElement('div');
+        noTripsMessage.className = 'no-trips-message fade-in';
+        noTripsMessage.innerHTML = `
+            <div class="alert-content">
+                <i class="fas fa-info-circle"></i>
+                <div class="message-text">
+                    <h4>No Trips Available</h4>
+                    <p>We couldn't find any trips matching your criteria, but we've displayed some upcoming games above that may interest you.</p>
+                </div>
+            </div>
+            <div class="suggestion-text">Try adjusting your search filters for better results.</div>
+        `;
+        
+        // Insert the message after the TBD games section
+        tripResults.insertBefore(noTripsMessage, tbdSection.nextSibling);
+        
+        // Scroll to TBD games section with slight delay to allow rendering
+        setTimeout(() => {
+            tbdSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+    }
 }
 
 /**
