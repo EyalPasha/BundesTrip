@@ -328,8 +328,8 @@ function addStickyStyles() {
         @media (min-width: 768px) {
             .sticky-filters {
                 position: sticky;
-                top: 0;
-                z-index: 1000;
+                top: 56px; /* Add navbar height here (56px is standard Bootstrap navbar height) */
+                z-index: 999; /* Lower than navbar's z-index */
                 background-color: #fff;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                 margin-top: 0;
@@ -340,12 +340,17 @@ function addStickyStyles() {
             
             .sticky-active-filters {
                 position: sticky;
-                top: 80px;
-                z-index: 999;
+                top: 162px; /* Navbar (56px) + filter bar height (~80px) */
+                z-index: 998; /* Lower than filters z-index */
                 background-color: #fff;
                 padding-top: 10px;
                 padding-bottom: 10px;
                 margin-bottom: 15px;
+            }
+            
+            /* Ensure navbar has highest z-index */
+            .navbar.sticky-top {
+                z-index: 1000;
             }
             
             /* Center the filter row with equal margins */

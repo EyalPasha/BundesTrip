@@ -34,6 +34,9 @@
   box-shadow: var(--card-shadow);
   background: var(--card-bg);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .trip-card:hover {
@@ -1262,11 +1265,6 @@
   border-radius: 4px;
 }
 
-/* Hide the original filter results card */
-#filterResultsCard {
-  display: none !important;
-}
-
 /* Center trip cards now that the filter card is gone */
 #resultsContainer .row {
   justify-content: center;
@@ -2154,3 +2152,78 @@ body.mustteams-dropdown-open .select2-dropdown {
   padding-right: 10px;
 }
 
+/* This ensures trip results are centered when filter card is hidden */
+@media (min-width: 992px) {
+  body.has-filter-drawer #resultsContainer .row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  body.has-filter-drawer #resultsContainer .col-lg-4 {
+    display: none;
+  }
+  
+  body.has-filter-drawer #resultsContainer .col-lg-8 {
+    flex: 0 0 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+}
+
+/* This ensures trip results are centered when filter card is hidden */
+@media (min-width: 992px) {
+  body.has-filter-drawer #results .row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  body.has-filter-drawer #results .col-lg-4 {
+    display: none;
+  }
+  
+  body.has-filter-drawer #results .col-lg-8 {
+    flex: 0 0 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+}
+
+/* No matches message styling */
+#noFilterMatchesMessage {
+    background-color: rgba(4, 61, 124, 0.05);
+    border-left: 4px solid var(--primary-color);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.5s ease;
+    max-width: 700px;
+    margin: 2rem auto;
+}
+
+#noFilterMatchesMessage .fas {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+#noFilterMatchesMessage strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+#noFilterMatchesMessage p {
+    color: var(--neutral-text);
+    margin-top: 0.75rem;
+}
+
+#resetFiltersBtn {
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+#resetFiltersBtn:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}

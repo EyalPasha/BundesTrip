@@ -17,6 +17,7 @@ import {
 import { handleSearch, initFormHandlers, updateMinGamesOptions } from './services/trip-service.js';
 import { renderResults } from './components/results-display.js';
 import { checkHealth } from './services/api.js';
+import { initFilterDrawer } from './services/filters.js'; // Add this import
 
 import { initPreferredLeaguesSelect } from './services/select2-init.js';
 
@@ -42,7 +43,6 @@ function initDOMReferences() {
         cityFiltersContainer: 'cityFilters',
         sortResults: 'sortResults',
         minGamesInput: 'minGames',
-        tripOptionsHeader: 'tripOptionsHeader',
         resultsCountContainer: 'resultsCountContainer',
         gamesSlider: 'gamesSlider',
         gamesSliderValue: 'gamesSliderValue',
@@ -325,6 +325,25 @@ function setupEventListeners() {
         });
         
         observer.observe(loadingIndicator, { attributes: true });
+    }
+    
+    // Initialize filter drawer when results are first shown
+    const resultsSection = document.getElementById('results');
+    if (resultsSection) {
+        const resultObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class' && 
+                    !resultsSection.classList.contains('d-none')) {
+                    // Hide the old filter card with CSS
+                    const filterCard = document.getElementById('filterResultsCard');
+                    if (filterCard) {
+                        filterCard.style.display = 'none';
+                    }
+                }
+            });
+        });
+        
+        resultObserver.observe(resultsSection, { attributes: true });
     }
 }
 

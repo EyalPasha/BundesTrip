@@ -1,5 +1,5 @@
 import { renderTripCard, renderTbdGames } from './trip-card.js';
-import { renderFilters } from '../services/filters.js'; 
+import { renderFilters, initFilterDrawer } from '../services/filters.js'; 
 import { showListView } from '../services/ui-helpers.js';
 
 /**
@@ -17,6 +17,17 @@ function renderResults(response, hideLoadingOnNoResults = true) {
     if (tripResults) {
         tripResults.innerHTML = '';
     }
+    
+    // Ensure body has the filter drawer class when we have results
+    if (response.trip_groups && response.trip_groups.length > 0) {
+        document.body.classList.add('has-filter-drawer');
+    }
+    
+    // Hide the filter card column completely - FIXED SELECTOR
+    const filterCardColumn = document.querySelector('#results .col-lg-4');
+    if (filterCardColumn) {
+        filterCardColumn.style.display = 'none';
+    }
 
     // Initialize the window.tripResults pagination state
     if (response.trip_groups && response.trip_groups.length > 0) {
@@ -27,6 +38,17 @@ function renderResults(response, hideLoadingOnNoResults = true) {
             batchSize: 3, // Display 3 trips per batch
             hasMoreTrips: true
         };
+
+        // IMPORTANT CHANGE: Import and initialize filter drawer explicitly
+        // This ensures the filter button is created even if module state is confused
+        import('../services/filters.js').then(filtersModule => {
+            if (typeof filtersModule.initFilterDrawer === 'function') {
+                // Force re-initialization of the filter drawer
+                filtersModule.initFilterDrawer();
+            }
+        }).catch(err => {
+            console.error("Error initializing filter drawer:", err);
+        });
     } else {
         window.tripResults = null;
     }
@@ -74,10 +96,10 @@ function renderResults(response, hideLoadingOnNoResults = true) {
     
     // Process trip groups (if any)
     if (!noTrips) {
-        // Show filter card
+        // Hide the filter card since we're using the drawer now
         const filterResultsCard = document.getElementById('filterResultsCard');
         if (filterResultsCard) {
-            filterResultsCard.classList.remove('d-none');
+            filterResultsCard.style.display = 'none';
         }
         
         // Add min games info to results header if present
@@ -223,32 +245,55 @@ function renderNextBatch() {
     const start = state.renderedCount;
     const end = Math.min(start + state.batchSize, state.allTrips.length);
     
+    // Track the newly rendered cards to filter them
+    const newlyRenderedCards = [];
+    
     // Render this batch of trips
     for (let i = start; i < end; i++) {
         const trip = state.allTrips[i];
         renderTripCard(trip, i + 1, window.tripContext);
+        
+        // Get the card we just rendered (last child)
+        const lastCard = resultsContainer.lastElementChild;
+        if (lastCard && lastCard.classList.contains('trip-card')) {
+            // Mark it for filtering and add to our tracking array
+            lastCard.classList.add('newly-rendered');
+            newlyRenderedCards.push(lastCard);
+        }
     }
     
     // Update the rendered count
     state.renderedCount = end;
     state.hasMoreTrips = state.renderedCount < state.allTrips.length;
     
-    // IMPORTANT: Apply current filters to newly loaded trip cards
-    import('../services/filters.js').then(module => {
-        // Get only the newly added trip cards
-        const newCards = document.querySelectorAll('.trip-card:nth-child(n+' + (start + 1) + '):nth-child(-n+' + end + ')');
-        
-        // Apply hotel changes filter if it's active
-        if (window.activeFilters && window.activeFilters.maxHotelChanges < 7) {
-            newCards.forEach(card => {
-                // Process each newly loaded card
-                if (typeof module.filterTripOptions === 'function') {
-                    module.filterTripOptions(card);
-                }
-            });
-        }
-    });
-    
+    // Apply filters to newly rendered cards with a reliable approach
+    setTimeout(() => {
+        import('../services/filters.js').then(module => {
+            // Get the newly rendered cards using our marker class
+            const newCards = document.querySelectorAll('.trip-card.newly-rendered');
+            
+            console.log(`Applying filters to ${newCards.length} newly rendered cards`);
+            
+            // Apply hotel changes filter if it's active
+            if (window.activeFilters && window.activeFilters.maxHotelChanges < 7) {
+                newCards.forEach(card => {
+                    try {
+                        if (typeof module.filterTripOptions === 'function') {
+                            module.filterTripOptions(card);
+                        }
+                        // Remove the marker class after filtering
+                        card.classList.remove('newly-rendered');
+                    } catch (error) {
+                        console.error('Error applying hotel filter to new card:', error);
+                    }
+                });
+            } else {
+                // Remove marker class even if filter wasn't applied
+                newCards.forEach(card => card.classList.remove('newly-rendered'));
+            }
+        });
+    }, 50);
+
     // Remove any existing load more button
     const existingButton = document.getElementById('loadMoreTrips');
     if (existingButton) {
@@ -282,4 +327,11 @@ function renderNextBatch() {
     }
 }
 
-export { renderResults, extractCities, extractTeams, renderNextBatch };
+function resetFilterDrawerReferences() {
+    filterButton = null;
+    filterCount = null; 
+    drawerOverlay = null;
+    filterDrawer = null;
+}
+
+export { renderResults, extractCities, extractTeams, resetFilterDrawerReferences, renderNextBatch };

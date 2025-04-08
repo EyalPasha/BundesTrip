@@ -45,6 +45,51 @@ async function handleSearch(e) {
         filterResultsCard.classList.add('d-none');
     }
     
+    // Remove any existing filter drawer
+    const existingFilterBtn = document.querySelector('.filter-btn');
+    const existingFilterDrawer = document.querySelector('.filter-drawer');
+    const existingOverlay = document.querySelector('.drawer-overlay');
+    
+    if (existingFilterBtn) existingFilterBtn.remove();
+    if (existingFilterDrawer) existingFilterDrawer.remove();
+    if (existingOverlay) existingOverlay.remove();
+    
+    // Reset the module-level references to filter elements
+    try {
+        const filtersModule = await import('../services/filters.js');
+        if (filtersModule && typeof filtersModule.resetFilterDrawerReferences === 'function') {
+            filtersModule.resetFilterDrawerReferences();
+        }
+    } catch (err) {
+        console.warn('Could not reset filter drawer references:', err);
+    }
+    
+    // IMPORTANT: Reset the active filters GLOBALLY to prevent persistence between searches
+    if (window.activeFilters) {
+        window.activeFilters.team = null;
+        window.activeFilters.city = null;
+        window.activeFilters.minGames = 1;
+        window.activeFilters.maxHotelChanges = 7;
+    } else {
+        // Create activeFilters if it doesn't exist
+        window.activeFilters = {
+            team: null,
+            city: null,
+            minGames: 1,
+            maxHotelChanges: 7
+        };
+    }
+    
+    // Also reset the original filter state in the filters.js module
+    try {
+        const filtersModule = await import('../services/filters.js');
+        if (filtersModule && typeof filtersModule.resetFilters === 'function') {
+            filtersModule.resetFilters();
+        }
+    } catch (err) {
+        console.warn('Could not reset filters module state:', err);
+    }
+
     // Hide trip options header
     const tripOptionsHeader = document.getElementById('tripOptionsHeader');
     if (tripOptionsHeader) {

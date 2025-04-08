@@ -10,8 +10,463 @@ const activeFilters = {
   maxHotelChanges: 7
 };
 
+// Temporary filter state for the drawer - only applied when Apply button is clicked
+const pendingFilters = {
+  team: null,
+  city: null,
+  minGames: 1,
+  maxHotelChanges: 7
+};
+
 // Make filter state globally available for newly loaded trips
 window.activeFilters = activeFilters;
+
+// DOM elements for the filter drawer
+let filterButton;
+let filterCount;
+let drawerOverlay;
+let filterDrawer;
+
+// Initialize the filter drawer UI
+function initFilterDrawer() {
+    // Remove any existing filter elements from the DOM first
+    const existingFilterBtn = document.querySelector('.filter-btn');
+    const existingFilterDrawer = document.querySelector('.filter-drawer');
+    const existingOverlay = document.querySelector('.drawer-overlay');
+    
+    if (existingFilterBtn) existingFilterBtn.remove();
+    if (existingFilterDrawer) existingFilterDrawer.remove();
+    if (existingOverlay) existingOverlay.remove();
+    
+    // Create filter button
+    filterButton = document.createElement('button');
+    filterButton.className = 'filter-btn';
+    filterButton.innerHTML = '<i class="fas fa-filter"></i>';
+    filterButton.setAttribute('aria-label', 'Filter trips');
+    
+    // Add filter count badge
+    filterCount = document.createElement('span');
+    filterCount.className = 'filter-count';
+    filterCount.textContent = '0';
+    filterButton.appendChild(filterCount);
+    
+    // Create overlay
+    drawerOverlay = document.createElement('div');
+    drawerOverlay.className = 'drawer-overlay';
+    
+    // Create drawer
+    filterDrawer = document.createElement('div');
+    filterDrawer.className = 'filter-drawer';
+    filterDrawer.innerHTML = `
+        <div class="drawer-header">
+            <h3 class="drawer-title">Filter Trips</h3>
+            <button class="drawer-close" aria-label="Close filter menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <div class="drawer-active-filters"></div>
+            
+            <div class="drawer-filter-group">
+                <label class="drawer-filter-label">
+                    <i class="fas fa-futbol me-2"></i> Team Filters
+                </label>
+                <div id="drawerTeamFilters" class="mb-3"></div>
+            </div>
+            
+            <div class="drawer-filter-group">
+                <label class="drawer-filter-label">
+                    <i class="fas fa-map-marker-alt me-2"></i> City Filters
+                </label>
+                <div id="drawerCityFilters" class="mb-3"></div>
+            </div>
+            
+            <div class="drawer-filter-group filter-slider-group">
+                <div class="filter-slider-header">
+                    <label class="filter-slider-label" for="drawerGamesSlider">
+                        <i class="fas fa-futbol me-1"></i> Minimum Games
+                    </label>
+                    <span class="filter-slider-value" id="drawerGamesSliderValue">Any</span>
+                </div>
+                <input type="range" class="form-range" min="1" max="6" value="1" id="drawerGamesSlider">
+            </div>
+            
+            <div class="drawer-filter-group filter-slider-group">
+                <div class="filter-slider-header">
+                    <label class="filter-slider-label" for="drawerHotelChangesSlider">
+                        <i class="fas fa-hotel me-1"></i> Max Hotel Changes
+                    </label>
+                    <span class="filter-slider-value" id="drawerHotelChangesValue">Any</span>
+                </div>
+                <input type="range" class="form-range" min="0" max="7" value="7" id="drawerHotelChangesSlider">
+            </div>
+        </div>
+        <div class="drawer-actions">
+            <button class="btn btn-outline-secondary" id="clearDrawerFilters">
+                <i class="fas fa-times me-2"></i> Clear All
+            </button>
+            <button class="btn btn-primary" id="applyDrawerFilters">
+                <i class="fas fa-check me-2"></i> Apply Filters
+            </button>
+        </div>
+    `;
+    
+    // Add elements to the document
+    document.body.appendChild(filterButton);
+    document.body.appendChild(drawerOverlay);
+    document.body.appendChild(filterDrawer);
+    
+    // Add has-filter-drawer class to body
+    document.body.classList.add('has-filter-drawer');
+    
+    // Add event listeners
+    filterButton.addEventListener('click', openFilterDrawer);
+    drawerOverlay.addEventListener('click', closeFilterDrawer);
+    filterDrawer.querySelector('.drawer-close').addEventListener('click', closeFilterDrawer);
+    document.getElementById('clearDrawerFilters').addEventListener('click', clearDrawerFilters);
+    document.getElementById('applyDrawerFilters').addEventListener('click', applyAndCloseDrawer);
+    
+    // Set up slider event listeners to update pending filters, not active ones
+    const drawerGamesSlider = document.getElementById('drawerGamesSlider');
+    const drawerGamesSliderValue = document.getElementById('drawerGamesSliderValue');
+    
+    drawerGamesSlider.addEventListener('input', function() {
+        const value = parseInt(this.value);
+        if (value === 1) {
+            drawerGamesSliderValue.textContent = 'Any';
+        } else {
+            drawerGamesSliderValue.textContent = `${value}+`;
+        }
+        
+        if (value === parseInt(drawerGamesSlider.max)) {
+            drawerGamesSliderValue.textContent = value;
+        }
+        
+        // Update pending filter state
+        pendingFilters.minGames = value;
+        
+        // Update drawer active filters display
+        updateDrawerActiveFilters();
+    });
+    
+    const drawerHotelChangesSlider = document.getElementById('drawerHotelChangesSlider');
+    const drawerHotelChangesValue = document.getElementById('drawerHotelChangesValue');
+    
+    drawerHotelChangesSlider.addEventListener('input', function() {
+        const value = parseInt(this.value);
+        if (value === parseInt(drawerHotelChangesSlider.max)) {
+            drawerHotelChangesValue.textContent = 'Any';
+        } else {
+            drawerHotelChangesValue.textContent = value;
+        }
+        
+        // Update pending filter state
+        pendingFilters.maxHotelChanges = value;
+        
+        // Update drawer active filters display
+        updateDrawerActiveFilters();
+    });
+    
+    // Update filter count based on active filters (not pending)
+    updateFilterCount();
+}
+
+// Open the filter drawer
+function openFilterDrawer() {
+    // Initialize pending filters with current active values
+    pendingFilters.team = activeFilters.team;
+    pendingFilters.city = activeFilters.city;
+    pendingFilters.minGames = activeFilters.minGames;
+    pendingFilters.maxHotelChanges = activeFilters.maxHotelChanges;
+    
+    // Sync drawer filters with active filters
+    syncFiltersToDrawer();
+    
+    // Show drawer and overlay
+    filterDrawer.classList.add('open');
+    drawerOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+}
+
+// Close the filter drawer
+function closeFilterDrawer() {
+    filterDrawer.classList.remove('open');
+    drawerOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+// Apply filters and close the drawer
+function applyAndCloseDrawer() {
+    // Copy pending filter state to active filters
+    activeFilters.team = pendingFilters.team;
+    activeFilters.city = pendingFilters.city;
+    activeFilters.minGames = pendingFilters.minGames;
+    activeFilters.maxHotelChanges = pendingFilters.maxHotelChanges;
+    
+    // Update UI to reflect changes
+    // 1. Update slider values in the main UI if they exist
+    const mainGamesSlider = document.getElementById('gamesSlider');
+    const mainGamesSliderValue = document.getElementById('gamesSliderValue');
+    
+    if (mainGamesSlider && mainGamesSliderValue) {
+        mainGamesSlider.value = activeFilters.minGames;
+        if (activeFilters.minGames === 2) {
+            mainGamesSliderValue.textContent = 'Any (2+)';
+        } else if (activeFilters.minGames === parseInt(mainGamesSlider.max)) {
+            mainGamesSliderValue.textContent = activeFilters.minGames;
+        } else {
+            mainGamesSliderValue.textContent = `${activeFilters.minGames}+`;
+        }
+    }
+    
+    const mainHotelChangesSlider = document.getElementById('hotelChangesSlider');
+    const mainHotelChangesValue = document.getElementById('hotelChangesValue');
+    
+    if (mainHotelChangesSlider && mainHotelChangesValue) {
+        mainHotelChangesSlider.value = activeFilters.maxHotelChanges;
+        if (activeFilters.maxHotelChanges === parseInt(mainHotelChangesSlider.max)) {
+            mainHotelChangesValue.textContent = 'Any';
+        } else {
+            mainHotelChangesValue.textContent = activeFilters.maxHotelChanges;
+        }
+    }
+    
+    // Update team and city filter UI in the main view
+    updateTeamFilterUI();
+    updateCityFilterUI();
+    
+    // Apply filters to the data
+    applyAllFilters();
+    
+    // Close drawer
+    closeFilterDrawer();
+    
+    // Update filter count badge
+    updateFilterCount();
+    
+    // Dispatch event
+    dispatchFilterChangeEvent();
+}
+
+// Sync main filters to drawer
+function syncFiltersToDrawer() {
+    // Set pending filters to match active filters
+    pendingFilters.team = activeFilters.team;
+    pendingFilters.city = activeFilters.city;
+    pendingFilters.minGames = activeFilters.minGames;
+    pendingFilters.maxHotelChanges = activeFilters.maxHotelChanges;
+    
+    // Update drawer UI
+    updateDrawerTeamFilters();
+    updateDrawerCityFilters();
+    
+    // Update sliders
+    const drawerGamesSlider = document.getElementById('drawerGamesSlider');
+    const drawerGamesSliderValue = document.getElementById('drawerGamesSliderValue');
+    
+    if (drawerGamesSlider && drawerGamesSliderValue) {
+        drawerGamesSlider.value = pendingFilters.minGames;
+        if (pendingFilters.minGames === 1) {
+            drawerGamesSliderValue.textContent = 'Any';
+        } else {
+            drawerGamesSliderValue.textContent = `${pendingFilters.minGames}+`;
+        }
+        
+        if (pendingFilters.minGames === parseInt(drawerGamesSlider.max)) {
+            drawerGamesSliderValue.textContent = pendingFilters.minGames;
+        }
+    }
+    
+    const drawerHotelChangesSlider = document.getElementById('drawerHotelChangesSlider');
+    const drawerHotelChangesValue = document.getElementById('drawerHotelChangesValue');
+    
+    if (drawerHotelChangesSlider && drawerHotelChangesValue) {
+        drawerHotelChangesSlider.value = pendingFilters.maxHotelChanges;
+        if (pendingFilters.maxHotelChanges === parseInt(drawerHotelChangesSlider.max)) {
+            drawerHotelChangesValue.textContent = 'Any';
+        } else {
+            drawerHotelChangesValue.textContent = pendingFilters.maxHotelChanges;
+        }
+    }
+    
+    // Update active filters display in drawer
+    updateDrawerActiveFilters();
+}
+
+// Update active filters display in drawer
+function updateDrawerActiveFilters() {
+    const activeFiltersContainer = document.querySelector('.drawer-active-filters');
+    if (!activeFiltersContainer) return;
+    
+    activeFiltersContainer.innerHTML = '';
+    
+    let hasActiveFilters = false;
+    
+    // Add team filter badge
+    if (pendingFilters.team) {
+        const badge = createDrawerFilterBadge('team', pendingFilters.team);
+        activeFiltersContainer.appendChild(badge);
+        hasActiveFilters = true;
+    }
+    
+    // Add city filter badge
+    if (pendingFilters.city) {
+        const badge = createDrawerFilterBadge('city', pendingFilters.city);
+        activeFiltersContainer.appendChild(badge);
+        hasActiveFilters = true;
+    }
+    
+    // Add min games filter badge - only show if above the min of 2
+    if (pendingFilters.minGames > 2) {
+        const badge = createDrawerFilterBadge('minGames', `${pendingFilters.minGames}+ games`);
+        activeFiltersContainer.appendChild(badge);
+        hasActiveFilters = true;
+    }
+    
+    // Add hotel changes filter badge
+    if (pendingFilters.maxHotelChanges < 7) {
+        const badge = createDrawerFilterBadge('maxHotelChanges', `Max ${pendingFilters.maxHotelChanges} hotel changes`);
+        activeFiltersContainer.appendChild(badge);
+        hasActiveFilters = true;
+    }
+    
+    // Show or hide the active filters section
+    if (hasActiveFilters) {
+        activeFiltersContainer.style.display = 'flex';
+    } else {
+        activeFiltersContainer.style.display = 'none';
+    }
+}
+
+// Create filter badge for drawer
+function createDrawerFilterBadge(type, text) {
+    const badge = document.createElement('div');
+    badge.className = 'drawer-filter-badge';
+    badge.innerHTML = `
+        <span>${text}</span>
+        <button class="badge-remove" data-filter-type="${type}" aria-label="Remove ${type} filter">
+            <i class="fas fa-times-circle"></i>
+        </button>
+    `;
+    
+    // Add click handler to remove filter in pending state only
+    badge.querySelector('.badge-remove').addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        if (type === 'team') {
+            pendingFilters.team = null;
+        } else if (type === 'city') {
+            pendingFilters.city = null;
+        } else if (type === 'minGames') {
+            pendingFilters.minGames = 1;
+            document.getElementById('drawerGamesSlider').value = 1;
+            document.getElementById('drawerGamesSliderValue').textContent = 'Any';
+        } else if (type === 'maxHotelChanges') {
+            pendingFilters.maxHotelChanges = 7;
+            document.getElementById('drawerHotelChangesSlider').value = 7;
+            document.getElementById('drawerHotelChangesValue').textContent = 'Any';
+        }
+        
+        // Update drawer UI only
+        updateDrawerActiveFilters();
+        updateDrawerTeamFilterUI();
+        updateDrawerCityFilterUI();
+    });
+    
+    return badge;
+}
+
+// Update team filters in the drawer
+function updateDrawerTeamFilters() {
+    const drawerTeamFilters = document.getElementById('drawerTeamFilters');
+    if (!drawerTeamFilters) return;
+    
+    // Clear existing filters
+    drawerTeamFilters.innerHTML = '';
+    
+    // Clone team filters from the main filters panel
+    const teamFilters = document.getElementById('teamFilters');
+    if (teamFilters) {
+        const badges = teamFilters.querySelectorAll('.badge');
+        badges.forEach(badge => {
+            const clonedBadge = badge.cloneNode(true);
+            
+            // Update classes for active state if needed
+            if (badge.dataset.team === pendingFilters.team) {
+                clonedBadge.classList.remove('bg-light');
+                clonedBadge.classList.remove('text-dark');
+                clonedBadge.classList.add('bg-primary');
+                clonedBadge.classList.add('text-white');
+            }
+            
+            // Add click event for drawer (not immediate application)
+            if (clonedBadge.dataset.team) {
+                clonedBadge.addEventListener('click', () => drawerFilterByTeam(clonedBadge.dataset.team));
+            } else {
+                // Clear button inside drawer
+                clonedBadge.addEventListener('click', clearDrawerFilters);
+            }
+            
+            drawerTeamFilters.appendChild(clonedBadge);
+        });
+    }
+}
+
+// Update city filters in the drawer
+function updateDrawerCityFilters() {
+    const drawerCityFilters = document.getElementById('drawerCityFilters');
+    if (!drawerCityFilters) return;
+    
+    // Clear existing filters
+    drawerCityFilters.innerHTML = '';
+    
+    // Clone city filters from the main filters panel
+    const cityFilters = document.getElementById('cityFilters');
+    if (cityFilters) {
+        const badges = cityFilters.querySelectorAll('.badge');
+        badges.forEach(badge => {
+            const clonedBadge = badge.cloneNode(true);
+            
+            // Update classes for active state if needed
+            if (badge.dataset.city === pendingFilters.city) {
+                clonedBadge.classList.remove('bg-light');
+                clonedBadge.classList.remove('text-dark');
+                clonedBadge.classList.add('bg-primary');
+                clonedBadge.classList.add('text-white');
+            }
+            
+            // Add click event for drawer (not immediate application)
+            if (clonedBadge.dataset.city) {
+                clonedBadge.addEventListener('click', () => drawerFilterByCity(clonedBadge.dataset.city));
+            } else {
+                // Clear button inside drawer
+                clonedBadge.addEventListener('click', clearDrawerFilters);
+            }
+            
+            drawerCityFilters.appendChild(clonedBadge);
+        });
+    }
+}
+
+// Update filter count badge on the filter button
+function updateFilterCount() {
+    if (!filterCount) return;
+    
+    let count = 0;
+    
+    if (activeFilters.team) count++;
+    if (activeFilters.city) count++;
+    if (activeFilters.minGames > 2) count++;  // Only count if above default min of 2
+    if (activeFilters.maxHotelChanges < 7) count++;
+    
+    filterCount.textContent = count;
+    
+    if (count > 0) {
+        filterCount.classList.add('has-filters');
+    } else {
+        filterCount.classList.remove('has-filters');
+    }
+}
 
 function filterByTeam(team) {
     const tripCards = document.querySelectorAll('.trip-card');
@@ -26,9 +481,19 @@ function filterByTeam(team) {
     
     // Update UI for team filters
     updateTeamFilterUI();
+    updateDrawerTeamFilters();
+    
+    // Update filter count badge
+    updateFilterCount();
+    
+    // Update active filters display in drawer
+    updateDrawerActiveFilters();
     
     // Apply all active filters
     applyAllFilters();
+    
+    // Dispatch event
+    dispatchFilterChangeEvent();
 }
 
 function filterByCity(city) {
@@ -44,15 +509,30 @@ function filterByCity(city) {
     
     // Update UI for city filters
     updateCityFilterUI();
+    updateDrawerCityFilters();
+    
+    // Update filter count badge
+    updateFilterCount();
+    
+    // Update active filters display in drawer
+    updateDrawerActiveFilters();
     
     // Apply all active filters
     applyAllFilters();
+    
+    // Dispatch event
+    dispatchFilterChangeEvent();
 }
 
 // New function to filter by number of games
 function filterByGames(minGames) {
     activeFilters.minGames = minGames;
+    updateFilterCount();
+    updateDrawerActiveFilters();
     applyAllFilters();
+    
+    // Dispatch event
+    dispatchFilterChangeEvent();
 }
 
 // Add a new function to reorder trip options based on hotel changes
@@ -74,7 +554,7 @@ function reorderTripOptions(tripCard, maxHotelChanges, optionsInfo = null) {
             const optionPane = tabPanes[idx];
             const hotelChanges = extractHotelChanges(optionPane);
             
-            // Extract travel time 
+            // Extract travel time - this part looks correct
             let travelMinutes = 0;
             const statLabels = optionPane.querySelectorAll('.stat-label');
             
@@ -104,11 +584,19 @@ function reorderTripOptions(tripCard, maxHotelChanges, optionsInfo = null) {
     }
     
     // Get the trip group data stored as a data attribute 
-    const tripGroupData = JSON.parse(tripCard.dataset.tripGroup || '{}');
-    let selectedVariantIndex = 0; // Default to first variant
-
-    // Sort options according to the specified logic:
-    // 1. If max hotel changes is set to max, sort by travel time
+    let tripGroupData;
+    try {
+        tripGroupData = JSON.parse(tripCard.dataset.tripGroup || '{}');
+        if (!tripGroupData || Object.keys(tripGroupData).length === 0) {
+            console.error('Missing trip group data in card');
+            return;
+        }
+    } catch (err) {
+        console.error('Failed to parse trip group data:', err);
+        return;
+    }
+    
+    // Sort options according to the specified logic
     const maxPossibleChanges = Math.max(...options.map(o => o.hotelChanges));
     if (maxHotelChanges >= maxPossibleChanges) {
         // Sort by travel time (fastest first)
@@ -131,7 +619,6 @@ function reorderTripOptions(tripCard, maxHotelChanges, optionsInfo = null) {
         });
     }
 
-    
     // Reorder the DOM elements
     const nav = tabButtons[0].parentNode;
     const content = tabPanes[0].parentNode;
@@ -157,28 +644,82 @@ function reorderTripOptions(tripCard, maxHotelChanges, optionsInfo = null) {
         firstValidOption.pane.classList.add('show');
         
         // Update the itinerary for the newly selected option
-        selectedVariantIndex = firstValidOption.index;
+        const selectedVariantIndex = firstValidOption.index;
         
+        // Ensure dynamic import completes and itinerary is updated
         import('../components/trip-card.js').then(module => {
-            if (typeof module.renderItineraryForVariant === 'function' && tripGroupData) {
-                module.renderItineraryForVariant(dynamicItineraryContainer, tripGroupData, selectedVariantIndex);
+            if (typeof module.renderItineraryForVariant === 'function') {
+                // Important: Add a small delay to ensure the tab activation is complete
+                setTimeout(() => {
+                    try {
+                        module.renderItineraryForVariant(dynamicItineraryContainer, tripGroupData, selectedVariantIndex);
+                    } catch (error) {
+                        console.error('Failed to render itinerary variant:', error);
+                    }
+                }, 50);
             }
+        }).catch(err => {
+            console.error('Failed to import trip-card module:', err);
         });
     }
+    
+    console.log('Trip options reordered:', {
+        card: tripCard,
+        options: options.map(o => ({
+            index: o.index,
+            hotelChanges: o.hotelChanges,
+            isValid: o.isValid
+        }))
+    });
 }
 
-// New function to filter by hotel changes
 function filterByHotelChanges(maxChanges) {
     // Update the active filter state
     activeFilters.maxHotelChanges = maxChanges;
     
-    // Apply all filters to trip cards to hide any that have no valid options
+    // Update filter count badge
+    updateFilterCount();
+    
+    // Update active filters display in drawer
+    updateDrawerActiveFilters();
+    
+    // Create a counter to track how many cards we've processed
+    let processedCards = 0;
+    let totalVisibleCards = 0;
+    
+    console.log(`Applying hotel changes filter: max ${maxChanges} changes`);
+    
+    // IMPORTANT: Process each card first BEFORE applying all filters
+    // This prevents timing issues with cards disappearing during processing
+    document.querySelectorAll('.trip-card').forEach(card => {
+        try {
+            // Skip TBD games section which has a different structure
+            if (card.id === 'tbdGamesSection') return;
+            
+            // Store the original display state
+            const wasVisible = card.style.display !== 'none';
+            if (wasVisible) totalVisibleCards++;
+            
+            // Process each card's options regardless of current visibility
+            // This ensures all cards have their options properly ordered
+            filterTripOptions(card);
+            processedCards++;
+        } catch (error) {
+            console.error('Error processing trip card:', error, card);
+        }
+    });
+    
+    console.log(`Processed ${processedCards} out of ${totalVisibleCards} visible cards`);
+    
+    // NOW apply all filters after we've processed all cards
+    // This will hide cards that don't meet other filter criteria
     applyAllFilters();
     
-    // Process each visible trip card to reorder options
-    document.querySelectorAll('.trip-card:not([style*="display: none"])').forEach(card => {
-        filterTripOptions(card);
-    });
+    // Add tab change listeners after filtering
+    setTimeout(addTabChangeListeners, 100);
+    
+    // Dispatch event
+    dispatchFilterChangeEvent();
 }
 
 // Update team filter UI
@@ -196,6 +737,10 @@ function updateTeamFilterUI() {
             badge.classList.remove('text-white');
         }
     });
+    
+    // Also update drawer filter UI
+    updateDrawerTeamFilters();
+    updateFilterCount();
 }
 
 // Update city filter UI
@@ -213,6 +758,10 @@ function updateCityFilterUI() {
             badge.classList.remove('text-white');
         }
     });
+    
+    // Also update drawer filter UI
+    updateDrawerCityFilters();
+    updateFilterCount();
 }
 
 // Update the applyAllFilters function in filters.js to preserve TBD games
@@ -237,24 +786,18 @@ function applyAllFilters() {
             // Check team filter
             if (activeFilters.team) {
                 const teams = defaultVariant.teams || [];
-                if (!teams.includes(activeFilters.team)) {
-                    return false;
-                }
+                if (!teams.includes(activeFilters.team)) return false;
             }
             
             // Check city filter
             if (activeFilters.city) {
                 const cities = defaultVariant.cities || [];
-                if (!cities.includes(activeFilters.city)) {
-                    return false;
-                }
+                if (!cities.includes(activeFilters.city)) return false;
             }
             
             // Check number of games filter
             if (activeFilters.minGames > 1) {
-                if ((defaultVariant.num_games || 0) < activeFilters.minGames) {
-                    return false;
-                }
+                if ((defaultVariant.num_games || 0) < activeFilters.minGames) return false;
             }
             
             // For trips that pass the basic filters, we'll filter their variations later
@@ -270,7 +813,7 @@ function applyAllFilters() {
         const container = document.getElementById('tripResults');
         
         // IMPORTANT: Save the TBD games section before clearing the container
-        const tbdSection = container ? container.querySelector('.card.mt-4.fade-in.shadow-sm.mb-4') : null;
+        const tbdSection = container ? container.querySelector('#tbdGamesSection') : null;
         
         // Clear the results container
         if (container) {
@@ -288,53 +831,126 @@ function applyAllFilters() {
             resultsCount.textContent = filteredTrips.length;
         }
         
+        // Show a message when no trips match filters (but we have TBD games)
+        if (filteredTrips.length === 0) {
+            showNoFilterMatchesMessage(container, tbdSection !== null);
+        } else {
+            // Hide the no matches message if it exists
+            hideNoFilterMatchesMessage();
+        }
+        
         // Re-render with the filtered data
-        if (typeof renderNextBatch === 'function') {
+        if (typeof renderNextBatch === 'function' && filteredTrips.length > 0) {
             renderNextBatch();
         }
     } else {
         // Legacy mode for non-paginated display
         const tripCards = document.querySelectorAll('.trip-card');
+        let visibleCount = 0;
         
         tripCards.forEach(card => {
+            // Skip the TBD games card which has a different structure
+            if (card.id === 'tbdGamesSection') return;
+            
             // Start assuming the card passes all filters
             let showCard = true;
             
             // Apply team filter
             if (activeFilters.team) {
                 const cardTeams = card.dataset.teams.split(',');
-                if (!cardTeams.includes(activeFilters.team)) {
-                    showCard = false;
-                }
+                if (!cardTeams.includes(activeFilters.team)) showCard = false;
             }
             
             // Apply city filter
             if (showCard && activeFilters.city) {
                 const cardCities = card.dataset.cities.split(',');
-                if (!cardCities.includes(activeFilters.city)) {
-                    showCard = false;
-                }
+                if (!cardCities.includes(activeFilters.city)) showCard = false;
             }
             
             // Number of games filter
             if (showCard && activeFilters.minGames > 1) {
                 const matchCountEl = card.querySelector('.match-count-badge');
                 if (matchCountEl) {
-                    const numGames = parseInt(matchCountEl.textContent);
-                    if (numGames < activeFilters.minGames) {
-                        showCard = false;
-                    }
+                    const matchCount = parseInt(matchCountEl.textContent);
+                    if (matchCount < activeFilters.minGames) showCard = false;
                 }
             }
             
             // Apply visibility based on filters
             card.style.display = showCard ? 'block' : 'none';
             
+            // Count visible trip cards
+            if (showCard) visibleCount++;
+            
             // Filter travel options based on hotel changes
             if (showCard && activeFilters.maxHotelChanges < 7) {
                 filterTripOptions(card);
             }
         });
+        
+        // Show message if no trip cards are visible except possibly the TBD section
+        const container = document.getElementById('tripResults');
+        const tbdSection = container ? container.querySelector('#tbdGamesSection') : null;
+        
+        if (visibleCount === 0) {
+            showNoFilterMatchesMessage(container, tbdSection !== null);
+        } else {
+            hideNoFilterMatchesMessage();
+        }
+    }
+}
+
+// New function to display a message when no trips match the filters
+function showNoFilterMatchesMessage(container, hasTbdGames) {
+    // Remove any existing no-matches message
+    hideNoFilterMatchesMessage();
+    
+    // Don't add a message if we don't have a container
+    if (!container) return;
+    
+    // Create the message element
+    const noMatchesMessage = document.createElement('div');
+    noMatchesMessage.id = 'noFilterMatchesMessage';
+    noMatchesMessage.className = 'alert alert-info mt-4 text-center fade-in';
+    
+    // Different message depending on whether we have TBD games
+    if (hasTbdGames) {
+        noMatchesMessage.innerHTML = `
+            <i class="fas fa-filter me-2"></i>
+            <strong>No trips match your current filters</strong>
+            <p class="mb-2 mt-2">Try adjusting your filters or check out the upcoming matches listed above.</p>
+            <button class="btn btn-outline-primary btn-sm" id="resetFiltersBtn">
+                <i class="fas fa-times me-1"></i> Reset Filters
+            </button>
+        `;
+    } else {
+        noMatchesMessage.innerHTML = `
+            <i class="fas fa-filter me-2"></i>
+            <strong>No trips match your current filters</strong>
+            <p class="mb-2 mt-2">Please adjust your filter criteria and try again.</p>
+            <button class="btn btn-outline-primary btn-sm" id="resetFiltersBtn">
+                <i class="fas fa-times me-1"></i> Reset Filters
+            </button>
+        `;
+    }
+    
+    // Add to the container after the TBD section (if it exists)
+    const tbdSection = container.querySelector('#tbdGamesSection');
+    if (tbdSection) {
+        tbdSection.after(noMatchesMessage);
+    } else {
+        container.appendChild(noMatchesMessage);
+    }
+    
+    // Add event listener to the reset button
+    document.getElementById('resetFiltersBtn').addEventListener('click', clearFiltersEnhanced);
+}
+
+// Function to hide the no matches message
+function hideNoFilterMatchesMessage() {
+    const existingMessage = document.getElementById('noFilterMatchesMessage');
+    if (existingMessage) {
+        existingMessage.remove();
     }
 }
 
@@ -343,6 +959,9 @@ function filterTripOptions(tripCard) {
     const tabButtons = tripCard.querySelectorAll('[data-bs-toggle="tab"]');
     const tabPanes = tripCard.querySelectorAll('.tab-pane');
     
+    // If there are no tab buttons or panes, this isn't a trip card with options
+    if (!tabButtons.length || !tabPanes.length) return;
+    
     let validOptionFound = false;
     const optionsInfo = [];
     
@@ -350,6 +969,31 @@ function filterTripOptions(tripCard) {
     tabButtons.forEach((button, idx) => {
         const optionPane = tabPanes[idx];
         const hotelChanges = extractHotelChanges(optionPane);
+        
+        // Store the hotel changes directly on the tab button for faster future access
+        button.dataset.hotelChanges = hotelChanges;
+        
+        // Extract travel time information
+        let travelMinutes = 0;
+        try {
+            const statLabels = optionPane.querySelectorAll('.stat-label');
+            
+            for (let i = 0; i < statLabels.length; i++) {
+                if (statLabels[i].textContent.includes('Total Travel')) {
+                    const valueEl = statLabels[i].nextElementSibling;
+                    if (valueEl && valueEl.classList.contains('stat-value')) {
+                        const timeText = valueEl.textContent;
+                        const hoursMatch = timeText.match(/(\d+)h/);
+                        const minsMatch = timeText.match(/(\d+)m/);
+                        
+                        if (hoursMatch) travelMinutes += parseInt(hoursMatch[1]) * 60;
+                        if (minsMatch) travelMinutes += parseInt(minsMatch[1]);
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn('Error extracting travel time:', error);
+        }
         
         // Track if this option is valid under current filter
         const isValid = hotelChanges <= activeFilters.maxHotelChanges;
@@ -360,6 +1004,7 @@ function filterTripOptions(tripCard) {
             button: button,
             pane: optionPane,
             hotelChanges: hotelChanges,
+            travelMinutes: travelMinutes,
             index: idx,
             isValid: isValid
         });
@@ -382,34 +1027,111 @@ function filterTripOptions(tripCard) {
 function extractHotelChanges(optionPane) {
     if (!optionPane) return 0;
     
-    // First try to find explicit hotel changes display using proper DOM traversal
+    // Method 1: Try to find explicit hotel changes in stat label
     const statLabels = optionPane.querySelectorAll('.stat-label');
     
-    // Search through all stat labels to find hotel changes
     for (let i = 0; i < statLabels.length; i++) {
         if (statLabels[i].textContent.includes('Hotel Changes')) {
             const valueEl = statLabels[i].nextElementSibling;
             if (valueEl && valueEl.classList.contains('stat-value')) {
-                return parseInt(valueEl.textContent) || 0;
+                const value = parseInt(valueEl.textContent) || 0;
+                return value;
             }
         }
     }
     
-    // Second, try to count hotel stay items
+    // Method 2: Try to count hotel stay items
     const hotelStayItems = optionPane.querySelectorAll('.hotel-stay-item');
     if (hotelStayItems.length > 0) {
         return Math.max(0, hotelStayItems.length - 1);  // Changes = stays - 1
     }
     
+    // Method 3: Try to extract from the hotel-stays-section text
+    const hotelSectionText = optionPane.textContent || '';
+    const hotelChangesMatch = hotelSectionText.match(/Hotel Changes[:\s]*(\d+)/i);
+    if (hotelChangesMatch && hotelChangesMatch[1]) {
+        return parseInt(hotelChangesMatch[1]) || 0;
+    }
+    
+    // Method 4: Check if there's a data attribute directly on the tab
+    const tabId = optionPane.id;
+    const tabButton = document.querySelector(`[data-bs-target="#${tabId}"]`);
+    if (tabButton && tabButton.dataset.hotelChanges) {
+        return parseInt(tabButton.dataset.hotelChanges) || 0;
+    }
+    
+    // Method 5: Last resort - check the trip data directly
+    try {
+        const tripCard = optionPane.closest('.trip-card');
+        if (tripCard && tripCard.dataset.tripGroup) {
+            const tripData = JSON.parse(tripCard.dataset.tripGroup);
+            const optionIndex = Array.from(tripCard.querySelectorAll('.tab-pane')).indexOf(optionPane);
+            
+            if (tripData && tripData.variation_details && tripData.variation_details[optionIndex]) {
+                return tripData.variation_details[optionIndex].hotel_changes || 0;
+            }
+        }
+    } catch (e) {
+        console.warn('Error extracting hotel changes from trip data', e);
+    }
+    
     return 0; // Default if we can't find the information
 }
 
-// Enhanced clear filters function - update this in filters.js
+// Add proper event listening for tab changes to update the itinerary
+function addTabChangeListeners() {
+    // Find all trip cards (not just filtered ones)
+    document.querySelectorAll('.trip-card').forEach(card => {
+        // Skip TBD games section
+        if (card.id === 'tbdGamesSection') return;
+        
+        const tabButtons = card.querySelectorAll('[data-bs-toggle="tab"]');
+        
+        tabButtons.forEach(button => {
+            // Store the hotel changes data attribute for faster access
+            const targetId = button.getAttribute('data-bs-target');
+            if (!targetId) return;
+            
+            const targetPane = document.querySelector(targetId);
+            if (!targetPane) return;
+            
+            const hotelChanges = extractHotelChanges(targetPane);
+            button.dataset.hotelChanges = hotelChanges;
+            
+            // Remove any existing listeners
+            const newButton = button.cloneNode(true);
+            if (button.parentNode) {
+                button.parentNode.replaceChild(newButton, button);
+            
+                // Add new listener
+                newButton.addEventListener('shown.bs.tab', function(event) {
+                    const tabIndex = Array.from(tabButtons).indexOf(newButton);
+                    const dynamicItineraryContainer = card.querySelector('.dynamic-itinerary-container');
+                    
+                    if (dynamicItineraryContainer && card.dataset.tripGroup && tabIndex >= 0) {
+                        try {
+                            const tripGroupData = JSON.parse(card.dataset.tripGroup);
+                            
+                            import('../components/trip-card.js').then(module => {
+                                if (typeof module.renderItineraryForVariant === 'function') {
+                                    module.renderItineraryForVariant(dynamicItineraryContainer, tripGroupData, tabIndex);
+                                }
+                            });
+                        } catch (err) {
+                            console.error('Failed to update itinerary on tab change:', err);
+                        }
+                    }
+                });
+            }
+        });
+    });
+}
+
 function clearFiltersEnhanced() {
     // Reset active filters state
     activeFilters.team = null;
     activeFilters.city = null;
-    activeFilters.minGames = 1;
+    activeFilters.minGames = 2;  // Default to 2 games minimum
     activeFilters.maxHotelChanges = 7;
     
     // Reset UI elements
@@ -422,13 +1144,13 @@ function clearFiltersEnhanced() {
         }
     });
     
-    // Reset sliders
+    // Reset sliders in main UI with checks
     const gamesSlider = document.getElementById('gamesSlider');
     if (gamesSlider) {
-        gamesSlider.value = 1;
+        gamesSlider.value = 2; // Default to 2 games
         const gamesSliderValue = document.getElementById('gamesSliderValue');
         if (gamesSliderValue) {
-            gamesSliderValue.textContent = 'Any';
+            gamesSliderValue.textContent = 'Any (2+)';
         }
     }
     
@@ -441,6 +1163,39 @@ function clearFiltersEnhanced() {
         }
     }
     
+    // Reset drawer sliders with checks
+    const drawerGamesSlider = document.getElementById('drawerGamesSlider');
+    if (drawerGamesSlider) {
+        drawerGamesSlider.value = 2;  // Default to 2 games
+        const drawerGamesSliderValue = document.getElementById('drawerGamesSliderValue');
+        if (drawerGamesSliderValue) {
+            drawerGamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+        }
+    }
+    
+    const drawerHotelChangesSlider = document.getElementById('drawerHotelChangesSlider');
+    if (drawerHotelChangesSlider) {
+        drawerHotelChangesSlider.value = 7;
+        const drawerHotelChangesValue = document.getElementById('drawerHotelChangesValue');
+        if (drawerHotelChangesValue) {
+            drawerHotelChangesValue.textContent = 'Any';
+        }
+    }
+    
+    // Reset pending filters too
+    pendingFilters.team = null;
+    pendingFilters.city = null;
+    pendingFilters.minGames = 2;
+    pendingFilters.maxHotelChanges = 7;
+    
+    // Update drawer UI
+    updateDrawerTeamFilters();
+    updateDrawerCityFilters();
+    updateDrawerActiveFilters();
+    
+    // Update filter count badge
+    updateFilterCount();
+    
     // If using pagination, restore original data and re-render
     if (window.tripResults && window.tripResults.originalTrips) {
         window.tripResults.allTrips = [...window.tripResults.originalTrips];
@@ -451,7 +1206,7 @@ function clearFiltersEnhanced() {
         const container = document.getElementById('tripResults');
         
         // IMPORTANT: Save the TBD games section before clearing the container
-        const tbdSection = container ? container.querySelector('.card.mt-4.fade-in.shadow-sm.mb-4') : null;
+        const tbdSection = container ? container.querySelector('#tbdGamesSection') : null;
         
         // Clear the results container
         if (container) {
@@ -469,11 +1224,21 @@ function clearFiltersEnhanced() {
             resultsCount.textContent = window.tripResults.allTrips.length;
         }
         
+        // Hide any no matches message
+        hideNoFilterMatchesMessage();
+        
         // Re-render with original data
-        renderNextBatch();
+        if (typeof renderNextBatch === 'function') {
+            renderNextBatch();
+        } else {
+            console.warn('renderNextBatch function not found');
+        }
     } else {
         // Legacy mode: show all cards and reset option tabs
         document.querySelectorAll('.trip-card').forEach(card => {
+            // Don't reset the TBD section
+            if (card.id === 'tbdGamesSection') return;
+            
             card.style.display = 'block';
             
             // Show all option tabs
@@ -481,7 +1246,13 @@ function clearFiltersEnhanced() {
                 tab.style.display = 'block';
             });
         });
+        
+        // Hide any no matches message
+        hideNoFilterMatchesMessage();
     }
+    
+    // Dispatch event
+    dispatchFilterChangeEvent();
 }
 
 // Updated renderFilters function to work with trip_groups
@@ -591,6 +1362,26 @@ function renderFilters(tripGroups) {
     
     // Initialize sliders based on data
     initializeSliders(maxGamesFound, maxHotelChangesFound);
+    
+    // Initialize drawer sliders with the same values
+    initializeDrawerSliders(maxGamesFound, maxHotelChangesFound);
+    
+    // Initialize the filter drawer if it doesn't exist yet
+    if (!filterButton) {
+        initFilterDrawer();
+    } else {
+        // Otherwise, update filters in the drawer
+        updateDrawerTeamFilters();
+        updateDrawerCityFilters();
+        updateDrawerActiveFilters();
+        updateFilterCount();
+    }
+    
+    // Hide the old filter card
+    const filterResultsCard = document.getElementById('filterResultsCard');
+    if (filterResultsCard) {
+        filterResultsCard.style.display = 'none';
+    }
 }
 
 // Update the initializeSliders function for both fixes
@@ -612,10 +1403,8 @@ function initializeSliders(maxGames, maxHotelChanges) {
             // Get the label and update it
             const sliderLabel = gamesSlider.previousElementSibling;
             if (sliderLabel) {
-                const rangeText = sliderLabel.querySelector('span:first-child');
-                if (rangeText) {
-                    rangeText.textContent = 'Number of Games:';
-                }
+                const spanElement = sliderLabel.querySelector('span');
+                if (spanElement) spanElement.textContent = 'Games:';
             }
             
             // Visually indicate this is fixed
@@ -623,6 +1412,7 @@ function initializeSliders(maxGames, maxHotelChanges) {
             
             // Set fixed filter value
             activeFilters.minGames = 2;
+            pendingFilters.minGames = 2;
             
             // Remove any existing event listeners and add a no-op one
             gamesSlider.replaceWith(gamesSlider.cloneNode(true));
@@ -632,55 +1422,46 @@ function initializeSliders(maxGames, maxHotelChanges) {
         } 
         // Normal case: Multiple game count options
         else if (maxGames > 2) {
-            // Enable the slider and set range from 2 to maxGames
-            gamesSlider.disabled = false;
-            gamesSlider.style.opacity = '1';
+            // Important: Set min to 2 instead of 1
             gamesSlider.min = 2;
             gamesSlider.max = maxGames;
-            gamesSlider.value = 2; // Default to minimum
-            gamesSliderValue.textContent = 'Any';
             
-            // Show the actual range in the label
-            const sliderLabel = gamesSlider.previousElementSibling;
-            if (sliderLabel) {
-                const rangeText = sliderLabel.querySelector('span:first-child');
-                if (rangeText) {
-                    rangeText.textContent = `Number of Games (2-${maxGames}):`;
-                }
-            }
+            // Default to minimum (2 games)
+            gamesSlider.value = 2;
+            gamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+            
+            // Set initial filter value
+            activeFilters.minGames = 2;
+            pendingFilters.minGames = 2;
             
             // Add the event listener for sliding functionality
             gamesSlider.addEventListener('input', function() {
                 const value = parseInt(this.value);
-                if (value === 2) { // Since 2 is our minimum
-                    gamesSliderValue.textContent = 'Any';
-                    filterByGames(2);
+                
+                // Always show the min as "Any (2+)" 
+                if (value === 2) {
+                    gamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+                    activeFilters.minGames = 2;
                 } else {
                     gamesSliderValue.textContent = `${value}+`;
-                    filterByGames(value);
+                    activeFilters.minGames = value;
+                    
+                    if (value === maxGames) {
+                        gamesSliderValue.textContent = value;
+                    }
                 }
                 
-                // When at max, show exact number instead of "+"
-                if (value === maxGames) {
-                    gamesSliderValue.textContent = value;
-                }
+                filterByGames(value);
             });
         }
-        // Edge case: Less than 2 games (shouldn't happen with your min=2 requirement)
         else {
-            // Hide or disable the slider since it's not applicable
-            gamesSlider.disabled = true;
-            gamesSlider.style.opacity = '0.5';
-            gamesSliderValue.textContent = 'N/A';
-            
-            // Update label
-            const sliderLabel = gamesSlider.previousElementSibling;
-            if (sliderLabel) {
-                const rangeText = sliderLabel.querySelector('span:first-child');
-                if (rangeText) {
-                    rangeText.textContent = 'Number of Games:';
-                }
-            }
+            // Fallback case (should not happen)
+            gamesSlider.min = 2;
+            gamesSlider.max = 5;
+            gamesSlider.value = 2;
+            gamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+            activeFilters.minGames = 2;
+            pendingFilters.minGames = 2;
         }
     }
     
@@ -698,12 +1479,241 @@ function initializeSliders(maxGames, maxHotelChanges) {
             const value = parseInt(this.value);
             if (value === parseInt(hotelChangesSlider.max)) {
                 hotelChangesValue.textContent = 'Any';
-                filterByHotelChanges(value);
             } else {
                 hotelChangesValue.textContent = value;
-                filterByHotelChanges(value);
             }
+            
+            filterByHotelChanges(value);
         });
+    }
+}
+
+function initializeDrawerSliders(maxGames, maxHotelChanges) {
+    // Set up games slider in drawer
+    const drawerGamesSlider = document.getElementById('drawerGamesSlider');
+    const drawerGamesSliderValue = document.getElementById('drawerGamesSliderValue');
+    
+    if (drawerGamesSlider && drawerGamesSliderValue) {
+        // Special case: When all trips have exactly 2 games
+        if (maxGames === 2) {
+            drawerGamesSlider.min = 2;
+            drawerGamesSlider.max = 2;
+            drawerGamesSlider.value = 2;
+            drawerGamesSliderValue.textContent = '2';
+            drawerGamesSlider.style.opacity = '0.7';
+            pendingFilters.minGames = 2;
+            
+            // Remove any existing event listeners and add a no-op one
+            drawerGamesSlider.replaceWith(drawerGamesSlider.cloneNode(true));
+            document.getElementById('drawerGamesSlider').addEventListener('input', function() {
+                // No-op - slider is fixed at 2
+            });
+        } 
+        // Normal case: Multiple game count options
+        else if (maxGames > 2) {
+            drawerGamesSlider.disabled = false;
+            drawerGamesSlider.style.opacity = '1';
+            // Important: Set min to 2 instead of 1
+            drawerGamesSlider.min = 2;
+            drawerGamesSlider.max = maxGames;
+            drawerGamesSlider.value = pendingFilters.minGames;
+            
+            // Use "Any (2+)" for minimum
+            if (pendingFilters.minGames === 2) {
+                drawerGamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+            } else {
+                drawerGamesSliderValue.textContent = pendingFilters.minGames + '+';
+                if (pendingFilters.minGames === maxGames) {
+                    drawerGamesSliderValue.textContent = pendingFilters.minGames;
+                }
+            }
+            
+            // Add the event listener for sliding functionality
+            const existingSlider = document.getElementById('drawerGamesSlider');
+            const newSlider = existingSlider.cloneNode(true);
+            existingSlider.parentNode.replaceChild(newSlider, existingSlider);
+            
+            newSlider.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                if (value === 2) {
+                    drawerGamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+                    pendingFilters.minGames = 2;
+                } else {
+                    drawerGamesSliderValue.textContent = `${value}+`;
+                    pendingFilters.minGames = value;
+                    if (value === maxGames) {
+                        drawerGamesSliderValue.textContent = value;
+                    }
+                }
+                
+                // Update active filters display
+                updateDrawerActiveFilters();
+            });
+        }
+    }
+    
+    // Set up hotel changes slider in drawer
+    const drawerHotelChangesSlider = document.getElementById('drawerHotelChangesSlider');
+    const drawerHotelChangesValue = document.getElementById('drawerHotelChangesValue');
+    
+    if (drawerHotelChangesSlider && drawerHotelChangesValue) {
+        // Update max value based on data
+        drawerHotelChangesSlider.max = Math.max(7, maxHotelChanges);
+        drawerHotelChangesSlider.value = activeFilters.maxHotelChanges;
+        
+        if (activeFilters.maxHotelChanges === parseInt(drawerHotelChangesSlider.max)) {
+            drawerHotelChangesValue.textContent = 'Any';
+        } else {
+            drawerHotelChangesValue.textContent = activeFilters.maxHotelChanges;
+        }
+        
+        // Add the event listener for sliding functionality
+        const existingSlider = document.getElementById('drawerHotelChangesSlider');
+        const newSlider = existingSlider.cloneNode(true);
+        existingSlider.parentNode.replaceChild(newSlider, existingSlider);
+        
+        newSlider.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            if (value === parseInt(drawerHotelChangesSlider.max)) {
+                drawerHotelChangesValue.textContent = 'Any';
+                activeFilters.maxHotelChanges = value;
+            } else {
+                drawerHotelChangesValue.textContent = value;
+                activeFilters.maxHotelChanges = value;
+            }
+            
+            // Update active filters display
+            updateDrawerActiveFilters();
+            updateFilterCount();
+        });
+    }
+}
+
+// Dispatch a custom event when filters change
+function dispatchFilterChangeEvent() {
+    const event = new CustomEvent('filtersChanged', {
+        detail: {
+            activeFilters: { ...activeFilters }
+        }
+    });
+    document.dispatchEvent(event);
+}
+
+// Add this new function to reset filter state
+function resetFilters() {
+    // Reset active filters state
+    activeFilters.team = null;
+    activeFilters.city = null;
+    activeFilters.minGames = 2;  // Default to 2 games minimum
+    activeFilters.maxHotelChanges = 7;
+    
+    // Update UI if elements exist
+    updateFilterCount();
+    
+    // Update drawer UI if it exists
+    if (filterDrawer) {
+        updateDrawerTeamFilters();
+        updateDrawerCityFilters();
+        updateDrawerActiveFilters();
+    }
+}
+
+// Add new drawer-specific filter functions that don't immediately apply filters
+function drawerFilterByTeam(team) {
+    // Toggle team selection
+    if (pendingFilters.team === team) {
+        pendingFilters.team = null;
+    } else {
+        pendingFilters.team = team;
+    }
+    
+    // Update UI only
+    updateDrawerTeamFilterUI();
+    updateDrawerActiveFilters();
+}
+
+function drawerFilterByCity(city) {
+    // Toggle city selection
+    if (pendingFilters.city === city) {
+        pendingFilters.city = null;
+    } else {
+        pendingFilters.city = city;
+    }
+    
+    // Update UI only
+    updateDrawerCityFilterUI();
+    updateDrawerActiveFilters();
+}
+
+// Update drawer filter UI based on pending filters
+function updateDrawerTeamFilterUI() {
+    const drawerTeamFilters = document.getElementById('drawerTeamFilters');
+    if (!drawerTeamFilters) return;
+    
+    drawerTeamFilters.querySelectorAll('.badge').forEach(badge => {
+        if (badge.dataset.team === pendingFilters.team) {
+            badge.classList.remove('bg-light');
+            badge.classList.remove('text-dark');
+            badge.classList.add('bg-primary');
+            badge.classList.add('text-white');
+        } else if (badge.dataset.team) {
+            badge.classList.add('bg-light');
+            badge.classList.add('text-dark');
+            badge.classList.remove('bg-primary');
+            badge.classList.remove('text-white');
+        }
+    });
+}
+
+function updateDrawerCityFilterUI() {
+    const drawerCityFilters = document.getElementById('drawerCityFilters');
+    if (!drawerCityFilters) return;
+    
+    drawerCityFilters.querySelectorAll('.badge').forEach(badge => {
+        if (badge.dataset.city === pendingFilters.city) {
+            badge.classList.remove('bg-light');
+            badge.classList.remove('text-dark');
+            badge.classList.add('bg-primary');
+            badge.classList.add('text-white');
+        } else if (badge.dataset.city) {
+            badge.classList.add('bg-light');
+            badge.classList.add('text-dark');
+            badge.classList.remove('bg-primary');
+            badge.classList.remove('text-white');
+        }
+    });
+}
+
+// Add a function to clear drawer filters (not applied until Apply button)
+function clearDrawerFilters() {
+    // Reset pending filters state
+    pendingFilters.team = null;
+    pendingFilters.city = null;
+    pendingFilters.minGames = 2;  // Default to 2 games minimum
+    pendingFilters.maxHotelChanges = 7;
+    
+    // Reset drawer UI
+    updateDrawerTeamFilterUI();
+    updateDrawerCityFilterUI();
+    updateDrawerActiveFilters();
+    
+    // Reset sliders in drawer
+    const drawerGamesSlider = document.getElementById('drawerGamesSlider');
+    if (drawerGamesSlider) {
+        drawerGamesSlider.value = 2;  // Default to 2 games
+        const drawerGamesSliderValue = document.getElementById('drawerGamesSliderValue');
+        if (drawerGamesSliderValue) {
+            drawerGamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+        }
+    }
+    
+    const drawerHotelChangesSlider = document.getElementById('drawerHotelChangesSlider');
+    if (drawerHotelChangesSlider) {
+        drawerHotelChangesSlider.value = 7;
+        const drawerHotelChangesValue = document.getElementById('drawerHotelChangesValue');
+        if (drawerHotelChangesValue) {
+            drawerHotelChangesValue.textContent = 'Any';
+        }
     }
 }
 
@@ -714,5 +1724,7 @@ export {
     clearFiltersEnhanced as clearFilters,
     filterByGames,
     filterByHotelChanges,
-    filterTripOptions // Add this export
+    filterTripOptions,
+    initFilterDrawer,
+    resetFilters  // Add this new export
 };
