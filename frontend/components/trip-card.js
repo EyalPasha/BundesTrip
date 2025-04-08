@@ -857,7 +857,7 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
     tbdHeader.className = 'trip-header position-relative';
     tbdHeader.innerHTML = `
         <div class="trip-header-main">
-            <h3><i class="fas fa-calendar-alt text-secondary"></i>Upcoming Games</h3>
+            <h3><i class="fas fa-calendar-alt text-secondary me-2"></i>Upcoming Games</h3>
             <span class="match-count-badge">${tbdGames.length}</span>
         </div>
         <div class="trip-header-meta">

@@ -39,6 +39,32 @@
   margin-right: auto;
 }
 
+/* Fix for trip cards centering */
+.trip-card {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Target both possible container IDs to ensure centering works */
+#results .row,
+#resultsContainer .row {
+  display: flex;
+  justify-content: center;
+}
+
+/* Ensure proper width for cards container */
+body.has-filter-drawer #results .col-lg-8,
+body.has-filter-drawer #resultsContainer .col-lg-8 {
+  flex: 0 0 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* General centering for parent containers */
+.container .row {
+  justify-content: center;
+}
+
 .trip-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--hover-shadow);
@@ -1354,12 +1380,6 @@
   gap: 0.4rem;
 }
 
-.airport-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.85rem;
-}
 
 .airport-name {
   font-weight: 500;
@@ -1452,10 +1472,6 @@
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid rgba(0,0,0,0.05);
-}
-
-.journey-cities {
-    font-size: 1.1rem;
 }
 
 .journey-cities i {
@@ -1552,19 +1568,6 @@
 
 .flatpickr-day.selected.has-matches {
     background-color: var(--primary-color);
-}
-
-/* Filter chips */
-#teamFilters .badge, #cityFilters .badge {
-    margin-right: 5px;
-    margin-bottom: 5px;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-#teamFilters .badge:hover, #cityFilters .badge:hover {
-    background-color: #e9ecef !important;
 }
 
 /* Toast styling for trip-related notifications */
@@ -2164,24 +2167,6 @@ body.mustteams-dropdown-open .select2-dropdown {
   }
   
   body.has-filter-drawer #resultsContainer .col-lg-8 {
-    flex: 0 0 100%;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-}
-
-/* This ensures trip results are centered when filter card is hidden */
-@media (min-width: 992px) {
-  body.has-filter-drawer #results .row {
-    display: flex;
-    justify-content: center;
-  }
-  
-  body.has-filter-drawer #results .col-lg-4 {
-    display: none;
-  }
-  
-  body.has-filter-drawer #results .col-lg-8 {
     flex: 0 0 100%;
     max-width: 900px;
     margin: 0 auto;
