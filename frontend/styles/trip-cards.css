@@ -574,25 +574,40 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   color: var(--primary-dark);
   font-weight: 600;
   font-size: 1.15rem;
-  margin-bottom: 0.25rem; /* Add space between main time and metadata */
+  margin-bottom: 0.25rem;
+  background: transparent !important; /* Ensure no background */
 }
 
 .trip-time-info i {
   color: var(--secondary-color);
   font-size: 1.1rem; /* Slightly larger icon */
 }
+
 .trip-meta-info {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   color: var(--neutral-text);
-  font-size: 0.85rem;
+  font-size: 0.95rem !important; /* Increased from 0.85rem */
+}
+
+.trip-meta-info i,
+.trip-time-info i {
+  color: var(--secondary-color);
+  opacity: 0.8;
+  font-size: var(--icon-size-small);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 1px; /* Slight adjustment to align with text */
 }
 
 .trip-meta-info span {
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  line-height: 1;
 }
 
 /* Unified Content Sections */
