@@ -27,22 +27,69 @@
 
 /* ===== Card Structure ===== */
 .trip-card {
-  margin-bottom: 2rem;
+  position: relative !important;
+  margin-bottom: 4rem !important;
   border: none;
   border-radius: var(--card-radius);
   overflow: hidden;
   box-shadow: var(--card-shadow);
   background: var(--card-bg);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  max-width: 900px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Fix for trip cards centering */
-.trip-card {
-  margin-left: auto;
-  margin-right: auto;
+/* Fix TBD Games section to not show separators */
+#tbdGamesSection.trip-card::after,
+#tbdGamesSection.trip-card::before {
+  display: none !important; /* Ensure these are hidden */
+}
+
+#tbdGamesSection.trip-card {
+  margin-bottom: 2rem !important; /* Smaller bottom margin */
+}
+
+/* Add decorative separator between cards */
+.trip-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 3px !important; /* Thicker line */
+  background: linear-gradient(to right, 
+    rgba(4, 61, 124, 0), 
+    rgba(4, 61, 124, 0.8), /* Higher opacity */
+    rgba(4, 61, 124, 0));
+  z-index: 5 !important; /* Force it above other elements */
+}
+
+/* Add decorative dots in the center */
+.trip-card:not(:last-child)::before {
+  content: '•••';
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem !important; /* Slightly larger */
+  letter-spacing: 0.6rem;
+  color: var(--primary-color) !important;
+  font-weight: 800 !important; /* Bolder */
+  text-shadow: 0 2px 4px rgba(4, 61, 124, 0.2);
+  background: white !important; /* Solid white background */
+  padding: 0 20px !important;
+  line-height: 0;
+  height: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(4, 61, 124, 0.2) !important;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 8px rgba(4, 61, 124, 0.15) !important;
+  z-index: 6 !important; /* One level above the line */
+}
+
+.trip-card:not(:last-child)::before {
+  border: 1px solid rgba(4, 61, 124, 0.08);
 }
 
 /* Target both possible container IDs to ensure centering works */
@@ -56,7 +103,7 @@
 body.has-filter-drawer #results .col-lg-8,
 body.has-filter-drawer #resultsContainer .col-lg-8 {
   flex: 0 0 100%;
-  max-width: 900px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -2168,8 +2215,59 @@ body.mustteams-dropdown-open .select2-dropdown {
   
   body.has-filter-drawer #resultsContainer .col-lg-8 {
     flex: 0 0 100%;
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
+  }
+  /* Adjust container padding for better spacing */
+  #results .container {
+    max-width: 1300px; /* Add this to create a slightly wider container */
+  }
+  
+  /* Increase the TBD games section width to match */
+  #tbdGamesSection {
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 991px) {
+  /* Reduce padding on container for more space on medium screens */
+  #results .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  /* Allow trip cards to use more width on tablet */
+  .trip-card {
+    max-width: 100%;
+  }
+}
+
+/* Small screens get full-width content with minimal side margins */
+@media (max-width: 576px) {
+  #results .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+/* Update media query for large screens */
+@media (min-width: 1400px) {
+  #results .container {
+    max-width: 1700px;
+  }
+  
+  /* Increase specificity for results header to ensure override */
+  .results-header.results-header {
+    max-width: 1300px !important;
+  }
+  
+  .trip-card,
+  #tbdGamesSection,
+  body.has-filter-drawer #results .col-lg-8,
+  body.has-filter-drawer #resultsContainer .col-lg-8 {
+    max-width: 1300px;
   }
 }
 
@@ -2211,4 +2309,227 @@ body.mustteams-dropdown-open .select2-dropdown {
     background-color: var(--primary-color);
     color: white;
     transform: translateY(-2px);
+}
+
+/* Results Header Styling - Improved Design */
+.results-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: var(--card-radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.75rem;
+    box-shadow: 0 4px 15px rgba(4, 61, 124, 0.15);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInDown 0.5s ease-out;
+    max-width: 1100px; /* Add this line */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.results-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 60%);
+    pointer-events: none;
+}
+
+.results-header-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.results-icon {
+    background: rgba(255, 255, 255, 0.2);
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.results-header:hover .results-icon {
+    transform: scale(1.05) rotate(5deg);
+}
+
+.results-info {
+    flex-grow: 1;
+}
+
+.results-info h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 0.6rem;
+    letter-spacing: -0.01em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.results-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.results-count {
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.count-badge {
+    background: rgba(255, 255, 255, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 0.3rem 0.9rem;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.count-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
+    pointer-events: none;
+}
+
+/* Improved Mobile adjustments */
+@media (max-width: 768px) {
+    .results-header {
+        padding: 1rem;
+    }
+    
+    .results-header-content {
+        flex-direction: row; /* Keep horizontal layout */
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .results-icon {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .results-info h2 {
+        font-size: 1.3rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .count-badge {
+        font-size: 1.1rem;
+        padding: 0.25rem 0.8rem;
+    }
+}
+
+/* Extra small mobile screens */
+@media (max-width: 380px) {
+    .results-header-content {
+        gap: 0.75rem;
+    }
+    
+    .results-icon {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+        font-size: 1.3rem;
+    }
+    
+    .results-info h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .count-badge {
+        font-size: 1rem;
+        padding: 0.2rem 0.7rem;
+    }
+}
+
+/* Enhanced Load More button */
+
+#loadMoreTrips button {
+  position: relative;
+  overflow: hidden;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 40px;
+  box-shadow: 0 4px 12px rgba(4, 61, 124, 0.15);
+  transition: all 0.3s ease;
+  border: 2px solid var(--primary-color);
+}
+
+#loadMoreTrips button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0)
+  );
+  transform: skewX(-20deg);
+  transition: all 0.7s ease;
+}
+
+#loadMoreTrips button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(4, 61, 124, 0.25);
+}
+
+#loadMoreTrips button:hover::before {
+  left: 100%;
+}
+
+#loadMoreTrips .badge {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 30px;
+  margin-left: 1rem;
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .trip-card {
+    margin-bottom: 3rem;
+  }
+  
+  .trip-card:not(:last-child)::after {
+    width: 85%;
+    height: 2px;
+    bottom: -1.75rem;
+  }
+  
+  .trip-card:not(:last-child)::before {
+    bottom: -1.75rem;
+    font-size: 1.1rem;
+    padding: 0 12px;
+  }
 }

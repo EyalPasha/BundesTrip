@@ -102,11 +102,30 @@ function renderResults(response, hideLoadingOnNoResults = true) {
             filterResultsCard.style.display = 'none';
         }
         
-        // Add min games info to results header if present
-        const resultsHeader = document.querySelector('#resultsContainer h2');
-        if (resultsHeader && response.min_games) {
-            resultsHeader.innerHTML = `Trip Results <span class="badge bg-primary" id="tripCount">${response.trip_groups.length}</span>
-                <small class="ms-2 text-muted">(min. ${response.min_games} games/trip)</small>`;
+        // Inside the renderResults function where you handle trip groups
+        
+        // Create an enhanced results header
+        const resultsCountContainer = document.getElementById('resultsCountContainer');
+        if (resultsCountContainer) {
+            const tripCount = response.trip_groups.length;
+            
+            // Create the new header HTML with improved styling
+            resultsCountContainer.className = 'results-header mb-4';
+            resultsCountContainer.innerHTML = `
+                <div class="results-header-content">
+                    <div class="results-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="results-info">
+                        <h2>Your Trip Options</h2>
+                        <div class="results-meta">
+                            <div class="results-count">
+                                <span id="resultsCount" class="count-badge">${tripCount}</span> trips found
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
         
         // Generate filters based on match data
