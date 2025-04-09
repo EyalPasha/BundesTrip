@@ -76,7 +76,6 @@ function renderTripCard(group, index, tripContext = {}) {
             }
         }
         
-        console.log("Date extraction:", {firstDay: firstDay.day, lastDay: lastDay.day, tripStartDate, tripEndDate});
     }
 
     // Process leagues data from matches - FIXED LOGIC
@@ -1024,8 +1023,31 @@ function renderItineraryForVariant(container, group, variantIndex) {
     
     // Create day-by-day itinerary from variant's day_itinerary
     if (variant.day_itinerary && variant.day_itinerary.length > 0) {
-        // First, organize travel segments by day for easy lookup
+        // First, create travel segments from match data if not present
+        if (!variant.travel_segments || variant.travel_segments.length === 0) {
+            variant.travel_segments = [];
+            
+            // Extract travel segments from match data in day_itinerary
+            variant.day_itinerary.forEach((dayInfo, idx) => {
+                if (dayInfo.matches && dayInfo.matches.length > 0) {
+                    dayInfo.matches.forEach(match => {
+                        if (match.travel_from && match.travel_time) {
+                            variant.travel_segments.push({
+                                day: dayInfo.day,
+                                from_location: match.travel_from,
+                                to_location: match.location,
+                                travel_time: match.travel_time,
+                            });
+                        }
+                    });
+                }
+            });
+            
+        }
+        
+        // Organize travel segments by day for easy lookup
         const travelSegmentsByDay = {};
+        
         if (variant.travel_segments && variant.travel_segments.length > 0) {
             variant.travel_segments.forEach(segment => {
                 const day = segment.day || '';
@@ -1044,13 +1066,18 @@ function renderItineraryForVariant(container, group, variantIndex) {
             const isLastDay = dayIndex === variant.day_itinerary.length - 1;
             const hotel = dayInfo.hotel || '';
             
-            // Format date if available (assuming dayName might contain a date string like "Monday, 02 April 2025")
+            // Extract date display for day header
             let dateDisplay = '';
-            const dateMatch = dayName.match(/,\s*(.+)$/);
-            if (dateMatch && dateMatch[1]) {
-                dateDisplay = dateMatch[1].trim();
+            if (dayInfo.day) {
+                // Extract date in a readable format
+                const dateMatch = dayInfo.day.match(/,\s*(.+)$/);
+                if (dateMatch && dateMatch[1]) {
+                    dateDisplay = dateMatch[1].trim();
+                } else {
+                    dateDisplay = dayInfo.day;
+                }
             }
-            
+
             // Day header with hotel name and date on same line
             const dayHeader = document.createElement('div');
             dayHeader.className = `day-header ${isLastDay ? 'final-day' : ''}`;
@@ -1063,15 +1090,24 @@ function renderItineraryForVariant(container, group, variantIndex) {
             `;
             itinerary.appendChild(dayHeader);
             
-            // Keep track of previous hotel (for other logic) but don't create hotel segment
-            if (dayInfo.hotel) {
-                previousHotel = dayInfo.hotel;
+            // Get travel segments for this day
+            let dayTravelSegments = travelSegmentsByDay[dayName] || [];
+            
+            // For the last day, also check travel segments from matches
+            if (isLastDay && dayTravelSegments.length === 0 && dayInfo.matches) {
+                dayInfo.matches.forEach(match => {
+                    if (match.travel_from && match.travel_time) {
+                        // Create a travel segment directly from the match data
+                        dayTravelSegments.push({
+                            from_location: match.travel_from,
+                            to_location: match.location,
+                            travel_time: match.travel_time,
+                        });
+                    }
+                });
             }
             
-            // Add travel segments for this day
-            const dayTravelSegments = travelSegmentsByDay[dayName] || [];
-
-            // Split segments into before-game and after-game segments
+            // Split segments as before...
             const beforeGameSegments = [];
             const afterGameSegments = [];
             
@@ -1090,7 +1126,7 @@ function renderItineraryForVariant(container, group, variantIndex) {
                 }
             });
 
-            // Render before-game segments first
+            // Render before-game segments
             if (beforeGameSegments.length > 0) {
                 const travelContainer = document.createElement('div');
                 travelContainer.className = 'travel-container ms-4 ps-2 mb-3';
