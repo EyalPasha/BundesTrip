@@ -59,3 +59,15 @@ body {
     font-size: 0.8rem;
     margin-top: 4px;
 }
+
+/* Add to existing CSS in base.css */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    margin-top: -7px; /* Fine-tuning the vertical alignment */
+}

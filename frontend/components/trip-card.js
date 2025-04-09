@@ -1,5 +1,84 @@
 import { getTeamLogoUrl } from '../services/team-logos.js';
 
+/**
+ * Date formatting helper functions
+ */
+
+// Parse various date formats into Date objects
+function parseDate(dateString) {
+  if (!dateString) return null;
+  
+  // Try to handle various date formats
+  const monthNames = {
+    'january': 0, 'jan': 0, 'february': 1, 'feb': 1, 'march': 2, 'mar': 2, 
+    'april': 3, 'apr': 3, 'may': 4, 'june': 5, 'jun': 5, 'july': 6, 'jul': 6, 
+    'august': 7, 'aug': 7, 'september': 8, 'sep': 8, 'sept': 8, 
+    'october': 9, 'oct': 9, 'november': 10, 'nov': 10, 'december': 11, 'dec': 11
+  };
+  
+  // Remove any day of week prefix if present (e.g., "Monday, ")
+  const cleanedDateString = dateString.replace(/^[a-zA-Z]+,\s*/, '');
+  
+  // Try standard format: "10 April 2025"
+  const regex = /(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})/;
+  const match = cleanedDateString.match(regex);
+  
+  if (match) {
+    const day = parseInt(match[1], 10);
+    const monthStr = match[2].toLowerCase();
+    const year = parseInt(match[3], 10);
+    
+    const monthIndex = monthNames[monthStr];
+    if (monthIndex !== undefined) {
+      return new Date(year, monthIndex, day);
+    }
+  }
+  
+  // If the above didn't work, try parsing directly
+  const fallbackDate = new Date(cleanedDateString);
+  if (!isNaN(fallbackDate.getTime())) {
+    return fallbackDate;
+  }
+  
+  return null;
+}
+
+// Get the day name for a date
+function getDayName(date) {
+  if (!date || !(date instanceof Date)) return '';
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return days[date.getDay()];
+}
+
+// Format date as "day Month" (e.g., "10 April") without leading zeros
+function formatShortDate(date) {
+  if (!date || !(date instanceof Date)) return '';
+  
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  
+  return `${date.getDate()} ${months[date.getMonth()]}`;
+}
+
+// Format date range as "day Month-day Month year" (e.g., "10 April-14 April 2025")
+function formatDateRange(startDate, endDate) {
+  if (!startDate || !endDate) return '';
+  
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  
+  // Use the same year only if the years match
+  if (startDate.getFullYear() === endDate.getFullYear()) {
+    return `${startDate.getDate()} ${months[startDate.getMonth()]}-${endDate.getDate()} ${months[endDate.getMonth()]} ${endDate.getFullYear()}`;
+  } else {
+    return `${startDate.getDate()} ${months[startDate.getMonth()]} ${startDate.getFullYear()}-${endDate.getDate()} ${months[endDate.getMonth()]} ${endDate.getFullYear()}`;
+  }
+}
+
 function renderTripCard(group, index, tripContext = {}) {
     const baseTrip = group.base_trip;
     const tripResults = document.getElementById('tripResults');
@@ -417,16 +496,7 @@ function renderTripCard(group, index, tripContext = {}) {
                                     <i class="fas fa-hotel"></i> Accommodations
                                 </div>
                                 <div class="hotel-stays-list">
-                                    ${hotelSummary.map(stay => `
-                                        <div class="hotel-stay-item">
-                                            <div class="hotel-stay-left">${stay.hotel}</div>
-                                            <div class="hotel-stay-dates">
-                                                ${stay.startDate !== stay.endDate ? 
-                                                `${stay.startDate.split(' ')[0]} - ${stay.endDate.split(' ')[0]}` : 
-                                                stay.startDate.split(' ')[0]}
-                                            </div>
-                                        </div>
-                                    `).join('')}
+                                    ${hotelSummary.map(stay => renderHotelStayItem(stay)).join('')}
                                 </div>
                             </div>
                         ` : ''}
@@ -1081,13 +1151,7 @@ function renderItineraryForVariant(container, group, variantIndex) {
             // Day header with hotel name and date on same line
             const dayHeader = document.createElement('div');
             dayHeader.className = `day-header ${isLastDay ? 'final-day' : ''}`;
-            dayHeader.innerHTML = `
-                <div class="day-badge">${dayIndex + 1}</div>
-                <div class="day-header-content">
-                    <h5>Day ${dayIndex + 1}: ${hotel} ${dateDisplay ? `<span class="day-date-inline">${dateDisplay}</span>` : ''}</h5>
-                </div>
-                <div class="day-line"></div>
-            `;
+            dayHeader.innerHTML = formatDayHeader(dayInfo, dayIndex);
             itinerary.appendChild(dayHeader);
             
             // Get travel segments for this day
@@ -1301,6 +1365,73 @@ function extractTimeFromMatch(matchText) {
         time: null,
         cleanMatch: matchText
     };
+}
+
+// Update the hotel stay rendering in the accommodations section
+function renderHotelStayItem(stay) {
+  // Parse dates
+  const startDate = parseDate(stay.startDate);
+  const endDate = parseDate(stay.endDate);
+  
+  // Get day names
+  const startDay = startDate ? getDayName(startDate) : '';
+  const endDay = endDate ? getDayName(endDate) : '';
+  
+  // Format dates with day names
+  let dateDisplay = '';
+  if (startDate && endDate) {
+    if (startDay === endDay) {
+      // Same day
+      dateDisplay = `${startDay}, ${formatShortDate(startDate)}`;
+    } else {
+      // Date range with day names
+      dateDisplay = `${startDay}-${endDay}, ${formatDateRange(startDate, endDate)}`;
+    }
+  }
+  
+  return `
+    <div class="hotel-stay-item">
+      <div class="hotel-stay-left">${stay.hotel}</div>
+      <div class="hotel-stay-dates">${dateDisplay}</div>
+    </div>
+  `;
+}
+
+// Update the day header in renderItineraryForVariant function to include day name
+function formatDayHeader(dayInfo, dayIndex) {
+  const hotel = dayInfo.hotel || '';
+  let dateDisplay = '';
+  let dayName = '';
+  
+  if (dayInfo.day) {
+    // Extract date in a readable format
+    const dateMatch = dayInfo.day.match(/,\s*(.+)$/);
+    const dateStr = dateMatch && dateMatch[1] ? dateMatch[1].trim() : dayInfo.day;
+    
+    // Parse the date
+    const date = parseDate(dateStr);
+    
+    if (date) {
+      dayName = getDayName(date);
+      
+      // Format as "day Month year" without leading zeros
+      const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      dateDisplay = `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    } else {
+      dateDisplay = dateStr;
+    }
+  }
+  
+  return `
+    <div class="day-badge">${dayIndex + 1}</div>
+    <div class="day-header-content">
+      <h5>Day ${dayIndex + 1}: ${hotel} ${dayName ? `<span class="day-date-inline">${dayName}, ${dateDisplay}</span>` : ''}</h5>
+    </div>
+    <div class="day-line"></div>
+  `;
 }
 
 // Add to your trip-card.js click handler
