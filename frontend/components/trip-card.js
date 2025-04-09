@@ -14,7 +14,7 @@ function renderTripCard(group, index, tripContext = {}) {
     const defaultVariant = group.variation_details[0] || {};
     
     const tripCard = document.createElement('div');
-    tripCard.className = 'card trip-card fade-in mb-4 shadow-sm';
+    tripCard.className = 'card trip-card fade-in shadow-sm'; // Remove mb-4 class
     tripCard.dataset.teams = defaultVariant.teams?.join(',') || '';
     tripCard.dataset.cities = defaultVariant.cities?.join(',') || '';
     tripCard.dataset.tripGroup = JSON.stringify(group);
@@ -192,50 +192,6 @@ function renderTripCard(group, index, tripContext = {}) {
         endCityForAirports = defaultVariant.cities[defaultVariant.cities.length - 1];
     }
     
-    // Extract airport information for preview
-    let airportPreview = '';
-    if (defaultVariant.airport_distances) {
-        const nearestAirports = defaultVariant.airport_distances.end || [];
-        const majorAirports = defaultVariant.airport_distances.major || [];
-        
-        if (nearestAirports.length > 0 || majorAirports.length > 0) {
-            airportPreview = `
-                <div class="airport-preview mt-3">
-                    <div class="preview-section-title">
-                        <i class="fas fa-plane"></i> Closest Airports ${endCityForAirports ? `to ${endCityForAirports}` : ''}
-                    </div>
-                    <div class="airport-list">
-                        ${nearestAirports.slice(0, 2).map(airport => {
-                            const airportName = airport.airport || airport.name || airport.code || 'Airport';
-                            const airportCode = airport.code ? `(${airport.code})` : '';
-                            const travelTime = airport.travel_time || 'N/A';
-                            return `
-                                <div class="airport-item">
-                                    <span class="airport-name">${airportName} ${airportCode}</span>
-                                    <span class="travel-time">${travelTime}</span>
-                                </div>
-                            `;
-                        }).join('')}
-                        ${majorAirports.length > 0 ? `
-                            <div class="airport-divider">Major International</div>
-                            ${majorAirports.slice(0, 1).map(airport => {
-                                const airportName = airport.airport || airport.name || airport.code || 'Airport';
-                                const airportCode = airport.code ? `(${airport.code})` : '';
-                                const travelTime = airport.travel_time || 'N/A';
-                                return `
-                                    <div class="airport-item">
-                                        <span class="airport-name">${airportName} ${airportCode}</span>
-                                        <span class="travel-time">${travelTime}</span>
-                                    </div>
-                                `;
-                            }).join('')}
-                        ` : ''}
-                    </div>
-                </div>
-            `;
-        }
-    }
-
     header.innerHTML = `
     <div class="trip-header-main">
         <h3>Trip ${index}</h3>
@@ -257,8 +213,6 @@ function renderTripCard(group, index, tripContext = {}) {
         </div>
     </div>
     
-    ${airportPreview}
-    
     ${allMatches.length > 0 ? `
         <div class="match-preview">
             <div class="preview-section-title">
@@ -273,28 +227,34 @@ function renderTripCard(group, index, tripContext = {}) {
                     
                     // First extract just the date part (remove day name)
                     const matchDate = match.date.replace(/^.+,\s*/, '');
-                    
+
                     return `
                         <div class="match-preview-item ${match.contains_must_team ? 'must-match' : ''}">
-                            <div class="match-teams-preview">
-                                <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo-small" alt="${homeTeam} logo">
-                                <strong>${homeTeam}</strong>
-                                <span class="vs-text">vs</span>
-                                <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo-small" alt="${awayTeam} logo">
-                                <strong>${awayTeam}</strong>
-                                ${match.contains_must_team ? '<span class="must-see-badge">Must-See</span>' : ''}
-                            </div>
-                            <div class="match-info-compact">
-                                <span class="match-location-inline">
+                            <div class="match-content-grid">
+                                <!-- Location on left -->
+                                <div class="match-location-side">
                                     <i class="fas fa-map-marker-alt"></i> ${match.location}
-                                </span>
-                                ${match.matchTime ? `
-                                <span class="match-time-data">
-                                    <i class="fas fa-clock"></i> ${match.matchTime}
-                                </span>` : ''}
-                                <span class="match-date-inline">
-                                    <i class="fas fa-calendar-day"></i> ${matchDate}
-                                </span>
+                                </div>
+                                
+                                <!-- Teams in center -->
+                                <div class="match-teams-preview">
+                                    <strong>${homeTeam}</strong>
+                                    <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo-small" alt="${homeTeam} logo">
+                                    <span class="vs-text">vs</span>
+                                    <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo-small" alt="${awayTeam} logo">
+                                    <strong>${awayTeam}</strong>
+                                </div>
+                                
+                                <!-- Date and time on right -->
+                                <div class="match-datetime-side">
+                                    <span class="match-date-inline">
+                                        <i class="fas fa-calendar-day"></i> ${matchDate}
+                                    </span>
+                                    ${match.matchTime ? `
+                                    <span class="match-time-data">
+                                        <i class="fas fa-clock"></i> ${match.matchTime}
+                                    </span>` : ''}
+                                </div>
                             </div>
                         </div>
                     `;
@@ -308,7 +268,7 @@ function renderTripCard(group, index, tripContext = {}) {
         </div>
     ` : ''}
     
-    <button class="toggle-details-button">
+    <button class="toggle-details-button" type="button">
         <i class="fas fa-chevron-down"></i> Show Details
     </button>
 `;
@@ -331,7 +291,9 @@ function renderTripCard(group, index, tripContext = {}) {
     const optionsTabs = document.createElement('div');
     optionsTabs.className = 'nav nav-tabs mb-3';
     optionsTabs.id = `trip-${index}-tabs`;
-    
+    optionsTabs.setAttribute('role', 'tablist'); // Add this for accessibility
+    optionsTabs.setAttribute('aria-label', `Trip ${index} travel options`); // Add this for better accessibility
+
     // Create content container for travel options
     const optionsContent = document.createElement('div');
     optionsContent.className = 'tab-content';
@@ -428,66 +390,78 @@ function renderTripCard(group, index, tripContext = {}) {
             }
 
             // Add complete travel option info with modern styling
+            
             contentPane.innerHTML = `
                 <div class="variant-summary">
-                    <div class="stats-container">
-                        <div class="option-stats">
-                            <div class="stat-item">
-                                <div class="stat-icon">
-                                    <i class="fas fa-map-marker-alt text-danger"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <div class="stat-label">Cities</div>
-                                    <div class="stat-value">${variant.cities?.length || 0}</div>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-item">
-                                <div class="stat-icon">
-                                    <i class="fas fa-clock text-success"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <div class="stat-label">Total Travel</div>
-                                    <div class="stat-value">${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m</div>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-item">
-                                <div class="stat-icon">
-                                    <i class="fas fa-hotel text-primary"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <div class="stat-label">Hotel Changes</div>
-                                    <div class="stat-value">${variant.hotel_changes || 0}</div>
-                                </div>
-                            </div>
+                    <!-- Main Summary Header - Combined Stats -->
+                    <div class="trip-summary-header">
+                        <div class="trip-summary-icon">
+                            <i class="fas ${varIdx === 0 ? 'fa-star' : 'fa-route'}"></i>
                         </div>
-                        
-                        <div class="route-preview">
-                            <div class="route-label">Route</div>
-                            <div class="route-cities">${firstCity} → ${finalCity}</div>
+                        <div class="trip-summary-details">
+                            <div class="trip-time-info">
+                                <i class="fas fa-clock"></i> ${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m total travel
+                            </div>
+                            <div class="trip-meta-info">
+                                <span><i class="fas fa-map-marker-alt"></i> ${variant.cities?.length || 0} cities</span>
+                                <span><i class="fas fa-hotel"></i> ${variant.hotel_changes || 0} hotel changes</span>
+                            </div>
                         </div>
                     </div>
                     
-                    ${hotelSummary.length > 0 ? `
-                        <div class="hotel-stays-section mt-3">
-                            <div class="section-title">
-                                <i class="fas fa-hotel"></i> Hotel Stays
+                    <!-- Organized Content Grid -->
+                    <div class="summary-content-grid">
+                        <!-- Hotels Section -->
+                        ${hotelSummary.length > 0 ? `
+                            <div class="hotels-section">
+                                <div class="section-heading">
+                                    <i class="fas fa-hotel"></i> Accommodations
+                                </div>
+                                <div class="hotel-stays-list">
+                                    ${hotelSummary.map(stay => `
+                                        <div class="hotel-stay-item">
+                                            <div class="hotel-stay-left">${stay.hotel}</div>
+                                            <div class="hotel-stay-dates">
+                                                ${stay.startDate !== stay.endDate ? 
+                                                `${stay.startDate.split(' ')[0]} - ${stay.endDate.split(' ')[0]}` : 
+                                                stay.startDate.split(' ')[0]}
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>
-                            <div class="hotel-stays-list">
-                                ${hotelSummary.map(stay => `
-                                    <div class="hotel-stay-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span class="hotel-name">${stay.hotel}</span>
-                                        <span class="hotel-dates">
-                                            ${stay.startDate}
-                                            ${stay.startDate !== stay.endDate ? ` - ${stay.endDate}` : ''}
-                                        </span>
-                                    </div>
-                                `).join('')}
+                        ` : ''}
+                        
+                        <!-- Airport Section -->
+                        ${variant.airport_distances ? `
+                            <div class="airports-section">
+                                <div class="section-heading">
+                                    <i class="fas fa-plane-departure"></i> Airports near ${finalCity}
+                                </div>
+                                <div class="airport-list">
+                                    ${(variant.airport_distances.end || []).slice(0, 2).map(airport => {
+                                        const airportName = airport.airport || airport.name || airport.code || 'Airport';
+                                        const airportCode = airport.code ? `(${airport.code})` : '';
+                                        return `
+                                            <div class="airport-item">
+                                                <span class="airport-name">${airportName}</span>
+                                                <span class="travel-time">${airport.travel_time}</span>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                    ${(variant.airport_distances.major || []).slice(0, 1).map(airport => {
+                                        const airportName = airport.airport || airport.name || airport.code || 'Airport';
+                                        return `
+                                            <div class="airport-item">
+                                                <span class="airport-name">${airportName}</span>
+                                                <span class="travel-time">${airport.travel_time}</span>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
                             </div>
-                        </div>
-                    ` : ''}
+                        ` : ''}
+                    </div>
                 </div>
             `;
             
@@ -503,6 +477,15 @@ function renderTripCard(group, index, tripContext = {}) {
         travelOptionsSection.appendChild(optionsContent);
         details.appendChild(travelOptionsSection);
     }
+    
+    // Add section headers before timeline
+    const timelineHeader = document.createElement('div');
+    timelineHeader.innerHTML = `
+      <h5 class="mb-3 d-flex align-items-center">
+        <i class="fas fa-calendar-alt text-primary me-2"></i> Day-by-Day Itinerary
+      </h5>
+    `;
+    details.appendChild(timelineHeader);
     
     // Add the dynamic itinerary container
     details.appendChild(dynamicItineraryContainer);
@@ -953,12 +936,10 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
                     <div class="tbd-vs-container">vs</div>
                     <img src="${getTeamLogoUrl(awayTeam)}" class="tbd-away-logo" alt="${awayTeam} logo">
                     <div class="tbd-away-team">${awayTeam}</div>
-                    ${game.has_must_team ? '<span class="tbd-must-see-badge">Must-See</span>' : ''}
-                </div>
-                <div class="match-info-compact">
-                    <span class="match-location-inline">
+                    <span class="tbd-location">
                         <i class="fas fa-map-marker-alt"></i> ${game.location || 'TBD'}
                     </span>
+                    ${game.has_must_team ? '<span class="tbd-must-see-badge">Must-See</span>' : ''}
                 </div>
             `;
             
@@ -1149,21 +1130,15 @@ function renderItineraryForVariant(container, group, variantIndex) {
                             </div>
                             ${match.contains_must_team ? '<span class="must-see-tag">Must-See Match</span>' : ''}
                         </div>
-                        <div class="match-details">
-                            <div class="match-header">
-                                <strong class="match-teams">${cleanMatch}</strong>
-                                ${match.contains_must_team ? '<span class="must-see-tag">Must-See</span>' : ''}
-                            </div>
-                            <div class="match-meta">
-                                <div class="match-location">
-                                    <i class="fas fa-map-marker-alt"></i> 
-                                    <span>${match.location}</span>
-                                    ${time ? `
-                                    <span class="match-time-inline">
-                                        <i class="fas fa-clock"></i>
-                                        ${time}
-                                    </span>` : ''}
-                                </div>
+                        <div class="match-meta">
+                            <div class="match-location-container">
+                                <i class="fas fa-map-marker-alt"></i> 
+                                <span>${match.location}</span>
+                                ${time ? `
+                                <span class="match-time-data">
+                                    <i class="fas fa-clock"></i>
+                                    ${time}
+                                </span>` : ''}
                             </div>
                         </div>
                     `;
@@ -1291,6 +1266,31 @@ function extractTimeFromMatch(matchText) {
         cleanMatch: matchText
     };
 }
+
+// Add to your trip-card.js click handler
+document.querySelectorAll('.toggle-details-button').forEach(button => {
+  button.addEventListener('click', function() {
+    const card = this.closest('.trip-card');
+    const details = card.querySelector('.trip-details');
+    
+    if (details.classList.contains('show')) {
+      // Collapse
+      details.classList.remove('show');
+      card.classList.remove('expanded');
+      this.innerHTML = '<i class="fas fa-chevron-down"></i> Show Details';
+      
+      // Smooth scroll to card top
+      setTimeout(() => {
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    } else {
+      // Expand
+      details.classList.add('show');
+      card.classList.add('expanded');
+      this.innerHTML = '<i class="fas fa-chevron-up"></i> Hide Details';
+    }
+  });
+});
 
 // Export the functions so they can be used by other modules
 export { renderTripCard, renderTbdGames, extractHotelSummary, renderTravelSegments, renderAirportDistances, renderItineraryForVariant };

@@ -1,4 +1,13 @@
-/* Modern Trip Card Styling for 2025 - Refined Hierarchy */
+/* At the top of your file */
+/*
+ * Trip Cards Styling - 2025 Edition
+ * 
+ * USAGE:
+ * - Add .trip-card class to main container
+ * - Use .match-item for match components
+ * - Use .hotel-info for hotel components
+ * - For animations, add --fade-offset to customize entry
+ */
 
 :root {
   /* Core Colors */
@@ -20,76 +29,151 @@
   /* Effects */
   --divider-color: rgba(4, 61, 124, 0.06);
   --border-color: rgba(4, 61, 124, 0.12);
-  --card-shadow: 0 8px 20px rgba(4, 61, 124, 0.06);
+  --card-shadow: 0.8rem 20px rgba(4, 61, 124, 0.06);
   --hover-shadow: 0 12px 25px rgba(4, 61, 124, 0.12);
   --card-radius: 12px;
+
+  --container-width-default: 1100px;
+  --container-width-large: 1300px;
+
+  --transition-standard: all 0.25s ease;
+  --button-radius: 8px;
+  --section-spacing: 1.5rem;
+  --item-spacing: 0.75rem;
+  --icon-size: 1rem;
+  --icon-size-small: 0.8rem;
+
+
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 767.98px;
+  --breakpoint-lg: 991px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-xxl: 1400px;
+
+  --theme-background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+
+
+}
+
+/* ===== Fades ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(var(--fade-offset, 10px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Then use it with custom properties */
+.element-1 {
+  --fade-offset: 8px;
+  animation: fadeIn 0.4s both;
+}
+
+.element-2 {
+  --fade-offset: 10px; /* default */
+  animation: fadeIn 0.4s 0.2s both;
+}
+
+@keyframes smoothReveal {
+  from {
+    opacity: 0.7;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ===== Card Structure ===== */
 .trip-card {
   position: relative !important;
-  margin-bottom: 4rem !important;
+  margin-bottom: 3.5rem !important;
   border: none;
   border-radius: var(--card-radius);
-  overflow: hidden;
   box-shadow: var(--card-shadow);
   background: var(--card-bg);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  max-width: 1100px;
+  max-width: var(--container-width-default);
   margin-left: auto;
   margin-right: auto;
+  overflow: visible !important;
+  z-index: 1;
+  transition: all 0.4s ease-out;
+}
+
+.trip-card.expanded {
+  margin-bottom: 4rem !important;
+}
+
+#tripResults {
+  overflow: visible !important;
+  padding-bottom: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* Fix TBD Games section to not show separators */
 #tbdGamesSection.trip-card::after,
-#tbdGamesSection.trip-card::before {
-  display: none !important; /* Ensure these are hidden */
+body #results #tbdGamesSection.trip-card::before {
+  display: none;
 }
 
-#tbdGamesSection.trip-card {
-  margin-bottom: 2rem !important; /* Smaller bottom margin */
+#results, #resultsContainer, .row, .col-lg-8 {
+  overflow: visible !important;
+}
+
+#tbdGamesSection .match-info-compact {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  margin-top: -2px;
+  font-size: 0.75rem;
+  color: #666;
+  width: 100%;
+}
+
+body #results #tbdGamesSection.trip-card {
+  margin-bottom: 2rem;
 }
 
 /* Add decorative separator between cards */
 .trip-card:not(:last-child)::after {
   content: '';
   position: absolute;
-  bottom: -2rem;
+  bottom: -2.25rem;
   left: 50%;
-  transform: translateX(-50%);
-  width: 70%;
-  height: 3px !important; /* Thicker line */
+  width: 110%;  /* Full width line as requested */
+  height: 2px;
   background: linear-gradient(to right, 
     rgba(4, 61, 124, 0), 
-    rgba(4, 61, 124, 0.8), /* Higher opacity */
+    rgba(4, 61, 124, 0.15), 
+    rgba(4, 61, 124, 0.3), 
+    rgba(4, 61, 124, 0.15), 
     rgba(4, 61, 124, 0));
-  z-index: 5 !important; /* Force it above other elements */
-}
-
-/* Add decorative dots in the center */
-.trip-card:not(:last-child)::before {
-  content: '•••';
-  position: absolute;
-  bottom: -2rem;
-  left: 50%;
   transform: translateX(-50%);
-  font-size: 1.5rem !important; /* Slightly larger */
-  letter-spacing: 0.6rem;
-  color: var(--primary-color) !important;
-  font-weight: 800 !important; /* Bolder */
-  text-shadow: 0 2px 4px rgba(4, 61, 124, 0.2);
-  background: white !important; /* Solid white background */
-  padding: 0 20px !important;
-  line-height: 0;
-  height: 0;
-  border-radius: 12px;
-  border: 1px solid rgba(4, 61, 124, 0.2) !important;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 8px rgba(4, 61, 124, 0.15) !important;
-  z-index: 6 !important; /* One level above the line */
+  z-index: 5;
+  pointer-events: none;
 }
 
 .trip-card:not(:last-child)::before {
-  border: 1px solid rgba(4, 61, 124, 0.08);
+  content: '\f072'; /* Airplane icon (Font Awesome) */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  bottom: -2.65rem;
+  left: 50%;
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  background: white;
+  padding: 0 10px;
+  transform: translateX(-50%) rotate(90deg);
+  z-index: 6;
+  pointer-events: none;
 }
 
 /* Target both possible container IDs to ensure centering works */
@@ -103,7 +187,7 @@
 body.has-filter-drawer #results .col-lg-8,
 body.has-filter-drawer #resultsContainer .col-lg-8 {
   flex: 0 0 100%;
-  max-width: 1100px;
+  max-width: var(--container-width-default);
   margin: 0 auto;
 }
 
@@ -128,8 +212,18 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 }
 
 .trip-details {
-  padding: 0;
   background: var(--card-bg);
+  overflow: visible !important;
+  position: relative;
+  border-top: 1px dashed var(--divider-color);
+  margin-top: 0.5rem;
+  padding: 1rem 0.75rem 0.5rem !important;
+  transition: all 0.4s ease-out;
+  transform-origin: top center;
+}
+
+.trip-details.show {
+  animation: smoothReveal 0.5s ease-out;
 }
 
 .trip-details:not(.collapse) {
@@ -141,7 +235,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--section-spacing);
 }
 
 .trip-header-main h3 {
@@ -153,10 +247,10 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 }
 
 .match-count-badge {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: var(--theme-background);
   color: white;
   border-radius: 50px;
-  padding: 0.35rem 1rem;
+  padding: 0.35rem var(--icon-size);
   font-weight: 600;
   font-size: 0.85rem;
   box-shadow: 0 4px 10px rgba(4, 61, 124, 0.2);
@@ -166,15 +260,15 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
+  margin-bottom: var(--icon-size);
+  padding-bottom: var(--item-spacing);
   border-bottom: 1px dashed var(--border-color);
 }
 
 .trip-meta-item {
   display: flex;
   align-items: center;
-  margin-right: 1.5rem;
+  margin-right: var(--section-spacing);
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
   line-height: 1.4;
@@ -191,17 +285,15 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   text-align: center;
   margin-right: 0.5rem;
   color: var(--secondary-color);
-  font-size: 1rem;
+  font-size: var(--icon-size);
 }
 
 /* ===== Compact Match Preview ===== */
 
-/* Updated Match Preview to match hotel/airport sections */
-
 /* Convert match preview to the same style as hotel/airport */
 .match-preview {
   background: white;
-  border-radius: 8px;
+  border-radius:var(--button-radius);
   padding: 0.85rem;
   margin-bottom: 0.85rem;
   margin-top: 0;
@@ -250,15 +342,9 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   border-color: var(--divider-color);
 }
 
-/* Update team name display */
-.match-teams-preview {
-  font-size: 0.85rem;
-  gap: 0.4rem;
-}
-
 .match-teams-preview i {
   color: var(--secondary-color);
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   width: 12px;
 }
 
@@ -270,13 +356,13 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 .match-location-preview i {
   color: var(--accent-color);
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   width: 12px;
 }
 
 /* Update match date display */
 .match-date {
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   margin-top: 0.25rem;
   padding-top: 0;
   border-top: none;
@@ -291,7 +377,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   border: none;
   padding: 0.4rem 0 0;
   margin-top: 0.25rem;
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   color: var(--secondary-color);
   border-top: 1px dashed var(--divider-color);
 }
@@ -316,22 +402,25 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* Toggle details button */
 .toggle-details-button {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: var(--theme-background);
   border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1rem;
-  font-size: 0.9rem;
+  border-radius:var(--button-radius);
   color: white;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.25s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  width: calc(100% - 1.5rem);
-  margin: 0.75rem;
-  box-shadow: 0 3px 8px rgba(4, 61, 124, 0.15);
+  width: calc(100% - var(--section-spacing));
+  margin: var(--item-spacing);
+  box-shadow: 0 3px var(--button-radius) rgba(4, 61, 124, 0.15);
+  position: relative;
+  width: calc(100% - 2rem) !important;
+  padding: 0.75rem !important;
+  font-size: 0.95rem !important;
+  transition: all 0.3s ease;
+  z-index: 2;
 }
 
 .toggle-details-button:hover {
@@ -342,37 +431,52 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 /* ===== Option Panels ===== */
 /* Refined Travel Options Section */
 .travel-options-section {
-  border-radius: 0;
-  overflow: hidden;
-  margin: 0;
-  border: none;
-  border-bottom: 0px solid var(--divider-color);
+  margin: 0 0 1rem !important; /* Reduced bottom margin */
+  padding: 0 !important;
   box-shadow: none;
-  background: white;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid var(--divider-color);
+  background: transparent;
 }
 
 /* Professional Nav Tabs */
 .nav-tabs {
   border-bottom: none;
   background: linear-gradient(to right, rgba(4, 61, 124, 0.02), rgba(48, 104, 204, 0.04));
-  padding: 0;
+  width: 100%;
+  padding: 0 !important;
+  background: transparent;
   display: flex;
   gap: 0;
+  position: relative;
+  top: 0;
+  z-index: 10;
+  background: var(--neutral-light);
+  padding: 0.5rem 0 0;
+  border-radius: 0 !important;
+  margin: 0 0 0.5rem !important; /* Reduced margin */
 }
 
 .nav-tabs .nav-link {
   position: relative;
-  padding: 0.75rem 1.25rem;
+  text-align: center;
+  padding: var(--item-spacing) 1.25rem;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.25s ease;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  min-width: 110px;
+  gap:var(--button-radius);
+  transition: var(--transition-standard);
+  border-top-left-radius:var(--button-radius);
+  border-top-right-radius:var(--button-radius);
+  min-width: 0 !important; /* Override minimum width */
   justify-content: center;
   color: var(--primary-color); /* Add primary blue color for tab text */
   font-weight: 500; /* Make it slightly bolder */
+  border-radius: var(--button-radius) !important;
+  white-space: nowrap;
+  margin: 0 0.15rem; /* Small gap between tabs */
+  border: 1px solid var(--border-color);
+  flex: 1; /* Equal width tabs */
 }
 
 .nav-tabs .nav-link:hover {
@@ -380,42 +484,165 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
-.nav-tabs .nav-link.active {
-  color: var(--primary-color);
-  background: white;
-  font-weight: 600;
-  box-shadow: none;
-  border-bottom: 2px solid var(--primary-color);
-}
-
-.nav-tabs .nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--primary-color);
-}
-
 /* Tab content */
 .tab-content {
-  padding: 1.25rem 1.5rem;
+  padding: 0.75rem 0 !important;
+  margin-bottom: 0.5rem !important;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+}
+
+/* Add to trip-cards.css - Section dividers */
+.section-header {
+  margin: 1.5rem 0 0.75rem !important;
+  padding-bottom: 0 !important;
+  border-bottom: none;
+  position: relative;
+}
+
+.section-header::before {
+  display: none;
+}
+
+.section-title {
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-size: 1rem !important;
+  padding-left: 0.25rem !important;
+  position: relative;
+}
+
+/* Make tab navigation sticky for easier access */
+.nav-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+  padding: 0.5rem 0.5rem 0;
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
 }
 
 /* ===== Stat Items ===== */
 /* Update variant summary to improve the hotel stays display */
 .variant-summary {
-  padding: 1.25rem;
-  margin: 0.5rem 0 0.5rem;
+  padding: 1.2rem !important;
+  margin: 0.25rem 0 !important;
   border-radius: var(--card-radius);
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 1) 0%, 
-    rgba(248, 250, 252, 0.8) 50%, 
-    rgba(241, 245, 249, 0.9) 100%);
+  background: white;
   border: 1px solid var(--border-color);
-  box-shadow: 0 2px 8px rgba(4, 61, 124, 0.03);
+  box-shadow: 0 2px 8px rgba(4, 61, 124, 0.04) !important;
   position: relative;
+}
+
+.trip-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-bottom: 0.85rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.trip-summary-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  font-size: 1.4rem;
+}
+
+.trip-summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Increased gap for better separation */
+  width: 100%;
+}
+
+.trip-time-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--primary-dark);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-bottom: 0.25rem; /* Add space between main time and metadata */
+}
+
+.trip-time-info i {
+  color: var(--secondary-color);
+  font-size: 1.1rem; /* Slightly larger icon */
+}
+.trip-meta-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--neutral-text);
+  font-size: 0.85rem;
+}
+
+.trip-meta-info span {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Unified Content Sections */
+.summary-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.trip-meta-info i {
+  color: var(--secondary-color);
+  opacity: 0.8;
+  font-size: var(--icon-size-small);
+}
+
+/* Accommodations Section */
+.hotels-section {
+  padding: 0.75rem;
+  background: var(--neutral-light);
+  border-radius: 8px;
+}
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.section-heading i {
+  color: var(--secondary-color);
+}
+
+/* Specific styling for hotel icon */
+.hotels-section .section-heading i.fa-hotel {
+  color: var(--secondary-color);
+}
+
+/* Specific styling for airport icon */
+.airports-section .section-heading i.fa-plane-departure {
+  color: var(--secondary-color);
+}
+
+.match-location-side i,
+.match-location-inline i,
+.tbd-location i,
+i.fa-map-marker-alt {
+  color: var(--accent-color);
 }
 
 .variant-summary:hover {
@@ -428,14 +655,18 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .variant-summary::after {
   content: '';
   position: absolute;
+  height: 1px;
+  left: 0;
+  right: 0;
   bottom: 0;
-  left: 10%;
-  right: 10%;
-  height: 2px;
   background: linear-gradient(to right, 
     rgba(4, 61, 124, 0), 
     rgba(48, 104, 204, 0.2), 
     rgba(4, 61, 124, 0));
+}
+
+.section-header:first-of-type {
+  margin-top: 0.5rem;
 }
 
 /* Make the stats container more compact */
@@ -444,14 +675,14 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: var(--icon-size);
 }
 
 .option-stats {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem 1.5rem;
+  gap: 0.5rem !important;
   flex: 1;
 }
 
@@ -460,8 +691,8 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   display: flex;
   align-items: center;
   min-width: auto;
-  padding: 0.25rem;
-  border-radius: 8px;
+  padding: 0.15rem !important;
+  border-radius:var(--button-radius);
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
@@ -507,12 +738,13 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .stat-content {
   display: flex;
   flex-direction: column;
+  line-height: 1.1 !important;
 }
 
 .stat-label {
   color: var(--primary-color);
   opacity: 0.8;
-  font-size: 0.75rem;
+  font-size: var(--item-spacing);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -531,45 +763,23 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   color: var(--primary-dark);
 }
 
-.stat-item:nth-child(1) { animation: fadeInStat 0.4s 0.1s both; }
-.stat-item:nth-child(2) { animation: fadeInStat 0.4s 0.2s both; }
-.stat-item:nth-child(3) { animation: fadeInStat 0.4s 0.3s both; }
-.stat-item:nth-child(4) { animation: fadeInStat 0.4s 0.4s both; }
-
-@keyframes fadeInSummary {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInStat {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+.stat-item:nth-child(1) { animation: fadeIn 0.4s 0.1s both; }
+.stat-item:nth-child(2) { animation: fadeIn 0.4s 0.2s both; }
+.stat-item:nth-child(3) { animation: fadeIn 0.4s 0.3s both; }
+.stat-item:nth-child(4) { animation: fadeIn 0.4s 0.4s both; }
 
 /* Route preview */
 .route-preview {
   display: flex;
   flex-direction: column;
   min-width: 160px;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
+  padding: 0.5rem var(--item-spacing);
+  border-radius:var(--button-radius);
   background: linear-gradient(to right,
     rgba(255, 255, 255, 1) 0%,
     rgba(248, 250, 252, 0.9) 100%);
   border: 1px solid var(--border-color);
-  box-shadow: 0 3px 8px rgba(4, 61, 124, 0.03);
+  box-shadow: 0 3px var(--button-radius) rgba(4, 61, 124, 0.03);
   transition: all 0.3s ease;
 }
 
@@ -581,7 +791,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .route-label {
   color: var(--primary-color);
   opacity: 0.8;
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -593,19 +803,20 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   align-items: center;
   font-weight: 600;
   color: var(--neutral-text);
-  font-size: 1rem;
+  font-size: var(--icon-size);
 }
 
 .route-cities i {
-  margin: 0 0.75rem;
+  margin: 0 var(--item-spacing);
   color: var(--secondary-color);
 }
 
 /* ===== Compact Timeline & Match Items ===== */
 .timeline {
   position: relative;
-  padding: 1.5rem 0 0.5rem;
-  margin-top: 1.5rem;
+  padding: var(--section-spacing) 0 0.5rem;
+  padding-top: 0.75rem !important;
+  margin-top: 0.5rem !important;
 }
 
 .timeline::before {
@@ -658,7 +869,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   border: 1px solid var(--border-color);
   box-shadow: 0 3px 10px rgba(4, 61, 124, 0.05);
   max-width: 90%;
-  animation: fadeInUp 0.5s ease-out forwards;
+  animation: fadeIn 0.5s ease-out forwards;
   animation-delay: 0.3s;
   opacity: 0;
 }
@@ -667,8 +878,10 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .day-header {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 1.25rem;
   position: relative;
+  padding-left: 30px;
+  margin-bottom: 1.5rem;
+  min-height: 32px;
 }
 
 .day-header-content {
@@ -678,10 +891,27 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 }
 
 .day-header h5 {
-  font-size: 1rem;
+  font-size: var(--icon-size);
   font-weight: 600;
   margin: 0;
-  color: var(--primary-color);
+  padding-top: 4px;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  color: var(--bs-dark);
+  position: relative;
+  display: inline-block;
+  padding-bottom:var(--button-radius) !important;
+}
+
+.day-header h5::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary-color), transparent);
+  border-radius: 3px;
 }
 
 .final-day .day-badge {
@@ -696,27 +926,176 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   margin-top: 0.15rem;
 }
 
+/* Airport information styling */
+.airport-distances {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-top: var(--section-spacing);
+  box-shadow: 0 2px var(--button-radius) rgba(0,0,0,0.03);
+  border: 1px solid #edf2f7;
+}
+
+/* Airport sections */
+.airport-section {
+  background-color: white;
+  border-radius:var(--button-radius);
+  padding: 12px 16px;
+  margin-bottom: 12px; 
+  border: 1px solid #edf2f7;
+}
+
+.airport-section h6 {
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--bs-dark);
+  font-size: 0.95rem;
+}
+/* More airport styling elements */
+.airport-item {
+  background: white;
+  border-radius: 6px !important;
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.85rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none !important;
+  margin-bottom: 0 !important;
+  border-left: 3px solid var(--primary-color) !important;
+}
+
+.airport-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Airport badges */
+.airport-badge {
+  font-size: var(--icon-size-small);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.airport-badge.starting, 
+.airport-badge.ending, 
+.airport-badge.major {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.airport-code {
+  font-weight: 500;
+  margin-right: 4px;
+  font-size: 0.9rem;
+}
+
+/* Airport header styling */
+.airport-distances h5 {
+  font-weight: 600;
+  color: var(--neutral-text);
+  font-size: var(--icon-size);
+  margin-bottom: var(--icon-size);
+}
+
+/* Airport info panel */
+.airport-info {
+  background-color: rgba(4, 61, 124, 0.05);
+  border-left: 4px solid var(--secondary-color);
+  border-radius: 6px;
+  padding: var(--icon-size) 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.airport-info ul li {
+  padding: 4px 0;
+  font-size: 0.9rem;
+}
+
+.airport-name {
+  font-weight: 500;
+  color: var(--neutral-text);
+  font-size: 0.85rem !important;
+}
+
+.airport-divider {
+font-size: var(--icon-size-small);
+color: var(--secondary-color);
+padding: 0.4rem 0 0.2rem;
+margin-top: 0.2rem;
+border-top: 1px dashed var(--divider-color);
+font-weight: 500;
+}
+/* Airports Section */
+.airports-section {
+  padding: 0.75rem;
+  background: var(--neutral-light);
+  border-radius: 8px;
+  border-top: none;
+  margin-top: 0 !important;
+}
+
+.airport-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.compact-list .airport-item {
+  padding: 4px 8px !important;
+  margin-bottom: 4px !important;
+}
+
+/* Revised match preview layout */
+.match-teams-container {
+  width: 100%;
+  position: relative;
+}
+
+.match-teams-row {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr !important;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  position: relative;
+}
+
+
 /* Match items */
 .match-item {
   background-color: white;
   border-radius: var(--card-radius);
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: var(--icon-size);
+  margin-bottom: var(--icon-size);
   margin-left: 2rem;
   border: 1px solid var(--border-color);
   box-shadow: 0 3px 10px rgba(4, 61, 124, 0.05);
-  transition: all 0.25s ease;
+  transition: var(--transition-standard);
   position: relative;
 }
 
-.match-item::before {
-  content: '';
-  position: absolute;
-  left: -1rem;
-  top: 50%;
-  width: 1rem;
-  height: 2px;
-  background: linear-gradient(to left, var(--border-color), var(--primary-color));
+.match-location-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--neutral-text);
+}
+
+.match-location-container i {
+  margin-right: 0.25rem;
+}
+
+.match-location-container .fa-map-marker-alt {
+  color: var(--accent-color);
+}
+
+.match-location-container .fa-clock {
+  color: var(--secondary-color);
 }
 
 .match-item:hover {
@@ -733,13 +1112,13 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--icon-size);
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: var(--item-spacing);
 }
 
 .match-teams {
-  font-size: 1rem;
+  font-size: var(--icon-size);
   color: var(--neutral-text);
   font-weight: 600;
 }
@@ -747,9 +1126,9 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .match-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
+  gap: var(--icon-size);
+  margin-top: none;
+  padding-top: none;
   border-top: 1px solid var(--divider-color);
 }
 
@@ -774,8 +1153,8 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   background: linear-gradient(135deg, var(--warning-color), #ffb74d);
   color: white;
   border-radius: 4px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
+  padding: 0.25rem var(--item-spacing);
+  font-size: var(--item-spacing);
   font-weight: 600;
 }
 
@@ -793,9 +1172,9 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   font-size: 0.9rem;
   font-weight: normal;
   gap: 0.5rem;
-  margin-left: 1rem;
+  margin-left: var(--icon-size);
   border-left: 1px solid var(--divider-color);
-  padding-left: 1rem;
+  padding-left: var(--icon-size);
 }
 
 .match-time-inline i {
@@ -810,7 +1189,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* Remove the old time-display style */
 .time-display {
-  display: none;
+  display: none !important;
 }
 
 /* Update the day-date-inline style */
@@ -827,28 +1206,78 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 /* Match compact info style */
 .match-info-compact {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.75rem;
   margin-top: 0.5rem;
   font-size: 0.85rem;
   color: var(--neutral-text);
+  width: 100%;
 }
 
-.match-location-inline, .match-time-data, .match-date-inline {
+.match-info-left {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+}
+
+/* Right side container for time and date */
+.match-info-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+
+
+.match-location-inline i,
+.match-time-data i,
+.match-date-inline i {
+  margin-right: 0.25rem;
+  font-size: var(--icon-size-small);
+}
+
+.match-date-inline, 
+.match-time-data {
+  display: flex;
+  align-items: center;
+}
+
+.match-content-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.match-date-inline i,
+.match-time-data i {
+  margin-right: 0.25rem;
+  font-size: var(--icon-size-small);
+}
+
+.match-location-side {
+  justify-self: start;
+  font-size: 0.85rem;
+  color: var(--neutral-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.match-location-side i {
+  color: var(--accent-color);
+  font-size: var(--icon-size-small);
+  margin-right: 0.25rem;
 }
 
 .match-location-inline i {
   color: var(--accent-color);
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
 }
 
 .match-time-data i {
   color: var(--secondary-color);
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
 }
 
 .match-date-inline {
@@ -867,10 +1296,10 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 }
 
 .travel-segment {
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
+  padding: var(--icon-size) 1.25rem;
+  border-radius:var(--button-radius);
   background: white;
-  margin-bottom: 1rem;
+  margin-bottom: var(--icon-size);
   box-shadow: 0 1px 3px rgba(4, 61, 124, 0.05);
   border: 1px solid var(--border-color);
   border-left: 2px solid var(--secondary-color);
@@ -879,7 +1308,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 .travel-segment:hover {
   transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(4, 61, 124, 0.08);
+  box-shadow: 0 3px var(--button-radius) rgba(4, 61, 124, 0.08);
 }
 
 .segment-number {
@@ -890,18 +1319,18 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   height: 24px;
   background: rgba(48, 104, 204, 0.08);
   border-radius: 4px;
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   font-weight: 600;
   color: var(--secondary-color);
-  margin-right: 0.75rem;
+  margin-right: var(--item-spacing);
   vertical-align: middle;
 }
 
 .segment-header {
   display: flex;
   align-items: center;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.75rem;
+  margin-bottom: var(--item-spacing);
+  padding-bottom: var(--item-spacing);
   border-bottom: 1px solid rgba(4, 61, 124, 0.06);
   font-weight: 500;
   color: var(--primary-dark);
@@ -911,7 +1340,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 /* Refined Travel Items */
 .travel-container {
   margin-left: 1.25rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--item-spacing);
   position: relative;
 }
 
@@ -929,7 +1358,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .travel-item::before {
   content: '';
   position: absolute;
-  left: -0.75rem;
+  left: -var(--item-spacing);
   top: 50%;
   width: 0.6rem;
   height: 1px;
@@ -966,20 +1395,17 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   color: var(--neutral-text);
   opacity: 0.7;
   margin-left: 0.3rem;
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   font-style: italic;
 }
 
 .travel-time {
-  background: rgba(48, 104, 204, 0.1);
-  color: var(--primary-color);
-  border: 1px solid rgba(48, 104, 204, 0.15);
-  border-radius: 4px;
-  padding: 0.1rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 500;
-  white-space: nowrap;
-  letter-spacing: 0.01em;
+  background: none;
+  color: var(--secondary-color);
+  border: none;
+  padding: 0;
 }
 
 /* Option statistics refinements */
@@ -987,21 +1413,21 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.6rem;
+  margin-bottom: 0.5rem !important;
+  padding-bottom: 0.4rem !important;
   border-bottom: 1px solid var(--border-color);
 }
 
 .option-title {
   font-weight: 600;
   color: var(--primary-color);
-  font-size: 1rem;
+  font-size: var(--icon-size);
 }
 
 .option-metrics {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: var(--section-spacing);
 }
 
 .option-metric {
@@ -1026,13 +1452,13 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 /* ===== Hotel Info ===== */
 .hotel-info {
   background-color: white;
-  padding: 1rem 1.25rem;
+  padding: var(--icon-size) 1.25rem;
   border-radius: var(--card-radius);
   margin-bottom: 1.25rem;
   margin-left: 2.5rem;
   border: 1px solid var(--border-color);
   border-left: 3px solid var(--secondary-color);
-  transition: all 0.25s ease;
+  transition: var(--transition-standard);
   position: relative;
 }
 
@@ -1055,7 +1481,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .hotel-change, .hotel-stay {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--item-spacing);
 }
 
 .hotel-change i, .hotel-stay i {
@@ -1066,22 +1492,22 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 /* ===== Compact Rest Days ===== */
 .rest-day {
   background-color: white;
-  padding: 0.85rem 1rem;
+  padding: 0.85rem var(--icon-size);
   border-radius: var(--card-radius);
-  margin-bottom: 1rem;
+  margin-bottom: var(--icon-size);
   margin-left: 2rem;
   border: 1px solid var(--border-color);
   border-left: 3px solid var(--success-color);
-  transition: all 0.25s ease;
+  transition: var(--transition-standard);
   position: relative;
 }
 
 .rest-day::before {
   content: '';
   position: absolute;
-  left: -1rem;
+  left: -var(--icon-size);
   top: 50%;
-  width: 1rem;
+  width: var(--icon-size);
   height: 2px;
   background: linear-gradient(to left, var(--border-color), var(--success-color));
 }
@@ -1095,8 +1521,8 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .rest-day-header {
   display: flex;
   align-items: center;
-  margin-bottom: 0.75rem;
-  gap: 0.75rem;
+  margin-bottom: var(--item-spacing);
+  gap: var(--item-spacing);
 }
 
 .rest-day-header span {
@@ -1121,20 +1547,24 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   padding-left: 1.6rem;
 }
 
-/* Add animations for visual interest */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.match-item, .travel-item, .hotel-info, .rest-day {
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
-.match-item, .travel-item, .hotel-info, .rest-day {
-  animation: fadeInUp 0.3s ease-out forwards;
+.match-item,
+.travel-segment,
+.hotel-info,
+.rest-day {
+  padding: 0.75rem !important;
+  margin-bottom: 0.6rem !important;
+}
+
+.variant-summary,
+.match-item,
+.hotel-info,
+.travel-segment,
+.rest-day {
+  box-shadow: 0 2px 8px rgba(4, 61, 124, 0.06) !important;
 }
 
 /* ===== Filter Drawer & Button Styling ===== */
@@ -1245,7 +1675,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .drawer-close {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: var(--section-spacing);
   line-height: 1;
   color: #666;
   padding: 0;
@@ -1266,7 +1696,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .drawer-filter-label {
   font-weight: 600;
   font-size: 0.9rem;
-  margin-bottom: 8px;
+  margin-bottom:var(--button-radius);
   color: #333;
 }
 
@@ -1274,7 +1704,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .drawer-active-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap:var(--button-radius);
   margin: 10px 0 20px;
 }
 
@@ -1283,10 +1713,10 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   color: var(--primary-color);
   border-radius: 20px;
   padding: 5px 12px;
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap:var(--button-radius);
   border: 1px solid #d0e0f0;
 }
 
@@ -1313,7 +1743,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* Filter group sliders */
 .filter-slider-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--section-spacing);
 }
 
 .filter-slider-header {
@@ -1343,26 +1773,6 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   justify-content: center;
 }
 
-/* ===== Improve Responsive Handling ===== */
-@media (max-width: 768px) {
-  .match-preview-item {
-    padding: 0.75rem;
-  }
-  
-  .match-teams-preview {
-    font-size: 0.9rem;
-  }
-  
-  .match-location-preview, .match-time-inline {
-    font-size: 0.8rem;
-  }
-  
-  .stat-item {
-    padding: 0.25rem;
-    min-width: 110px;
-  }
-}
-
 /* Hotel Summary Preview & Airport Preview */
 
 .preview-section-title {
@@ -1383,7 +1793,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 .hotel-summary-preview, .airport-preview {
   background: white;
-  border-radius: 8px;
+  border-radius:var(--button-radius);
   padding: 0.85rem;
   margin-bottom: 0.85rem;
   border: 1px solid var(--border-color);
@@ -1395,20 +1805,6 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   gap: 0.5rem;
 }
 
-.hotel-stay-item {
-  display: flex;
-  align-items: center;
-  font-size: 0.85rem;
-  color: var(--neutral-text);
-  gap: 0.5rem;
-}
-
-.hotel-stay-item i {
-  color: var(--accent-color);
-  font-size: 0.8rem;
-  width: 12px;
-}
-
 .hotel-name {
   font-weight: 500;
   margin-right: 0.5rem;
@@ -1417,41 +1813,24 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .hotel-dates {
   color: var(--neutral-text);
   opacity: 0.8;
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   margin-left: auto;
-}
-
-.airport-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-
-.airport-name {
-  font-weight: 500;
-  color: var(--neutral-text);
-}
-
-.airport-divider {
-  font-size: 0.8rem;
-  color: var(--secondary-color);
-  padding: 0.4rem 0 0.2rem;
-  margin-top: 0.2rem;
-  border-top: 1px dashed var(--divider-color);
-  font-weight: 500;
 }
 
 /* Dynamic itinerary container */
 .dynamic-itinerary-container {
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 var(--section-spacing) var(--section-spacing);
+  max-height: none !important; /* Remove height restriction */
+  overflow-y: visible !important; /* Remove separate scrolling */
+  padding: 0 1rem 1rem;
+  margin-right: 0;
 }
 
 /* Add styles for the hotel stays section in the travel options */
 
 .hotel-stays-section {
   border-top: 1px solid var(--divider-color);
-  padding-top: 1rem;
+  padding-top: var(--icon-size);
 }
 
 .section-title {
@@ -1460,10 +1839,11 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--primary-color);
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--item-spacing);
 }
 
 .section-title i {
+  font-size: var(--icon-size);
   margin-right: 0.5rem;
   color: var(--secondary-color);
 }
@@ -1471,20 +1851,28 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .hotel-stays-list {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.4rem;
 }
 
-.variant-summary .hotel-stay-item {
+.hotel-stay-left {
+  font-weight: 500;
+}
+
+.hotel-stay-dates {
+  font-size: 0.75rem;
+  color: var(--neutral-text);
+  opacity: 0.85;
+}
+
+.hotel-stay-item {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
-  font-size: 0.85rem;
-  color: var(--neutral-text);
-  gap: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 6px;
-  background-color: white;
-  border: 1px solid var(--border-color);
-  transition: all 0.2s ease;
+  justify-content: space-between;
+  border-left: 3px solid var(--secondary-color);
 }
 
 .variant-summary .hotel-stay-item:hover {
@@ -1495,7 +1883,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 .variant-summary .hotel-stay-item i {
   color: var(--accent-color);
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   width: 12px;
 }
 
@@ -1507,7 +1895,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .variant-summary .hotel-dates {
   color: var(--neutral-text);
   opacity: 0.8;
-  font-size: 0.8rem;
+  font-size: var(--icon-size-small);
   margin-left: auto;
 }
 
@@ -1516,8 +1904,8 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 /* Journey path styling */
 .journey-path {
     background: linear-gradient(to right, rgba(240,240,240,0.5), rgba(240,240,240,0), rgba(240,240,240,0.5));
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding:var(--button-radius) 12px;
+    border-radius:var(--button-radius);
     border: 1px solid rgba(0,0,0,0.05);
 }
 
@@ -1552,7 +1940,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* Custom scrollbar styling for itinerary container */
 .dynamic-itinerary-container::-webkit-scrollbar {
-    width: 8px;
+    width:var(--button-radius);
 }
 
 .dynamic-itinerary-container::-webkit-scrollbar-track {
@@ -1570,6 +1958,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 }
 
 /* Enhanced TBD Games styling */
+
 .accordion-button:not(.collapsed) {
     background-color: #f8f9fa;
     color: var(--primary-color);
@@ -1581,7 +1970,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 }
 
 .accordion-button::after {
-    background-size: 1rem;
+    background-size: var(--icon-size);
 }
 
 /* List group enhancements for TBD games */
@@ -1601,7 +1990,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
     position: absolute;
     bottom: 3px;
     right: 3px;
-    font-size: 8px;
+    font-size:var(--button-radius);
     line-height: 1;
     background-color: var(--primary-color);
     color: white;
@@ -1620,97 +2009,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 /* Toast styling for trip-related notifications */
 #toastContainer .toast {
     opacity: 1;
-    animation: fadeInUp 0.3s ease-out;
-}
-
-/* Airport information styling */
-.airport-distances {
-    background: #f8fafc;
-    border-radius: 10px;
-    padding: 1.25rem;
-    margin-top: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    border: 1px solid #edf2f7;
-}
-
-/* Airport sections */
-.airport-section {
-    background-color: white;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 12px; 
-    border: 1px solid #edf2f7;
-}
-
-.airport-section h6 {
-    font-weight: 600;
-    margin-bottom: 12px;
-    color: var(--bs-dark);
-    font-size: 0.95rem;
-}
-/* More airport styling elements */
-.airport-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 6px !important;
-    background-color: #f8fafc;
-    border: 1px solid #edf2f7 !important;
-    margin-bottom: 6px;
-    transition: all 0.2s;
-}
-
-.airport-item:last-child {
-    margin-bottom: 0;
-}
-
-/* Airport badges */
-.airport-badge {
-    font-size: 0.8rem;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: 500;
-}
-
-.airport-badge.starting, 
-.airport-badge.ending, 
-.airport-badge.major {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.airport-code {
-    font-weight: 500;
-    margin-right: 4px;
-    font-size: 0.9rem;
-}
-
-.airport-name {
-    color: #64748b;
-    font-size: 0.8rem;
-}
-
-/* Airport header styling */
-.airport-distances h5 {
-    font-weight: 600;
-    color: var(--neutral-text);
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
-
-/* Airport info panel */
-.airport-info {
-    background-color: rgba(4, 61, 124, 0.05);
-    border-left: 4px solid var(--secondary-color);
-    border-radius: 6px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.25rem;
-}
-
-.airport-info ul li {
-    padding: 4px 0;
-    font-size: 0.9rem;
+    animation: fadeIn 0.3s ease-out;
 }
 
 /* Return trip information */
@@ -1718,7 +2017,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
     background-color: rgba(255, 193, 7, 0.05);
     border-left: 4px solid var(--warning-color);
     border-radius: 6px;
-    padding: 1rem 1.25rem;
+    padding: var(--icon-size) 1.25rem;
     margin-bottom: 1.25rem;
 }
 
@@ -1740,17 +2039,17 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* Enhanced TBD Games styling - make styling consistent */
 .tbd-game-card {
-    padding: 0.85rem 1rem;
+    padding: 0.85rem var(--icon-size);
     border-radius: var(--card-radius);
     background: white;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--item-spacing);
     border: 1px solid var(--border-color);
     transition: all 0.2s ease;
 }
 
 .tbd-game-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 3px 8px rgba(4, 61, 124, 0.08);
+    box-shadow: 0 3px var(--button-radius) rgba(4, 61, 124, 0.08);
 }
 
 .tbd-game-team {
@@ -1760,7 +2059,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* Ensure consistent animation for TBD games */
 .list-group-item.list-group-item-warning {
-    animation: fadeInUp 0.3s ease-out forwards;
+    animation: fadeIn 0.3s ease-out forwards;
 }
 
 /* Day station badges */
@@ -1776,10 +2075,10 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: var(--icon-size);
   font-weight: bold;
   z-index: 2;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px var(--button-radius) rgba(0, 0, 0, 0.15);
   border: 2px solid white;
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -1792,53 +2091,23 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* Customized day line - train track connectors */
 .day-line {
-  display: none; /* Hide the old line */
+  display: none !important; /* Hide the old line */
 }
 
-/* Day header */
-.day-header {
-  position: relative;
-  padding-left: 20px;
-  margin-bottom: 2rem;
-  min-height: 32px;
-}
 
-/* Day header title styling */
-.day-header h5 {
-  padding-top: 4px;
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  font-weight: 600;
-  color: var(--bs-dark);
-  position: relative;
-  display: inline-block;
-  padding-bottom: 8px !important;
-}
-
-/* Underline effect for day header */
-.day-header h5::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 3px;
-  background: linear-gradient(to right, var(--primary-color), transparent);
-  border-radius: 3px;
-}
 /* Add to trip-cards.css */
 
 .load-more-btn {
     padding: 10px 20px;
     font-weight: 500;
-    border-radius: 8px;
+    border-radius:var(--button-radius);
     transition: all 0.3s ease;
     min-width: 200px;
 }
 
 .load-more-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(4, 61, 124, 0.2);
+    box-shadow: 0 4px var(--button-radius) rgba(4, 61, 124, 0.2);
 }
 
 .load-more-btn:active {
@@ -1851,7 +2120,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   color: white !important; /* White text for contrast */
   font-weight: 500;
   border-radius: 50px;
-  padding: 0.35rem 0.75rem;
+  padding: 0.35rem var(--item-spacing);
   transition: all 0.3s ease;
 }
 
@@ -1931,13 +2200,6 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   opacity: 0.7;
 }
 
-.nav-tabs .nav-link.active::after {
-  opacity: 1;
-  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-  left: 0;
-  right: 0;
-}
-
 /* Fix exchange icon position in tabs */
 .nav-tabs .nav-link .fas.fa-exchange-alt {
   margin-right: 5px !important;
@@ -1946,11 +2208,13 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* Override active tab styling */
 .nav-tabs .nav-link.active {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: var(--theme-background);
   color: white;
   font-weight: 600;
   border: none;
   box-shadow: 0 4px 12px rgba(4, 61, 124, 0.2);
+  border-bottom: none !important;
+  margin-bottom: 0;
 }
 
 /* Hover effect for tabs */
@@ -1964,16 +2228,127 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* Enhanced match teams display with logos */
 .match-teams-preview {
-  display: flex;
+  grid-column: 2;
+  justify-self: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24px 40px 24px minmax(0, 1fr);
+  gap: 4px;
   align-items: center;
-  gap: 0.5rem;
+  height: 28px;
+  width: auto;
+  max-width: 100%;
+  margin: 0;
 }
 
-.vs-text {
-  font-size: 0.8rem;
-  color: var(--neutral-text);
-  opacity: 0.7;
-  margin: 0 0.25rem;
+.match-teams-preview .team-logo-small {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+}
+
+.match-info-inline {
+  grid-column: 1 / span 3;
+  grid-row: 1;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+  pointer-events: none; /* Allow clicking through to teams */
+  padding: 0 8px;
+}
+
+.match-info-inline > * {
+  pointer-events: auto;
+}
+
+.match-location-inline {
+  grid-column: 1;
+  justify-self: start;
+  font-size: 0.85rem;
+}
+
+.match-time-data, 
+.match-date-inline {
+  justify-self: end;
+  font-size: 0.85rem;
+}
+
+/* Create space for teams in the middle */
+.match-teams-row::before {
+  content: '';
+  grid-column: 2;
+  grid-row: 1;
+  background: white;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  position: relative;
+}
+
+.match-teams-preview strong:first-of-type {
+  grid-column: 1;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.match-row-container {
+  width: 100%;
+}
+
+.match-content-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.match-teams-preview strong:last-of-type {
+  grid-column: 5;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.match-teams-preview .vs-text {
+  grid-column: 3;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #777;
+  width: 100%;
+  justify-self: center;
+}
+
+.match-datetime-side {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.match-teams-preview .team-logo-small:first-of-type {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.match-teams-preview .team-logo-small:last-of-type {
+  grid-column: 4;
+  justify-self: center;
+}
+
+.must-see-badge {
+  grid-column: 1 / span 5;
+  grid-row: 2;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.3rem;
+  justify-self: center;
+  margin-top: 2px;
 }
 
 /* Team filter badges with logos */
@@ -1990,7 +2365,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 #teamFilters .badge, #cityFilters .badge {
     display: inline-flex;
     align-items: center;
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem var(--item-spacing);
     font-weight: 400;
     transition: all 0.2s ease;
     margin-right: 0.5rem;
@@ -2001,7 +2376,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 /* Make badges look better when active */
 #teamFilters .badge.bg-primary, 
 #cityFilters .badge.bg-primary {
-    box-shadow: 0 3px 8px rgba(4, 61, 124, 0.2);
+    box-shadow: 0 3px var(--button-radius) rgba(4, 61, 124, 0.2);
     transform: translateY(-1px);
 }
 
@@ -2023,7 +2398,7 @@ body.mustteams-dropdown-open .select2-dropdown {
 .select2-results__option .team-logo {
     width: 24px;
     height: 24px;
-    margin-right: 8px;
+    margin-right:var(--button-radius);
     vertical-align: middle;
 }
 
@@ -2039,7 +2414,7 @@ body.mustteams-dropdown-open .select2-dropdown {
 }
 
 .select2-container--open .select2-dropdown {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 var(--button-radius) 16px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Ensure dropdowns appear above other elements */
@@ -2050,12 +2425,33 @@ body.mustteams-dropdown-open .select2-dropdown {
 /* TBD Games Grid Layout - Fixed alignment for Name-Logo-VS-Logo-Name layout */
 .tbd-match-teams-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 24px 40px 24px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 24px 40px 24px minmax(0, 1fr) auto;
   gap: 6px;
   width: 100%;
   align-items: center;
-  height: 24px; /* Fixed height to ensure consistent alignment */
-  margin-bottom: 4px; /* Add spacing below the team grid */
+  position: relative;
+}
+
+.tbd-location {
+  grid-column: 6;
+  grid-row: 1;
+  font-size: 0.75rem;
+  color: #666;
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tbd-location i {
+  color: var(--accent-color);
+  font-size: var(--icon-size-small);
+}
+
+/* Must-see badge positioning */
+.tbd-must-see-badge {
+  grid-column: 1 / span 6;
+  grid-row: 2;
 }
 
 /* Home team name */
@@ -2086,7 +2482,7 @@ body.mustteams-dropdown-open .select2-dropdown {
 .tbd-vs-container {
   grid-column: 3;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: var(--item-spacing);
   color: #777;
   width: 40px;
   min-width: 40px;
@@ -2128,67 +2524,12 @@ body.mustteams-dropdown-open .select2-dropdown {
   justify-self: center;
 }
 
-@media (max-width: 767.98px) {
-  .tbd-match-teams-grid {
-    grid-template-columns: minmax(0, 1fr) 18px 30px 18px minmax(0, 1fr);
-    gap: 4px;
-    height: 26px; /* Adjusted for mobile */
-  }
-  
-  .tbd-home-logo, .tbd-away-logo {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .tbd-vs-container {
-    width: 30px;
-    min-width: 30px;
-    font-size: 0.7rem;
-    height: 20px;
-    line-height: 20px;
-  }
-  
-  /* Make team names smaller on mobile */
-  .tbd-home-team, .tbd-away-team {
-    font-size: 0.75rem; /* Smaller text on mobile */
-    height: 20px;
-    line-height: 20px;
-  }
-}
-
-/* Extra small screens */
-@media (max-width: 374px) {
-  .tbd-match-teams-grid {
-    grid-template-columns: minmax(0, 1fr) 16px 24px 16px minmax(0, 1fr);
-    gap: 3px;
-    height: 24px; /* Adjusted for very small screens */
-  }
-  
-  .tbd-home-logo, .tbd-away-logo {
-    width: 14px;
-    height: 14px;
-  }
-  
-  .tbd-vs-container {
-    width: 24px;
-    min-width: 24px;
-    font-size: 0.65rem;
-  }
-  
-  /* Even smaller text for tiny screens */
-  .tbd-home-team, .tbd-away-team {
-    font-size: 0.7rem; /* Further reduced for very small screens */
-    height: 18px;
-    line-height: 18px;
-  }
-}
-
 #tbdGamesSection .accordion-button .d-flex {
   width: calc(100% - 20px) !important; /* Make room for the arrow */
 }
 
 #tbdGamesSection .accordion-button .badge {
-  margin-right: 8px !important; /* Add more space between badge and arrow */
+  margin-right:var(--button-radius) !important; /* Add more space between badge and arrow */
 }
 
 #tbdGamesSection .accordion-button::after {
@@ -2202,74 +2543,6 @@ body.mustteams-dropdown-open .select2-dropdown {
   padding-right: 10px;
 }
 
-/* This ensures trip results are centered when filter card is hidden */
-@media (min-width: 992px) {
-  body.has-filter-drawer #resultsContainer .row {
-    display: flex;
-    justify-content: center;
-  }
-  
-  body.has-filter-drawer #resultsContainer .col-lg-4 {
-    display: none;
-  }
-  
-  body.has-filter-drawer #resultsContainer .col-lg-8 {
-    flex: 0 0 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  /* Adjust container padding for better spacing */
-  #results .container {
-    max-width: 1300px; /* Add this to create a slightly wider container */
-  }
-  
-  /* Increase the TBD games section width to match */
-  #tbdGamesSection {
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-@media (max-width: 991px) {
-  /* Reduce padding on container for more space on medium screens */
-  #results .container {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-  
-  /* Allow trip cards to use more width on tablet */
-  .trip-card {
-    max-width: 100%;
-  }
-}
-
-/* Small screens get full-width content with minimal side margins */
-@media (max-width: 576px) {
-  #results .container {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-}
-
-/* Update media query for large screens */
-@media (min-width: 1400px) {
-  #results .container {
-    max-width: 1700px;
-  }
-  
-  /* Increase specificity for results header to ensure override */
-  .results-header.results-header {
-    max-width: 1300px !important;
-  }
-  
-  .trip-card,
-  #tbdGamesSection,
-  body.has-filter-drawer #results .col-lg-8,
-  body.has-filter-drawer #resultsContainer .col-lg-8 {
-    max-width: 1300px;
-  }
-}
 
 /* No matches message styling */
 #noFilterMatchesMessage {
@@ -2277,9 +2550,9 @@ body.mustteams-dropdown-open .select2-dropdown {
     border-left: 4px solid var(--primary-color);
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
-    padding: 1.5rem;
+    padding: var(--section-spacing);
     transition: all 0.3s ease;
-    animation: fadeInUp 0.5s ease;
+    animation: fadeIn 0.5s ease;
     max-width: 700px;
     margin: 2rem auto;
 }
@@ -2297,7 +2570,7 @@ body.mustteams-dropdown-open .select2-dropdown {
 
 #noFilterMatchesMessage p {
     color: var(--neutral-text);
-    margin-top: 0.75rem;
+    margin-top: var(--item-spacing);
 }
 
 #resetFiltersBtn {
@@ -2313,16 +2586,16 @@ body.mustteams-dropdown-open .select2-dropdown {
 
 /* Results Header Styling - Improved Design */
 .results-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: var(--theme-background);
     color: white;
     border-radius: var(--card-radius);
-    padding: 1.25rem 1.5rem;
+    padding: 1.25rem var(--section-spacing);
     margin-bottom: 1.75rem;
     box-shadow: 0 4px 15px rgba(4, 61, 124, 0.15);
     position: relative;
     overflow: hidden;
-    animation: fadeInDown 0.5s ease-out;
-    max-width: 1100px; /* Add this line */
+    animation: fadeIn 0.5s ease-out;
+    max-width: var(--container-width-default); /* Add this line */
     margin-left: auto;
     margin-right: auto;
 }
@@ -2382,7 +2655,7 @@ body.mustteams-dropdown-open .select2-dropdown {
 }
 
 .results-count {
-    font-size: 1rem;
+    font-size: var(--icon-size);
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -2397,7 +2670,7 @@ body.mustteams-dropdown-open .select2-dropdown {
     font-weight: 700;
     padding: 0.3rem 0.9rem;
     border-radius: 30px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px var(--button-radius) rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -2413,66 +2686,12 @@ body.mustteams-dropdown-open .select2-dropdown {
     pointer-events: none;
 }
 
-/* Improved Mobile adjustments */
-@media (max-width: 768px) {
-    .results-header {
-        padding: 1rem;
-    }
-    
-    .results-header-content {
-        flex-direction: row; /* Keep horizontal layout */
-        align-items: center;
-        gap: 1rem;
-    }
-    
-    .results-icon {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
-        font-size: 1.5rem;
-    }
-    
-    .results-info h2 {
-        font-size: 1.3rem;
-        margin-bottom: 0.4rem;
-    }
-    
-    .count-badge {
-        font-size: 1.1rem;
-        padding: 0.25rem 0.8rem;
-    }
-}
-
-/* Extra small mobile screens */
-@media (max-width: 380px) {
-    .results-header-content {
-        gap: 0.75rem;
-    }
-    
-    .results-icon {
-        width: 45px;
-        height: 45px;
-        min-width: 45px;
-        font-size: 1.3rem;
-    }
-    
-    .results-info h2 {
-        font-size: 1.1rem;
-        margin-bottom: 0.3rem;
-    }
-    
-    .count-badge {
-        font-size: 1rem;
-        padding: 0.2rem 0.7rem;
-    }
-}
-
 /* Enhanced Load More button */
 
 #loadMoreTrips button {
   position: relative;
   overflow: hidden;
-  padding: 1rem 2rem;
+  padding: var(--icon-size) 2rem;
   font-size: 1.1rem;
   font-weight: 500;
   border-radius: 40px;
@@ -2508,15 +2727,66 @@ body.mustteams-dropdown-open .select2-dropdown {
 }
 
 #loadMoreTrips .badge {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem var(--icon-size);
   font-size: 0.9rem;
   border-radius: 30px;
-  margin-left: 1rem;
+  margin-left: var(--icon-size);
   transition: all 0.3s ease;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
+  .trip-card:not(:last-child)::after {
+    width: 95%;
+  }
+  
+  .trip-card:not(:last-child)::before {
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  .tbd-match-teams-grid {
+    grid-template-columns: minmax(0, 1fr) 18px 30px 18px minmax(0, 1fr);
+    gap: 4px;
+    height: 26px; /* Adjusted for mobile */
+  }
+  
+  .tbd-home-logo, .tbd-away-logo {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .tbd-vs-container {
+    width: 30px;
+    min-width: 30px;
+    font-size: 0.7rem;
+    height: 20px;
+    line-height: 20px;
+  }
+  
+  /* Make team names smaller on mobile */
+  .tbd-home-team, .tbd-away-team {
+    font-size: var(--item-spacing); /* Smaller text on mobile */
+    height: 20px;
+    line-height: 20px;
+  }
+
+  .match-preview-item {
+    padding: var(--item-spacing);
+  }
+  
+  .match-teams-preview {
+    font-size: 0.9rem;
+  }
+  
+  .match-location-preview, .match-time-inline {
+    font-size: var(--icon-size-small);
+  }
+  
+  .stat-item {
+    padding: 0.25rem;
+    min-width: 110px;
+  }
+
   .trip-card {
     margin-bottom: 3rem;
   }
@@ -2531,5 +2801,102 @@ body.mustteams-dropdown-open .select2-dropdown {
     bottom: -1.75rem;
     font-size: 1.1rem;
     padding: 0 12px;
+  }
+  .results-header {
+    padding: var(--icon-size);
+  }
+
+  .results-header-content {
+      flex-direction: row; /* Keep horizontal layout */
+      align-items: center;
+      gap: var(--icon-size);
+  }
+
+  .results-icon {
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      font-size: var(--section-spacing);
+  }
+
+  .results-info h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.4rem;
+  }
+
+  .count-badge {
+      font-size: 1.1rem;
+      padding: 0.25rem var(--icon-size-small);
+  }
+
+  .trip-card, .match-item {
+    box-shadow: 0 1px 3px rgba(4, 61, 124, 0.05);
+  }
+  
+  /* Disable animations on mobile for better performance */
+  .stat-item {
+    animation: none !important;
+  }
+}
+
+
+/* This ensures trip results are centered when filter card is hidden */
+@media (min-width: var(--breakpoint-lg)) {
+  body.has-filter-drawer #resultsContainer .row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  body.has-filter-drawer #resultsContainer .col-lg-4 {
+    display: none !important;
+  }
+  
+  body.has-filter-drawer #resultsContainer .col-lg-8 {
+    flex: 0 0 100%;
+    max-width: var(--container-width-default);
+    margin: 0 auto;
+  }
+  /* Adjust container padding for better spacing */
+  #results .container {
+    max-width: var(--container-width-large); /* Add this to create a slightly wider container */
+  }
+  
+  /* Increase the TBD games section width to match */
+  #tbdGamesSection {
+    max-width: var(--container-width-default);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: var(--breakpoint-lg)) {
+  /* Reduce padding on container for more space on medium screens */
+  #results .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  /* Allow trip cards to use more width on tablet */
+  .trip-card {
+    max-width: 100%;
+  }
+}
+
+/* Update media query for large screens */
+@media (min-width: var(--breakpoint-xxl)) {
+  #results .container {
+    max-width: 1700px;
+  }
+  
+  /* Increase specificity for results header to ensure override */
+  .results-header.results-header {
+    max-width: var(--container-width-large) !important;
+  }
+  
+  .trip-card,
+  #tbdGamesSection,
+  body.has-filter-drawer #results .col-lg-8,
+  body.has-filter-drawer #resultsContainer .col-lg-8 {
+    max-width: var(--container-width-large);
   }
 }

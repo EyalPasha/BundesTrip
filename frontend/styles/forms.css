@@ -89,3 +89,47 @@ label .text-danger {
     margin-top: 0.25rem;
     font-size: 0.875rem;
 }
+
+/* Stable sizing for form elements to prevent layout shifts */
+.form-control, 
+.form-select,
+input.flatpickr-input,
+.select2-container .select2-selection--single,
+.select2-container .select2-selection--multiple {
+  min-height: 38px !important;
+  line-height: 1.5;
+  font-size: 0.9rem !important;
+  font-family: inherit !important;
+  box-sizing: border-box;
+}
+
+/* Consistent font styling across all states */
+.form-select option,
+.select2-results__option,
+.select2-selection__rendered,
+.select2-selection__placeholder {
+  font-family: inherit !important;
+  font-size: 0.9rem !important;
+}
+
+/* Keep the layout stable during loading */
+.search-card .form-section {
+    min-height: 42px; /* Minimum height to prevent collapse during loading */
+}
+
+/* Prevent layout shift when switching between section states */
+.form-section-content {
+    min-height: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding-top 0.3s ease, padding-bottom 0.3s ease;
+}
+
+.form-section-content.show {
+    max-height: 300px; /* Adjust as needed based on your content height */
+    padding-top: 0.4rem;
+    padding-bottom: 0.15rem;
+    animation: fadeInSection 0.4s ease forwards;
+}
