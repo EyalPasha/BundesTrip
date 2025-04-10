@@ -234,13 +234,27 @@ def load_games(file_path: str) -> tuple:
             # Parse with year already included
             date_main = datetime.strptime(date_str, "%d %B %Y")
             
+            # Check for explicit location, fall back to home team's location
+            location = None
+            if "Location" in df.columns:
+                location_value = row["Location"]
+                if pd.notna(location_value) and str(location_value).strip() not in ["", "TBD", "Unknown"]:
+                    location = str(location_value).strip()
+            
+            # If no explicit location or invalid location, use home team's location
+            if not location:
+                if row["Home Team"].strip() == "TBD":
+                    location = "Unknown"
+                else:
+                    location = map_team_to_hbf(row["Home Team"])
+            
             game = Game(
                 league=row["League"].strip(),
                 date=date_main,
                 time=row["Time"],
                 home_team=row["Home Team"].strip(),
                 away_team=row["Away Team"].strip(),
-                hbf_location=map_team_to_hbf(row["Home Team"])
+                hbf_location=location
             )
             
             if str(row["Time"]).lower() == "tbd":

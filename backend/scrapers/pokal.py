@@ -5,8 +5,8 @@ import time
 import random
 import re
 
-START_MD         = 1
-END_MD           = 7   # so range(1,7) => 1..6
+START_MD         = 1 # starts on 1, ends on 6 (for 6 need to write 7)
+END_MD           = 7   
 file_path = r"C:\Users\Eyalp\Desktop\Bundes\backend\scrapers\dfb_pokal_games.txt"
 
 # We want only home teams if their trailing league is in:
@@ -33,23 +33,43 @@ time_pattern = re.compile(r"^\d{1,2}:\d{2}$")
 # We will use group(1) as the final “pure” team name.
 league_pattern = re.compile(r"^(.*?)(Bundesliga|2\. Bundesliga|3\. Liga)$", flags=re.IGNORECASE)
 
-# Prepare a session
-session = requests.Session()
-session.headers.update({
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/110.0.0.0 Safari/537.36"
-    ),
-    "Accept": (
-        "text/html,application/xhtml+xml,application/xml;"
-        "q=0.9,image/avif,image/webp,*/*;q=0.8"
-    ),
-    "Accept-Language": "en-US,en;q=0.9,de;q=0.8",
-    "Connection": "keep-alive",
-    "Cache-Control": "no-cache",
-    "Pragma": "no-cache"
-})
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0"
+]
+
+def get_fresh_session():
+    session = requests.Session()
+    session.headers.update({"User-Agent": random.choice(USER_AGENTS)})
+    session.headers.update({
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9,de;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br", 
+        "Referer": "https://www.kicker.de/",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "same-origin",
+        "Upgrade-Insecure-Requests": "1"
+    })
+    return session
+
+def update_headers_for_request(session):
+    session.headers.update({"User-Agent": random.choice(USER_AGENTS)})
+    session.headers.update({
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9,de;q=0.8",
+        "Cache-Control": "max-age=0",
+        "Connection": "keep-alive"
+    })
+
+# Reset session every 5 requests
+request_counter = 0
+MAX_REQUESTS_PER_SESSION = 5
+
+# Initialize session once
+session = get_fresh_session()
 
 def fix_date_string(date_str: str) -> str:
     """
@@ -72,7 +92,16 @@ for matchday in range(START_MD, END_MD):
     print(f"\n--- {COMPETITION_NAME}, matchday {matchday} ---")
     print(f"URL: {url}")
 
-    time.sleep(random.uniform(1, 3))
+    time.sleep(random.uniform(5, 10))  # 5-10 second delay
+
+    request_counter += 1
+    if request_counter >= MAX_REQUESTS_PER_SESSION:
+        print("Creating fresh session...")
+        session = get_fresh_session()
+        request_counter = 0
+    else:
+        # Just update headers if we're keeping the same session
+        update_headers_for_request(session)
 
     try:
         resp = session.get(url, timeout=10)
