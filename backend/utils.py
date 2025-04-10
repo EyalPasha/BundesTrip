@@ -1250,12 +1250,16 @@ def enhance_trip_planning_for_any_start(start_location, trip_duration, max_trave
     all_potential_trips = []
     trip_results_by_start = {}
     
+    # Extract min_games from other_params with default of 2
+    min_games = other_params.get('min_games', 2)
+    
+    # Create a copy of other_params without 'min_games' to avoid duplicate parameter error
+    filtered_params = {k: v for k, v in other_params.items() if k != 'min_games'}
+    
     for potential_start in potential_starts:
         try:
-            # Extract min_games from other_params with default of 2
-            min_games = other_params.get('min_games', 2)
             trip_result = plan_trip(potential_start, trip_duration, max_travel_time, 
-                                   games, train_times, min_games=min_games, **other_params)
+                                   games, train_times, min_games=min_games, **filtered_params)
             
             # Store the entire result to preserve TBD games and other metadata
             trip_results_by_start[potential_start] = trip_result
