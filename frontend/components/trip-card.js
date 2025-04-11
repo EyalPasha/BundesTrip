@@ -97,6 +97,7 @@ function renderTripCard(group, index, tripContext = {}) {
     tripCard.dataset.teams = defaultVariant.teams?.join(',') || '';
     tripCard.dataset.cities = defaultVariant.cities?.join(',') || '';
     tripCard.dataset.tripGroup = JSON.stringify(group);
+    tripCard.dataset.index = index;
     
     // Trip header - enhanced with more information
     const header = document.createElement('div');
@@ -337,11 +338,11 @@ function renderTripCard(group, index, tripContext = {}) {
                         </div>
                     `;
                 }).join('')}
-                ${allMatches.length > 3 ? `
-                    <div class="more-matches-indicator">
-                        +${allMatches.length - 3} more matches
-                    </div>
-                ` : ''}
+                    ${allMatches.length > 3 ? `
+                        <button class="more-matches-button" data-card-index="${index}">
+                            <i class="fas fa-chevron-down"></i> Show all ${allMatches.length} matches
+                        </button>
+                    ` : ''}
             </div>
         </div>
     ` : ''}
@@ -582,6 +583,101 @@ function renderTripCard(group, index, tripContext = {}) {
         } else {
             detailsSection.classList.add('collapse');
             this.innerHTML = '<i class="fas fa-chevron-down"></i> Show Details';
+        }
+    });
+}
+
+function initializeMatchesExpander() {
+    // Delegate click event to handle dynamically added buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('more-matches-button') || 
+            event.target.closest('.more-matches-button')) {
+            
+            const button = event.target.classList.contains('more-matches-button') ? 
+                event.target : event.target.closest('.more-matches-button');
+                
+            const cardIndex = button.dataset.cardIndex;
+            const card = document.querySelector(`.trip-card[data-index="${cardIndex}"]`);
+            
+            if (!card) return;
+            
+            const tripData = JSON.parse(card.dataset.tripGroup || '{}');
+            const matchList = button.closest('.match-preview').querySelector('.match-list');
+            
+            if (!matchList || !tripData) return;
+            
+            if (button.classList.contains('expanded')) {
+                // Collapse: Show only first 3 matches
+                const allMatchItems = matchList.querySelectorAll('.match-preview-item');
+                allMatchItems.forEach((item, idx) => {
+                    if (idx >= 3) item.classList.add('d-none');
+                });
+                button.innerHTML = `<i class="fas fa-chevron-down"></i> Show all ${allMatchItems.length} matches`;
+                button.classList.remove('expanded');
+            } else {
+                // Expand: Show all matches
+                const allMatches = [];
+                tripData.base_trip.Itinerary.forEach(day => {
+                    if (day.matches && day.matches.length > 0) {
+                        day.matches.forEach(match => {
+                            const { time, cleanMatch } = extractTimeFromMatch(match.match);
+                            allMatches.push({
+                                match: cleanMatch,
+                                matchTime: time,
+                                date: day.day,
+                                location: match.location.replace(' hbf', ''),
+                                contains_must_team: match.contains_must_team || false
+                            });
+                        });
+                    }
+                });
+                
+                // Remove any existing "more" items beyond the first 3
+                const existingItems = matchList.querySelectorAll('.match-preview-item');
+                existingItems.forEach((item, idx) => {
+                    if (idx >= 3) item.remove();
+                });
+                
+                // Add all matches beyond the first 3
+                allMatches.slice(3).forEach(match => {
+                    const teams = match.match.split(' vs ');
+                    const homeTeam = teams[0] || '';
+                    const awayTeam = teams[1] || '';
+                    
+                    // Extract just the date part (remove day name)
+                    const matchDate = match.date.replace(/^.+,\s*/, '');
+                    
+                    const matchItem = document.createElement('div');
+                    matchItem.className = `match-preview-item ${match.contains_must_team ? 'must-match' : ''}`;
+                    matchItem.innerHTML = `
+                        <div class="match-content-grid">
+                            <div class="match-location-side">
+                                <i class="fas fa-map-marker-alt"></i> ${match.location}
+                            </div>
+                            <div class="match-teams-preview">
+                                <strong>${homeTeam}</strong>
+                                <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo-small" alt="${homeTeam} logo">
+                                <span class="vs-text">vs</span>
+                                <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo-small" alt="${awayTeam} logo">
+                                <strong>${awayTeam}</strong>
+                            </div>
+                            <div class="match-datetime-side">
+                                <span class="match-date-inline">
+                                    <i class="fas fa-calendar-day"></i> ${matchDate}
+                                </span>
+                                ${match.matchTime ? `
+                                <span class="match-time-data">
+                                    <i class="fas fa-clock"></i> ${match.matchTime}
+                                </span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    matchList.appendChild(matchItem);
+                });
+                
+                button.innerHTML = `<i class="fas fa-chevron-up"></i> Show fewer matches`;
+                button.classList.add('expanded');
+            }
         }
     });
 }
@@ -1219,11 +1315,12 @@ function renderItineraryForVariant(container, group, variantIndex) {
                         ? 'match-item must-team' 
                         : 'match-item';
                     
-                    matchItem.innerHTML = `
+                        matchItem.innerHTML = `
                         <div class="match-header">
                             <div class="match-teams">
-                                <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo" alt="${homeTeam} logo">
+                                <!-- Updated format: team name, logo, vs, logo, team name -->
                                 ${homeTeam}
+                                <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo" alt="${homeTeam} logo">
                                 <span class="vs-text">vs</span>
                                 <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo" alt="${awayTeam} logo">
                                 ${awayTeam}
@@ -1460,4 +1557,4 @@ document.querySelectorAll('.toggle-details-button').forEach(button => {
 });
 
 // Export the functions so they can be used by other modules
-export { renderTripCard, renderTbdGames, extractHotelSummary, renderTravelSegments, renderAirportDistances, renderItineraryForVariant };
+export { renderTripCard, initializeMatchesExpander, renderTbdGames, extractHotelSummary, renderTravelSegments, renderAirportDistances, renderItineraryForVariant };

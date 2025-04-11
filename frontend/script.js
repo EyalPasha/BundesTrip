@@ -24,6 +24,9 @@ import { initPreferredLeaguesSelect } from './services/select2-init.js';
 // Import cancellation function
 import { cancelTripRequest } from './services/api.js';
 
+// Add this import at the top with your other imports
+import { initializeMatchesExpander } from './components/trip-card.js';
+
 // Create a global DOM object to share references between modules
 window.DOM = {};
 
@@ -76,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("App initialization error:", error);
             showErrorToast("Failed to initialize application. Please refresh the page.");
         });
+    initializeMatchesExpander();
 });
 
 // Main application initialization flow

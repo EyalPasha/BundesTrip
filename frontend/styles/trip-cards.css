@@ -1132,10 +1132,44 @@ font-weight: 500;
   gap: var(--item-spacing);
 }
 
+/* Properly fixed match teams layout with guaranteed spacing */
 .match-teams {
+  display: flex;
+  align-items: center;
+  width: auto;
+  max-width: 100%;
   font-size: var(--icon-size);
   color: var(--neutral-text);
   font-weight: 600;
+  height: 28px;
+  gap: 12px !important; /* Force 8px spacing between ALL elements */
+}
+
+/* Remove any existing margins that might cause double spacing */
+.match-teams > * {
+  margin: 0 !important;
+}
+
+/* Set consistent size for team logos */
+.match-teams .team-logo {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* VS text styling - no margins needed with flex gap */
+.match-teams .vs-text {
+  color: #777;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* Team logos - consistent size */
+.match-teams .team-logo {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .match-meta {
@@ -2747,6 +2781,56 @@ body.mustteams-dropdown-open .select2-dropdown {
   border-radius: 30px;
   margin-left: var(--icon-size);
   transition: all 0.3s ease;
+}
+
+
+/* More matches button styling */
+.more-matches-button {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--secondary-color);
+  border-top: 1px dashed var(--divider-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.more-matches-button:hover {
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+/* Improved expanded state styling */
+.more-matches-button.expanded {
+  background: linear-gradient(to right, rgba(48, 104, 204, 0.08), rgba(48, 104, 204, 0.12), rgba(48, 104, 204, 0.08));
+  color: var(--primary-color);
+  font-weight: 500;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px dashed var(--divider-color);
+  box-shadow: inset 0 1px 3px rgba(4, 61, 124, 0.03);
+}
+
+.more-matches-button.expanded:hover {
+  background: linear-gradient(to right, rgba(48, 104, 204, 0.12), rgba(48, 104, 204, 0.16), rgba(48, 104, 204, 0.12));
+}
+
+.more-matches-button i {
+  transition: transform 0.2s ease;
+  margin-right: 0.25rem;
+}
+
+.more-matches-button.expanded i {
+  transform: rotate(180deg);
+}
+
+.match-preview-item.d-none {
+  display: none;
 }
 
 @media (max-width: var(--breakpoint-md)) {

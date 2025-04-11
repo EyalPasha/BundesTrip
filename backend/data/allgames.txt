@@ -1,5 +1,5 @@
 League, Date, Time, Day, Home Team, Away Team, Location
-2bundesliga, 11 April 2025, TBD, Friday, SpVgg Greuther Fürth, 1. FC Köln, Fürth hbf
+2bundesliga, 11 April 2025, 17:30, Friday, SpVgg Greuther Fürth, 1. FC Köln, Fürth hbf
 2bundesliga, 11 April 2025, 17:30, Friday, Hamburger SV, Eintracht Braunschweig, Hamburg hbf
 bundesliga, 11 April 2025, 19:30, Friday, VfL Wolfsburg, RB Leipzig, Wolfsburg hbf
 3-liga, 11 April 2025, 20:00, Friday, SV Wehen Wiesbaden, FC Saarbrücken, Wiesbaden hbf
