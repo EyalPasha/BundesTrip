@@ -95,8 +95,8 @@
   margin-bottom: 3.5rem !important;
   border: none;
   border-radius: var(--card-radius);
-  box-shadow: var(--card-shadow);
-  background: var(--card-bg);
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+  box-shadow: var(--card-shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.9);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   max-width: var(--container-width-default);
   margin-left: auto;
@@ -105,6 +105,7 @@
   z-index: 1;
   transition: all 0.4s ease-out;
 }
+
 
 .trip-card.expanded {
   margin-bottom: 4rem !important;
@@ -205,11 +206,14 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 /* ===== Reduce header components size ===== */
 .trip-header {
-  padding: 1.25rem;
-  background: linear-gradient(135deg, #ffffff, #f8fafc);
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(248,250,252,0.95) 100%);
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
   border-bottom: none;
   position: relative;
+  overflow: hidden;
 }
+
 
 .trip-details {
   background: var(--card-bg);
@@ -414,13 +418,36 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   gap: 0.5rem;
   width: calc(100% - var(--section-spacing));
   margin: var(--item-spacing);
-  box-shadow: 0 3px var(--button-radius) rgba(4, 61, 124, 0.15);
+  box-shadow: 0 4px 12px rgba(4, 61, 124, 0.2),
+  inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: relative;
+  overflow: hidden;
   width: calc(100% - 2rem) !important;
   padding: 0.75rem !important;
   font-size: 0.95rem !important;
   transition: all 0.3s ease;
   z-index: 2;
+}
+
+.toggle-details-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  transition: all 1s ease;
+}
+
+.toggle-details-button:hover::after {
+  left: 100%;
 }
 
 .toggle-details-button:hover {
@@ -506,15 +533,15 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 }
 
 .section-title {
-  color: var(--primary-color);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0;
-  font-size: 1rem !important;
-  padding-left: 0.25rem !important;
   position: relative;
+  padding-left: 1rem;
+  border-left: 3px solid var(--secondary-color);
+  background: linear-gradient(90deg, var(--primary-light), transparent);
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
 }
+
 
 /* Make tab navigation sticky for easier access */
 .nav-tabs {
@@ -529,7 +556,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 /* ===== Stat Items ===== */
 /* Update variant summary to improve the hotel stays display */
 .variant-summary {
-  padding: 1.2rem !important;
+  padding: 0.8rem !important;
   margin: 0.25rem 0 !important;
   border-radius: var(--card-radius);
   background: white;
@@ -537,6 +564,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   box-shadow: 0 2px 8px rgba(4, 61, 124, 0.04) !important;
   position: relative;
 }
+
 
 .trip-summary-header {
   display: flex;
@@ -840,9 +868,15 @@ i.fa-map-marker-alt {
   top: 0;
   bottom: 0;
   left: 15px;
-  width: 2px;
-  background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
-  opacity: 0.3;
+  width: 2.5px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--primary-color) 0px,
+    var(--secondary-color) 70px,
+    var(--primary-color) 140px
+  );
+  opacity: 0.4;
+  border-radius: 3px;
 }
 
 /* Ensure the timeline ends nicely without looking cut off */
@@ -1079,15 +1113,18 @@ font-weight: 500;
 
 /* Match items */
 .match-item {
-  background-color: white;
   border-radius: var(--card-radius);
-  padding: var(--icon-size);
-  margin-bottom: var(--icon-size);
-  margin-left: 2rem;
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
   border: 1px solid var(--border-color);
   box-shadow: 0 3px 10px rgba(4, 61, 124, 0.05);
-  transition: var(--transition-standard);
+  transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
+  border-left: 4px solid var(--neutral-light);
+}
+
+.match-item.must-team::before {
+  background: none;
 }
 
 .match-location-container {
@@ -1114,8 +1151,9 @@ font-weight: 500;
 }
 
 .match-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(4, 61, 124, 0.1);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 5px 15px rgba(4, 61, 124, 0.15);
+  border-color: rgba(48, 104, 204, 0.3);
 }
 
 .match-item.must-team {
@@ -1200,11 +1238,18 @@ font-weight: 500;
 
 .must-see-tag {
   background: linear-gradient(135deg, var(--warning-color), #ffb74d);
-  color: white;
-  border-radius: 4px;
-  padding: 0.25rem var(--item-spacing);
-  font-size: var(--item-spacing);
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
   font-weight: 600;
+  box-shadow: 0 2px 5px rgba(255, 149, 0, 0.3);
+  color: #fff;
+  transform: translateY(0);
+  transition: all 0.2s ease;
+}
+
+.must-see-tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(255, 149, 0, 0.4);
 }
 
 /* Add new match time display styles */
@@ -2119,7 +2164,6 @@ font-weight: 500;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color) 0%, #0055cc 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -2127,9 +2171,29 @@ font-weight: 500;
   font-size: var(--icon-size);
   font-weight: bold;
   z-index: 2;
-  box-shadow: 0 2px var(--button-radius) rgba(0, 0, 0, 0.15);
+  background: conic-gradient(from 135deg, var(--primary-color), #0055cc, var(--primary-color));
   border: 2px solid white;
+  box-shadow: 0 3px 10px rgba(4, 61, 124, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Add subtle highlight to match team names */
+.match-teams > *:not(.team-logo):not(.vs-text) {
+  position: relative;
+  z-index: 1;
+}
+
+.match-teams > *:not(.team-logo):not(.vs-text)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(to right, transparent, var(--secondary-color), transparent);
+  opacity: 0.15;
+  z-index: -1;
 }
 
 /* Day header hover effect */
@@ -2281,7 +2345,7 @@ font-weight: 500;
   justify-self: center;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 24px 40px 24px minmax(0, 1fr);
-  gap: 4px;
+  gap: 8px !important; /* Increased from 4px to match the 8px spacing */
   align-items: center;
   height: 28px;
   width: auto;
@@ -2289,11 +2353,18 @@ font-weight: 500;
   margin: 0;
 }
 
+.match-teams-preview strong {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
 .match-teams-preview .team-logo-small {
   width: 20px;
   height: 20px;
   object-fit: contain;
   display: block;
+  margin: 0 auto !important;
 }
 
 .match-info-inline {
@@ -2370,6 +2441,7 @@ font-weight: 500;
   color: #777;
   width: 100%;
   justify-self: center;
+  margin: 0 !important;
 }
 
 .match-datetime-side {
