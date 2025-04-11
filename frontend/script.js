@@ -21,6 +21,9 @@ import { initFilterDrawer } from './services/filters.js'; // Add this import
 
 import { initPreferredLeaguesSelect } from './services/select2-init.js';
 
+// Import cancellation function
+import { cancelTripRequest } from './services/api.js';
+
 // Create a global DOM object to share references between modules
 window.DOM = {};
 
@@ -520,9 +523,29 @@ function cleanupLoadingAnimation() {
   }
 }
 
-// Return to search function
+// Update the returnToSearch function to use the cancellation API
 function returnToSearch() {
     cleanupLoadingAnimation();
+    
+    // Cancel the current request if exists
+    if (window.currentRequestId) {
+        cancelTripRequest(window.currentRequestId)
+            .then(result => {
+                if (result.success) {
+                    console.log("Trip request cancelled successfully");
+                    // Remove any notification code here
+                } else {
+                    console.warn("Failed to cancel trip request:", result.message);
+                }
+            })
+            .catch(err => {
+                console.warn("Error during cancellation:", err);
+            })
+            .finally(() => {
+                // Clear the request ID regardless of outcome
+                window.currentRequestId = null;
+            });
+    }
     
     // Reset trip results pagination state
     window.tripResults = null;
@@ -541,7 +564,14 @@ function returnToSearch() {
     
     if (loadingAnimation) loadingAnimation.classList.remove('d-none');
     if (loadingMessages) loadingMessages.classList.remove('d-none');
-    if (cancelButton) cancelButton.classList.remove('d-none');
+    
+    // Reset cancel button state
+    if (cancelButton) {
+        cancelButton.classList.remove('d-none');
+        cancelButton.disabled = false;
+        cancelButton.innerHTML = '<i class="fas fa-times-circle"></i> Cancel Search';
+    }
+    
     if (noResultsMessage) noResultsMessage.classList.add('d-none');
     
     // Hide the entire results section to prevent white space

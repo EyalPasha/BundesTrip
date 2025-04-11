@@ -10,7 +10,15 @@ import { showListView } from '../services/ui-helpers.js';
  * @param {boolean} hideLoadingOnNoResults - Indicates whether to keep the loading container visible
  */
 // Updated renderResults function with pagination support
+// Update renderResults to handle cancelled responses
+// Update the renderResults function to properly show TBD games
 function renderResults(response, hideLoadingOnNoResults = true) {
+    // Check for cancelled flag in response
+    if (response.cancelled) {
+        console.log("Rendering cancelled response");
+        return;
+    }
+    
     const tripResults = document.getElementById('tripResults');
     
     // Clear previous results
@@ -23,87 +31,95 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         document.body.classList.add('has-filter-drawer');
     }
     
-    // Hide the filter card column completely - FIXED SELECTOR
-    const filterCardColumn = document.querySelector('#results .col-lg-4');
-    if (filterCardColumn) {
-        filterCardColumn.style.display = 'none';
-    }
-
     // Initialize the window.tripResults pagination state
     if (response.trip_groups && response.trip_groups.length > 0) {
-        // Store all trips for pagination
+        // Initialize pagination state with required properties
         window.tripResults = {
-            allTrips: response.trip_groups || [],
+            currentIndex: 0,
+            batchSize: 5,
+            allTrips: response.trip_groups,
+            displayedTrips: [],
+            filterStates: {},
+            context: response,
+            // Add these critical missing properties:
             renderedCount: 0,
-            batchSize: 3, // Display 3 trips per batch
-            hasMoreTrips: true
+            hasMoreTrips: response.trip_groups.length > 0,
+            originalTrips: [...response.trip_groups] // Store original copy for filters
         };
-
-        // IMPORTANT CHANGE: Import and initialize filter drawer explicitly
-        // This ensures the filter button is created even if module state is confused
-        import('../services/filters.js').then(filtersModule => {
-            if (typeof filtersModule.initFilterDrawer === 'function') {
-                // Force re-initialization of the filter drawer
-                filtersModule.initFilterDrawer();
-            }
-        }).catch(err => {
-            console.error("Error initializing filter drawer:", err);
-        });
+        
+        // Store trip context for rendering
+        window.tripContext = {
+            tripDuration: response.trip_duration,
+            startLocation: response.start_location,
+            startDate: response.start_date
+        };
+        
+        console.log(`Initialized trip results with ${response.trip_groups.length} trip groups`);
     } else {
         window.tripResults = null;
+        window.tripContext = null;
     }
     
     // Check if we have both no trips AND TBD games - this is our special case
     const noTrips = !response.trip_groups || response.trip_groups.length === 0;
-    const hasTbdGames = response.tbd_games && response.tbd_games.length > 0;
+    // IMPORTANT: Give the TBD games its own variable and check for either tbd_games or TBD_Games
+    // as the API might use either format (inconsistency in naming)
+    const tbdGames = response.tbd_games || response.TBD_Games || [];
+    
+    // Log the raw TBD games data for debugging
+    console.log("Raw TBD games data:", tbdGames);
+    const hasTbdGames = tbdGames && tbdGames.length > 0;
+    
+    console.log("TBD games check:", hasTbdGames ? `Found ${tbdGames.length} TBD games` : "No TBD games");
+
+    // Show TBD games if available (regardless of whether we have trips)
+    if (hasTbdGames) {
+        console.log("Rendering TBD games section with:", tbdGames);
+        renderTbdGames(tbdGames, response.must_teams || []);
+    }
     
     // If we have no trips but have TBD games, show the animation instead of the TBD games
     if (noTrips && hasTbdGames) {
-        // Create the animation container
-        const noTripsAnimation = document.createElement('div');
-        noTripsAnimation.className = 'custom-loading-container fade-in';
-        noTripsAnimation.style.position = 'relative'; // Not fixed, relative to container
-        noTripsAnimation.style.minHeight = '400px'; // Give it some height
-        noTripsAnimation.style.backgroundColor = 'transparent'; // Make background transparent
-        noTripsAnimation.style.backdropFilter = 'none'; // Remove blur
+        console.log("Showing TBD games in place of no results");
         
-        noTripsAnimation.innerHTML = `
-            <div class="loading-content">
-                <div class="no-results-message">
-                    <i class="fas fa-info-circle"></i>
-                    <h4>No Trips Available</h4>
-                    <p>We couldn't find any trips matching your criteria.</p>
-                    <p>Try adjusting your search filters for better results.</p>
+        // Display the TBD games message
+        const loadingAnimation = document.getElementById('loadingAnimation');
+        const loadingMessages = document.getElementById('loadingMessages');
+        const cancelButton = document.getElementById('cancelSearch');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        
+        if (loadingAnimation) loadingAnimation.classList.add('d-none');
+        if (loadingMessages) loadingMessages.classList.add('d-none');
+        if (cancelButton) cancelButton.classList.add('d-none');
+        
+        // Add content to noResultsMessage
+        if (noResultsMessage) {
+            noResultsMessage.innerHTML = `
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">No scheduled games found for your trip dates</h4>
+                    <p>However, we found ${response.tbd_games.length} unscheduled games that might be available during your trip once times are confirmed:</p>
+                    <ul class="list-unstyled tbd-games-list">
+                        ${response.tbd_games.map(game => `
+                            <li class="mb-2">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-warning text-dark me-2">TBD</span>
+                                    <div>
+                                        <strong>${game.match}</strong><br>
+                                        <small>${game.date} at ${game.location.replace(' hbf', '')}</small>
+                                    </div>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <p class="mb-0">Check back later for updated schedules.</p>
                 </div>
-            </div>
-        `;
-        
-        tripResults.appendChild(noTripsAnimation);
-        
-        // Don't render the TBD games - pass true to indicate noTripsFound
-        if (hasTbdGames) {
-            // We're explicitly NOT rendering the TBD games here
-            // renderTbdGames(response.tbd_games, response.must_teams || [], true);
+            `;
+            noResultsMessage.classList.remove('d-none');
         }
-        
-        return; // Exit early
-    }
-    
-    // Show TBD games if available (normal case - we have trips)
-    if (hasTbdGames) {
-        renderTbdGames(response.tbd_games, response.must_teams || [], false);
     }
     
     // Process trip groups (if any)
     if (!noTrips) {
-        // Hide the filter card since we're using the drawer now
-        const filterResultsCard = document.getElementById('filterResultsCard');
-        if (filterResultsCard) {
-            filterResultsCard.style.display = 'none';
-        }
-        
-        // Inside the renderResults function where you handle trip groups
-        
         // Create an enhanced results header
         const resultsCountContainer = document.getElementById('resultsCountContainer');
         if (resultsCountContainer) {
@@ -131,18 +147,41 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         // Generate filters based on match data
         renderFilters(response.trip_groups);
         
-        // Store trip context for all rendered trips
-        window.tripContext = {
-            startLocation: response.start_location,
-            startDate: response.start_date,
-            maxTravelTime: response.max_travel_time,
-            tripDuration: response.trip_duration,
-            preferredLeagues: response.preferred_leagues,
-            mustTeams: response.must_teams
-        };
+        // Hide the filter card since we're using the drawer now
+        const filterResultsCard = document.getElementById('filterResultsCard');
+        if (filterResultsCard) {
+            filterResultsCard.style.display = 'none';
+        }
         
-        // Render first batch of trips instead of all at once
-        renderNextBatch();
+        // IMPORTANT: Force re-initialize filter drawer and buttons for subsequent searches
+        setTimeout(() => {
+            import('../services/filters.js').then(module => {
+                if (typeof module.initFilterDrawer === 'function') {
+                    module.initFilterDrawer();
+                    
+                    // Make sure the filter button is visible
+                    const filterButton = document.querySelector('.filter-button');
+                    if (filterButton) {
+                        filterButton.classList.remove('d-none');
+                        filterButton.style.display = 'flex';
+                        
+                        // Update filter count if needed
+                        const filterCount = document.querySelector('.filter-count');
+                        if (filterCount) {
+                            const activeFilterCount = Object.values(window.activeFilters || {})
+                                .filter(value => value !== null && value !== undefined).length;
+                            
+                            if (activeFilterCount > 0) {
+                                filterCount.textContent = activeFilterCount;
+                                filterCount.classList.remove('d-none');
+                            } else {
+                                filterCount.classList.add('d-none');
+                            }
+                        }
+                    }
+                }
+            });
+        }, 100);
         
         // Enable sorting and list-view controls once results are displayed
         const sortingControl = document.getElementById('sortResults');
@@ -155,55 +194,30 @@ function renderResults(response, hideLoadingOnNoResults = true) {
             viewListBtn.classList.remove('d-none');
             viewListBtn.onclick = () => showListView(response.trip_groups);
         }
+
+        // Render first batch
+        renderNextBatch();
     } else {
-        // Hide filter card if no results
-        const filterResultsCard = document.getElementById('filterResultsCard');
-        if (filterResultsCard) {
-            filterResultsCard.classList.add('d-none');
+        // Handle no results message
+        if (hideLoadingOnNoResults && !hasTbdGames) {
+            // Display no results message only if there are no TBD games
+            const loadingAnimation = document.getElementById('loadingAnimation');
+            const loadingMessages = document.getElementById('loadingMessages');
+            const cancelButton = document.getElementById('cancelSearch');
+            const noResultsMessage = document.getElementById('noResultsMessage'); 
+            
+            if (loadingAnimation) loadingAnimation.classList.add('d-none');
+            if (loadingMessages) loadingMessages.classList.add('d-none');
+            if (cancelButton) cancelButton.classList.add('d-none');
+            if (noResultsMessage) noResultsMessage.classList.remove('d-none');
         }
     }
     
-    // Rest of your existing code for handling messages, loading state, etc.
-    // Handle error messages or no results
+    // Handle error messages
     if (response.message) {
-        const messageContainer = document.getElementById('messageContainer') || 
-            document.createElement('div');
-        
-        if (!messageContainer.id) {
-            messageContainer.id = 'messageContainer';
-            messageContainer.className = 'alert alert-info mb-4';
-            if (tripResults.firstChild) {
-                tripResults.insertBefore(messageContainer, tripResults.firstChild);
-            } else {
-                tripResults.appendChild(messageContainer);
-            }
-        }
-        
-        messageContainer.textContent = response.message;
+        showInfoToast(response.message);
     }
-    
-    // Only process loading state if we have results OR if we're explicitly told to hide loading
-    const hasResults = (response.trip_groups && response.trip_groups.length > 0) || 
-                       (response.tbd_games && response.tbd_games.length > 0);
-                       
-    if (hasResults || hideLoadingOnNoResults) {
-        // Only hide loading if we have results or are explicitly told to
-        if (window.DOM && window.DOM.loadingIndicator) {
-            window.DOM.loadingIndicator.classList.add('d-none');
-        }
-        
-        // Enable scrolling
-        document.body.classList.remove('no-scroll');
-    }
-    
-    // Remove any "no scheduled games" messages that would be redundant
-    const messageContainer = document.getElementById('messageContainer');
-    if (messageContainer) {
-        if (messageContainer.textContent.includes("No scheduled games found")) {
-            messageContainer.remove();
-        }
-    }
-    
+
     // Initialize tooltips on newly rendered elements
     if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
         const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -259,10 +273,21 @@ function renderNextBatch() {
     if (!state || !state.allTrips) return;
 
     const resultsContainer = document.getElementById('tripResults');
+    if (!resultsContainer) {
+        console.error("Trip results container not found");
+        return;
+    }
+    
+    // Ensure renderedCount is initialized
+    if (state.renderedCount === undefined) {
+        state.renderedCount = 0;
+    }
     
     // Calculate the end index for this batch
     const start = state.renderedCount;
     const end = Math.min(start + state.batchSize, state.allTrips.length);
+    
+    console.log(`Rendering trips ${start + 1} to ${end} of ${state.allTrips.length}`);
     
     // Track the newly rendered cards to filter them
     const newlyRenderedCards = [];

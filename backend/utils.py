@@ -1,3 +1,4 @@
+import asyncio
 import functools
 import pandas as pd
 from datetime import datetime, timedelta
@@ -6,8 +7,9 @@ from scrapers.synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, thir
 from typing import Optional, List, Dict, Tuple
 import copy
 from config import TRAIN_TIMES_FILE, DEFAULT_CITIES
+from common import is_request_cancelled, get_processed_start_date
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("trip-planner")
 
 # ────────────────────────────────
 # 🛠️ Helper Functions
@@ -966,70 +968,6 @@ def is_must_team_match(team_name: str, must_teams_set: set) -> bool:
     
     return False
 
-def get_processed_start_date(start_date: Optional[str] = None) -> Tuple[datetime, str]:
-    """Process and validate the start date."""
-    if start_date:
-        try:
-            # Parse date with year included
-            parsed_date = datetime.strptime(start_date, "%d %B %Y")
-            # Return without year for display
-            return parsed_date, f"{parsed_date.day} {parsed_date.strftime('%B')}"
-        except ValueError:
-            raise ValueError("Invalid start date format. Use '28 March 2025' format.")
-    else:
-        today = datetime.now()
-        next_year = today.year + 1  # Use next year for default dates
-        start_with_year = today.replace(year=next_year)
-        return start_with_year, today.strftime("%d %B")
-
-def process_tbd_games(tbd_games: list, start_date: datetime, trip_duration: int, 
-                    preferred_leagues: list, potential_locations: set,
-                    must_teams_lower: set, train_times: dict, max_travel_time: int) -> list:
-    """Process TBD games and find ones within the trip period."""
-    tbd_games_in_period = []
-    trip_end_date = start_date + timedelta(days=trip_duration)
-    preferred_leagues_lower = {league.lower() for league in preferred_leagues} if preferred_leagues else None
-    
-    for tbd_game in tbd_games:
-        try:
-            # Skip games without required attributes
-            if not all(hasattr(tbd_game, attr) for attr in ('league', 'date', 'hbf_location')):
-                continue
-            
-            # Skip games not in preferred leagues
-            if preferred_leagues_lower and tbd_game.league.lower() not in preferred_leagues_lower:
-                continue
-                
-            # Skip games outside trip duration
-            if not (start_date.date() <= tbd_game.date.date() < trip_end_date.date()):
-                continue
-            
-            # Check if a must_team is present
-            tbd_match_contains_must_team = False
-            if must_teams_lower:
-                tbd_match_contains_must_team = (
-                    is_must_team_match(tbd_game.home_team, must_teams_lower) or
-                    is_must_team_match(tbd_game.away_team, must_teams_lower)
-                )
-            
-            # Check travel time from any potential location
-            for loc in potential_locations:
-                travel_time = train_times.get((loc, tbd_game.hbf_location), float("inf"))
-                if travel_time <= max_travel_time:
-                    date_str = tbd_game.date.strftime("%d %B %Y")
-                    tbd_games_in_period.append({
-                        "match": f"{tbd_game.home_team} vs {tbd_game.away_team}",
-                        "date": date_str,
-                        "location": tbd_game.hbf_location,
-                        "league": tbd_game.league,
-                        "has_must_team": tbd_match_contains_must_team
-                    })
-                    break
-        except Exception:
-            continue
-            
-    return tbd_games_in_period
-
 def generate_rest_day_options(trip, current_date_str, train_times, max_travel_time, 
                              valid_games, full_date_range, date_idx):
     """
@@ -1236,81 +1174,189 @@ def identify_potential_start_cities(games, train_times, trip_duration, max_trave
     
     return list(candidate_cities)
 
-def enhance_trip_planning_for_any_start(start_location, trip_duration, max_travel_time, games, train_times, **other_params):
-    """Enhanced planning when 'Any' start location is chosen"""
+async def enhance_trip_planning_for_any_start(request_id: str, **params):
+    """
+    Enhanced planning for 'Any' start location with cancellation support.
+    Checks for cancellation periodically during the computation-heavy process.
+    """
+    # Check early cancellation
+    if is_request_cancelled(request_id):
+        logger.info(f"Request {request_id} cancelled before 'Any' start processing")
+        return {"cancelled": True, "message": "Trip planning cancelled by user"}
+    
+    # Extract key parameters
+    start_location = params.get('start_location')
     if start_location.lower() != "any":
-        # Pass all parameters including min_games if present
-        min_games = other_params.get('min_games', 2)  # Default to 2 if not specified
-        return plan_trip(start_location, trip_duration, max_travel_time, games, train_times, min_games=min_games, **other_params)
+        # For regular start locations, use the cancellation-aware plan_trip wrapper
+        return await plan_trip_with_cancellation(request_id=request_id, **params)
+    
+    logger.info(f"Request {request_id} starting 'Any' start location optimization")
     
     # 1. Identify potential starting cities
-    potential_starts = identify_potential_start_cities(games, train_times, trip_duration, max_travel_time, **other_params)
+    # Create copies of params without keys we'll pass as positional args to avoid conflicts
+    games = params.get('games')
+    train_times_dict = params.get('train_times')
+    trip_duration = params.get('trip_duration')
+    max_travel_time = params.get('max_travel_time', 120)
+    
+    # Create a filtered params dict without the positional arguments
+    filtered_params = {k: v for k, v in params.items() 
+                     if k not in ('games', 'train_times', 'trip_duration', 'max_travel_time')}
+    
+    # Check cancellation before computationally intensive identify_potential_start_cities
+    if is_request_cancelled(request_id):
+        logger.info(f"Request {request_id} cancelled before identifying potential start cities")
+        return {"cancelled": True, "message": "Trip planning cancelled by user"}
+    
+    try:
+        # IMPORTANT FIX: Run this with a timeout to prevent blocking
+        potential_starts = await asyncio.wait_for(
+            asyncio.to_thread(
+                identify_potential_start_cities,
+                games, 
+                train_times_dict,
+                trip_duration, 
+                max_travel_time,
+                **filtered_params
+            ),
+            timeout=10.0  # 10-second timeout
+        )
+    except asyncio.TimeoutError:
+        logger.warning(f"Request {request_id} timed out during potential start cities identification")
+        # Fall back to a smaller list of default cities
+        potential_starts = [
+            "Berlin hbf", "Munich hbf", "Frankfurt hbf", "Hamburg hbf", 
+            "Cologne hbf", "Stuttgart hbf"
+        ]
+    except Exception as e:
+        logger.error(f"Request {request_id} error identifying potential start cities: {str(e)}")
+        # Again fall back to defaults on any error
+        potential_starts = [
+            "Berlin hbf", "Munich hbf", "Frankfurt hbf", "Hamburg hbf", 
+            "Cologne hbf", "Stuttgart hbf"
+        ]
+    
+    logger.info(f"Request {request_id} identified {len(potential_starts)} potential start cities")
+    
+    # Check for cancellation after identifying start cities
+    if is_request_cancelled(request_id):
+        logger.info(f"Request {request_id} cancelled after identifying start cities")
+        return {"cancelled": True, "message": "Trip planning cancelled by user"}
     
     # 2. Generate trips for each potential start
     all_potential_trips = []
     trip_results_by_start = {}
     
-    # Extract min_games from other_params with default of 2
-    min_games = other_params.get('min_games', 2)
+    # Extract min_games from params with default of 2
+    min_games = params.get('min_games', 2)
     
-    # Create a copy of other_params without 'min_games' to avoid duplicate parameter error
-    filtered_params = {k: v for k, v in other_params.items() if k != 'min_games'}
-    
-    for potential_start in potential_starts:
+    # Process each potential start location with cancellation checks
+    for i, potential_start in enumerate(potential_starts):
+        # Check for cancellation before each city
+        if is_request_cancelled(request_id):
+            logger.info(f"Request {request_id} cancelled during start city {i+1}/{len(potential_starts)}")
+            return {"cancelled": True, "message": "Trip planning cancelled by user"}
+        
+        logger.info(f"Request {request_id} processing potential start {i+1}/{len(potential_starts)}: {potential_start}")
+        
         try:
-            trip_result = plan_trip(potential_start, trip_duration, max_travel_time, 
-                                   games, train_times, min_games=min_games, **filtered_params)
+            # IMPORTANT FIX: Use non-blocking processing with timeout
+            trip_result = {}
+            try:
+                # Run with a timeout for each city
+                trip_result = await asyncio.wait_for(
+                    asyncio.to_thread(
+                        plan_trip,
+                        start_location=potential_start,
+                        trip_duration=trip_duration,
+                        max_travel_time=max_travel_time,
+                        games=games,
+                        train_times=train_times_dict,
+                        tbd_games=None,  # Explicitly set to None to ignore TBD games
+                        preferred_leagues=params.get('preferred_leagues'),
+                        start_date=params.get('start_date'),
+                        must_teams=params.get('must_teams'),
+                        min_games=min_games
+                    ),
+                    timeout=30.0  # 30-second timeout per city
+                )
+            except asyncio.TimeoutError:
+                logger.warning(f"Request {request_id} - planning for {potential_start} timed out")
+                continue
             
-            # Store the entire result to preserve TBD games and other metadata
+            # Store the entire result
             trip_results_by_start[potential_start] = trip_result
             
             # Extract trips and tag with start location
             if "trips" in trip_result and trip_result["trips"]:
+                trip_count = len(trip_result["trips"])
+                logger.info(f"Request {request_id} - {potential_start} yielded {trip_count} trips")
+                
                 for trip in trip_result["trips"]:
+                    import copy
                     trip_copy = copy.deepcopy(trip)
                     # Tag trips with their start location for reference
                     trip_copy.append({"start_location": potential_start})
                     all_potential_trips.append(trip_copy)
+                    
         except Exception as e:
-            logger.error(f"Error in plan_trip: {e}", exc_info=True)
+            logger.error(f"Request {request_id} - Error planning from {potential_start}: {str(e)}")
             continue
+            
+        # Periodically check for cancellation (after every ~25% of cities or at least after each city)
+        if i > 0 and i % max(1, len(potential_starts) // 4) == 0:
+            if is_request_cancelled(request_id):
+                logger.info(f"Request {request_id} cancelled during start city processing at {i+1}/{len(potential_starts)}")
+                return {"cancelled": True, "message": "Trip planning cancelled by user"}
     
-    # 3. Sort and filter the trips to find the best options
+    # Check for cancellation after all cities are processed
+    if is_request_cancelled(request_id):
+        logger.info(f"Request {request_id} cancelled after processing all start cities")
+        return {"cancelled": True, "message": "Trip planning cancelled by user"}
+    
+    # 3. Process results
     if not all_potential_trips:
-        # If no trips found, return the result from first city with TBD games, or error
-        for start, result in trip_results_by_start.items():
-            if "TBD_Games" in result and result["TBD_Games"]:
-                return result
-        
-        return {"no_trips_available": True, "actual_start_date": other_params.get("start_date", "")}
+        # If no trips found, return error
+        return {"no_trips_available": True, "actual_start_date": params.get("start_date", "")}
     
     # Group trips by their game attendance pattern
+    from utils import group_trips_by_matches, find_optimal_trip_in_group
     trip_groups = group_trips_by_matches(all_potential_trips)
     
     # Find optimal start location for each unique trip pattern
     best_trips = []
-    for group in trip_groups:
-        # For each distinct set of games, find the trip with:
+    for i, group in enumerate(trip_groups):
+        # Check for cancellation periodically during group processing
+        if i > 0 and i % 5 == 0:  # Every 5 groups
+            if is_request_cancelled(request_id):
+                return {"cancelled": True, "message": "Trip planning cancelled by user"}
+                
         optimal_trip = find_optimal_trip_in_group(group)
         if optimal_trip:
             best_trips.append(optimal_trip)
     
-    # Extract TBD games from any result (they should be the same)
-    tbd_games = None
+    # Final cancellation check before finalizing results
+    if is_request_cancelled(request_id):
+        return {"cancelled": True, "message": "Trip planning cancelled by user"}
+    
+    # Extract actual_start_date
     actual_start_date = ""
     for start, result in trip_results_by_start.items():
-        if "TBD_Games" in result and result["TBD_Games"]:
-            tbd_games = result["TBD_Games"]
         if "actual_start_date" in result:
             actual_start_date = result["actual_start_date"]
-        if tbd_games and actual_start_date:
             break
     
+    logger.info(f"Request {request_id} completed 'Any' start optimization with {len(all_potential_trips)} potential trips")
+    
+    # Final cancellation check
+    if is_request_cancelled(request_id):
+        logger.info(f"Request {request_id} cancelled at final check in 'Any' start optimization")
+        return {"cancelled": True, "message": "Trip planning cancelled by user"}
+        
     # Return the best options
     result = {"trips": best_trips, "actual_start_date": actual_start_date}
-    if tbd_games:
-        result["TBD_Games"] = tbd_games
     
+    logger.info(f"Request {request_id} finished 'Any' start optimization with {len(best_trips)} trips")
     return result
 
 def group_trips_by_matches(trips):
@@ -1369,7 +1415,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         max_travel_time: Maximum travel time in minutes
         games: List of available games
         train_times: Dictionary of travel times between locations
-        tbd_games: List of games with TBD times
+        tbd_games: List of games with TBD times (IGNORED - will be handled separately)
         preferred_leagues: List of preferred leagues to filter games
         start_date: Optional start date string in format "28 March"
         must_teams: List of teams that must be included in the trip
@@ -1380,7 +1426,6 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     """   
     # Initialize variables
     all_trips = []
-    tbd_games_in_period = []
     
     # Process start date
     try:
@@ -1405,13 +1450,7 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     # Convert must_teams to lowercase set for efficient lookups
     must_teams_lower = {team.lower() for team in must_teams} if must_teams else None
     
-    # Process TBD games
-    if tbd_games:
-        potential_locations = {start_location} | {g.hbf_location for g in valid_games if hasattr(g, 'hbf_location')}
-        tbd_games_in_period = process_tbd_games(
-            tbd_games, start_date, trip_duration, preferred_leagues, 
-            potential_locations, must_teams_lower, train_times, max_travel_time
-        )
+    # REMOVED: Process TBD games
     
     # Generate date range for the trip
     full_date_range = [start_date + timedelta(days=i) for i in range(trip_duration)]
@@ -1635,9 +1674,9 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
         
         # Sort days chronologically
         sorted_dates = sorted(
-    days_by_date.keys(),
-    key=lambda d: parse_date_string(d)
-)
+            days_by_date.keys(),
+            key=lambda d: parse_date_string(d)
+        )
         
         # Now process days in chronological order using the final hotel for each day
         for date_str in sorted_dates:
@@ -1697,17 +1736,124 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     all_trips = filter_best_variations_by_hotel_changes(all_trips, train_times, max_travel_time)
     
     # Return appropriate response based on results
-    if not all_trips and tbd_games_in_period:
-        return {"no_trips_available": True, "TBD_Games": tbd_games_in_period, "actual_start_date": actual_start_date}
-    
     if not all_trips:
         return {"no_trips_available": True, "actual_start_date": actual_start_date}
 
-    if tbd_games_in_period:
-        return {
-            "trips": all_trips,
-            "TBD_Games": tbd_games_in_period,
-            "actual_start_date": actual_start_date
-        }
-    
     return {"trips": all_trips, "actual_start_date": actual_start_date}
+
+async def plan_trip_with_cancellation(request_id: str, **planning_params):
+    """
+    Wrapper for plan_trip that adds cancellation checks at key points in the algorithm.
+    """
+    # Check for early cancellation
+    if is_request_cancelled(request_id):
+        logger.info(f"Request {request_id} cancelled before starting trip planning")
+        return {"cancelled": True, "message": "Trip planning cancelled by user"}
+    
+    try:
+        # Extract key parameters
+        start_location = planning_params.get('start_location')
+        trip_duration = planning_params.get('trip_duration')
+        max_travel_time = planning_params.get('max_travel_time')
+        games = planning_params.get('games')
+        train_times_param = planning_params.get('train_times')
+        preferred_leagues = planning_params.get('preferred_leagues')
+        start_date = planning_params.get('start_date')
+        must_teams = planning_params.get('must_teams')
+        min_games = planning_params.get('min_games', 2)
+        
+        logger.info(f"Request {request_id} planning with {start_location}, {trip_duration} days")
+        
+        # Process start date - this is a quick operation, no cancellation check needed
+        try:
+            parsed_start_date, actual_start_date = get_processed_start_date(start_date)
+        except ValueError as e:
+            logger.error(f"Request {request_id} failed parsing start date: {e}")
+            return {"error": str(e)}
+        
+        # Check for cancellation before filtering games
+        if is_request_cancelled(request_id):
+            logger.info(f"Request {request_id} cancelled before filtering games")
+            return {"cancelled": True, "message": "Trip planning cancelled by user"}
+            
+        # Filter games by preferred leagues
+        preferred_leagues_lower = {league.lower() for league in preferred_leagues} if preferred_leagues else None
+        valid_games = [
+            g for g in games 
+            if all(hasattr(g, attr) for attr in ('league', 'date', 'hbf_location')) and 
+            (not preferred_leagues_lower or g.league.lower() in preferred_leagues_lower)
+        ]
+        
+        logger.info(f"Request {request_id} filtered to {len(valid_games)} valid games")
+        
+        # Convert must_teams to lowercase set for efficient lookups
+        must_teams_lower = {team.lower() for team in must_teams} if must_teams else None
+        
+        # Check for cancellation before starting main trip calculation
+        if is_request_cancelled(request_id):
+            logger.info(f"Request {request_id} cancelled before main trip calculation")
+            return {"cancelled": True, "message": "Trip planning cancelled by user"}
+        
+        # CRITICAL FIX: Run the plan_trip function in a task with cancellation checks
+        logger.info(f"Request {request_id} starting main trip planning with {len(valid_games)} games")
+        
+        # We'll use a loop with cancellation checks to monitor progress
+        check_interval = 0.1  # Check every 100ms
+        max_time = 120  # Maximum time to allow (seconds)
+        start_time = datetime.now()
+        
+        # Create a future for the trip result
+        from concurrent.futures import ThreadPoolExecutor
+        executor = ThreadPoolExecutor(max_workers=1)
+        future = executor.submit(
+            plan_trip,
+            start_location=start_location,
+            trip_duration=trip_duration,
+            max_travel_time=max_travel_time,
+            games=valid_games,
+            train_times=train_times_param,
+            tbd_games=None,  # Explicitly pass None instead of TBD games
+            preferred_leagues=preferred_leagues,
+            start_date=start_date,
+            must_teams=must_teams,
+            min_games=min_games
+        )
+        
+        # Monitor for completion or cancellation
+        while not future.done():
+            # Check if cancelled
+            if is_request_cancelled(request_id):
+                # Cancel the thread and stop processing
+                future.cancel()
+                logger.info(f"Request {request_id} cancelled during trip planning")
+                return {"cancelled": True, "message": "Trip planning cancelled by user"}
+            
+            # Check for timeout
+            elapsed = (datetime.now() - start_time).total_seconds()
+            if elapsed > max_time:
+                future.cancel()
+                logger.warning(f"Request {request_id} exceeded maximum time limit ({max_time}s)")
+                return {"error": "Trip planning timed out", "cancelled": True}
+            
+            # Wait a bit before checking again
+            await asyncio.sleep(check_interval)
+        
+        # Get the result now that it's done
+        trip_result = future.result()
+        
+        # Final cancellation check before returning
+        if is_request_cancelled(request_id):
+            logger.info(f"Request {request_id} cancelled after trip planning completed")
+            return {"cancelled": True, "message": "Trip planning cancelled by user"}
+        
+        # Log completion
+        trip_count = len(trip_result.get("trips", [])) if isinstance(trip_result, dict) else 0
+        logger.info(f"Request {request_id} plan_trip completed with {trip_count} trips")
+        
+        return trip_result
+        
+    except Exception as e:
+        logger.error(f"Request {request_id} failed in plan_trip_with_cancellation: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return {"error": str(e)}

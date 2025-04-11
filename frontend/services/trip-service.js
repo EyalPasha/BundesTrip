@@ -1,5 +1,5 @@
 import { validateForm } from './validators.js';
-import { planTrip } from './api.js';
+import { planTrip, cancelTripRequest, API_BASE_URL } from './api.js';
 import { showErrorToast, showSuccessToast } from './notifications.js';
 import { renderResults } from '../components/results-display.js';
 import { renderTripCard } from '../components/trip-card.js';
@@ -7,20 +7,93 @@ import { renderTripCard } from '../components/trip-card.js';
 // Make renderTripCard globally available for API service
 window.renderTripCard = renderTripCard;
 
-// Update the handleSearch function in trip-service.js to fix the error
+// Store the current request ID globally
+window.currentRequestId = null;
+
+// Simplified handleSearch function
 async function handleSearch(e) {
     e.preventDefault();
     if (!validateForm()) {
         return;
     }
     
-    // Add a flag to track if we're showing the no results message
-    let noResultsShown = false;
+    // Reset loading UI to visible state
+    resetLoadingUI(true);
     
-    // Declare these variables at the top level so they're available in the finally block
+    // Clean up any previous search state
+    document.body.classList.remove('has-filter-drawer');
+    
+    // IMPORTANT: Reset loading animation elements
+    const loadingAnimation = document.getElementById('loadingAnimation');
+    const loadingMessages = document.getElementById('loadingMessages');
+    const cancelSearchButton = document.getElementById('cancelSearch');
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    
+    if (loadingAnimation) loadingAnimation.classList.remove('d-none');
+    if (loadingMessages) loadingMessages.classList.remove('d-none'); 
+    if (cancelSearchButton) cancelSearchButton.classList.remove('d-none');
+    if (noResultsMessage) noResultsMessage.classList.add('d-none');
+    
+    // Reset filter button visibility
+    const filterButton = document.querySelector('.filter-button');
+    if (filterButton) {
+        filterButton.style.display = 'none';
+    }
+    
+    // Declare variables at the top level so they're accessible in all blocks
+    let searchCancelled = false;
     let response = null;
     let error = null;
+    let noResultsShown = false;
     
+    // STEP 1: GET A REQUEST ID FIRST - before anything else happens
+    let requestId = null;
+    try {
+        // Simple fetch to get an ID
+        const idResponse = await fetch(`${API_BASE_URL}/register-request`);
+        const idData = await idResponse.json();
+        requestId = idData.request_id;
+        window.currentRequestId = requestId; // Store globally
+        console.log("Got request ID:", requestId);
+    } catch (error) {
+        console.error("Failed to get request ID:", error);
+        showErrorToast("Server connection error");
+        return;
+    }
+    
+    // STEP 2: SET UP CANCEL BUTTON WITH THE ID
+    const cancelButton = document.getElementById('cancelSearch');
+    if (cancelButton) {
+        // Reset existing event listeners
+        const newCancelButton = cancelButton.cloneNode(true);
+        cancelButton.parentNode.replaceChild(newCancelButton, cancelButton);
+        
+        newCancelButton.addEventListener('click', async function() {
+            // Set button to canceling state
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Canceling...';
+            
+            searchCancelled = true;
+            
+            try {
+                // Cancel request without showing notification
+                await cancelTripRequest(requestId);
+                console.log(`Search cancelled for request ${requestId}`);
+                // No notification here, just logging
+            } catch (err) {
+                console.error("Error cancelling search:", err);
+            } finally {
+                // Reset search state and return to form
+                resetLoadingUI(false);
+                window.returnToSearch();
+                
+                // Only show one notification
+                showSuccessToast("Search cancelled successfully");
+            }
+        });
+    }
+    
+    // STEP 3: SHOW UI, HIDE PREVIOUS RESULTS
     // Hide results container while searching
     const resultsContainer = document.getElementById('resultsContainer');
     if (resultsContainer) {
@@ -113,43 +186,7 @@ async function handleSearch(e) {
         window.DOM.noResultsMessage.classList.add('d-none');
     }
     
-    // Setup cancel button handler
-    let searchCancelled = false;
-    const cancelButton = document.getElementById('cancelSearch');
-    
-    if (cancelButton) {
-        // Reset existing event listeners
-        const newCancelButton = cancelButton.cloneNode(true);
-        cancelButton.parentNode.replaceChild(newCancelButton, cancelButton);
-        
-        newCancelButton.addEventListener('click', function() {
-            searchCancelled = true;
-            
-            // Hide loading and restore scrolling
-            window.DOM.loadingIndicator.classList.add('d-none');
-            document.body.classList.remove('no-scroll');
-            
-            // Clear any previous results
-            const tripResults = document.getElementById('tripResults');
-            if (tripResults) {
-                tripResults.innerHTML = '';
-            }
-            
-            // Hide no results message if it's showing
-            if (window.DOM.noResultsMessage) {
-                window.DOM.noResultsMessage.classList.add('d-none');
-            }
-            
-            // Show toast notification
-            showErrorToast("Search cancelled");
-            
-            // Reset the search form focus
-            if (window.DOM.startLocationSelect) {
-                window.DOM.startLocationSelect.focus();
-            }
-        });
-    }
-    
+    // STEP 4: BUILD PAYLOAD WITH THE REQUEST ID
     try {
         // Use Select2's API to get selected values
         const selectedLeagues = $(window.DOM.preferredLeaguesSelect).val() || [];
@@ -162,7 +199,8 @@ async function handleSearch(e) {
             max_travel_time: parseInt(window.DOM.maxTravelTimeInput.value),
             preferred_leagues: selectedLeagues.length > 0 ? selectedLeagues : null,
             must_teams: selectedTeams.length > 0 ? selectedTeams : [],
-            min_games: parseInt(window.DOM.minGamesInput.value || "2") // Default to 2 if not present
+            min_games: parseInt(window.DOM.minGamesInput.value || "2"),
+            request_id: requestId  // Include the request ID in the payload
         };
         
         // Ensure the date has a year
@@ -172,15 +210,11 @@ async function handleSearch(e) {
             payload.start_date = `${payload.start_date} ${currentYear}`;
         }
         
-        // Check if search was cancelled during API call
-        if (searchCancelled) return;
+        // STEP 5: MAKE THE REQUEST
+        console.log(`Planning trip with ID: ${requestId}`);
+        response = await planTrip(payload);  // Assign to the outer variable
         
-        // Call API
-        response = await planTrip(payload);
-        
-        // Check if search was cancelled while waiting for response
-        if (searchCancelled) return;
-        
+        // STEP 6: PROCESS RESPONSE
         // Show results container if we got results
         if (resultsContainer && response && response.trip_groups && response.trip_groups.length > 0) {
             resultsContainer.classList.remove('d-none');
@@ -247,7 +281,7 @@ async function handleSearch(e) {
         
     } catch (err) {
         // Store the caught error in our variable
-        error = err;
+        error = err;  // Assign to the outer variable
         
         if (!searchCancelled) {
             console.error("Error in handleSearch:", error);
@@ -276,11 +310,7 @@ async function handleSearch(e) {
             }
         }
     } finally {
-        // Only hide the loading indicator if:
-        // 1. The search was cancelled, OR
-        // 2. We have results, OR 
-        // 3. There was an error (not "no results")
-        
+        // Now these variables are all in scope
         const shouldHideLoading = searchCancelled || 
             (response && response.trip_groups && response.trip_groups.length > 0) ||
             (error && error.message !== "No trips found matching your criteria");
@@ -289,6 +319,11 @@ async function handleSearch(e) {
             // Hide loading and restore scrolling
             window.DOM.loadingIndicator.classList.add('d-none');
             document.body.classList.remove('no-scroll');
+        }
+        // Only clear the request ID if we're done or had an error
+        const shouldClearRequest = !window.DOM.loadingIndicator.classList.contains('d-none') || error;
+        if (shouldClearRequest) {
+            window.currentRequestId = null;
         }
         // Otherwise, keep the loading indicator visible with the "No Results" message
     }
@@ -401,5 +436,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Export all functions
-export { handleSearch, initFormHandlers, updateMinGamesOptions };
+// Add this function at the end of your file
+function resetLoadingUI(show = false) {
+    const loadingContainer = document.getElementById('loading');
+    const loadingAnimation = document.getElementById('loadingAnimation');
+    const loadingMessages = document.getElementById('loadingMessages');
+    const cancelSearchButton = document.getElementById('cancelSearch');
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    
+    if (show) {
+        // Show loading UI
+        if (loadingContainer) loadingContainer.classList.remove('d-none');
+        if (loadingAnimation) loadingAnimation.classList.remove('d-none');
+        if (loadingMessages) loadingMessages.classList.remove('d-none');
+        
+        // Reset and show cancel button
+        if (cancelSearchButton) {
+            cancelSearchButton.classList.remove('d-none');
+            cancelSearchButton.disabled = false;
+            cancelSearchButton.innerHTML = '<i class="fas fa-times-circle"></i> Cancel Search';
+        }
+        
+        if (noResultsMessage) noResultsMessage.classList.add('d-none');
+    } else {
+        // Hide loading UI
+        if (loadingContainer) loadingContainer.classList.add('d-none');
+        // Don't hide the child elements, just the container
+    }
+}
+
+// Export the new function
+export { handleSearch, initFormHandlers, updateMinGamesOptions, resetLoadingUI };

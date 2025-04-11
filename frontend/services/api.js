@@ -161,17 +161,43 @@ async function planTrip(tripData) {
             }
         }, 1000);
         
-        // Make the request
-        const response = await fetchApi('/plan-trip', {
+        // Make the request with a header reader to extract request ID early
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 180000);
+        
+        const response = await fetch(`${API_BASE_URL}/plan-trip`, {
             method: 'POST',
-            body: JSON.stringify(tripData)
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Ngrok-Skip-Browser-Warning': 'true'
+            },
+            body: JSON.stringify(tripData),
+            signal: controller.signal
         });
         
-        // Provide better error for no trips meeting min games criteria - but check if element exists first
-        if (response.no_trips_available && loadingText) {
-            if (response.min_games > 1) {
+        clearTimeout(timeoutId);
+        
+        // Handle non-OK responses
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `Server error (${response.status})`);
+        }
+        
+        // Get response data
+        const data = await response.json();
+        
+        // Extract and store request ID as early as possible
+        if (data.request_id) {
+            window.currentRequestId = data.request_id;
+            console.log("Request ID received:", data.request_id);
+        }
+        
+        // Provide better error for no trips
+        if (data.no_trips_available && loadingText) {
+            if (data.min_games > 1) {
                 loadingText.textContent = 
-                    `No trips found with ${response.min_games} or more games. Try reducing the minimum games requirement.`;
+                    `No trips found with ${data.min_games} or more games. Try reducing the minimum games requirement.`;
             } else {
                 loadingText.textContent = 
                     `No trips found. Try adjusting your search parameters.`;
@@ -181,7 +207,7 @@ async function planTrip(tripData) {
         // Clear the timer
         clearInterval(loadingTimer);
         
-        return response;
+        return data;
     } catch (error) {
         console.error("Trip planning error:", error);
         console.error("Request payload was:", JSON.stringify(tripData, null, 2));
@@ -325,6 +351,49 @@ async function refreshData(apiKey) {
     });
 }
 
+/**
+ * Cancel an ongoing trip planning request
+ * @param {string} requestId - The ID of the request to cancel
+ * @returns {Promise<object>} Response from the cancellation request
+ */
+async function cancelTripRequest(requestId) {
+    if (!requestId) {
+        console.warn("No request ID to cancel");
+        return { success: false, message: "No request ID provided" };
+    }
+    
+    console.log(`Attempting to cancel request: ${requestId}`);
+    
+    try {
+        // Use direct fetch with API_BASE_URL
+        const url = `${API_BASE_URL}/cancel-trip/${requestId}`;
+        console.log(`Sending cancellation request to: ${url}`);
+        
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Ngrok-Skip-Browser-Warning': 'true'
+            }
+        });
+        
+        console.log(`Cancellation response status: ${response.status} ${response.statusText}`);
+        
+        if (!response.ok) {
+            let errorText = await response.text();
+            console.error(`Server error during cancellation: ${errorText}`);
+            return { success: false, message: `Failed to cancel: ${response.statusText}` };
+        }
+        
+        const result = await response.json();
+        console.log(`Successfully cancelled request ${requestId}:`, result);
+        return { success: true, ...result };
+    } catch (error) {
+        console.error(`Error cancelling trip request ${requestId}:`, error);
+        return { success: false, message: error.message };
+    }
+}
+
 // Export all API functions
 export {
     fetchApi,
@@ -342,5 +411,7 @@ export {
     getGamesByDate,
     checkHealth,
     search,
-    refreshData
+    refreshData,
+    cancelTripRequest,  // Add this line
+    API_BASE_URL  // Export the API base URL
 };

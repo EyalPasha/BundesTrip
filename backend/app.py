@@ -1,16 +1,33 @@
 import os, sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from fastapi import FastAPI, Query, Path
+from fastapi import FastAPI, Query, Path, BackgroundTasks, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
-from utils import load_games, load_train_times, plan_trip, calculate_total_travel_time, identify_similar_trips, get_travel_minutes_utils, enhance_trip_planning_for_any_start, parse_date_string
-from models import TripRequest, FormattedResponse, TripVariation, TripGroup, TravelSegment
+from models import TripRequest, FormattedResponse, TripGroup, TravelSegment, TripVariation
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
 from config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
 import functools
 import traceback
+import uuid
+import asyncio
+import logging
+from concurrent.futures import TimeoutError
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[logging.StreamHandler()]
+)
+logger = logging.getLogger("trip-planner")
+
+# Import from utils and common
+from utils import (load_games, load_train_times, calculate_total_travel_time, 
+                  identify_similar_trips, get_travel_minutes_utils, 
+                  parse_date_string, plan_trip_with_cancellation, enhance_trip_planning_for_any_start)
+from common import (is_request_cancelled, register_request, cleanup_request, cleanup_old_requests, active_requests)
 
 # Initialize FastAPI with metadata
 app = FastAPI(
@@ -24,8 +41,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],  # Add DELETE explicitly
     allow_headers=["*"],
+    expose_headers=["*"],  # Expose all headers to client
 )
 
 # Load data using config paths
@@ -37,8 +55,86 @@ def home():
     return {"message": "Welcome to the Multi-Game Trip Planner API"}
 
 # ────────────────────────────────
+# 🛠️ Cancellation Endpoints
+# ────────────────────────────────
+
+@app.delete("/cancel-trip/{request_id}", 
+           summary="Cancel an ongoing trip planning request",
+           description="Cancels a trip planning request by ID to free up server resources")
+def cancel_trip(request_id: str):
+    """Cancel a trip planning request by ID."""
+    if request_id in active_requests:
+        active_requests[request_id]["status"] = "cancelled"
+        logger.info(f"Request {request_id} marked as cancelled")
+        return {"message": f"Request {request_id} cancelled successfully"}
+    
+    logger.warning(f"Cancellation attempt for non-existent request ID: {request_id}")
+    return JSONResponse(
+        content={"error": f"Request {request_id} not found or already completed"},
+        status_code=404
+    )
+
+@app.get("/request-status/{request_id}",
+          summary="Check the status of a trip planning request",
+          description="Returns the current status of a trip planning request")
+def request_status(request_id: str):
+    """Get the status of a trip planning request."""
+    if request_id in active_requests:
+        status = active_requests[request_id]["status"]
+        return {
+            "request_id": request_id,
+            "status": status,
+            "created_at": active_requests[request_id]["created_at"].isoformat()
+        }
+    return JSONResponse(
+        content={"error": f"Request {request_id} not found"},
+        status_code=404
+    )
+    
+@app.get("/register-request", 
+         summary="Get a request ID before submitting a search",
+         description="Returns an ID to use for trip planning and cancellation")
+def register_new_request():
+    """Get a request ID before starting a search."""
+    request_id = register_request()
+    logger.info(f"New request ID pre-registered: {request_id}")
+    return {"request_id": request_id}
+    
+    
+# ────────────────────────────────
 # 🛠️ Helper Functions
 # ────────────────────────────────
+
+# Store the background task reference
+cleanup_task_ref = None
+
+@app.on_event("startup")
+async def setup_cleanup():
+    """Set up periodic cleanup task on startup."""
+    global cleanup_task_ref
+    
+    async def cleanup_task():
+        while True:
+            await asyncio.sleep(60 * 60)  # Run every hour
+            cleanup_old_requests()
+            
+    # Start the cleanup task and store reference
+    logger.info("Periodic cleanup task scheduled")
+    cleanup_task_ref = asyncio.create_task(cleanup_task())
+
+@app.on_event("shutdown")
+async def cleanup_on_shutdown():
+    """Cancel background tasks on shutdown."""
+    global cleanup_task_ref
+    
+    if cleanup_task_ref and not cleanup_task_ref.done():
+        logger.info("Cancelling periodic cleanup task")
+        cleanup_task_ref.cancel()
+        try:
+            await cleanup_task_ref
+        except asyncio.CancelledError:
+            logger.info("Periodic cleanup task cancelled successfully")
+
 
 def has_special_suffix(location_name: str) -> bool:
     """Check if location has a special suffix that shouldn't have hbf appended"""
@@ -72,7 +168,6 @@ def get_date_sortkey(day_item: Dict) -> str:
         pass
     
     return day_str
-
 
 def sort_date_string(day_str: str) -> str:
     """Sort dates in string format 'DD Month'"""
@@ -120,7 +215,6 @@ def get_minutes(time_str: str) -> int:
     hours = int(parts[0])
     minutes = int(parts[1].replace('m', ''))
     return hours * 60 + minutes
-
 
 def process_travel_segments(
     sorted_days: List[Dict],
@@ -745,20 +839,36 @@ def process_trip_variant(variant: Dict, actual_start_location: str) -> TripVaria
           summary="Plan a multi-game trip",
           description="Creates an optimized itinerary to watch multiple games based on preferences",
           response_model=FormattedResponse)
-def get_trip(request: TripRequest):
+async def get_trip(request: TripRequest, background_tasks: BackgroundTasks):
     try:
+        # Use existing ID if provided, otherwise generate new one
+        request_id = request.request_id if hasattr(request, 'request_id') and request.request_id else register_request()
+        
+        if not hasattr(request, 'request_id') or not request.request_id:
+            logger.info(f"New trip planning request started: {request_id}")
+        else:
+            logger.info(f"Trip planning request continued with ID: {request_id}")
+        
         # Input validation
         if request.trip_duration <= 0:
+            cleanup_request(request_id)
+            logger.warning(f"Request {request_id} rejected: Invalid trip duration")
             return JSONResponse(
                 content={"error": "Trip duration must be positive"},
                 status_code=400
             )
             
         if request.max_travel_time <= 0:
+            cleanup_request(request_id)
+            logger.warning(f"Request {request_id} rejected: Invalid max travel time")
             return JSONResponse(
                 content={"error": "Maximum travel time must be positive"},
                 status_code=400
             )
+        
+        # Log request parameters
+        logger.info(f"Request {request_id} parameters: start={request.start_location}, "
+                   f"duration={request.trip_duration}, max_travel={request.max_travel_time}")
         
         # Filter games by preferred leagues
         if request.preferred_leagues:
@@ -771,6 +881,8 @@ def get_trip(request: TripRequest):
             
             # Check if no games match the preferred leagues
             if not regular_games_filtered and not tbd_games_filtered:
+                cleanup_request(request_id)
+                logger.warning(f"Request {request_id} failed: No games found for selected leagues")
                 return JSONResponse(
                     content={
                         "error": f"No games found for the selected leagues: {', '.join(request.preferred_leagues)}"
@@ -780,9 +892,11 @@ def get_trip(request: TripRequest):
                 
             filtered_games = regular_games_filtered
             filtered_tbd_games = tbd_games_filtered
+            logger.info(f"Request {request_id} filtered to {len(filtered_games)} games in leagues: {request.preferred_leagues}")
         else:
             filtered_games = games
             filtered_tbd_games = tbd_games
+            logger.info(f"Request {request_id} using all {len(filtered_games)} games")
         
         # Check if must_teams exist in the dataset
         if request.must_teams:
@@ -803,46 +917,68 @@ def get_trip(request: TripRequest):
                         break
             
             if not team_found:
+                cleanup_request(request_id)
+                logger.warning(f"Request {request_id} failed: No games found for must_teams")
                 return JSONResponse(
                     content={
                         "error": f"No games found for the requested teams: {', '.join(request.must_teams)}"
                     },
                     status_code=404
                 )
+            
+            logger.info(f"Request {request_id} includes must_teams: {request.must_teams}")
         
         # Get min_games from request with default value of 2
         min_games = request.min_games if hasattr(request, 'min_games') else 2
         
         # Plan trip with optimized parameters including min_games
         if request.start_location.lower() == "any":
-            trip_result = enhance_trip_planning_for_any_start(
+            logger.info(f"Request {request_id} using 'Any' start location optimization")
+            trip_result = await enhance_trip_planning_for_any_start(
+                request_id=request_id,
                 start_location=request.start_location,
                 trip_duration=request.trip_duration,
                 max_travel_time=request.max_travel_time,
                 games=filtered_games,
                 train_times=train_times,
-                tbd_games=filtered_tbd_games,
+                tbd_games=None,  # Set to None to ignore TBD games in trip planning
                 preferred_leagues=request.preferred_leagues,
                 start_date=request.start_date,
                 must_teams=request.must_teams,
-                min_games=min_games  # Add min_games parameter
+                min_games=min_games
             )
         else:
-            trip_result = plan_trip(
+            logger.info(f"Request {request_id} using specific start location: {request.start_location}")
+            trip_result = await plan_trip_with_cancellation(
+                request_id=request_id,
                 start_location=request.start_location,
                 trip_duration=request.trip_duration,
                 max_travel_time=request.max_travel_time,
                 games=filtered_games,
                 train_times=train_times,
-                tbd_games=filtered_tbd_games,
+                tbd_games=None,  # Set to None to ignore TBD games in trip planning
                 preferred_leagues=request.preferred_leagues,
                 start_date=request.start_date,
                 must_teams=request.must_teams,
-                min_games=min_games  # Add min_games parameter
+                min_games=min_games
             )
         
-        # Extract TBD games
-        result_tbd_games = None
+        # Check if the request was cancelled
+        if is_request_cancelled(request_id) or (isinstance(trip_result, dict) and trip_result.get("cancelled")):
+            logger.info(f"Request {request_id} was cancelled - returning cancelled response")
+            return FormattedResponse(
+                request_id=request_id,
+                start_location=request.start_location,
+                start_date=request.start_date or "Not specified",
+                max_travel_time=f"{request.max_travel_time // 60}h {request.max_travel_time % 60}m",
+                trip_duration=f"{request.trip_duration} days",
+                preferred_leagues=request.preferred_leagues or "All Leagues",
+                must_teams=request.must_teams,
+                min_games=min_games,
+                no_trips_available=True,
+                message="Trip planning cancelled by user",
+                cancelled=True
+            )
         
         # Get the actual start date used
         display_start_date = request.start_date or "Earliest Available"
@@ -850,32 +986,11 @@ def get_trip(request: TripRequest):
             display_start_date = trip_result["actual_start_date"]
         
         if isinstance(trip_result, dict):
-            # Direct dictionary lookup is more efficient
-            result_tbd_games = trip_result.get("TBD_Games") or trip_result.get("tbd_games")
-            
-            if "error" in trip_result and result_tbd_games:
-                # Create structured response for TBD-only case
+            # Check for error
+            if "error" in trip_result:
+                # Create structured response for error case
                 structured_response = FormattedResponse(
-                    start_location=request.start_location,
-                    start_date=display_start_date,
-                    max_travel_time=f"{request.max_travel_time // 60}h {request.max_travel_time % 60}m",
-                    trip_duration=f"{request.trip_duration} days",
-                    preferred_leagues=request.preferred_leagues or "All Leagues",
-                    must_teams=request.must_teams,
-                    min_games=min_games,
-                    no_trips_available=True,
-                    message="No scheduled games found, but there are TBD games during this period.",
-                    tbd_games=result_tbd_games
-                )
-                #print_formatted_trip_schedule(structured_response)
-                return JSONResponse(content=structured_response.model_dump(), status_code=200)
-            elif "error" in trip_result and not result_tbd_games:
-                return JSONResponse(content=trip_result, status_code=400)
-            
-            # Extract trip schedule
-            trip_schedule = trip_result.get("trips", trip_result)
-            if "no_trips_available" in trip_result:
-                structured_response = FormattedResponse(
+                    request_id=request_id,
                     start_location=request.start_location,
                     start_date=display_start_date,
                     max_travel_time=f"{request.max_travel_time // 60}h {request.max_travel_time % 60}m",
@@ -885,9 +1000,28 @@ def get_trip(request: TripRequest):
                     min_games=min_games,
                     no_trips_available=True,
                     message="No scheduled games found during this period.",
-                    tbd_games=result_tbd_games
+                    tbd_games=[]  # Empty for now, will be populated below
                 )
-                #print_formatted_trip_schedule(structured_response)
+                background_tasks.add_task(cleanup_request, request_id)
+                return JSONResponse(content=structured_response.model_dump(), status_code=200)
+            
+            # Extract trip schedule
+            trip_schedule = trip_result.get("trips", trip_result)
+            if "no_trips_available" in trip_result:
+                structured_response = FormattedResponse(
+                    request_id=request_id,
+                    start_location=request.start_location,
+                    start_date=display_start_date,
+                    max_travel_time=f"{request.max_travel_time // 60}h {request.max_travel_time % 60}m",
+                    trip_duration=f"{request.trip_duration} days",
+                    preferred_leagues=request.preferred_leagues or "All Leagues",
+                    must_teams=request.must_teams,
+                    min_games=min_games,
+                    no_trips_available=True,
+                    message="No scheduled games found during this period.",
+                    tbd_games=[]  # Empty for now, will be populated below
+                )
+                background_tasks.add_task(cleanup_request, request_id)
                 return JSONResponse(content=structured_response.model_dump(), status_code=200)
         else:
             trip_schedule = trip_result
@@ -895,6 +1029,7 @@ def get_trip(request: TripRequest):
         # Early termination for invalid or empty trip schedules
         if not trip_schedule or not isinstance(trip_schedule, list):
             structured_response = FormattedResponse(
+                request_id=request_id,
                 start_location=request.start_location,
                 start_date=display_start_date,
                 max_travel_time=f"{request.max_travel_time // 60}h {request.max_travel_time % 60}m",
@@ -904,9 +1039,9 @@ def get_trip(request: TripRequest):
                 min_games=min_games,
                 no_trips_available=True,
                 message="No trip found. No available games during this period.",
-                tbd_games=result_tbd_games
+                tbd_games=[]  # Empty for now, will be populated below
             )
-            #print_formatted_trip_schedule(structured_response)
+            background_tasks.add_task(cleanup_request, request_id)
             return JSONResponse(content=structured_response.model_dump(), status_code=200)
 
         # Check for matches
@@ -918,6 +1053,7 @@ def get_trip(request: TripRequest):
         
         if not has_matches:
             structured_response = FormattedResponse(
+                request_id=request_id,
                 start_location=request.start_location,
                 start_date=display_start_date,
                 max_travel_time=f"{request.max_travel_time // 60}h {request.max_travel_time % 60}m",
@@ -927,9 +1063,9 @@ def get_trip(request: TripRequest):
                 min_games=min_games,
                 no_trips_available=True,
                 message="No scheduled games found during this period.",
-                tbd_games=result_tbd_games
+                tbd_games=[]  # Empty for now, will be populated below
             )
-            #print_formatted_trip_schedule(structured_response)
+            background_tasks.add_task(cleanup_request, request_id)
             return JSONResponse(content=structured_response.model_dump(), status_code=200)
 
         # Format trips
@@ -1005,8 +1141,69 @@ def get_trip(request: TripRequest):
                 variation_details=variation_details
             ))
         
+        # NEW: Process TBD games in the trip date range
+        tbd_games_in_period = []
+        
+        try:
+            # Parse the start date
+            if display_start_date == "Earliest Available":
+                start_date_obj = datetime.now()
+            else:
+                # Try with and without year
+                try:
+                    if " " in display_start_date and len(display_start_date.split()) == 2:
+                        # Add current year if missing
+                        current_year = datetime.now().year
+                        start_date_obj = datetime.strptime(f"{display_start_date} {current_year}", "%d %B %Y")
+                    else:
+                        start_date_obj = datetime.strptime(display_start_date, "%d %B %Y")
+                except:
+                    start_date_obj = datetime.now()
+            
+            # Calculate end date
+            end_date_obj = start_date_obj + timedelta(days=request.trip_duration)
+            
+            # Convert must_teams to lowercase set for efficient lookups
+            must_teams_lower = {team.lower() for team in request.must_teams} if request.must_teams else None
+            
+            # Process TBD games
+            for tbd_game in filtered_tbd_games:
+                if not all(hasattr(tbd_game, attr) for attr in ('date', 'hbf_location')):
+                    continue
+                
+                game_date = tbd_game.date.date()
+                
+                # Check if game is within trip period
+                if start_date_obj.date() <= game_date < end_date_obj.date():
+                    # Check if a must_team is present
+                    has_must_team = False
+                    if must_teams_lower and hasattr(tbd_game, 'home_team') and hasattr(tbd_game, 'away_team'):
+                        home_team_lower = tbd_game.home_team.lower()
+                        away_team_lower = tbd_game.away_team.lower()
+                        for must_team in must_teams_lower:
+                            if must_team in home_team_lower or must_team in away_team_lower:
+                                has_must_team = True
+                                break
+                    
+                    tbd_games_in_period.append({
+                        "match": f"{tbd_game.home_team} vs {tbd_game.away_team}",
+                        "date": tbd_game.date.strftime("%d %B %Y"),
+                        "location": tbd_game.hbf_location,
+                        "league": tbd_game.league if hasattr(tbd_game, 'league') else "Unknown",
+                        "has_must_team": has_must_team
+                    })
+            
+            # Sort TBD games by date
+            tbd_games_in_period.sort(key=lambda g: datetime.strptime(g["date"], "%d %B %Y"))
+            
+            logger.info(f"Request {request_id} - Found {len(tbd_games_in_period)} TBD games in trip period")
+        except Exception as e:
+            logger.error(f"Request {request_id} - Error processing TBD games: {str(e)}")
+            # Don't let TBD game processing failure affect the rest of the response
+        
         # Create final response
         structured_response = FormattedResponse(
+            request_id=request_id,
             start_location=request.start_location,
             start_date=display_start_date,
             max_travel_time=f"{request.max_travel_time // 60}h {request.max_travel_time % 60}m",
@@ -1016,13 +1213,24 @@ def get_trip(request: TripRequest):
             min_games=min_games,
             no_trips_available=False,
             trip_groups=structured_groups,
-            tbd_games=result_tbd_games
+            tbd_games=tbd_games_in_period
         )
+
+        logger.info(f"Request {request_id} completed successfully - found {len(structured_groups)} trip groups")
         
-        #print_formatted_trip_schedule(structured_response)
+        # Clean up the request when done
+        background_tasks.add_task(cleanup_request, request_id)
+        background_tasks.add_task(lambda: logger.info(f"Request {request_id} resources cleaned up"))
+        
         return JSONResponse(content=structured_response.model_dump(), status_code=200)
         
     except Exception as e:
+        if 'request_id' in locals():
+            logger.error(f"Request {request_id} failed with error: {str(e)}")
+            background_tasks.add_task(cleanup_request, request_id)
+        else:
+            logger.error(f"Trip planning request failed before ID assignment: {str(e)}")
+        
         traceback.print_exc()
         return JSONResponse(
             content={"error": f"An unexpected error occurred: {str(e)}"},
