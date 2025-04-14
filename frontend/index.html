@@ -13,6 +13,16 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         
+        <!-- Add this immediately after your meta tags but before other scripts/stylesheets -->
+        <script>
+            // Early mobile detection - runs before page render
+            (function() {
+                if (window.innerWidth < 768) {
+                    document.documentElement.classList.add('mobile-view');
+                }
+            })();
+        </script>
+        
         <!-- Add this immediately after your Select2 CSS link in the head section -->
         <script>
             // Pre-initialize select2 variables to prevent FOUC
@@ -62,7 +72,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <h1 class="display-4 fw-bold">Plan Your Perfect Football Trip</h1>
+                    <h1 class="display-4 fw-bold">Plan Your Perfect<br class="d-md-none"> Football Trip</h1>
                     <p class="lead">Discover the best way to watch multiple matches across Germany with optimized travel plans.</p>
                 </div>
                 <div class="col-md-6">

@@ -71,9 +71,14 @@ function initDOMReferences() {
     }
 }
 
+// Modify the initialization code to prevent double-initialization
+
 // CONSOLIDATED APP INITIALIZATION
 document.addEventListener('DOMContentLoaded', function() {
-    // Use a structured promise chain for proper sequencing
+    // Don't call initializeMobileLayout here anymore
+    // It will only be called once during the app initialization
+    
+    // Continue with the rest of the app initialization
     initializeApp()
         .catch(error => {
             console.error("App initialization error:", error);
@@ -147,7 +152,7 @@ async function initializeUIComponents() {
         dropdownCssClass: 'select2-dropdown--clean'
     });
     
-    // Initialize flatpickr date picker once
+    // Initialize flatpickr date picker once with improved mobile positioning
     const availableDates = await loadAvailableDates();
     if(window.DOM.startDateInput) {
         flatpickr(window.DOM.startDateInput, {
@@ -174,6 +179,31 @@ async function initializeUIComponents() {
                         dayElem.appendChild(badge);
                     }
                 }
+            },
+            onOpen: function(selectedDates, dateStr, instance) {
+                // Fix mobile positioning on calendar open
+                if (window.innerWidth < 768) {
+                    const calendarElement = instance.calendarContainer;
+                    
+                    // Force correct day grid layout
+                    setTimeout(() => {
+                        // Position the calendar in the center of the screen first
+                        calendarElement.style.position = 'fixed';
+                        calendarElement.style.top = '50%';
+                        calendarElement.style.left = '50%';
+                        calendarElement.style.transform = 'translate(-50%, -50%)';
+                        
+                        // Apply proper positioning class after a brief delay
+                        setTimeout(() => {
+                            calendarElement.classList.add('proper-position');
+                        }, 50);
+                    }, 0);
+                }
+            },
+            onClose: function(selectedDates, dateStr, instance) {
+                // Remove positioning classes when calendar closes
+                const calendarElement = instance.calendarContainer;
+                calendarElement.classList.remove('proper-position');
             },
             onReady: function() {
                 setTimeout(function() {
@@ -354,86 +384,98 @@ function setupEventListeners() {
     }
 }
 
-// Initialize mobile-specific layouts
+// Add a flag to track if mobile layout has been initialized
+let mobileLayoutInitialized = false;
+
 function initializeMobileLayout() {
     // Check if we're on mobile
     const isMobile = window.innerWidth < 768;
     
-    if(isMobile) {
-        console.log("Mobile layout detected - initializing mobile UI");
-        
-        // Make form sections collapsible on mobile with custom titles
-        const formSections = document.querySelectorAll('.form-section');
-        
-        // Set custom titles for sections
-        const sectionTitles = [
-            "Starting Location", // First section remains visible
-            "Times and Duration",
-            "Additional Filters"
-        ];
-        
-        // First step: Get the start date container BEFORE changing the DOM structure
-        // This avoids potential issues where the selector cannot find the element later
-        const startDateContainer = document.querySelector('#startDate').closest('.mb-3');
-        
-        // Second step: Remove the start date container from its original location
-        if (startDateContainer) {
-            startDateContainer.parentNode.removeChild(startDateContainer);
-            console.log("✅ Start date removed from original location");
-        } else {
-            console.error("❌ Could not find start date container");
-            // If we can't find it, return early to avoid breaking the layout
-            return;
-        }
-
-        // Third step: Create collapsible sections
-        formSections.forEach((section, index) => {
-            // Skip the first section - keep it visible
-            if(index > 0) {
-                // Create collapsible header with custom title
-                const header = document.createElement('div');
-                header.className = 'form-section-header';
-                header.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center py-1">
-                        <span class="section-title">${sectionTitles[index]}</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                `;
-                
-                // Insert header before section content
-                section.prepend(header);
-                
-                // Hide section content initially
-                const content = document.createElement('div');
-                content.className = 'form-section-content collapse';
-                
-                // Move all content except header into this container
-                while(section.childNodes.length > 1) {
-                    content.appendChild(section.childNodes[1]);
-                }
-                section.appendChild(content);
-                
-                // Toggle section on click
-                header.addEventListener('click', function() {
-                    const isOpen = content.classList.contains('show');
-                    header.querySelector('i').className = isOpen ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
-                    
-                    if(isOpen) {
-                        content.classList.remove('show');
-                    } else {
-                        content.classList.add('show');
-                    }
-                });
-                
-                // Fourth step: If this is the "Times and Duration" section, insert the start date
-                if (index === 1 && startDateContainer) {
-                    // Insert at the beginning of the content container
-                    content.insertBefore(startDateContainer, content.firstChild);
-                    console.log("✅ Start date successfully moved to Times and Duration section");
-                }
-            }
-        });
+    // Exit if not mobile or already initialized
+    if(!isMobile || mobileLayoutInitialized) {
+        return;
     }
+    
+    console.log("Mobile layout detected - initializing mobile UI");
+    
+    // Mark as initialized to prevent duplicate initialization
+    mobileLayoutInitialized = true;
+    
+    // Add mobile-ready class to the body ASAP
+    document.body.classList.add('mobile-ready');
+    
+    // Make form sections collapsible on mobile with custom titles
+    const formSections = document.querySelectorAll('.form-section');
+    
+    // Set custom titles for sections
+    const sectionTitles = [
+        "Starting Location", // First section remains visible
+        "Times and Duration",
+        "Additional Filters"
+    ];
+    
+    // First step: Get the start date container
+    const startDateContainer = document.querySelector('#startDate')?.closest('.mb-3');
+    
+    // Second step: Remove the start date container from its original location
+    if (startDateContainer) {
+        startDateContainer.parentNode.removeChild(startDateContainer);
+    }
+
+    // Third step: Create collapsible sections
+    formSections.forEach((section, index) => {
+        // Skip the first section - keep it visible
+        if(index > 0) {
+            // Check if this section already has a header (prevent duplication)
+            if (section.querySelector('.form-section-header')) {
+                return; // Skip this section if it already has a header
+            }
+            
+            // Create collapsible header with custom title
+            const header = document.createElement('div');
+            header.className = 'form-section-header';
+            header.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center py-1">
+                    <span class="section-title">${sectionTitles[index]}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            `;
+            
+            // Insert header before section content
+            section.prepend(header);
+            
+            // Create content container
+            const content = document.createElement('div');
+            content.className = 'form-section-content';
+            
+            // Move all content except header into this container
+            while(section.childNodes.length > 1) {
+                content.appendChild(section.childNodes[1]);
+            }
+            section.appendChild(content);
+            
+            // Toggle section on click with smooth animation
+            header.addEventListener('click', function() {
+                const isOpen = content.classList.contains('show');
+                
+                // Update icon first for snappy feedback
+                header.querySelector('i').className = isOpen ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+                
+                // Toggle content visibility with animation
+                if(isOpen) {
+                    content.classList.remove('show');
+                } else {
+                    content.classList.add('show');
+                }
+            });
+            
+            // Fourth step: If this is the "Times and Duration" section, insert the start date
+            if (index === 1 && startDateContainer) {
+                // Insert at the beginning of the content container
+                content.insertBefore(startDateContainer, content.firstChild);
+            }
+        }
+    });
 }
 
 // Update selection classes function

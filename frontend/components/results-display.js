@@ -1,6 +1,8 @@
 import { renderTripCard, renderTbdGames } from './trip-card.js';
 import { renderFilters, initFilterDrawer } from '../services/filters.js'; 
 import { showListView } from '../services/ui-helpers.js';
+// Add this import at the top
+import { showSuccessToast, showErrorToast } from '../services/notifications.js';
 
 /**
  * Renders trip search results with enhanced handling of backend data
@@ -213,9 +215,10 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         }
     }
     
-    // Handle error messages
+    // Handle error messages - replace this function
     if (response.message) {
-        showInfoToast(response.message);
+        // Replace showInfoToast with showSuccessToast since we don't have showInfoToast
+        showSuccessToast(response.message);
     }
 
     // Initialize tooltips on newly rendered elements

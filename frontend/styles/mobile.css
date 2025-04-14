@@ -1,5 +1,3 @@
-/* Mobile-specific styles for BundesTrip - Comprehensive Optimization */
-
 /* Common mobile-specific variables */
 :root {
   --mobile-padding-sm: 8px;
@@ -17,6 +15,32 @@
   
 /* Apply mobile styles only on screens smaller than 768px */
 @media (max-width: 767.98px) {
+  body:not(.mobile-ready) .form-section:not(:first-child) {
+    visibility: hidden;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Only show form sections when body gets mobile-ready class */
+  body.mobile-ready .form-section {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* Form section styling that's consistent before and after transformation */
+  .form-section {
+    position: relative;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding-bottom: 0.5rem;
+  }
+
+  .form-section:first-child {
+    border-bottom: none;
+  }
+  
   /* ===== 1. GLOBAL LAYOUT & TYPOGRAPHY ===== */
   body {
     font-size: 0.9rem;
@@ -465,14 +489,16 @@
     color: #555 !important;
   }
   
-  /* Match details expandable section */
+  /* Details section - collapsed by default */
   .match-details-section {
     height: 0;
     overflow: hidden;
     transition: height 0.3s ease;
     margin-top: 0;
+    width: 100%;
   }
   
+  /* Show details when expanded */
   .match-details-section.show {
     height: auto;
     margin-top: 8px;
@@ -480,19 +506,46 @@
     padding-top: 8px;
   }
   
+  /* Layout for expanded details */
   .match-details-content {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
     font-size: var(--mobile-font-size-xs);
     color: #555;
     padding: 0 4px;
   }
   
+  /* Individual detail items */
   .match-time-detail,
-  .match-location-detail {
+  .match-location-detail,
+  .match-date-detail {
     display: flex;
     align-items: center;
     gap: 5px;
+    padding: 3px 0;
+  }
+
+  /* Date spans the full width */
+  .match-date-detail {
+    grid-column: 1 / span 2;
+    border-bottom: 1px dashed rgba(0,0,0,0.06);
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+  }
+  
+  /* Icons in details */
+  .match-time-detail i,
+  .match-location-detail i,
+  .match-date-detail i {
+    font-size: var(--mobile-font-size-xs);
+    width: 14px;
+    text-align: center;
+    color: var(--secondary-color);
+  }
+  
+  .match-location-detail i {
+    color: var(--accent-color);
   }
   
   .match-time-detail i,
@@ -551,11 +604,81 @@
     padding: 0.1rem 0.25rem;
   }
   
+
+    /* Calendar container positioning */
+    .flatpickr-calendar.open {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s ease-out;
+      position: fixed !important;
+      z-index: 999999 !important;
+      max-width: 300px !important;
+      width: calc(100% - 20px) !important;
+      margin: 0 auto !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      top: 50% !important; /* Center vertically by default */
+      transform: translate(-50%, -50%) !important; /* Center both horizontally and vertically */
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3) !important;
+    }
+
+      /* Only show the calendar once positioned and with proper-position class */
+    .flatpickr-calendar.open.proper-position {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Fix layout for day grid - force 7-column layout */
+    .flatpickr-days {
+      width: 100% !important;
+      min-width: 280px !important;
+    }
+    
+    .dayContainer {
+      min-width: 280px !important;
+      max-width: 280px !important;
+      width: 280px !important;
+      display: grid !important; /* Force grid layout */
+      grid-template-columns: repeat(7, 1fr) !important; /* Force 7 columns */
+      justify-content: space-between !important;
+      gap: 1px !important;
+      overflow: visible !important;
+    }
+    
+    /* Fix day sizes */
+    .flatpickr-day {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: 36px !important;
+      line-height: 36px !important;
+      margin: 0 !important;
+      justify-self: center !important;
+    }
+    
+    /* Hide the arrows that might affect layout */
+    .flatpickr-calendar.arrowTop:before,
+    .flatpickr-calendar.arrowTop:after,
+    .flatpickr-calendar.arrowBottom:before,
+    .flatpickr-calendar.arrowBottom:after {
+      display: none !important;
+    }
+
+    /* Add this to ensure proper calendar state handling */
+  .flatpickr-calendar:not(.open) {
+    display: none !important;
+  }
+
+  /* Make closed calendars fully invisible immediately */
+  .flatpickr-calendar:not(.open),
+  .flatpickr-calendar:not(.proper-position) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
   /* ===== 9. TRIP CARDS STYLING ===== */
   /* Trip card container */
   .trip-card {
     border-radius: 10px !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 4rem !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
   
@@ -567,15 +690,17 @@
   
   /* Trip header structure */
   .trip-header {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start !important;
+    align-items: center; /* Center children horizontally */
+    width: 100%;
     gap: 0.5rem;
   }
   
   .trip-header-main {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    width: 100%;
     margin-bottom: 0.5rem;
     align-items: center;
   }
@@ -662,10 +787,15 @@
     padding: 0.5rem;
     font-size: var(--mobile-font-size-sm);
     border-radius: 6px;
-    width: 100%;
-    margin: 0.5rem 0 0;
+    width: auto; /* Change from 100% to auto width */
+    min-width: 140px; /* Set minimum width */
+    margin: 0.75rem auto 0.25rem; /* Center with auto left/right margins */
     box-shadow: 0 2px 5px rgba(4, 61, 124, 0.15);
     min-height: 44px; /* Better touch target */
+    display: flex; /* Use flexbox for perfect centering */
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Center text as fallback */
   }
   
   /* ===== 10. PREVIEW SECTIONS ===== */
@@ -696,15 +826,168 @@
   
   /* Match preview items */
   .match-preview-item {
-    padding: 0.4rem 0 0.5rem;
-    border-bottom-width: 1px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    padding: 4px 22px 4px 0; /* Add right padding for the arrow and even padding top/bottom */
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 3px;
+  }
+  .match-preview-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  /* Main match content with teams and logos */
+  .match-content-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 0;
+    padding-right: 0;
   }
   
+  /* Position indicator chevron */
+  .match-content-grid::after {
+    content: '\f078'; /* fa-chevron-down */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 6px;
+    top: 50%; /* Position exactly at 50% */
+    transform: translateY(-50%); /* Perfect vertical centering */
+    font-size: 0.7rem;
+    color: #777;
+    transition: transform 0.2s ease;
+    margin: 0;
+    line-height: 1;
+    height: 0.7rem; /* Match the font size for perfect centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Rotate chevron when expanded */
+  .match-preview-item.details-expanded .match-content-grid::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+    /* Instead of hiding these elements completely, use a mobile-specific approach */
+    .match-preview-item .match-location-side, 
+    .match-preview-item .match-datetime-side {
+      /* Use position absolute to remove from flow without display:none */
+      position: absolute;
+      left: -9999px;
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+    }
+    
+    /* Make mobile-specific grid override */
+    .match-preview-item .match-content-grid {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding-right: 0;
+    }
+    
+    /* Use mobile-specific selector for chevron */
+    .match-preview-item.mobile-preview .match-content-grid::after {
+      content: '\f078'; /* fa-chevron-down */
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.7rem;
+      color: #777;
+      transition: transform 0.2s ease;
+      margin: 0;
+      line-height: 1;
+      height: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+  /* Teams and logos - centered layout */
   .match-teams-preview {
-    font-size: var(--mobile-font-size-xs);
-    gap: 0.25rem;
+    display: grid !important;
+    /* Reduce column widths and set consistent 2px gaps */
+    grid-template-columns: 1fr 18px 24px 18px 1fr !important;
+    column-gap: 2px !important; /* Force 2px gaps between grid items */
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+    margin: 5px 0;
+    padding: 2px 0;
+  }
+
+  /* Team name styling */
+  .match-teams-preview strong {
+    font-size: 0.6rem !important;
+    line-height: 1.15;
+    height: 1.15em; /* Fixed height for consistency */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+    margin: 0; /* Remove any margin */
+  }
+
+  /* VS text styling */
+  .match-teams-preview .vs-text {
+    font-size: 0.6rem;
+    opacity: 0.8;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Team logos */
+  .match-teams-preview img.team-logo-small {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
   }
   
+  /* Make each item in grid take its proper position */
+  .match-teams-preview strong:first-child {
+    padding-right: 0;
+    text-align: right;
+    justify-self: end; /* Align to right end of column */
+  }
+  
+  .match-teams-preview img:first-of-type {
+    grid-column: 2;
+  }
+  
+  .match-teams-preview .vs-text {
+    grid-column: 3;
+  }
+  
+  .match-teams-preview img:last-of-type {
+    grid-column: 4;
+  }
+  
+  .match-teams-preview strong:last-child {
+    padding-left: 0;
+    text-align: left;
+    justify-self: start; /* Align to left start of column */
+  }
+
+  /* Hide location/date/time in main view */
+  .match-location-side, 
+  .match-datetime-side {
+    display: none;
+  }
   .match-teams-preview i {
     font-size: var(--mobile-font-size-xs);
     width: 10px;
@@ -1345,7 +1628,7 @@
 @media (max-width: 767.98px) and (orientation: landscape) {
   /* Card layout */
   .trip-card .card-body {
-    padding: 0.5rem !important;
+    padding: 4rem !important;
   }
   
   /* Header structure changes for landscape */
