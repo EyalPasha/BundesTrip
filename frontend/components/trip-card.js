@@ -339,11 +339,13 @@ function renderTripCard(group, index, tripContext = {}) {
                             <!-- Collapsible details section - only shown on mobile -->
                             <div class="match-details-section">
                                 <div class="match-details-content">
-                                    <div class="match-date-detail">
-                                        <i class="fas fa-calendar-day"></i> ${matchDate}
-                                    </div>
-                                    <div class="match-time-detail">
-                                        <i class="far fa-clock"></i> ${match.matchTime || 'TBD'}
+                                    <div class="match-details-first-row">
+                                        <div class="match-date-detail">
+                                            <i class="fas fa-calendar-day"></i> ${matchDate}
+                                        </div>
+                                        <div class="match-time-detail">
+                                            <i class="far fa-clock"></i> ${match.matchTime || 'TBD'}
+                                        </div>
                                     </div>
                                     <div class="match-location-detail">
                                         <i class="fas fa-map-marker-alt"></i> ${match.location}
@@ -690,11 +692,13 @@ function initializeMatchesExpander() {
                         <!-- Collapsible details section - only for mobile -->
                         <div class="match-details-section">
                             <div class="match-details-content">
-                                <div class="match-date-detail">
-                                    <i class="fas fa-calendar-day"></i> ${matchDate}
-                                </div>
-                                <div class="match-time-detail">
-                                    <i class="far fa-clock"></i> ${match.matchTime || 'TBD'}
+                                <div class="match-details-first-row">
+                                    <div class="match-date-detail">
+                                        <i class="fas fa-calendar-day"></i> ${matchDate}
+                                    </div>
+                                    <div class="match-time-detail">
+                                        <i class="far fa-clock"></i> ${match.matchTime || 'TBD'}
+                                    </div>
                                 </div>
                                 <div class="match-location-detail">
                                     <i class="fas fa-map-marker-alt"></i> ${match.location}

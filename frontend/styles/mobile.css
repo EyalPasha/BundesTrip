@@ -501,19 +501,45 @@
   /* Show details when expanded */
   .match-details-section.show {
     height: auto;
-    margin-top: 8px;
-    border-top: 1px solid rgba(0,0,0,0.08);
+    margin-top: 6px;
+    border-top: 1px solid rgba(0,0,0,0.05);
     padding-top: 8px;
+    background-color: rgba(0,0,0,0.015);
+    border-radius: 4px;
+  }
+
+  /* Match location detail alignment */
+  .match-location-detail {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .match-details-first-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px; /* Increase spacing between date and time */
+    border-bottom: 1px solid rgba(0,0,0,0.08); /* Single more visible separator */
+    padding-bottom: 8px;
+    margin-bottom: 2px;
+  }
+
+  .match-date-detail,
+  .match-time-detail {
+    border: none !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    flex-shrink: 0;
   }
   
   /* Layout for expanded details */
   .match-details-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 8px;
     font-size: var(--mobile-font-size-xs);
     color: #555;
-    padding: 0 4px;
+    padding: 4px 8px;
   }
   
   /* Individual detail items */
@@ -522,8 +548,10 @@
   .match-date-detail {
     display: flex;
     align-items: center;
-    gap: 5px;
-    padding: 3px 0;
+    gap: 6px;
+    padding: 2px 0;
+    justify-content: flex-start;
+    text-align: left;
   }
 
   /* Date spans the full width */
@@ -541,18 +569,12 @@
     font-size: var(--mobile-font-size-xs);
     width: 14px;
     text-align: center;
+    flex-shrink: 0;
     color: var(--secondary-color);
   }
   
   .match-location-detail i {
     color: var(--accent-color);
-  }
-  
-  .match-time-detail i,
-  .match-location-detail i {
-    font-size: var(--mobile-font-size-xs);
-    width: 12px;
-    text-align: center;
   }
   
   /* Hide desktop elements on mobile */
@@ -678,9 +700,44 @@
   /* Trip card container */
   .trip-card {
     border-radius: 10px !important;
-    margin-bottom: 4rem !important;
+    margin-bottom: 3rem !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
+
+  /* Add decorative separator between cards */
+    .trip-card:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -2.25rem;
+    left: 50%;
+    width: 90%;  /* Full width line as requested */
+    height: 2px;
+    background: linear-gradient(to right, 
+      rgba(4, 61, 124, 0), 
+      rgba(4, 61, 124, 0.15), 
+      rgba(4, 61, 124, 0.3), 
+      rgba(4, 61, 124, 0.15), 
+      rgba(4, 61, 124, 0));
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+    }
+
+    .trip-card:not(:last-child)::before {
+    content: '\f072'; /* Airplane icon (Font Awesome) */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    bottom: -2.65rem;
+    left: 50%;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    background: white;
+    padding: 0 10px;
+    transform: translateX(-50%) rotate(90deg);
+    z-index: 6;
+    pointer-events: none;
+    }
   
   /* Card header */
   .trip-card .card-header {
@@ -1238,14 +1295,20 @@
   
   /* Travel items */
   .travel-container {
-    margin-left: 1rem;
+    margin-left: 1.5rem;
+    margin-right: 0.5rem; /* Add right margin to prevent overlap */
     margin-bottom: 0.5rem;
+    width: auto; /* Allow container to respect margins */
+    max-width: calc(100% - 2rem); /* Ensure it doesn't exceed available space */
   }
   
+  /* Ensure travel items are properly contained */
   .travel-item {
     margin-bottom: 0.4rem;
     padding: 0.5rem 0.6rem;
     border-radius: 4px;
+    position: relative;
+    overflow: hidden; /* Prevent content overflow */
   }
   
   .travel-item::before {
@@ -1257,18 +1320,28 @@
     gap: 0.35rem;
   }
   
+  /* Fix airplane route display */
   .travel-item-route {
     font-size: var(--mobile-font-size-xs);
     gap: 0.25rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding-right: 6px; /* Add padding to prevent edge overlap */
   }
-  
+  /* Make sure icons are sized properly */
   .travel-item-route i {
     font-size: var(--mobile-font-size-xs);
+    flex-shrink: 0; /* Prevent icon from shrinking */
   }
   
+  /* Ensure text doesn't overflow */
   .travel-context {
-    font-size: 0.65rem;
-    margin-left: 0.15rem;
+    max-width: calc(100% - 25px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .travel-time {
