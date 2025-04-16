@@ -417,9 +417,9 @@ function renderTripCard(group, index, tripContext = {}) {
             tab.setAttribute('aria-controls', optionId);
             tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
             tab.innerHTML = `
-                <i class="fas fa-${varIdx === 0 ? 'star' : 'route'} me-1"></i> 
-                Option ${varIdx + 1}
-            `;
+                    <i class="fas fa-route me-1"></i> 
+                    Option ${varIdx + 1}
+                `;
             optionsTabs.appendChild(tab);
             
             // Create content pane
@@ -491,9 +491,9 @@ function renderTripCard(group, index, tripContext = {}) {
                 <div class="variant-summary">
                     <!-- Main Summary Header - Combined Stats -->
                     <div class="trip-summary-header">
-                        <div class="trip-summary-icon">
-                            <i class="fas ${varIdx === 0 ? 'fa-star' : 'fa-route'}"></i>
-                        </div>
+                            <div class="trip-summary-icon">
+                                <i class="fas fa-route"></i>
+                            </div>
                         <div class="trip-summary-details">
                             <div class="trip-time-info">
                                 <i class="fas fa-clock"></i> ${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m total travel

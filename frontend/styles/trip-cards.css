@@ -491,7 +491,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   min-width: 0 !important; /* Override minimum width */
   justify-content: center;
   color: var(--primary-color); /* Add primary blue color for tab text */
-  font-weight: 500; /* Make it slightly bolder */
+  font-weight: 600 !important;
   border-radius: var(--button-radius) !important;
   white-space: nowrap;
   margin: 0 0.15rem; /* Small gap between tabs */
@@ -2329,7 +2329,6 @@ font-weight: 500;
   border-color: transparent;
   color: var(--primary-color);
   transform: translateY(-2px);
-  font-weight: 600; /* Make text bolder on hover */
 }
 
 /* Enhanced match teams display with logos */
