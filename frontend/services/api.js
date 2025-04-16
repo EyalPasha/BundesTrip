@@ -1,6 +1,8 @@
 // API Base URL - adjust as needed for production
+const API_BASE_URL = 'http://172.30.2.216:8000';
 //const API_BASE_URL = 'http://10.0.0.67:8000';
-const API_BASE_URL = 'http://10.0.0.28:8000';
+//const API_BASE_URL = 'http://10.0.0.28:8000';
+
 /**
  * Make an API request with built-in error handling and retry logic
  * @param {string} endpoint - API endpoint to call

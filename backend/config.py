@@ -17,10 +17,10 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 # CORS settings - updated with all development URLs
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", 
     "http://localhost:5500,http://127.0.0.1:5500,"
-    "http://localhost:8001,http://127.0.0.1:8001,http://10.0.0.28:8001,"
-    "http://localhost:8080,http://127.0.0.1:8080,"
-    "http://10.0.0.28:5500,http://10.0.0.67:5500,"
-    "http://10.0.0.67:8001,http://10.0.0.67:8000,"
+    "http://localhost:8001,http://127.0.0.1:8001,"
+    "http://172.30.2.216:8001,http://172.30.2.216:8000,"  # Add your new IPs
+    "http://10.0.0.28:8001,http://10.0.0.28:5500,"
+    "http://10.0.0.67:5500,http://10.0.0.67:8001,http://10.0.0.67:8000,"
     "http://localhost:3000,http://127.0.0.1:3000,"
     "http://localhost:8000,http://127.0.0.1:8000,"
     "null"  # For local file access
