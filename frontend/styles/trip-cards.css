@@ -43,13 +43,6 @@
   --icon-size: 1rem;
   --icon-size-small: 0.8rem;
 
-
-  --breakpoint-sm: 576px;
-  --breakpoint-md: 767.98px;
-  --breakpoint-lg: 991px;
-  --breakpoint-xl: 1200px;
-  --breakpoint-xxl: 1400px;
-
   --theme-background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 
 
@@ -2905,7 +2898,7 @@ body.mustteams-dropdown-open .select2-dropdown {
   display: none;
 }
 
-@media (max-width: var(--breakpoint-md)) {
+@media (max-width: 768px) {
   .trip-card:not(:last-child)::after {
     width: 95%;
   }
@@ -3010,9 +3003,26 @@ body.mustteams-dropdown-open .select2-dropdown {
   }
 }
 
+/* Add to trip-cards.css file - Hide mobile elements on desktop */
+@media (min-width: 768px) {
+  /* Completely hide mobile-specific match details section on desktop */
+  .match-details-section {
+    display: none !important;
+  }
+  
+  /* Ensure chevron indicator only appears on mobile */
+  .match-content-grid::after {
+    display: none !important;
+  }
+  
+  /* Prevent match preview items from being clickable on desktop */
+  .match-preview-item {
+    cursor: default !important;
+  }
+}
 
 /* This ensures trip results are centered when filter card is hidden */
-@media (min-width: var(--breakpoint-lg)) {
+@media (min-width: 991px) {
   body.has-filter-drawer #resultsContainer .row {
     display: flex;
     justify-content: center;
@@ -3040,7 +3050,7 @@ body.mustteams-dropdown-open .select2-dropdown {
   }
 }
 
-@media (max-width: var(--breakpoint-lg)) {
+@media (max-width: 991px) {
   /* Reduce padding on container for more space on medium screens */
   #results .container {
     padding-left: 15px;
@@ -3054,7 +3064,7 @@ body.mustteams-dropdown-open .select2-dropdown {
 }
 
 /* Update media query for large screens */
-@media (min-width: var(--breakpoint-xxl)) {
+@media (min-width: 1400px) {
   #results .container {
     max-width: 1700px;
   }

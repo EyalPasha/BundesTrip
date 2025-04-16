@@ -310,7 +310,12 @@ function renderTripCard(group, index, tripContext = {}) {
                     return `
                         <div class="match-preview-item ${match.contains_must_team ? 'must-match' : ''}">
                             <div class="match-content-grid">
-                                <!-- Teams in center - simplified for mobile -->
+                                <!-- Left side location for desktop -->
+                                <div class="match-location-side">
+                                    <i class="fas fa-map-marker-alt"></i> ${match.location}
+                                </div>
+                                
+                                <!-- Teams in center - works on both desktop and mobile -->
                                 <div class="match-teams-preview">
                                     <strong>${homeTeam}</strong>
                                     <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo-small" alt="${homeTeam} logo">
@@ -318,9 +323,20 @@ function renderTripCard(group, index, tripContext = {}) {
                                     <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo-small" alt="${awayTeam} logo">
                                     <strong>${awayTeam}</strong>
                                 </div>
+                                
+                                <!-- Right side date/time for desktop -->
+                                <div class="match-datetime-side">
+                                    <span class="match-date-inline">
+                                        <i class="fas fa-calendar-day"></i> ${matchDate}
+                                    </span>
+                                    ${match.matchTime ? `
+                                    <span class="match-time-data">
+                                        <i class="fas fa-clock"></i> ${match.matchTime}
+                                    </span>` : ''}
+                                </div>
                             </div>
                             
-                            <!-- Collapsible details section -->
+                            <!-- Collapsible details section - only shown on mobile -->
                             <div class="match-details-section">
                                 <div class="match-details-content">
                                     <div class="match-date-detail">
@@ -668,6 +684,21 @@ function initializeMatchesExpander() {
                                 <span class="match-time-data">
                                     <i class="fas fa-clock"></i> ${match.matchTime}
                                 </span>` : ''}
+                            </div>
+                        </div>
+                        
+                        <!-- Collapsible details section - only for mobile -->
+                        <div class="match-details-section">
+                            <div class="match-details-content">
+                                <div class="match-date-detail">
+                                    <i class="fas fa-calendar-day"></i> ${matchDate}
+                                </div>
+                                <div class="match-time-detail">
+                                    <i class="far fa-clock"></i> ${match.matchTime || 'TBD'}
+                                </div>
+                                <div class="match-location-detail">
+                                    <i class="fas fa-map-marker-alt"></i> ${match.location}
+                                </div>
                             </div>
                         </div>
                     `;
