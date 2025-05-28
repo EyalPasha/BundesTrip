@@ -1,5 +1,5 @@
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 
 class Game(BaseModel):
@@ -82,3 +82,8 @@ class TripRequest(BaseModel):
     must_teams: Optional[List[str]] = None
     min_games: Optional[int] = 2
     request_id: Optional[str] = None
+    
+class SaveTripRequest(BaseModel):
+    trip_data: Dict[Any, Any] = Field(..., description="Complete trip data from search results")
+    original_request: Dict[Any, Any] = Field(..., description="Original search parameters")
+    is_favorite: bool = Field(False, description="Whether to mark as favorite")

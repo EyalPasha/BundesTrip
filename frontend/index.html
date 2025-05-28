@@ -2,8 +2,8 @@
 <html lang="en">
     <head>
         <!-- Add this in the HEAD section of your HTML -->
-        <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://localhost:8000 http://0.0.0.0:8000 http://127.0.0.1:8000 http://10.0.0.28:8000 http://10.0.0.67:8000 http://172.30.2.216:8000 https://*.ngrok-free.app https://*.ngrok.io;">
-        <meta charset="UTF-8">
+        <!-- Replace the existing CSP meta tag with this: -->
+        <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://localhost:8000 http://0.0.0.0:8000 http://127.0.0.1:8000 http://10.0.0.28:8000 http://10.0.0.67:8000 http://172.30.2.216:8000 https://*.ngrok-free.app https://*.ngrok.io https://ouurqpbwidicivdysdnq.supabase.co https://*.supabase.co;">        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>BundesTrip - Football Match Trip Planner</title>
         <!-- Add favicon -->
@@ -40,6 +40,9 @@
         <link rel="stylesheet" href="styles/trip-cards.css">
         <link rel="stylesheet" href="styles/loading-animation.css">
         <link rel="stylesheet" href="styles/mobile.css">
+        
+        <!-- Add this in the <head> section, before your existing scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     </head>
 <body>
 <!-- Update the navigation section in index.html -->
@@ -62,6 +65,37 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="./about.html">About Us</a>
+                </li>
+            </ul>
+            <!-- Authentication Menu -->
+            <ul class="navbar-nav">
+                <!-- When not logged in -->
+                <li class="nav-item" id="loginMenuItem">
+                    <a class="nav-link" href="./login.html">
+                        <i class="fas fa-sign-in-alt me-1"></i>Login
+                    </a>
+                </li>
+                <li class="nav-item" id="registerMenuItem">
+                    <a class="nav-link" href="./register.html">
+                        <i class="fas fa-user-plus me-1"></i>Register
+                    </a>
+                </li>
+                <!-- When logged in -->
+                <li class="nav-item dropdown d-none" id="userDropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i>
+                        <span id="userDisplayName">User</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="./profile.html">
+                            <i class="fas fa-user me-2"></i>Profile
+                        </a></li>
+
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="logoutUser()">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a></li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -379,11 +413,57 @@
         </div>
     </footer>
 
-    <!-- At the bottom of your index.html file -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="script.js" type="module"></script>
+    <!-- At the bottom of your index.html file, before the closing </body> tag -->
+    <!-- Load Supabase first -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Load auth service second -->
+<script src="./services/supabase-auth.js"></script>
+
+<!-- Load other services -->
+<script src="./services/navigation.js"></script>
+<script src="./services/trip-saver.js"></script>
+
+<!-- Load jQuery and Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Load UI libraries -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Load modules with type="module" -->
+<script src="./services/api.js" type="module"></script>
+<script src="./services/trip-service.js" type="module"></script>
+
+<!-- Load main script as module -->
+<script src="script.js" type="module"></script>
+
+<script>
+// Initialize everything when page loads
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🔄 Initializing page...');
+    
+    // Wait for auth service to be ready
+    if (window.authService) {
+        await new Promise(resolve => {
+            const checkInit = () => {
+                if (window.authService.initialized) {
+                    resolve();
+                } else {
+                    setTimeout(checkInit, 100);
+                }
+            };
+            checkInit();
+        });
+        
+        // Update navigation state
+        if (window.updateNavigationState) {
+            await updateNavigationState();
+        }
+        console.log('✅ Page initialization complete');
+    }
+});
+</script>
 </body>
 </html>

@@ -1,173 +1,173 @@
 League, Date, Time, Day, Home Team, Away Team, Location
-2bundesliga, 11 April 2025, 17:30, Friday, SpVgg Greuther Fürth, 1. FC Köln, Fürth hbf
-2bundesliga, 11 April 2025, 17:30, Friday, Hamburger SV, Eintracht Braunschweig, Hamburg hbf
-bundesliga, 11 April 2025, 19:30, Friday, VfL Wolfsburg, RB Leipzig, Wolfsburg hbf
-3-liga, 11 April 2025, 20:00, Friday, SV Wehen Wiesbaden, FC Saarbrücken, Wiesbaden hbf
-2bundesliga, 12 April 2025, 12:00, Saturday, SSV Ulm 1846, 1. FC Magdeburg, Ulm hbf
-2bundesliga, 12 April 2025, 12:00, Saturday, Hertha BSC, SV Darmstadt 98, Berlin hbf
-2bundesliga, 12 April 2025, 12:00, Saturday, Hannover 96, SV Elversberg, Hannover hbf
-bundesliga, 12 April 2025, 14:30, Saturday, Holstein Kiel, FC St. Pauli, Kiel hbf
-bundesliga, 12 April 2025, 14:30, Saturday, VfL Bochum, FC Augsburg, Bochum hbf
-bundesliga, 12 April 2025, 14:30, Saturday, Borussia Mönchengladbach, SC Freiburg, Mönchengladbach hbf
-bundesliga, 12 April 2025, 14:30, Saturday, TSG Hoffenheim, 1. FSV Mainz 05, Sinsheim (Elsenz) hbf
-bundesliga, 12 April 2025, 14:30, Saturday, Bayer Leverkusen, 1. FC Union Berlin, Leverkusen Mitte
-3-liga, 12 April 2025, 15:00, Saturday, FC Ingolstadt 04, Hannover 96 II, Ingolstadt hbf
-3-liga, 12 April 2025, 15:00, Saturday, SpVgg Unterhaching, VfB Stuttgart II, München hbf
-3-liga, 12 April 2025, 15:00, Saturday, Rot-Weiss Essen, Erzgebirge Aue, Essen hbf
-3-liga, 12 April 2025, 15:00, Saturday, Hansa Rostock, SC Verl, Rostock hbf
-3-liga, 12 April 2025, 15:00, Saturday, Dynamo Dresden, VfL Osnabrück, Dresden hbf
-bundesliga, 12 April 2025, 17:30, Saturday, Bayern Munich, Borussia Dortmund, München hbf
-3-liga, 12 April 2025, 17:30, Saturday, Alemannia Aachen, SV Sandhausen, Aachen hbf
-2bundesliga, 12 April 2025, 19:30, Saturday, 1. FC Kaiserslautern, 1. FC Nürnberg, Kaiserslautern hbf
-2bundesliga, 13 April 2025, 12:30, Sunday, SSV Jahn Regensburg, FC Schalke 04, Regensburg hbf
-2bundesliga, 13 April 2025, 12:30, Sunday, Preußen Münster, Karlsruher SC, Münster (Westf) hbf
-2bundesliga, 13 April 2025, 12:30, Sunday, SC Paderborn 07, Fortuna Düsseldorf, Paderborn hbf
-bundesliga, 13 April 2025, 14:30, Sunday, VfB Stuttgart, Werder Bremen, Stuttgart hbf
-3-liga, 13 April 2025, 14:30, Sunday, Waldhof Mannheim, TSV 1860 Munich, Mannheim hbf
-bundesliga, 13 April 2025, 16:30, Sunday, Eintracht Frankfurt, 1. FC Heidenheim, Frankfurt hbf
-3-liga, 13 April 2025, 17:30, Sunday, Borussia Dortmund II, Energie Cottbus, Dortmund hbf
-3-liga, 13 April 2025, 20:30, Sunday, Viktoria Köln, Arminia Bielefeld, Köln hbf
-Champions League, 15 April 2025, 22:00, Tuesday, Borussia Dortmund, Barcelona, Dortmund hbf
-Europa League, 17 April 2025, 22:00, Thursday, Eintracht Frankfurt, Tottenham, Frankfurt hbf
-2bundesliga, 19 April 2025, 12:00, Saturday, Eintracht Braunschweig, 1. FC Kaiserslautern, Braunschweig hbf
-2bundesliga, 19 April 2025, 12:00, Saturday, 1. FC Nürnberg, SC Paderborn 07, Nürnberg hbf
-2bundesliga, 19 April 2025, 12:00, Saturday, SV Elversberg, Fortuna Düsseldorf, Neunkirchen hbf
-bundesliga, 19 April 2025, 14:30, Saturday, 1. FSV Mainz 05, VfL Wolfsburg, Mainz hbf
-bundesliga, 19 April 2025, 14:30, Saturday, SC Freiburg, TSG Hoffenheim, Freiburg (Breisgau) hbf
-bundesliga, 19 April 2025, 14:30, Saturday, Werder Bremen, VfL Bochum, Bremen hbf
-bundesliga, 19 April 2025, 14:30, Saturday, 1. FC Heidenheim, Bayern Munich, Heidenheim hbf
-bundesliga, 19 April 2025, 14:30, Saturday, RB Leipzig, Holstein Kiel, Leipzig hbf
-3-liga, 19 April 2025, 15:00, Saturday, TSV 1860 Munich, Alemannia Aachen, München hbf
-3-liga, 19 April 2025, 15:00, Saturday, SV Sandhausen, Rot-Weiss Essen, Heidelberg hbf
-3-liga, 19 April 2025, 15:00, Saturday, Energie Cottbus, Viktoria Köln, Cottbus hbf
-3-liga, 19 April 2025, 15:00, Saturday, SV Wehen Wiesbaden, SpVgg Unterhaching, Wiesbaden hbf
-3-liga, 19 April 2025, 15:00, Saturday, Arminia Bielefeld, Hansa Rostock, Bielefeld hbf
-bundesliga, 19 April 2025, 17:30, Saturday, 1. FC Union Berlin, VfB Stuttgart, Berlin hbf
-3-liga, 19 April 2025, 17:30, Saturday, VfB Stuttgart II, SC Verl, Stuttgart hbf
-3-liga, 19 April 2025, 17:30, Saturday, VfL Osnabrück, FC Ingolstadt 04, Osnabrück hbf
-2bundesliga, 19 April 2025, 19:30, Saturday, FC Schalke 04, Hamburger SV, Gelsenkirchen hbf
-2bundesliga, 20 April 2025, 12:30, Sunday, SSV Ulm 1846, Hertha BSC, Ulm hbf
-2bundesliga, 20 April 2025, 12:30, Sunday, 1. FC Magdeburg, SSV Jahn Regensburg, Magdeburg hbf
-2bundesliga, 20 April 2025, 12:30, Sunday, Karlsruher SC, SpVgg Greuther Fürth, Karlsruhe hbf
-2bundesliga, 20 April 2025, 12:30, Sunday, SV Darmstadt 98, Hannover 96, Darmstadt hbf
-2bundesliga, 20 April 2025, 12:30, Sunday, 1. FC Köln, Preußen Münster, Köln hbf
-bundesliga, 20 April 2025, 14:30, Sunday, FC Augsburg, Eintracht Frankfurt, Augsburg hbf
-3-liga, 20 April 2025, 14:30, Sunday, FC Saarbrücken, Dynamo Dresden, Saarbrücken hbf
-bundesliga, 20 April 2025, 16:30, Sunday, Borussia Dortmund, Borussia Mönchengladbach, Dortmund hbf
-3-liga, 20 April 2025, 17:30, Sunday, Hannover 96 II, Waldhof Mannheim, Hannover hbf
-bundesliga, 20 April 2025, 18:30, Sunday, FC St. Pauli, Bayer Leverkusen, Hamburg hbf
-3-liga, 20 April 2025, 20:30, Sunday, Erzgebirge Aue, Borussia Dortmund II, Aue (Sachs) Bahnhof
-2bundesliga, 25 April 2025, 17:30, Friday, Hertha BSC, 1. FC Magdeburg, Berlin hbf
-2bundesliga, 25 April 2025, 17:30, Friday, SpVgg Greuther Fürth, SSV Ulm 1846, Fürth hbf
-bundesliga, 25 April 2025, 19:30, Friday, VfB Stuttgart, 1. FC Heidenheim, Stuttgart hbf
-3-liga, 25 April 2025, 20:00, Friday, Hansa Rostock, TSV 1860 Munich, Rostock hbf
-2bundesliga, 26 April 2025, 12:00, Saturday, SSV Jahn Regensburg, Eintracht Braunschweig, Regensburg hbf
-2bundesliga, 26 April 2025, 12:00, Saturday, Preußen Münster, SV Darmstadt 98, Münster (Westf) hbf
-2bundesliga, 26 April 2025, 12:00, Saturday, SC Paderborn 07, SV Elversberg, Paderborn hbf
-bundesliga, 26 April 2025, 14:30, Saturday, Holstein Kiel, Borussia Mönchengladbach, Kiel hbf
-bundesliga, 26 April 2025, 14:30, Saturday, VfL Wolfsburg, SC Freiburg, Wolfsburg hbf
-bundesliga, 26 April 2025, 14:30, Saturday, TSG Hoffenheim, Borussia Dortmund, Sinsheim (Elsenz) hbf
-bundesliga, 26 April 2025, 14:30, Saturday, Bayern Munich, 1. FSV Mainz 05, München hbf
-bundesliga, 26 April 2025, 14:30, Saturday, Bayer Leverkusen, FC Augsburg, Leverkusen Mitte
-3-liga, 26 April 2025, 15:00, Saturday, Viktoria Köln, SV Wehen Wiesbaden, Köln hbf
-3-liga, 26 April 2025, 15:00, Saturday, Dynamo Dresden, SV Sandhausen, Dresden hbf
-3-liga, 26 April 2025, 15:00, Saturday, Borussia Dortmund II, Hannover 96 II, Dortmund hbf
-3-liga, 26 April 2025, 15:00, Saturday, SpVgg Unterhaching, Energie Cottbus, München hbf
-3-liga, 26 April 2025, 15:00, Saturday, Rot-Weiss Essen, FC Saarbrücken, Essen hbf
-bundesliga, 26 April 2025, 17:30, Saturday, Eintracht Frankfurt, RB Leipzig, Frankfurt hbf
-3-liga, 26 April 2025, 17:30, Saturday, SC Verl, Erzgebirge Aue, Gütersloh hbf
-2bundesliga, 26 April 2025, 19:30, Saturday, Fortuna Düsseldorf, 1. FC Nürnberg, Düsseldorf hbf
-2bundesliga, 27 April 2025, 12:30, Sunday, 1. FC Kaiserslautern, FC Schalke 04, Kaiserslautern hbf
-2bundesliga, 27 April 2025, 12:30, Sunday, Hannover 96, 1. FC Köln, Hannover hbf
-2bundesliga, 27 April 2025, 12:30, Sunday, Hamburger SV, Karlsruher SC, Hamburg hbf
-bundesliga, 27 April 2025, 14:30, Sunday, VfL Bochum, 1. FC Union Berlin, Bochum hbf
-3-liga, 27 April 2025, 14:30, Sunday, FC Ingolstadt 04, Arminia Bielefeld, Ingolstadt hbf
-bundesliga, 27 April 2025, 16:30, Sunday, Werder Bremen, FC St. Pauli, Bremen hbf
-3-liga, 27 April 2025, 17:30, Sunday, Alemannia Aachen, VfL Osnabrück, Aachen hbf
-3-liga, 27 April 2025, 20:30, Sunday, Waldhof Mannheim, VfB Stuttgart II, Mannheim hbf
-2bundesliga, 2 May 2025, 17:30, Friday, 1. FC Magdeburg, Preußen Münster, Magdeburg hbf
-2bundesliga, 2 May 2025, 17:30, Friday, FC Schalke 04, SC Paderborn 07, Gelsenkirchen hbf
-bundesliga, 2 May 2025, 19:30, Friday, 1. FC Heidenheim, VfL Bochum, Heidenheim hbf
-3-liga, 2 May 2025, 20:00, Friday, VfL Osnabrück, Viktoria Köln, Osnabrück hbf
-2bundesliga, 3 May 2025, 12:00, Saturday, SSV Ulm 1846, Hannover 96, Ulm hbf
-2bundesliga, 3 May 2025, 12:00, Saturday, Eintracht Braunschweig, Fortuna Düsseldorf, Braunschweig hbf
-2bundesliga, 3 May 2025, 12:00, Saturday, SV Darmstadt 98, Hamburger SV, Darmstadt hbf
-bundesliga, 3 May 2025, 14:30, Saturday, FC St. Pauli, VfB Stuttgart, Hamburg hbf
-bundesliga, 3 May 2025, 14:30, Saturday, 1. FC Union Berlin, Werder Bremen, Berlin hbf
-bundesliga, 3 May 2025, 14:30, Saturday, Borussia Mönchengladbach, TSG Hoffenheim, Mönchengladbach hbf
-bundesliga, 3 May 2025, 14:30, Saturday, RB Leipzig, Bayern Munich, Leipzig hbf
-3-liga, 3 May 2025, 15:00, Saturday, TSV 1860 Munich, Rot-Weiss Essen, München hbf
-3-liga, 3 May 2025, 15:00, Saturday, FC Saarbrücken, SC Verl, Saarbrücken hbf
-3-liga, 3 May 2025, 15:00, Saturday, VfB Stuttgart II, Alemannia Aachen, Stuttgart hbf
-3-liga, 3 May 2025, 15:00, Saturday, SV Wehen Wiesbaden, Borussia Dortmund II, Wiesbaden hbf
-3-liga, 3 May 2025, 15:00, Saturday, SV Sandhausen, Hansa Rostock, Heidelberg hbf
-bundesliga, 3 May 2025, 17:30, Saturday, Borussia Dortmund, VfL Wolfsburg, Dortmund hbf
-3-liga, 3 May 2025, 17:30, Saturday, Arminia Bielefeld, Dynamo Dresden, Bielefeld hbf
-2bundesliga, 3 May 2025, 19:30, Saturday, 1. FC Köln, SSV Jahn Regensburg, Köln hbf
-2bundesliga, 4 May 2025, 12:30, Sunday, 1. FC Nürnberg, SV Elversberg, Nürnberg hbf
-2bundesliga, 4 May 2025, 12:30, Sunday, Hertha BSC, SpVgg Greuther Fürth, Berlin hbf
-2bundesliga, 4 May 2025, 12:30, Sunday, Karlsruher SC, 1. FC Kaiserslautern, Karlsruhe hbf
-bundesliga, 4 May 2025, 14:30, Sunday, FC Augsburg, Holstein Kiel, Augsburg hbf
-3-liga, 4 May 2025, 14:30, Sunday, Energie Cottbus, Waldhof Mannheim, Cottbus hbf
-bundesliga, 4 May 2025, 16:30, Sunday, SC Freiburg, Bayer Leverkusen, Freiburg (Breisgau) hbf
-3-liga, 4 May 2025, 17:30, Sunday, Erzgebirge Aue, FC Ingolstadt 04, Aue (Sachs) Bahnhof
-bundesliga, 4 May 2025, 18:30, Sunday, 1. FSV Mainz 05, Eintracht Frankfurt, Mainz hbf
-3-liga, 4 May 2025, 20:30, Sunday, Hannover 96 II, SpVgg Unterhaching, Hannover hbf
-2bundesliga, 9 May 2025, 17:30, Friday, Preußen Münster, Hertha BSC, Münster (Westf) hbf
-2bundesliga, 9 May 2025, 17:30, Friday, 1. FC Nürnberg, 1. FC Köln, Nürnberg hbf
-bundesliga, 9 May 2025, 19:30, Friday, VfL Wolfsburg, TSG Hoffenheim, Wolfsburg hbf
-3-liga, 9 May 2025, 20:00, Friday, Borussia Dortmund II, VfB Stuttgart II, Dortmund hbf
-2bundesliga, 10 May 2025, 12:00, Saturday, SV Elversberg, Eintracht Braunschweig, Neunkirchen hbf
-2bundesliga, 10 May 2025, 12:00, Saturday, SC Paderborn 07, 1. FC Magdeburg, Paderborn hbf
-2bundesliga, 10 May 2025, 12:00, Saturday, Fortuna Düsseldorf, FC Schalke 04, Düsseldorf hbf
-bundesliga, 10 May 2025, 14:30, Saturday, Holstein Kiel, SC Freiburg, Kiel hbf
-bundesliga, 10 May 2025, 14:30, Saturday, VfL Bochum, 1. FSV Mainz 05, Bochum hbf
-bundesliga, 10 May 2025, 14:30, Saturday, 1. FC Union Berlin, 1. FC Heidenheim, Berlin hbf
-bundesliga, 10 May 2025, 14:30, Saturday, Werder Bremen, RB Leipzig, Bremen hbf
-3-liga, 10 May 2025, 15:00, Saturday, Alemannia Aachen, FC Saarbrücken, Aachen hbf
-3-liga, 10 May 2025, 15:00, Saturday, Hansa Rostock, Energie Cottbus, Rostock hbf
-3-liga, 10 May 2025, 15:00, Saturday, SC Verl, TSV 1860 Munich, Gütersloh hbf
-3-liga, 10 May 2025, 15:00, Saturday, Waldhof Mannheim, Dynamo Dresden, Mannheim hbf
-3-liga, 10 May 2025, 15:00, Saturday, Erzgebirge Aue, SV Sandhausen, Aue (Sachs) Bahnhof
-bundesliga, 10 May 2025, 17:30, Saturday, Bayern Munich, Borussia Mönchengladbach, München hbf
-3-liga, 10 May 2025, 17:30, Saturday, FC Ingolstadt 04, SV Wehen Wiesbaden, Ingolstadt hbf
-2bundesliga, 10 May 2025, 19:30, Saturday, Hamburger SV, SSV Ulm 1846, Hamburg hbf
-2bundesliga, 11 May 2025, 12:30, Sunday, SSV Jahn Regensburg, Karlsruher SC, Regensburg hbf
-2bundesliga, 11 May 2025, 12:30, Sunday, 1. FC Kaiserslautern, SV Darmstadt 98, Kaiserslautern hbf
-2bundesliga, 11 May 2025, 12:30, Sunday, Hannover 96, SpVgg Greuther Fürth, Hannover hbf
-bundesliga, 11 May 2025, 14:30, Sunday, Bayer Leverkusen, Borussia Dortmund, Leverkusen Mitte
-3-liga, 11 May 2025, 14:30, Sunday, SpVgg Unterhaching, Arminia Bielefeld, München hbf
-bundesliga, 11 May 2025, 16:30, Sunday, Eintracht Frankfurt, FC St. Pauli, Frankfurt hbf
-3-liga, 11 May 2025, 17:30, Sunday, Rot-Weiss Essen, VfL Osnabrück, Essen hbf
-bundesliga, 11 May 2025, 18:30, Sunday, VfB Stuttgart, FC Augsburg, Stuttgart hbf
-3-liga, 11 May 2025, 20:30, Sunday, Viktoria Köln, Hannover 96 II, Köln hbf
-bundesliga, 17 May 2025, TBD, Saturday, FC St. Pauli, VfL Bochum, Hamburg hbf
-bundesliga, 17 May 2025, TBD, Saturday, Borussia Mönchengladbach, VfL Wolfsburg, Mönchengladbach hbf
-bundesliga, 17 May 2025, TBD, Saturday, 1. FSV Mainz 05, Bayer Leverkusen, Mainz hbf
-bundesliga, 17 May 2025, TBD, Saturday, FC Augsburg, 1. FC Union Berlin, Augsburg hbf
-bundesliga, 17 May 2025, TBD, Saturday, SC Freiburg, Eintracht Frankfurt, Freiburg (Breisgau) hbf
-bundesliga, 17 May 2025, TBD, Saturday, 1. FC Heidenheim, Werder Bremen, Heidenheim hbf
-bundesliga, 17 May 2025, TBD, Saturday, TSG Hoffenheim, Bayern Munich, Sinsheim (Elsenz) hbf
-bundesliga, 17 May 2025, TBD, Saturday, Borussia Dortmund, Holstein Kiel, Dortmund hbf
-bundesliga, 17 May 2025, TBD, Saturday, RB Leipzig, VfB Stuttgart, Leipzig hbf
-3-liga, 17 May 2025, TBD, Saturday, FC Saarbrücken, Borussia Dortmund II, Saarbrücken hbf
-3-liga, 17 May 2025, TBD, Saturday, VfB Stuttgart II, Rot-Weiss Essen, Stuttgart hbf
-3-liga, 17 May 2025, TBD, Saturday, Hannover 96 II, Hansa Rostock, Hannover hbf
-3-liga, 17 May 2025, TBD, Saturday, VfL Osnabrück, SC Verl, Osnabrück hbf
-3-liga, 17 May 2025, TBD, Saturday, Energie Cottbus, FC Ingolstadt 04, Cottbus hbf
-3-liga, 17 May 2025, TBD, Saturday, SV Wehen Wiesbaden, Alemannia Aachen, Wiesbaden hbf
-3-liga, 17 May 2025, TBD, Saturday, Dynamo Dresden, SpVgg Unterhaching, Dresden hbf
-3-liga, 17 May 2025, TBD, Saturday, TSV 1860 Munich, Erzgebirge Aue, München hbf
-3-liga, 17 May 2025, TBD, Saturday, Arminia Bielefeld, Waldhof Mannheim, Bielefeld hbf
-3-liga, 17 May 2025, TBD, Saturday, SV Sandhausen, Viktoria Köln, Heidelberg hbf
-2bundesliga, 18 May 2025, TBD, Sunday, SSV Ulm 1846, Preußen Münster, Ulm hbf
-2bundesliga, 18 May 2025, TBD, Sunday, Eintracht Braunschweig, 1. FC Nürnberg, Braunschweig hbf
-2bundesliga, 18 May 2025, TBD, Sunday, 1. FC Magdeburg, Fortuna Düsseldorf, Magdeburg hbf
-2bundesliga, 18 May 2025, TBD, Sunday, FC Schalke 04, SV Elversberg, Gelsenkirchen hbf
-2bundesliga, 18 May 2025, TBD, Sunday, Hertha BSC, Hannover 96, Berlin hbf
-2bundesliga, 18 May 2025, TBD, Sunday, SpVgg Greuther Fürth, Hamburger SV, Fürth hbf
-2bundesliga, 18 May 2025, TBD, Sunday, Karlsruher SC, SC Paderborn 07, Karlsruhe hbf
-2bundesliga, 18 May 2025, TBD, Sunday, SV Darmstadt 98, SSV Jahn Regensburg, Darmstadt hbf
-2bundesliga, 18 May 2025, TBD, Sunday, 1. FC Köln, 1. FC Kaiserslautern, Köln hbf
-DFB-Pokal, 24 May 2025, 21:00, Saturday, Arminia Bielefeld, VfB Stuttgart, Berlin hbf
-Champions League, 31 May 2025, 21:00, Saturday, Tbd, Tbd, München hbf
+2bundesliga, 11 June 2025, 17:30, Friday, SpVgg Greuther Fürth, 1. FC Köln, Fürth hbf
+2bundesliga, 11 June 2025, 17:30, Friday, Hamburger SV, Eintracht Braunschweig, Hamburg hbf
+bundesliga, 11 June 2025, 19:30, Friday, VfL Wolfsburg, RB Leipzig, Wolfsburg hbf
+3-liga, 11 June 2025, 20:00, Friday, SV Wehen Wiesbaden, FC Saarbrücken, Wiesbaden hbf
+2bundesliga, 12 June 2025, 12:00, Saturday, SSV Ulm 1846, 1. FC Magdeburg, Ulm hbf
+2bundesliga, 12 June 2025, 12:00, Saturday, Hertha BSC, SV Darmstadt 98, Berlin hbf
+2bundesliga, 12 June 2025, 12:00, Saturday, Hannover 96, SV Elversberg, Hannover hbf
+bundesliga, 12 June 2025, 14:30, Saturday, Holstein Kiel, FC St. Pauli, Kiel hbf
+bundesliga, 12 June 2025, 14:30, Saturday, VfL Bochum, FC Augsburg, Bochum hbf
+bundesliga, 12 June 2025, 14:30, Saturday, Borussia Mönchengladbach, SC Freiburg, Mönchengladbach hbf
+bundesliga, 12 June 2025, 14:30, Saturday, TSG Hoffenheim, 1. FSV Mainz 05, Sinsheim (Elsenz) hbf
+bundesliga, 12 June 2025, 14:30, Saturday, Bayer Leverkusen, 1. FC Union Berlin, Leverkusen Mitte
+3-liga, 12 June 2025, 15:00, Saturday, FC Ingolstadt 04, Hannover 96 II, Ingolstadt hbf
+3-liga, 12 June 2025, 15:00, Saturday, SpVgg Unterhaching, VfB Stuttgart II, München hbf
+3-liga, 12 June 2025, 15:00, Saturday, Rot-Weiss Essen, Erzgebirge Aue, Essen hbf
+3-liga, 12 June 2025, 15:00, Saturday, Hansa Rostock, SC Verl, Rostock hbf
+3-liga, 12 June 2025, 15:00, Saturday, Dynamo Dresden, VfL Osnabrück, Dresden hbf
+bundesliga, 12 June 2025, 17:30, Saturday, Bayern Munich, Borussia Dortmund, München hbf
+3-liga, 12 June 2025, 17:30, Saturday, Alemannia Aachen, SV Sandhausen, Aachen hbf
+2bundesliga, 12 June 2025, 19:30, Saturday, 1. FC Kaiserslautern, 1. FC Nürnberg, Kaiserslautern hbf
+2bundesliga, 13 June 2025, 12:30, Sunday, SSV Jahn Regensburg, FC Schalke 04, Regensburg hbf
+2bundesliga, 13 June 2025, 12:30, Sunday, Preußen Münster, Karlsruher SC, Münster (Westf) hbf
+2bundesliga, 13 June 2025, 12:30, Sunday, SC Paderborn 07, Fortuna Düsseldorf, Paderborn hbf
+bundesliga, 13 June 2025, 14:30, Sunday, VfB Stuttgart, Werder Bremen, Stuttgart hbf
+3-liga, 13 June 2025, 14:30, Sunday, Waldhof Mannheim, TSV 1860 Munich, Mannheim hbf
+bundesliga, 13 June 2025, 16:30, Sunday, Eintracht Frankfurt, 1. FC Heidenheim, Frankfurt hbf
+3-liga, 13 June 2025, 17:30, Sunday, Borussia Dortmund II, Energie Cottbus, Dortmund hbf
+3-liga, 13 June 2025, 20:30, Sunday, Viktoria Köln, Arminia Bielefeld, Köln hbf
+Champions League, 15 June 2025, 22:00, Tuesday, Borussia Dortmund, Barcelona, Dortmund hbf
+Europa League, 17 June 2025, 22:00, Thursday, Eintracht Frankfurt, Tottenham, Frankfurt hbf
+2bundesliga, 19 June 2025, 12:00, Saturday, Eintracht Braunschweig, 1. FC Kaiserslautern, Braunschweig hbf
+2bundesliga, 19 June 2025, 12:00, Saturday, 1. FC Nürnberg, SC Paderborn 07, Nürnberg hbf
+2bundesliga, 19 June 2025, 12:00, Saturday, SV Elversberg, Fortuna Düsseldorf, Neunkirchen hbf
+bundesliga, 19 June 2025, 14:30, Saturday, 1. FSV Mainz 05, VfL Wolfsburg, Mainz hbf
+bundesliga, 19 June 2025, 14:30, Saturday, SC Freiburg, TSG Hoffenheim, Freiburg (Breisgau) hbf
+bundesliga, 19 June 2025, 14:30, Saturday, Werder Bremen, VfL Bochum, Bremen hbf
+bundesliga, 19 June 2025, 14:30, Saturday, 1. FC Heidenheim, Bayern Munich, Heidenheim hbf
+bundesliga, 19 June 2025, 14:30, Saturday, RB Leipzig, Holstein Kiel, Leipzig hbf
+3-liga, 19 June 2025, 15:00, Saturday, TSV 1860 Munich, Alemannia Aachen, München hbf
+3-liga, 19 June 2025, 15:00, Saturday, SV Sandhausen, Rot-Weiss Essen, Heidelberg hbf
+3-liga, 19 June 2025, 15:00, Saturday, Energie Cottbus, Viktoria Köln, Cottbus hbf
+3-liga, 19 June 2025, 15:00, Saturday, SV Wehen Wiesbaden, SpVgg Unterhaching, Wiesbaden hbf
+3-liga, 19 June 2025, 15:00, Saturday, Arminia Bielefeld, Hansa Rostock, Bielefeld hbf
+bundesliga, 19 June 2025, 17:30, Saturday, 1. FC Union Berlin, VfB Stuttgart, Berlin hbf
+3-liga, 19 June 2025, 17:30, Saturday, VfB Stuttgart II, SC Verl, Stuttgart hbf
+3-liga, 19 June 2025, 17:30, Saturday, VfL Osnabrück, FC Ingolstadt 04, Osnabrück hbf
+2bundesliga, 19 June 2025, 19:30, Saturday, FC Schalke 04, Hamburger SV, Gelsenkirchen hbf
+2bundesliga, 20 June 2025, 12:30, Sunday, SSV Ulm 1846, Hertha BSC, Ulm hbf
+2bundesliga, 20 June 2025, 12:30, Sunday, 1. FC Magdeburg, SSV Jahn Regensburg, Magdeburg hbf
+2bundesliga, 20 June 2025, 12:30, Sunday, Karlsruher SC, SpVgg Greuther Fürth, Karlsruhe hbf
+2bundesliga, 20 June 2025, 12:30, Sunday, SV Darmstadt 98, Hannover 96, Darmstadt hbf
+2bundesliga, 20 June 2025, 12:30, Sunday, 1. FC Köln, Preußen Münster, Köln hbf
+bundesliga, 20 June 2025, 14:30, Sunday, FC Augsburg, Eintracht Frankfurt, Augsburg hbf
+3-liga, 20 June 2025, 14:30, Sunday, FC Saarbrücken, Dynamo Dresden, Saarbrücken hbf
+bundesliga, 20 June 2025, 16:30, Sunday, Borussia Dortmund, Borussia Mönchengladbach, Dortmund hbf
+3-liga, 20 June 2025, 17:30, Sunday, Hannover 96 II, Waldhof Mannheim, Hannover hbf
+bundesliga, 20 June 2025, 18:30, Sunday, FC St. Pauli, Bayer Leverkusen, Hamburg hbf
+3-liga, 20 June 2025, 20:30, Sunday, Erzgebirge Aue, Borussia Dortmund II, Aue (Sachs) Bahnhof
+2bundesliga, 25 June 2025, 17:30, Friday, Hertha BSC, 1. FC Magdeburg, Berlin hbf
+2bundesliga, 25 June 2025, 17:30, Friday, SpVgg Greuther Fürth, SSV Ulm 1846, Fürth hbf
+bundesliga, 25 June 2025, 19:30, Friday, VfB Stuttgart, 1. FC Heidenheim, Stuttgart hbf
+3-liga, 25 June 2025, 20:00, Friday, Hansa Rostock, TSV 1860 Munich, Rostock hbf
+2bundesliga, 26 June 2025, 12:00, Saturday, SSV Jahn Regensburg, Eintracht Braunschweig, Regensburg hbf
+2bundesliga, 26 June 2025, 12:00, Saturday, Preußen Münster, SV Darmstadt 98, Münster (Westf) hbf
+2bundesliga, 26 June 2025, 12:00, Saturday, SC Paderborn 07, SV Elversberg, Paderborn hbf
+bundesliga, 26 June 2025, 14:30, Saturday, Holstein Kiel, Borussia Mönchengladbach, Kiel hbf
+bundesliga, 26 June 2025, 14:30, Saturday, VfL Wolfsburg, SC Freiburg, Wolfsburg hbf
+bundesliga, 26 June 2025, 14:30, Saturday, TSG Hoffenheim, Borussia Dortmund, Sinsheim (Elsenz) hbf
+bundesliga, 26 June 2025, 14:30, Saturday, Bayern Munich, 1. FSV Mainz 05, München hbf
+bundesliga, 26 June 2025, 14:30, Saturday, Bayer Leverkusen, FC Augsburg, Leverkusen Mitte
+3-liga, 26 June 2025, 15:00, Saturday, Viktoria Köln, SV Wehen Wiesbaden, Köln hbf
+3-liga, 26 June 2025, 15:00, Saturday, Dynamo Dresden, SV Sandhausen, Dresden hbf
+3-liga, 26 June 2025, 15:00, Saturday, Borussia Dortmund II, Hannover 96 II, Dortmund hbf
+3-liga, 26 June 2025, 15:00, Saturday, SpVgg Unterhaching, Energie Cottbus, München hbf
+3-liga, 26 June 2025, 15:00, Saturday, Rot-Weiss Essen, FC Saarbrücken, Essen hbf
+bundesliga, 26 June 2025, 17:30, Saturday, Eintracht Frankfurt, RB Leipzig, Frankfurt hbf
+3-liga, 26 June 2025, 17:30, Saturday, SC Verl, Erzgebirge Aue, Gütersloh hbf
+2bundesliga, 26 June 2025, 19:30, Saturday, Fortuna Düsseldorf, 1. FC Nürnberg, Düsseldorf hbf
+2bundesliga, 27 June 2025, 12:30, Sunday, 1. FC Kaiserslautern, FC Schalke 04, Kaiserslautern hbf
+2bundesliga, 27 June 2025, 12:30, Sunday, Hannover 96, 1. FC Köln, Hannover hbf
+2bundesliga, 27 June 2025, 12:30, Sunday, Hamburger SV, Karlsruher SC, Hamburg hbf
+bundesliga, 27 June 2025, 14:30, Sunday, VfL Bochum, 1. FC Union Berlin, Bochum hbf
+3-liga, 27 June 2025, 14:30, Sunday, FC Ingolstadt 04, Arminia Bielefeld, Ingolstadt hbf
+bundesliga, 27 June 2025, 16:30, Sunday, Werder Bremen, FC St. Pauli, Bremen hbf
+3-liga, 27 June 2025, 17:30, Sunday, Alemannia Aachen, VfL Osnabrück, Aachen hbf
+3-liga, 27 June 2025, 20:30, Sunday, Waldhof Mannheim, VfB Stuttgart II, Mannheim hbf
+2bundesliga, 2 July 2025, 17:30, Friday, 1. FC Magdeburg, Preußen Münster, Magdeburg hbf
+2bundesliga, 2 July 2025, 17:30, Friday, FC Schalke 04, SC Paderborn 07, Gelsenkirchen hbf
+bundesliga, 2 July 2025, 19:30, Friday, 1. FC Heidenheim, VfL Bochum, Heidenheim hbf
+3-liga, 2 July 2025, 20:00, Friday, VfL Osnabrück, Viktoria Köln, Osnabrück hbf
+2bundesliga, 3 July 2025, 12:00, Saturday, SSV Ulm 1846, Hannover 96, Ulm hbf
+2bundesliga, 3 July 2025, 12:00, Saturday, Eintracht Braunschweig, Fortuna Düsseldorf, Braunschweig hbf
+2bundesliga, 3 July 2025, 12:00, Saturday, SV Darmstadt 98, Hamburger SV, Darmstadt hbf
+bundesliga, 3 July 2025, 14:30, Saturday, FC St. Pauli, VfB Stuttgart, Hamburg hbf
+bundesliga, 3 July 2025, 14:30, Saturday, 1. FC Union Berlin, Werder Bremen, Berlin hbf
+bundesliga, 3 July 2025, 14:30, Saturday, Borussia Mönchengladbach, TSG Hoffenheim, Mönchengladbach hbf
+bundesliga, 3 July 2025, 14:30, Saturday, RB Leipzig, Bayern Munich, Leipzig hbf
+3-liga, 3 July 2025, 15:00, Saturday, TSV 1860 Munich, Rot-Weiss Essen, München hbf
+3-liga, 3 July 2025, 15:00, Saturday, FC Saarbrücken, SC Verl, Saarbrücken hbf
+3-liga, 3 July 2025, 15:00, Saturday, VfB Stuttgart II, Alemannia Aachen, Stuttgart hbf
+3-liga, 3 July 2025, 15:00, Saturday, SV Wehen Wiesbaden, Borussia Dortmund II, Wiesbaden hbf
+3-liga, 3 July 2025, 15:00, Saturday, SV Sandhausen, Hansa Rostock, Heidelberg hbf
+bundesliga, 3 July 2025, 17:30, Saturday, Borussia Dortmund, VfL Wolfsburg, Dortmund hbf
+3-liga, 3 July 2025, 17:30, Saturday, Arminia Bielefeld, Dynamo Dresden, Bielefeld hbf
+2bundesliga, 3 July 2025, 19:30, Saturday, 1. FC Köln, SSV Jahn Regensburg, Köln hbf
+2bundesliga, 4 July 2025, 12:30, Sunday, 1. FC Nürnberg, SV Elversberg, Nürnberg hbf
+2bundesliga, 4 July 2025, 12:30, Sunday, Hertha BSC, SpVgg Greuther Fürth, Berlin hbf
+2bundesliga, 4 July 2025, 12:30, Sunday, Karlsruher SC, 1. FC Kaiserslautern, Karlsruhe hbf
+bundesliga, 4 July 2025, 14:30, Sunday, FC Augsburg, Holstein Kiel, Augsburg hbf
+3-liga, 4 July 2025, 14:30, Sunday, Energie Cottbus, Waldhof Mannheim, Cottbus hbf
+bundesliga, 4 July 2025, 16:30, Sunday, SC Freiburg, Bayer Leverkusen, Freiburg (Breisgau) hbf
+3-liga, 4 July 2025, 17:30, Sunday, Erzgebirge Aue, FC Ingolstadt 04, Aue (Sachs) Bahnhof
+bundesliga, 4 July 2025, 18:30, Sunday, 1. FSV Mainz 05, Eintracht Frankfurt, Mainz hbf
+3-liga, 4 July 2025, 20:30, Sunday, Hannover 96 II, SpVgg Unterhaching, Hannover hbf
+2bundesliga, 9 July 2025, 17:30, Friday, Preußen Münster, Hertha BSC, Münster (Westf) hbf
+2bundesliga, 9 July 2025, 17:30, Friday, 1. FC Nürnberg, 1. FC Köln, Nürnberg hbf
+bundesliga, 9 July 2025, 19:30, Friday, VfL Wolfsburg, TSG Hoffenheim, Wolfsburg hbf
+3-liga, 9 July 2025, 20:00, Friday, Borussia Dortmund II, VfB Stuttgart II, Dortmund hbf
+2bundesliga, 10 July 2025, 12:00, Saturday, SV Elversberg, Eintracht Braunschweig, Neunkirchen hbf
+2bundesliga, 10 July 2025, 12:00, Saturday, SC Paderborn 07, 1. FC Magdeburg, Paderborn hbf
+2bundesliga, 10 July 2025, 12:00, Saturday, Fortuna Düsseldorf, FC Schalke 04, Düsseldorf hbf
+bundesliga, 10 July 2025, 14:30, Saturday, Holstein Kiel, SC Freiburg, Kiel hbf
+bundesliga, 10 July 2025, 14:30, Saturday, VfL Bochum, 1. FSV Mainz 05, Bochum hbf
+bundesliga, 10 July 2025, 14:30, Saturday, 1. FC Union Berlin, 1. FC Heidenheim, Berlin hbf
+bundesliga, 10 July 2025, 14:30, Saturday, Werder Bremen, RB Leipzig, Bremen hbf
+3-liga, 10 July 2025, 15:00, Saturday, Alemannia Aachen, FC Saarbrücken, Aachen hbf
+3-liga, 10 July 2025, 15:00, Saturday, Hansa Rostock, Energie Cottbus, Rostock hbf
+3-liga, 10 July 2025, 15:00, Saturday, SC Verl, TSV 1860 Munich, Gütersloh hbf
+3-liga, 10 July 2025, 15:00, Saturday, Waldhof Mannheim, Dynamo Dresden, Mannheim hbf
+3-liga, 10 July 2025, 15:00, Saturday, Erzgebirge Aue, SV Sandhausen, Aue (Sachs) Bahnhof
+bundesliga, 10 July 2025, 17:30, Saturday, Bayern Munich, Borussia Mönchengladbach, München hbf
+3-liga, 10 July 2025, 17:30, Saturday, FC Ingolstadt 04, SV Wehen Wiesbaden, Ingolstadt hbf
+2bundesliga, 10 July 2025, 19:30, Saturday, Hamburger SV, SSV Ulm 1846, Hamburg hbf
+2bundesliga, 11 July 2025, 12:30, Sunday, SSV Jahn Regensburg, Karlsruher SC, Regensburg hbf
+2bundesliga, 11 July 2025, 12:30, Sunday, 1. FC Kaiserslautern, SV Darmstadt 98, Kaiserslautern hbf
+2bundesliga, 11 July 2025, 12:30, Sunday, Hannover 96, SpVgg Greuther Fürth, Hannover hbf
+bundesliga, 11 July 2025, 14:30, Sunday, Bayer Leverkusen, Borussia Dortmund, Leverkusen Mitte
+3-liga, 11 July 2025, 14:30, Sunday, SpVgg Unterhaching, Arminia Bielefeld, München hbf
+bundesliga, 11 July 2025, 16:30, Sunday, Eintracht Frankfurt, FC St. Pauli, Frankfurt hbf
+3-liga, 11 July 2025, 17:30, Sunday, Rot-Weiss Essen, VfL Osnabrück, Essen hbf
+bundesliga, 11 July 2025, 18:30, Sunday, VfB Stuttgart, FC Augsburg, Stuttgart hbf
+3-liga, 11 July 2025, 20:30, Sunday, Viktoria Köln, Hannover 96 II, Köln hbf
+bundesliga, 17 July 2025, TBD, Saturday, FC St. Pauli, VfL Bochum, Hamburg hbf
+bundesliga, 17 July 2025, TBD, Saturday, Borussia Mönchengladbach, VfL Wolfsburg, Mönchengladbach hbf
+bundesliga, 17 July 2025, TBD, Saturday, 1. FSV Mainz 05, Bayer Leverkusen, Mainz hbf
+bundesliga, 17 July 2025, TBD, Saturday, FC Augsburg, 1. FC Union Berlin, Augsburg hbf
+bundesliga, 17 July 2025, TBD, Saturday, SC Freiburg, Eintracht Frankfurt, Freiburg (Breisgau) hbf
+bundesliga, 17 July 2025, TBD, Saturday, 1. FC Heidenheim, Werder Bremen, Heidenheim hbf
+bundesliga, 17 July 2025, TBD, Saturday, TSG Hoffenheim, Bayern Munich, Sinsheim (Elsenz) hbf
+bundesliga, 17 July 2025, TBD, Saturday, Borussia Dortmund, Holstein Kiel, Dortmund hbf
+bundesliga, 17 July 2025, TBD, Saturday, RB Leipzig, VfB Stuttgart, Leipzig hbf
+3-liga, 17 July 2025, TBD, Saturday, FC Saarbrücken, Borussia Dortmund II, Saarbrücken hbf
+3-liga, 17 July 2025, TBD, Saturday, VfB Stuttgart II, Rot-Weiss Essen, Stuttgart hbf
+3-liga, 17 July 2025, TBD, Saturday, Hannover 96 II, Hansa Rostock, Hannover hbf
+3-liga, 17 July 2025, TBD, Saturday, VfL Osnabrück, SC Verl, Osnabrück hbf
+3-liga, 17 July 2025, TBD, Saturday, Energie Cottbus, FC Ingolstadt 04, Cottbus hbf
+3-liga, 17 July 2025, TBD, Saturday, SV Wehen Wiesbaden, Alemannia Aachen, Wiesbaden hbf
+3-liga, 17 July 2025, TBD, Saturday, Dynamo Dresden, SpVgg Unterhaching, Dresden hbf
+3-liga, 17 July 2025, TBD, Saturday, TSV 1860 Munich, Erzgebirge Aue, München hbf
+3-liga, 17 July 2025, TBD, Saturday, Arminia Bielefeld, Waldhof Mannheim, Bielefeld hbf
+3-liga, 17 July 2025, TBD, Saturday, SV Sandhausen, Viktoria Köln, Heidelberg hbf
+2bundesliga, 18 July 2025, TBD, Sunday, SSV Ulm 1846, Preußen Münster, Ulm hbf
+2bundesliga, 18 July 2025, TBD, Sunday, Eintracht Braunschweig, 1. FC Nürnberg, Braunschweig hbf
+2bundesliga, 18 July 2025, TBD, Sunday, 1. FC Magdeburg, Fortuna Düsseldorf, Magdeburg hbf
+2bundesliga, 18 July 2025, TBD, Sunday, FC Schalke 04, SV Elversberg, Gelsenkirchen hbf
+2bundesliga, 18 July 2025, TBD, Sunday, Hertha BSC, Hannover 96, Berlin hbf
+2bundesliga, 18 July 2025, TBD, Sunday, SpVgg Greuther Fürth, Hamburger SV, Fürth hbf
+2bundesliga, 18 July 2025, TBD, Sunday, Karlsruher SC, SC Paderborn 07, Karlsruhe hbf
+2bundesliga, 18 July 2025, TBD, Sunday, SV Darmstadt 98, SSV Jahn Regensburg, Darmstadt hbf
+2bundesliga, 18 July 2025, TBD, Sunday, 1. FC Köln, 1. FC Kaiserslautern, Köln hbf
+DFB-Pokal, 24 July 2025, 21:00, Saturday, Arminia Bielefeld, VfB Stuttgart, Berlin hbf
+Champions League, 31 July 2025, 21:00, Saturday, Tbd, Tbd, München hbf

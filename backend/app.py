@@ -1,19 +1,26 @@
 import os, sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from fastapi import FastAPI, Query, Path, BackgroundTasks, HTTPException
+from fastapi import FastAPI, Query, Path, BackgroundTasks, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
-from models import TripRequest, FormattedResponse, TripGroup, TravelSegment, TripVariation
+from models import TripRequest, FormattedResponse, TripGroup, TravelSegment, TripVariation, SaveTripRequest
 from scrapers.synonyms import AIRPORT_CITIES, league_priority
-from config import GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS
+from config import (GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS, 
+                    SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_ANON_KEY,
+                    JWT_SECRET, validate_config)
 import functools
 import traceback
 import uuid
 import asyncio
 import logging
 from concurrent.futures import TimeoutError
+import jwt
+from jwt.exceptions import InvalidTokenError, ExpiredSignatureError
+import requests
+from database import db_service, get_user_role, log_trip_request, log_user_activity
+from fastapi import Request
 
 # Configure logging
 logging.basicConfig(
@@ -29,6 +36,10 @@ from utils import (load_games, load_train_times, calculate_total_travel_time,
                   parse_date_string, plan_trip_with_cancellation, enhance_trip_planning_for_any_start)
 from common import (is_request_cancelled, register_request, cleanup_request, cleanup_old_requests, active_requests)
 
+# Initialize Supabase client for admin operations
+from supabase import create_client
+supabase_admin = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+
 # Initialize FastAPI with metadata
 app = FastAPI(
     title="Multi-Game Trip Planner API",
@@ -41,18 +52,609 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],  # Add DELETE explicitly
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
     allow_headers=["*"],
-    expose_headers=["*"],  # Expose all headers to client
+    expose_headers=["*"],
 )
+
+# Add these imports at the top with your other imports:
+import time
+import json
+from starlette.middleware.base import BaseHTTPMiddleware
+
+# Add this middleware class after your imports but before your endpoints:
+class TripRequestLoggingMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        # Only log trip planning requests
+        if request.url.path == "/plan-trip" and request.method == "POST":
+            start_time = time.time()
+            
+            # Get user info from authorization header
+            user_info = None
+            try:
+                auth_header = request.headers.get("authorization")
+                if auth_header:
+                    # Use the existing verification function
+                    user_info = verify_supabase_token(auth_header)
+            except Exception as e:
+                logger.warning(f"Failed to get user info for trip request logging: {e}")
+                pass
+            
+            # Read request body for logging
+            request_body = None
+            try:
+                body = await request.body()
+                if body:
+                    request_body = json.loads(body.decode())
+                    
+                    # Create new request with same body (since body can only be read once)
+                    async def receive():
+                        return {"type": "http.request", "body": body}
+                    
+                    request._receive = receive
+            except Exception as e:
+                logger.warning(f"Failed to read request body for logging: {e}")
+                pass
+            
+            # Process the request
+            response = await call_next(request)
+            
+            # Calculate processing time
+            processing_time_ms = int((time.time() - start_time) * 1000)
+            
+            # Log the request if we have the necessary data
+            if request_body and user_info:
+                try:
+                    # Determine status based on response
+                    status = "completed" if response.status_code == 200 else "failed"
+                    error_message = None
+                    
+                    if response.status_code != 200:
+                        error_message = f"HTTP {response.status_code}"
+                    
+                    # Log to database
+                    await db_service.log_trip_request(
+                        user_id=user_info['user_id'],
+                        request_data={
+                            'start_location': request_body.get('start_location', 'Unknown'),
+                            'start_date': request_body.get('start_date', 'Unknown'),
+                            'trip_duration': request_body.get('trip_duration', 0),
+                            'max_travel_time': request_body.get('max_travel_time', 0),
+                            'preferred_leagues': request_body.get('preferred_leagues', []),
+                            'must_teams': request_body.get('must_teams', []),
+                            'min_games': request_body.get('min_games', 2),
+                            'request_id': request_body.get('request_id'),
+                            'endpoint': '/plan-trip',
+                            'method': 'POST'
+                        },
+                        status=status,
+                        processing_time_ms=processing_time_ms,
+                        error_message=error_message
+                    )
+                    
+                    logger.info(f"🔄 Trip request logged via middleware: {user_info.get('email', 'unknown')} - {status} ({processing_time_ms}ms)")
+                    
+                except Exception as e:
+                    logger.error(f"❌ Failed to log trip request via middleware: {e}")
+            else:
+                logger.warning(f"⚠️ Skipping trip request logging - missing data: body={request_body is not None}, user={user_info is not None}")
+            
+            return response
+        
+        # For all other requests, just pass through
+        return await call_next(request)
+
+# Add the middleware to your FastAPI app (add this line AFTER the CORS middleware):
+app.add_middleware(TripRequestLoggingMiddleware)
 
 # Load data using config paths
 train_times = load_train_times(TRAIN_TIMES_FILE)
 games, tbd_games = load_games(GAMES_FILE)
 
+# ────────────────────────────────
+# 🔐 Authentication Functions
+# ────────────────────────────────
+
+def get_supabase_jwt_secret():
+    """Get JWT secret for token verification"""
+    # Use the JWT_SECRET from environment variables
+    # This is the proper JWT secret from your Supabase project
+    if not JWT_SECRET:
+        raise ValueError("JWT_SECRET not configured in environment variables")
+    
+    return JWT_SECRET
+
+
+def verify_supabase_token(authorization: str = Header(None)):
+    """Verify Supabase JWT token with proper signature validation"""
+    if not authorization:
+        raise HTTPException(
+            status_code=401, 
+            detail="Authorization header required. Please log in."
+        )
+    
+    if not authorization.startswith('Bearer '):
+        raise HTTPException(
+            status_code=401, 
+            detail="Invalid authorization format. Use 'Bearer <token>'"
+        )
+    
+    token = authorization.split(' ')[1]
+    
+    try:
+        # Get Supabase JWT secret
+        jwt_secret = get_supabase_jwt_secret()
+        
+        # Verify JWT token with proper signature validation
+        payload = jwt.decode(
+            token, 
+            jwt_secret, 
+            algorithms=["HS256"],
+            audience="authenticated"
+        )
+        
+        # Validate required claims
+        if not payload.get('sub'):
+            raise HTTPException(status_code=401, detail="Invalid token: missing user ID")
+        
+        if payload.get('aud') != 'authenticated':
+            raise HTTPException(status_code=401, detail="Invalid token: wrong audience")
+        
+        # Check token expiration
+        exp = payload.get('exp')
+        if exp and datetime.utcnow().timestamp() > exp:
+            raise HTTPException(status_code=401, detail="Token has expired")
+        
+        # Get user role from database
+        user_role = get_user_role(payload.get('sub'))
+        
+        return {
+            'user_id': payload.get('sub'),
+            'email': payload.get('email'),
+            'role': user_role,
+            'aud': payload.get('aud'),
+            'iss': payload.get('iss')
+        }
+        
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired. Please log in again.")
+    except jwt.InvalidAudienceError:
+        raise HTTPException(status_code=401, detail="Invalid token audience")
+    except jwt.InvalidSignatureError:
+        raise HTTPException(status_code=401, detail="Invalid token signature")
+    except jwt.InvalidTokenError as e:
+        logger.error(f"Invalid token error: {str(e)}")
+        raise HTTPException(status_code=401, detail="Invalid token format")
+    except Exception as e:
+        logger.error(f"Token verification error: {e}")
+        raise HTTPException(status_code=401, detail="Token verification failed")
+
+def verify_admin_user(authorization: str = Header(None)):
+    """Verify admin user - requires both valid token and admin role"""
+    user = verify_supabase_token(authorization)
+    
+    if user['role'] != 'admin':
+        logger.warning(f"Admin access denied for user {user.get('email', 'unknown')} with role {user.get('role', 'none')}")
+        raise HTTPException(
+            status_code=403, 
+            detail="Admin access required. You must be an admin to access this endpoint."
+        )
+    
+    logger.info(f"Admin access granted to {user.get('email', 'unknown')}")
+    return user
+
+
+def get_user_role(user_id: str) -> str:
+    """Get user role from database"""
+    import asyncio
+    try:
+        # Create a new event loop if one doesn't exist
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        
+        return loop.run_until_complete(db_service.get_user_role(user_id))
+    except Exception as e:
+        logger.warning(f"Could not fetch user role for {user_id}: {e}")
+        return 'user'
+
+def optional_auth(authorization: str = Header(None)):
+    """Optional authentication for endpoints that work with or without auth"""
+    if not authorization:
+        return None
+    
+    try:
+        return verify_supabase_token(authorization)
+    except HTTPException:
+        return None
+
+
+# ────────────────────────────────
+# 🔐 Save Functions
+# ────────────────────────────────
+
+@app.post("/api/save-trip", tags=["Trip Management"])
+async def save_user_trip(
+    request: SaveTripRequest,
+    user = Depends(verify_supabase_token)
+):
+    """Save a trip for the user with auto-generated numbering"""
+    try:
+        # Validate that we have the essential trip data structure
+        if not isinstance(request.trip_data, dict):
+            raise HTTPException(status_code=400, detail="Invalid trip data format")
+        
+        # Validate required fields in trip data
+        required_fields = ['request_id', 'start_location', 'trip_duration']
+        missing_fields = [field for field in required_fields if field not in request.trip_data]
+        
+        if missing_fields:
+            logger.warning(f"Trip data missing fields: {missing_fields}")
+            # Don't fail, just log the warning - some older trip data might not have all fields
+        
+        # Auto-generate trip name with numbering
+        next_number = await db_service.get_next_trip_number(user['user_id'])
+        trip_name = f"Trip #{next_number}"
+        
+        # Enhance trip data with save metadata for better frontend handling
+        enhanced_trip_data = {
+            **request.trip_data,
+            "save_metadata": {
+                "saved_at": datetime.now().isoformat(),
+                "saved_by": user['email'],
+                "version": "1.0"
+            }
+        }
+        
+        # Validate original_request structure
+        if not isinstance(request.original_request, dict):
+            logger.warning("Original request is not a dict, using empty dict")
+            request.original_request = {}
+        
+        # Save to database
+        result = await db_service.save_trip(
+            user['user_id'], 
+            trip_name, 
+            enhanced_trip_data,
+            request.original_request,
+            request.is_favorite
+        )
+        
+        if not result:
+            raise HTTPException(status_code=500, detail="Failed to save trip to database")
+        
+        # Log the save action
+        await db_service.log_user_activity(
+            user['user_id'],
+            'trip_saved',
+            {
+                'trip_name': trip_name, 
+                'is_favorite': request.is_favorite,
+                'has_trip_groups': 'trip_groups' in request.trip_data,
+                'request_id': request.trip_data.get('request_id', 'unknown')
+            }
+        )
+        
+        logger.info(f"Trip '{trip_name}' saved successfully for user {user['email']}")
+        
+        return {
+            "success": True, 
+            "trip": result,
+            "trip_name": trip_name,
+            "message": f"Trip saved as '{trip_name}'"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to save trip: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to save trip: {str(e)}")
+
+@app.get("/api/saved-trips", tags=["Trip Management"])
+async def get_saved_trips(
+    limit: int = Query(20, description="Number of trips to return"),
+    favorites_only: bool = Query(False, description="Return only favorite trips"),
+    user = Depends(verify_supabase_token)
+):
+    """Get user's saved trips formatted for frontend display"""
+    try:
+        # Get trips from database
+        all_trips = await db_service.get_user_saved_trips(user['user_id'], limit=1000)
+        
+        # Filter favorites if requested
+        if favorites_only:
+            all_trips = [trip for trip in all_trips if trip.get('is_favorite', False)]
+        
+        # Sort by created date (newest first) and apply limit
+        sorted_trips = sorted(all_trips, key=lambda x: x['created_at'], reverse=True)[:limit]
+        
+        # Format trips for frontend display (same structure as search results)
+        formatted_trips = []
+        for trip in sorted_trips:
+            try:
+                # Get the core trip data
+                trip_data = trip['trip_data']
+                
+                # Format the trip for display - preserve the EXACT same structure as search results
+                formatted_trip = {
+                    "id": trip['id'],
+                    "trip_name": trip['trip_name'],
+                    "created_at": trip['created_at'],
+                    "updated_at": trip['updated_at'],
+                    "is_favorite": trip['is_favorite'],
+                    
+                    # PRESERVE EXACT SEARCH RESULT STRUCTURE
+                    "request_id": trip_data.get('request_id', ''),
+                    "start_location": trip_data.get('start_location', 'Unknown'),
+                    "start_date": trip_data.get('start_date', 'Unknown'),
+                    "max_travel_time": trip_data.get('max_travel_time', 'Unknown'),
+                    "trip_duration": trip_data.get('trip_duration', 'Unknown'),
+                    "preferred_leagues": trip_data.get('preferred_leagues', []),
+                    "must_teams": trip_data.get('must_teams', []),
+                    "min_games": trip_data.get('min_games', 2),
+                    "no_trips_available": trip_data.get('no_trips_available', False),
+                    "trip_groups": trip_data.get('trip_groups', []),
+                    "tbd_games": trip_data.get('tbd_games', []),
+                    "message": trip_data.get('message'),
+                    "cancelled": trip_data.get('cancelled', False),
+                    
+                    # Add metadata for management
+                    "save_info": {
+                        "original_request": trip['original_request'],
+                        "saved_at": trip['created_at'],
+                        "is_favorite": trip['is_favorite']
+                    }
+                }
+                
+                formatted_trips.append(formatted_trip)
+                
+            except Exception as e:
+                logger.error(f"Error formatting trip {trip['id']}: {e}")
+                # Add basic info even if formatting fails
+                formatted_trips.append({
+                    "id": trip['id'],
+                    "trip_name": trip['trip_name'],
+                    "created_at": trip['created_at'],
+                    "is_favorite": trip['is_favorite'],
+                    "error": "Failed to load trip details",
+                    "no_trips_available": True
+                })
+        
+        return {
+            "trips": formatted_trips,
+            "total_count": len(all_trips),
+            "displayed_count": len(formatted_trips),
+            "has_more": len(all_trips) > limit
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to get saved trips: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get saved trips: {str(e)}")
+
+@app.delete("/api/saved-trips/{trip_id}", tags=["Trip Management"])
+async def delete_saved_trip(
+    trip_id: str,
+    user = Depends(verify_supabase_token)
+):
+    """Delete a saved trip"""
+    try:
+        success = await db_service.delete_saved_trip(user['user_id'], trip_id)
+        
+        if success:
+            # Log the delete action
+            await db_service.log_user_activity(
+                user['user_id'],
+                'trip_deleted',
+                {'trip_id': trip_id}
+            )
+            return {"success": True}
+        else:
+            raise HTTPException(status_code=404, detail="Trip not found")
+    except Exception as e:
+        logger.error(f"Failed to delete trip: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/saved-trips/{trip_id}/favorite", tags=["Trip Management"])
+async def toggle_trip_favorite(
+    trip_id: str,
+    user = Depends(verify_supabase_token)
+):
+    """Toggle favorite status of a saved trip"""
+    try:
+        result = await db_service.toggle_trip_favorite(user['user_id'], trip_id)
+        
+        if result:
+            # Log the action
+            await db_service.log_user_activity(
+                user['user_id'],
+                'trip_favorited',
+                {'trip_id': trip_id, 'is_favorite': result['is_favorite']}
+            )
+            return {"success": True, "trip": result}
+        else:
+            raise HTTPException(status_code=404, detail="Trip not found")
+    except Exception as e:
+        logger.error(f"Failed to toggle favorite: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/trip-history", tags=["Trip Management"])
+async def get_trip_history(
+    limit: int = Query(20, description="Number of requests to return"),
+    user = Depends(verify_supabase_token)
+):
+    """Get user's trip request history"""
+    try:
+        history = await db_service.get_user_trip_history(user['user_id'], limit)
+        return {"history": history}
+    except Exception as e:
+        logger.error(f"Failed to get trip history: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/trips/unsave", tags=["Trip Management"])
+async def unsave_trip(
+    request: Request,
+    user = Depends(verify_supabase_token)
+):
+    """Delete a saved trip with proper account-bound security"""
+    try:
+        # Get request data
+        body = await request.json()
+        trip_id = body.get('trip_id')
+        
+        if not trip_id:
+            raise HTTPException(status_code=400, detail="trip_id is required")
+        
+        logger.info(f"🗑️ Unsaving trip {trip_id} for user {user['user_id']}")
+        
+        # Get trip details before deletion (for logging and response)
+        trip_details = await db_service.get_trip_by_id(user['user_id'], trip_id)
+        if not trip_details:
+            raise HTTPException(status_code=404, detail="Trip not found or access denied")
+        
+        # Delete the trip (account-bound)
+        success = await db_service.delete_saved_trip(user['user_id'], trip_id)
+        
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to delete trip")
+        
+        # Renumber remaining trips for this user
+        await db_service.renumber_user_trips(user['user_id'])
+        
+        # Log user activity
+        await db_service.log_user_activity(
+            user_id=user['user_id'],
+            activity_type='trip_deleted',
+            activity_data={
+                'trip_id': trip_id,
+                'trip_name': trip_details.get('trip_name'),
+                'deletion_method': 'user_initiated',
+                'start_location': trip_details.get('start_location'),
+                'trip_duration': trip_details.get('trip_duration')
+            },
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get('user-agent')
+        )
+        
+        logger.info(f"✅ Successfully deleted trip '{trip_details.get('trip_name')}' for user {user['email']}")
+        
+        return {
+            "success": True,
+            "message": f"Trip '{trip_details.get('trip_name')}' has been deleted",
+            "trip_name": trip_details.get('trip_name')
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error unsaving trip: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.post("/user/activity", tags=["User Activity"])
+async def log_user_activity_endpoint(
+    request: Request,
+    user = Depends(verify_supabase_token)
+):
+    """Log user activity"""
+    try:
+        # Get request data
+        body = await request.json()
+        
+        activity_type = body.get('activity_type')
+        activity_details = body.get('activity_details', {})
+        
+        if not activity_type:
+            raise HTTPException(status_code=400, detail="activity_type is required")
+        
+        logger.info(f"📊 Logging user activity: {activity_type} for user {user['email']}")
+        
+        # Log the activity
+        await db_service.log_user_activity(
+            user_id=user['user_id'],
+            activity_type=activity_type,
+            activity_data=activity_details,
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get('user-agent')
+        )
+        
+        logger.info(f"✅ User activity logged successfully: {activity_type}")
+        
+        return {
+            "success": True,
+            "message": "Activity logged successfully"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error logging user activity: {e}")
+        raise HTTPException(status_code=500, detail="Failed to log user activity")
+# ────────────────────────────────
+# 🛠️ Logging Functions
+# ────────────────────────────────
+
+def log_user_request(user_info: dict, endpoint: str, params: dict = None, request: Request = None):
+    """Log user requests for analytics"""
+    try:
+        # Get IP and user agent from request
+        ip_address = None
+        user_agent = None
+        
+        if request:
+            ip_address = request.client.host if request.client else None
+            user_agent = request.headers.get('user-agent')
+        
+        # Log to database asynchronously
+        import asyncio
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        
+        loop.run_until_complete(db_service.log_user_activity(
+            user_id=user_info.get('user_id') if user_info else None,
+            activity_type=f"api_request:{endpoint.replace('/', '_')}",
+            activity_data={
+                'endpoint': endpoint,
+                'params': params or {},
+                'user_email': user_info.get('email') if user_info else None
+            },
+            ip_address=ip_address,
+            user_agent=user_agent
+        ))
+        
+        logger.info(f"Request logged: {endpoint} by {user_info.get('email', 'anonymous')}")
+    except Exception as e:
+        logger.error(f"Failed to log user request: {e}")
+# ────────────────────────────────
+# 🏠 Basic Endpoints
+# ────────────────────────────────
+
 @app.get("/")
 def home():
-    return {"message": "Welcome to the Multi-Game Trip Planner API"}
+    return {
+        "message": "Welcome to the Multi-Game Trip Planner API",
+        "version": "1.0.0",
+        "authentication": "Supabase JWT required for most endpoints",
+        "docs": "/docs"
+    }
+
+@app.get("/health", 
+         summary="Health check",
+         description="Simple endpoint to verify API is operational",
+         tags=["System"])
+def health_check():
+    """Health check endpoint."""
+    return {
+        "status": "ok",
+        "timestamp": datetime.now().isoformat(),
+        "games_loaded": len(games),
+        "tbd_games_loaded": len(tbd_games),
+        "authentication": "Supabase",
+        "environment": "production"
+    }
 
 # ────────────────────────────────
 # 🛠️ Cancellation Endpoints
@@ -61,11 +663,16 @@ def home():
 @app.delete("/cancel-trip/{request_id}", 
            summary="Cancel an ongoing trip planning request",
            description="Cancels a trip planning request by ID to free up server resources")
-def cancel_trip(request_id: str):
+def cancel_trip(request_id: str, user = Depends(verify_supabase_token)):
     """Cancel a trip planning request by ID."""
+    # Verify user owns this request or is admin
     if request_id in active_requests:
+        request_owner = active_requests[request_id].get('user_id')
+        if request_owner != user['user_id'] and user['role'] != 'admin':
+            raise HTTPException(status_code=403, detail="Can only cancel your own requests")
+        
         active_requests[request_id]["status"] = "cancelled"
-        logger.info(f"Request {request_id} marked as cancelled")
+        logger.info(f"Request {request_id} cancelled by user {user['email']}")
         return {"message": f"Request {request_id} cancelled successfully"}
     
     logger.warning(f"Cancellation attempt for non-existent request ID: {request_id}")
@@ -77,9 +684,13 @@ def cancel_trip(request_id: str):
 @app.get("/request-status/{request_id}",
           summary="Check the status of a trip planning request",
           description="Returns the current status of a trip planning request")
-def request_status(request_id: str):
+def request_status(request_id: str, user = Depends(verify_supabase_token)):
     """Get the status of a trip planning request."""
     if request_id in active_requests:
+        request_owner = active_requests[request_id].get('user_id')
+        if request_owner != user['user_id'] and user['role'] != 'admin':
+            raise HTTPException(status_code=403, detail="Can only check status of your own requests")
+            
         status = active_requests[request_id]["status"]
         return {
             "request_id": request_id,
@@ -94,13 +705,16 @@ def request_status(request_id: str):
 @app.get("/register-request", 
          summary="Get a request ID before submitting a search",
          description="Returns an ID to use for trip planning and cancellation")
-def register_new_request():
+def register_new_request(user = Depends(verify_supabase_token)):
     """Get a request ID before starting a search."""
-    request_id = register_request()
-    logger.info(f"New request ID pre-registered: {request_id}")
-    return {"request_id": request_id}
-    
-    
+    try:
+        request_id = register_request(user['user_id'])
+        logger.info(f"New request ID pre-registered: {request_id} for user {user['email']}")
+        return {"request_id": request_id}
+    except Exception as e:
+        logger.error(f"Failed to register request for user {user.get('email', 'unknown')}: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to generate request ID")
+
 # ────────────────────────────────
 # 🛠️ Helper Functions
 # ────────────────────────────────
@@ -113,13 +727,24 @@ async def setup_cleanup():
     """Set up periodic cleanup task on startup."""
     global cleanup_task_ref
     
+    # Validate configuration on startup
+    try:
+        validate_config()
+        logger.info("✅ Production configuration validated successfully")
+    except ValueError as e:
+        logger.error(f"❌ Configuration validation failed: {e}")
+        raise
+    
     async def cleanup_task():
         while True:
             await asyncio.sleep(60 * 60)  # Run every hour
             cleanup_old_requests()
             
-    # Start the cleanup task and store reference
-    logger.info("Periodic cleanup task scheduled")
+    logger.info("🚀 BundesTrip API starting in production mode")
+    logger.info(f"📊 Loaded {len(games)} games and {len(tbd_games)} TBD games")
+    logger.info(f"🚆 Loaded {len(train_times)} train connections")
+    logger.info("🔐 Supabase authentication enabled")
+    
     cleanup_task_ref = asyncio.create_task(cleanup_task())
 
 @app.on_event("shutdown")
@@ -134,7 +759,8 @@ async def cleanup_on_shutdown():
             await cleanup_task_ref
         except asyncio.CancelledError:
             logger.info("Periodic cleanup task cancelled successfully")
-
+    
+    logger.info("🛑 BundesTrip API shutting down")
 
 def has_special_suffix(location_name: str) -> bool:
     """Check if location has a special suffix that shouldn't have hbf appended"""
@@ -839,15 +1465,33 @@ def process_trip_variant(variant: Dict, actual_start_location: str) -> TripVaria
           summary="Plan a multi-game trip",
           description="Creates an optimized itinerary to watch multiple games based on preferences",
           response_model=FormattedResponse)
-async def get_trip(request: TripRequest, background_tasks: BackgroundTasks):
+async def get_trip(request: TripRequest, 
+                   background_tasks: BackgroundTasks,
+                   user = Depends(verify_supabase_token)):
+    """Plan a trip with authentication required."""
+    
+    # Log the request
+    log_user_request(user, "/plan-trip", {
+        "start_location": request.start_location,
+        "trip_duration": request.trip_duration,
+        "max_travel_time": request.max_travel_time,
+        "preferred_leagues": request.preferred_leagues,
+        "must_teams": request.must_teams
+    })
+    
     try:
         # Use existing ID if provided, otherwise generate new one
-        request_id = request.request_id if hasattr(request, 'request_id') and request.request_id else register_request()
+        request_id = request.request_id if hasattr(request, 'request_id') and request.request_id else register_request(user['user_id'])
         
         if not hasattr(request, 'request_id') or not request.request_id:
-            logger.info(f"New trip planning request started: {request_id}")
+            logger.info(f"New trip planning request started: {request_id} by {user['email']}")
         else:
-            logger.info(f"Trip planning request continued with ID: {request_id}")
+            logger.info(f"Trip planning request continued with ID: {request_id} by {user['email']}")
+        
+        # Store user info with request
+        if request_id in active_requests:
+            active_requests[request_id]['user_id'] = user['user_id']
+            active_requests[request_id]['user_email'] = user['email']
         
         # Input validation
         if request.trip_duration <= 0:
@@ -868,7 +1512,8 @@ async def get_trip(request: TripRequest, background_tasks: BackgroundTasks):
         
         # Log request parameters
         logger.info(f"Request {request_id} parameters: start={request.start_location}, "
-                   f"duration={request.trip_duration}, max_travel={request.max_travel_time}")
+                   f"duration={request.trip_duration}, max_travel={request.max_travel_time}, "
+                   f"user={user['email']}")
         
         # Filter games by preferred leagues
         if request.preferred_leagues:
@@ -1237,25 +1882,22 @@ async def get_trip(request: TripRequest, background_tasks: BackgroundTasks):
             status_code=500
         )
 
-
-
 # ────────────────────────────────
-# 🛠️ API's
+# 🛠️ Public API Endpoints (No Auth Required)
 # ────────────────────────────────
-
 
 @app.get("/available-leagues", 
          summary="Get all available leagues",
          description="Returns a list of all leagues available in the system",
          tags=["Reference Data"])
 def get_leagues():
+    """Get available leagues - no authentication required."""
     try:
         leagues = set()
         for game in games:  
             if hasattr(game, 'league'):
                 leagues.add(game.league)
         
-        # Sort leagues by priority or alphabetically
         sorted_leagues = sorted(list(leagues), 
                                key=lambda x: league_priority.get(x, 999))
         
@@ -2064,46 +2706,213 @@ def get_games_by_date(
     
 @app.post("/admin/refresh-data",
          summary="Refresh game and travel data",
-         description="Reloads game schedules and train times from data files without restarting the server",
+         description="Reloads game schedules and train times from data files",
          tags=["Administration"])
-def refresh_data(api_key: str = Query(..., description="API key for admin operations")):
-    """Refresh all data from source files."""
-    # Simple API key check (in production, use proper authentication)
-    from config import ADMIN_API_KEY
-    if api_key != ADMIN_API_KEY:
-        return JSONResponse(
-            content={"error": "Invalid API key"},
-            status_code=401
-        )
+async def refresh_data(admin_user = Depends(verify_admin_user)):
+    """Refresh all data from source files - admin only."""
+    
+    log_user_request(admin_user, "/admin/refresh-data")
     
     try:
         global train_times, games, tbd_games
+        
+        # Log admin action start
+        await db_service.log_admin_action(
+            admin_id=admin_user['user_id'],
+            action='data_refresh_started',
+            details={
+                'admin_email': admin_user['email'],
+                'endpoint': '/admin/refresh-data',
+                'previous_counts': {
+                    'games': len(games),
+                    'tbd_games': len(tbd_games),
+                    'train_connections': len(train_times)
+                }
+            }
+        )
         
         # Reload data
         new_train_times = load_train_times(TRAIN_TIMES_FILE)
         new_games, new_tbd_games = load_games(GAMES_FILE)
         
         # Update global variables
+        old_counts = {
+            'games': len(games),
+            'tbd_games': len(tbd_games),
+            'train_connections': len(train_times)
+        }
+        
         train_times = new_train_times
         games = new_games
         tbd_games = new_tbd_games
+        
+        new_counts = {
+            'games': len(games),
+            'tbd_games': len(tbd_games),
+            'train_connections': len(train_times)
+        }
+        
+        # Log successful admin action
+        await db_service.log_admin_action(
+            admin_id=admin_user['user_id'],
+            action='data_refresh_completed',
+            details={
+                'admin_email': admin_user['email'],
+                'old_counts': old_counts,
+                'new_counts': new_counts,
+                'changes': {
+                    'games_change': new_counts['games'] - old_counts['games'],
+                    'tbd_games_change': new_counts['tbd_games'] - old_counts['tbd_games'],
+                    'train_connections_change': new_counts['train_connections'] - old_counts['train_connections']
+                }
+            }
+        )
+        
+        logger.info(f"Data refreshed by admin user {admin_user['email']}")
         
         return {
             "status": "success",
             "timestamp": datetime.now().isoformat(),
             "games_loaded": len(games),
             "tbd_games_loaded": len(tbd_games),
-            "train_connections_loaded": len(train_times)
+            "train_connections_loaded": len(train_times),
+            "refreshed_by": admin_user['email'],
+            "changes": {
+                "games_change": new_counts['games'] - old_counts['games'],
+                "tbd_games_change": new_counts['tbd_games'] - old_counts['tbd_games'],
+                "train_connections_change": new_counts['train_connections'] - old_counts['train_connections']
+            }
         }
     except Exception as e:
-        import traceback
+        # Log failed admin action
+        await db_service.log_admin_action(
+            admin_id=admin_user['user_id'],
+            action='data_refresh_failed',
+            details={
+                'admin_email': admin_user['email'],
+                'error': str(e)
+            }
+        )
+        
+        logger.error(f"Failed to refresh data: {e}")
         traceback.print_exc()
         return JSONResponse(
             content={"error": f"Failed to refresh data: {str(e)}"},
             status_code=500
+        )   
+
+@app.get("/admin/logs", tags=["Administration"])
+async def get_admin_logs(
+    limit: int = Query(100, description="Number of logs to return"),
+    admin_id: Optional[str] = Query(None, description="Filter by specific admin ID"),
+    admin_user = Depends(verify_admin_user)
+):
+    """Get admin action logs - admin only"""
+    try:
+        logs = await db_service.get_admin_logs(limit, admin_id)
+        
+        # Log this admin action
+        await db_service.log_admin_action(
+            admin_id=admin_user['user_id'],
+            action='admin_logs_viewed',
+            details={
+                'admin_email': admin_user['email'],
+                'requested_limit': limit,
+                'filter_admin_id': admin_id,
+                'logs_returned': len(logs)
+            }
         )
         
+        return {
+            "success": True,
+            "logs": logs,
+            "total": len(logs),
+            "viewed_by": admin_user['email']
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to get admin logs: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
+async def log_trip_request_from_response(request_data: dict, user_info: dict, processing_time_ms: int, status_code: int):
+    """Log trip request from response data"""
+    try:
+        status = "completed" if status_code == 200 else "failed"
+        error_message = None
+        
+        if status_code != 200:
+            error_message = f"HTTP {status_code}"
+        
+        await db_service.log_trip_request(
+            user_id=user_info['user_id'],
+            request_data={
+                'start_location': request_data.get('start_location', 'Unknown'),
+                'start_date': request_data.get('start_date', 'Unknown'),
+                'trip_duration': request_data.get('trip_duration', 0),
+                'max_travel_time': request_data.get('max_travel_time', 0),
+                'preferred_leagues': request_data.get('preferred_leagues', []),
+                'must_teams': request_data.get('must_teams', []),
+                'min_games': request_data.get('min_games', 2),
+                'request_id': request_data.get('request_id'),
+                'endpoint': '/plan-trip',
+                'method': 'POST'
+            },
+            status=status,
+            processing_time_ms=processing_time_ms,
+            error_message=error_message
+        )
+        
+        logger.info(f"🔄 Trip request logged: {user_info['email']} - {status} ({processing_time_ms}ms)")
+        
+    except Exception as e:
+        logger.error(f"❌ Failed to log trip request: {e}")
+        
+        
+@app.get("/api/trip-request-history", tags=["Trip Management"])
+async def get_trip_request_history(
+    limit: int = Query(20, description="Number of requests to return"),
+    user = Depends(verify_supabase_token)
+):
+    """Get user's trip request history with detailed information"""
+    try:
+        requests = await db_service.get_user_trip_requests(user['user_id'], limit)
+        
+        # Format the requests for frontend display
+        formatted_requests = []
+        for req in requests:
+            formatted_req = {
+                'id': req['id'],
+                'start_location': req['start_location'],
+                'start_date': req['start_date'],
+                'trip_duration': req['trip_duration'],
+                'max_travel_time': req['max_travel_time'],
+                'preferred_leagues': req['preferred_leagues'],
+                'must_teams': req['must_teams'],
+                'min_games': req['min_games'],
+                'status': req['status'],
+                'created_at': req['created_at'],
+                'completed_at': req['completed_at'],
+                'processing_time_ms': req['processing_time_ms'],
+                'error_message': req['error_message'],
+                'has_results': req['results'] is not None,
+                'results_summary': {
+                    'trip_groups_count': len(req['results'].get('trip_groups', [])) if req['results'] else 0,
+                    'tbd_games_count': len(req['results'].get('tbd_games', [])) if req['results'] else 0,
+                    'no_trips_available': req['results'].get('no_trips_available', True) if req['results'] else True
+                } if req['results'] else None
+            }
+            formatted_requests.append(formatted_req)
+        
+        return {
+            "success": True,
+            "requests": formatted_requests,
+            "total": len(formatted_requests)
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to get trip request history: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+       
 @app.get("/tbd-games",
          summary="Get all future TBD games",
          description="Returns all future games without confirmed times, optionally filtered by league and team",

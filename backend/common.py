@@ -21,14 +21,18 @@ def is_request_cancelled(request_id: str) -> bool:
     return False
 
 # Register a new request
-def register_request() -> str:
-    """Register a new trip planning request and return its ID."""
+def register_request(user_id: str = None) -> str:
+    """Register a new request and return its ID."""
     request_id = str(uuid.uuid4())
     active_requests[request_id] = {
-        "status": "processing",
-        "created_at": datetime.now()
+        "status": "active",
+        "created_at": datetime.now(),
+        "user_id": user_id  # Store the user_id
     }
-    logger.info(f"New request registered: {request_id}")
+    
+    # Log the registration
+    logger.info(f"Request {request_id} registered for user: {user_id or 'anonymous'}")
+    
     return request_id
 
 # Clean up completed requests

@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - BundesTrip</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://localhost:8000 http://0.0.0.0:8000 http://127.0.0.1:8000 http://10.0.0.28:8000 http://10.0.0.67:8000 http://172.30.2.216:8000 https://*.ngrok-free.app https://*.ngrok.io https://ouurqpbwidicivdysdnq.supabase.co https://*.supabase.co;">
+    
+    <!-- Load the same CSS files as index.html -->
+        <link rel="stylesheet" href="styles/base.css">
+        <link rel="stylesheet" href="styles/layout.css">
+        <link rel="stylesheet" href="styles/components.css">
+        <link rel="stylesheet" href="styles/forms.css">
+        <link rel="stylesheet" href="styles/select2.css">
+        <link rel="stylesheet" href="styles/animations.css">
+        <link rel="stylesheet" href="styles/calendar.css">
+        <link rel="stylesheet" href="styles/trip-cards.css">
+        <link rel="stylesheet" href="styles/loading-animation.css">
+        <link rel="stylesheet" href="styles/mobile.css">
+    
+    <style>
+        /* Profile-specific styles */
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0 2rem;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+        .dashboard-tabs {
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+        }
+        .nav-pills .nav-link {
+            border-radius: 50px;
+            padding: 12px 20px;
+            margin: 0 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            text-align: center;
+            padding: 2rem 1rem;
+            border-radius: 10px;
+        }
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .filter-controls {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        
+        /* Enhanced empty state - ONLY for trips tab */
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #6c757d;
+            background: linear-gradient(135deg, #f8f9fa, #fff);
+            border-radius: 12px;
+            border: 2px dashed #dee2e6;
+            margin: 2rem 0;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+            color: #667eea;
+        }
+        .empty-state h5 {
+            color: #495057;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .empty-state p {
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        .empty-state .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 10px 24px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .empty-state .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Simple empty states for other tabs */
+        .simple-empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6c757d;
+        }
+        .simple-empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .request-item {
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .request-item.failed {
+            border-left-color: #dc3545;
+        }
+        .request-item.pending {
+            border-left-color: #ffc107;
+        }
+
+        /* REDESIGNED Saved Trip Header to match trip cards */
+        .saved-trip-header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 0;
+            margin-bottom: 0;
+            border-radius: 12px 12px 0 0;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 123, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .saved-trip-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+        }
+
+        .trip-header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .trip-info-section {
+            flex-grow: 1;
+        }
+
+        .trip-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .trip-title i {
+            color: #ffd700;
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .trip-meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .trip-meta-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.15);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .trip-meta-item:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .trip-meta-item i {
+            margin-right: 0.5rem;
+            width: 16px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+        }
+
+        .trip-actions-header {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .trip-actions-header .btn {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.875rem;
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trip-actions-header .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .trip-actions-header .btn:hover::before {
+            left: 100%;
+        }
+
+        .trip-actions-header .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.6);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .trip-actions-header .btn-favorite {
+            background: rgba(220, 53, 69, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .trip-actions-header .btn-favorite:hover {
+            background: rgba(220, 53, 69, 0.4);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .trip-actions-header .btn-favorite.favorited {
+            background: rgba(220, 53, 69, 0.8);
+            border-color: rgba(220, 53, 69, 0.9);
+        }
+
+        .trip-actions-header .btn-delete {
+            background: rgba(220, 53, 69, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .trip-actions-header .btn-delete:hover {
+            background: rgba(220, 53, 69, 0.8);
+            border-color: rgba(220, 53, 69, 0.9);
+            color: white;
+        }
+
+        /* Match count badge style */
+        .saved-match-count-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-left: 1rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .trip-header-main {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1.25rem 1.5rem;
+            }
+            
+            .trip-actions-header {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .trip-meta-info {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .trip-meta-item {
+                align-self: flex-start;
+            }
+        }
+
+        /* Ensure the trip card below matches */
+        .saved-trip-header + .trip-card {
+            border-radius: 0 0 12px 12px !important;
+            border-top: none !important;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1) !important;
+        }
+
+        .saved-trip-header + .trip-card .card-header {
+            display: none !important;
+        }
+
+        /* Modal styles */
+.modal-delete-icon {
+    font-size: 3rem !important;
+    opacity: 0.7 !important;
+}
+
+/* Fix for the modal header - remove duplicate elements */
+.modal-header .mb-3 {
+    display: none;
+}
+
+.modal-title {
+    display: flex;
+    align-items: center;
+}
+
+/* ====== COMPREHENSIVE HIDING OF UNWANTED ELEMENTS ====== */
+
+/* Hide ALL trip header elements in cards */
+.trip-card .trip-header-main h3,
+.trip-card .card-header .trip-header-main h3,
+.card-header .trip-header-main h3,
+.trip-header-main h3 {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hide ALL match count badges */
+.match-count-badge,
+.trip-badge,
+.match-badge,
+.trip-card .match-count-badge,
+.card-header .match-count-badge {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hide ALL save trip buttons - multiple selectors */
+.btn-save,
+.btn-modern.btn-save,
+button[onclick*="showSaveTripDialog"],
+.trip-card .btn-save,
+.trip-card .btn-modern,
+.trip-card button[onclick*="showSaveTripDialog"],
+.card-body .btn-save,
+.card-body .btn-modern,
+.trip-actions .btn-save,
+.trip-actions .btn-modern {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Hide button content and glow effects */
+.btn-content:has(i.fa-bookmark),
+.btn-glow,
+.trip-card .btn-content,
+.trip-card .btn-glow {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Hide trip header meta sections */
+.trip-header-meta,
+.trip-card .trip-header-meta,
+.card-header .trip-header-meta {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hide date ranges in headers */
+.date-range,
+.trip-dates,
+.header-dates,
+.trip-card .date-range {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* More aggressive button hiding */
+*[onclick*="showSaveTripDialog"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Hide any button containing bookmark icon in trip cards */
+.trip-card button:has(.fa-bookmark),
+.trip-card .btn:has(.fa-bookmark) {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Hide entire trip action sections if they contain save buttons */
+.trip-actions:has(.btn-save),
+.trip-actions:has([onclick*="showSaveTripDialog"]) {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Specific targeting for dynamically created elements */
+div[class*="trip-header-main"]:has(h3),
+div[class*="trip-actions"]:has(.btn-save) {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+}
+
+/* Hide by content - if browser supports :contains */
+.trip-card h3:contains("Trip"),
+.trip-card span:contains("matches") {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Clean up the entire card header if it contains unwanted elements */
+.trip-card .card-header:has(.trip-header-main h3),
+.trip-card .card-header:has(.match-count-badge) {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+/* Override any inline styles */
+.trip-card .trip-header-main h3[style],
+.trip-card .match-count-badge[style],
+.trip-card .btn-save[style] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Ensure our custom saved trip header remains visible */
+.saved-trip-header,
+.saved-trip-header *,
+.saved-trip-header .trip-header-main,
+.saved-trip-header .trip-title,
+.saved-trip-header .trip-meta-item,
+.saved-trip-header .btn {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+.saved-trip-header .trip-meta-info {
+    display: flex !important;
+}
+
+.saved-trip-header .trip-actions-header {
+    display: flex !important;
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="./index.html">
+                <img src="./logos/blank_logo.png" alt="BundesTrip Logo" height="30" class="d-inline-block align-middle me-2">
+                BundesTrip
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Trip Planner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./schedules.html">Schedules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./about.html">About Us</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown" id="userDropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span id="userDisplayName">User</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="./profile.html">
+                                <i class="fas fa-user me-2"></i>My Account
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logoutUser()">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="container text-center">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h1 id="profileName">My Account</h1>
+            <p id="profileEmail">user@example.com</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Tabs -->
+    <div class="container dashboard-tabs">
+        <div class="card">
+            <div class="card-body p-0">
+                <ul class="nav nav-pills nav-fill p-3" id="dashboardTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="trips-tab" data-bs-toggle="pill" data-bs-target="#trips" type="button" role="tab">
+                            <i class="fas fa-suitcase-rolling me-2"></i>My Trips
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="history-tab" data-bs-toggle="pill" data-bs-target="#history" type="button" role="tab">
+                            <i class="fas fa-history me-2"></i>Search History
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="pill" data-bs-target="#profile" type="button" role="tab">
+                            <i class="fas fa-user-cog me-2"></i>Profile Settings
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="container my-4">
+        <div class="tab-content" id="dashboardTabsContent">
+            
+            <!-- My Trips Tab -->
+            <div class="tab-pane fade show active" id="trips" role="tabpanel">
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card stats-card">
+                            <div class="stats-number" id="totalTripsCount">0</div>
+                            <div>Total Trips</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card">
+                            <div class="stats-number" id="favoriteTripsCount">0</div>
+                            <div>Favorites</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card">
+                            <div class="stats-number" id="totalSearchesCount">0</div>
+                            <div>Searches</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card">
+                            <div class="stats-number" id="memberSinceCount">0</div>
+                            <div>Days Member</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="filter-controls">
+                    <div class="row align-items-end g-3">
+                        <div class="col-md-6">
+                            <div class="filter-section-title">Search Trips</div>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <input type="text" class="form-control" id="tripSearchInput" placeholder="Search by name or location...">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="filter-section-title">Sort By</div>
+                            <select class="form-select" id="tripSortSelect" aria-label="Sort Trips By">
+                                <option value="newest">📅 Newest First</option>
+                                <option value="oldest">📅 Oldest First</option>
+                                <option value="name">🔤 Trip Name</option>
+                                <option value="location">📍 Location</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="filter-section-title">Filter</div>
+                            <select class="form-select" id="tripFilterSelect" aria-label="Filter Trips">
+                                <option value="all">📋 All Trips</option>
+                                <option value="favorites">❤️ Favorites Only</option>
+                                <option value="recent">🕒 Recent (30 days)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trips Container - EXACT SAME STRUCTURE AS SEARCH RESULTS -->
+                <div id="tripsContainer">
+                    <div class="loading-spinner">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search History Tab -->
+            <div class="tab-pane fade" id="history" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clock me-2"></i>Recent Search Requests
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="searchHistoryContainer">
+                            <div class="loading-spinner">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Settings Tab -->
+            <div class="tab-pane fade" id="profile" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-user-edit me-2"></i>Profile Information
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="profileForm">
+                                    <div class="mb-3">
+                                        <label for="fullName" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="fullName">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" readonly>
+                                        <div class="form-text">Email cannot be changed. Contact support if needed.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="joinDate" class="form-label">Member Since</label>
+                                        <input type="text" class="form-control" id="joinDate" readonly>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>Update Profile
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white border-0">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Confirm Delete
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="mb-3">
+                    <i class="fas fa-trash-alt text-danger modal-delete-icon"></i>
+                </div>
+                <h6 class="mb-3">Are you sure you want to delete this trip?</h6>
+                <p class="text-muted mb-0" id="deleteConfirmTripName">Trip name will appear here</p>
+                <small class="text-muted">This action cannot be undone.</small>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
+                    <i class="fas fa-trash me-2"></i>Delete Trip
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Scripts - INCLUDE ALL THE SAME SCRIPTS AS INDEX.HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./services/supabase-auth.js"></script>
+    <script src="./services/navigation.js"></script>
+    <script src="./services/api.js"></script>
+    <script src="./services/trip-saver.js"></script>
+    
+    <!-- Include trip card and team logo functionality -->
+    <script type="module">
+        // Import all the necessary modules
+        import { renderTripCard, renderTbdGames, initializeMatchesExpander } from './components/trip-card.js';
+        import { getTeamLogoUrl, applyTeamLogoStyles } from './services/team-logos.js';
+        
+        // Make functions globally available
+        window.renderTripCard = renderTripCard;
+        window.renderTbdGames = renderTbdGames;
+        window.getTeamLogoUrl = getTeamLogoUrl;
+        
+        let currentUser = null;
+        let savedTrips = [];
+        let searchHistory = [];
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 Initializing profile dashboard...');
+            
+            // Apply team logo styles
+            applyTeamLogoStyles();
+            
+            // Initialize match expanders
+            initializeMatchesExpander();
+            
+            // Wait for auth service
+            await new Promise(resolve => {
+                const checkAuth = () => {
+                    if (window.authService && window.authService.initialized) {
+                        resolve();
+                    } else {
+                        setTimeout(checkAuth, 100);
+                    }
+                };
+                checkAuth();
+            });
+            
+            currentUser = await window.authService.getCurrentUser();
+            
+            if (!currentUser) {
+                window.location.href = './login.html';
+                return;
+            }
+
+            // Initialize API service
+            if (!window.apiService) {
+                const { ApiService } = await import('./services/api.js');
+                window.apiService = new ApiService();
+            }
+            
+            // Populate profile data
+            populateProfileData();
+            
+            // Load dashboard data
+            await loadDashboardData();
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Update navigation
+            if (window.updateNavigationState) {
+                await updateNavigationState();
+            }
+
+            console.log('✅ Profile dashboard initialized successfully');
+        });
+
+        function populateProfileData() {
+            const fullName = currentUser.user_metadata?.full_name || '';
+            const email = currentUser.email || '';
+            const joinDate = new Date(currentUser.created_at).toLocaleDateString();
+            
+            document.getElementById('profileName').textContent = fullName || 'My Account';
+            document.getElementById('profileEmail').textContent = email;
+            document.getElementById('fullName').value = fullName;
+            document.getElementById('email').value = email;
+            document.getElementById('joinDate').value = joinDate;
+
+            // Calculate days since joining
+            const daysSinceJoin = Math.floor((new Date() - new Date(currentUser.created_at)) / (1000 * 60 * 60 * 24));
+            document.getElementById('memberSinceCount').textContent = daysSinceJoin;
+        }
+
+        async function loadDashboardData() {
+            try {
+                console.log('📊 Loading dashboard data...');
+                
+                // Load saved trips
+                await loadSavedTrips();
+                
+                // Load search history
+                await loadSearchHistory();
+                
+                // Update stats
+                updateStatsCards();
+                
+            } catch (error) {
+                console.error('❌ Failed to load dashboard data:', error);
+                showToast('Failed to load dashboard data', 'error');
+            }
+        }
+
+        async function loadSavedTrips() {
+            try {
+                console.log('🗂️ Loading saved trips...');
+                
+                const response = await window.apiService.getSavedTrips(50, false);
+                savedTrips = response.trips || [];
+                
+                console.log(`✅ Loaded ${savedTrips.length} saved trips`);
+                console.log('📋 Sample trip data:', savedTrips[0]); // Debug log
+                
+                displaySavedTrips(savedTrips);
+                
+            } catch (error) {
+                console.error('❌ Failed to load saved trips:', error);
+                document.getElementById('tripsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h5>Failed to Load Trips</h5>
+                        <p>There was an error loading your saved trips.</p>
+                        <button class="btn btn-primary" onclick="loadSavedTrips()">Try Again</button>
+                    </div>
+                `;
+            }
+        }
+
+        function displaySavedTrips(trips) {
+            const container = document.getElementById('tripsContainer');
+            
+            if (!trips || trips.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-route"></i>
+                        <h5>No Saved Trips Yet</h5>
+                        <p>Start planning your next football adventure!</p>
+                        <a href="./index.html" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Plan Your Next Trip
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Clear container and add results structure
+            container.innerHTML = `
+                <div id="tripResults" class="trip-results-container">
+                    <!-- Trip cards will be rendered here -->
+                </div>
+            `;
+
+            const tripResults = document.getElementById('tripResults');
+            let tripIndex = 0;
+
+            trips.forEach((savedTrip) => {
+                console.log('🔍 Processing saved trip:', savedTrip);
+                
+                // Extract data from the correct locations
+                const tripGroups = savedTrip.trip_groups || [];
+                const tbdGames = savedTrip.tbd_games || [];
+                const startLocation = savedTrip.start_location || savedTrip.original_request?.start_location || 'Unknown';
+                const startDate = savedTrip.start_date || savedTrip.original_request?.start_date || 'Unknown';
+                const tripDuration = savedTrip.trip_duration || savedTrip.original_request?.trip_duration || 3;
+                const maxTravelTime = savedTrip.max_travel_time || savedTrip.original_request?.max_travel_time || 240;
+                const preferredLeagues = savedTrip.preferred_leagues || savedTrip.original_request?.preferred_leagues || [];
+                const mustTeams = savedTrip.must_teams || savedTrip.original_request?.must_teams || [];
+                const minGames = savedTrip.min_games || savedTrip.original_request?.min_games || 2;
+
+                if (tripGroups && tripGroups.length > 0) {
+                    tripGroups.forEach((group, groupIndex) => {
+                        console.log(`🎯 Rendering trip group ${groupIndex + 1}:`, group);
+                        
+                        // Add saved trip management header
+                        const savedTripHeader = document.createElement('div');
+                        savedTripHeader.className = 'saved-trip-header';
+                        savedTripHeader.innerHTML = `
+                            <div class="trip-header-main">
+                                <div class="trip-info-section">
+                                    <h5 class="trip-title">
+                                        <i class="fas fa-bookmark"></i>${savedTrip.trip_name}
+                                        ${group.variations?.[0]?.Itinerary ? `
+                                            <span class="saved-match-count-badge">
+                                                ${group.variations[0].Itinerary.filter(day => day.matches && day.matches.length > 0).reduce((total, day) => total + day.matches.length, 0)} matches
+                                            </span>
+                                        ` : ''}
+                                    </h5>
+                                    <div class="trip-meta-info">
+                                        <div class="trip-meta-item">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Saved ${new Date(savedTrip.created_at).toLocaleDateString()}</span>
+                                        </div>
+                                        <div class="trip-meta-item">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>${startLocation}</span>
+                                        </div>
+                                        <div class="trip-meta-item">
+                                            <i class="fas fa-calendar"></i>
+                                            <span>${startDate}</span>
+                                        </div>
+                                        <div class="trip-meta-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>${tripDuration} days</span>
+                                        </div>
+                                        ${group.variations?.length ? `
+                                            <div class="trip-meta-item">
+                                                <i class="fas fa-route"></i>
+                                                <span>${group.variations.length} travel options</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                <div class="trip-actions-header">
+                                    <button class="btn btn-sm btn-favorite ${savedTrip.is_favorite ? 'favorited' : ''}" 
+                                            onclick="toggleTripFavorite('${savedTrip.id}', ${savedTrip.is_favorite})" 
+                                            title="${savedTrip.is_favorite ? 'Remove from favorites' : 'Add to favorites'}">
+                                        <i class="fas fa-heart me-1"></i>
+                                        ${savedTrip.is_favorite ? 'Favorited' : 'Favorite'}
+                                    </button>
+                                    <button class="btn btn-sm btn-delete" 
+                                            onclick="showDeleteConfirm('${savedTrip.id}', '${savedTrip.trip_name}')" 
+                                            title="Delete this trip">
+                                        <i class="fas fa-trash me-1"></i>
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        tripResults.appendChild(savedTripHeader);
+                        
+                        // Create trip context exactly like search results
+                        const tripContext = {
+                            tripDuration: tripDuration,
+                            maxTravelTime: maxTravelTime,
+                            preferredLeagues: preferredLeagues,
+                            mustTeams: mustTeams,
+                            minGames: minGames
+                        };
+                        
+                        console.log('🎯 Trip context for renderTripCard:', tripContext);
+                        
+                        // Use the EXACT same renderTripCard function as search results
+                        try {
+                            renderTripCard(group, tripIndex, tripContext);
+                            console.log(`✅ Successfully rendered trip card ${tripIndex}`);
+                        } catch (error) {
+                            console.error(`❌ Failed to render trip card ${tripIndex}:`, error);
+                            
+                            // Fallback: Create a basic card manually
+                            const fallbackCard = document.createElement('div');
+                            fallbackCard.className = 'card trip-card shadow-sm mb-4';
+                            fallbackCard.innerHTML = `
+                                <div class="card-body">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        This trip contains ${group.variations?.length || 0} travel options.
+                                        <br>
+                                        <small>Unable to render full trip details. Please try refreshing the page.</small>
+                                    </div>
+                                </div>
+                            `;
+                            tripResults.appendChild(fallbackCard);
+                        }
+                        
+                        tripIndex++;
+                    });
+                } else {
+                    // Handle trips with no results (show basic info)
+                    const noResultsCard = document.createElement('div');
+                    noResultsCard.className = 'card trip-card shadow-sm mb-4';
+                    noResultsCard.innerHTML = `
+                        <div class="saved-trip-header">
+                            <div class="trip-header-main">
+                                <div class="trip-info-section">
+                                    <h5 class="trip-title">
+                                        <i class="fas fa-bookmark me-2"></i>${savedTrip.trip_name}
+                                    </h5>
+                                    <div class="trip-meta-info">
+                                        <div class="trip-meta-item">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Saved ${new Date(savedTrip.created_at).toLocaleDateString()}</span>
+                                        </div>
+                                        <div class="trip-meta-item">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>${startLocation}</span>
+                                        </div>
+                                        <div class="trip-meta-item">
+                                            <i class="fas fa-calendar"></i>
+                                            <span>${startDate}</span>
+                                        </div>
+                                        <div class="trip-meta-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>${tripDuration} days</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="trip-actions-header">
+                                    <button class="btn btn-sm btn-favorite" onclick="toggleTripFavorite('${savedTrip.id}', ${savedTrip.is_favorite})">
+                                        <i class="fas ${savedTrip.is_favorite ? 'fa-heart' : 'fa-heart'} me-1"></i>
+                                        ${savedTrip.is_favorite ? 'Favorited' : 'Favorite'}
+                                    </button>
+                                    <button class="btn btn-sm btn-delete" onclick="showDeleteConfirm('${savedTrip.id}', '${savedTrip.trip_name}')" title="Delete this trip">
+                                        <i class="fas fa-trash me-1"></i>
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                This saved trip had no available options at the time of saving.
+                            </div>
+                        </div>
+                    `;
+                    tripResults.appendChild(noResultsCard);
+                }
+            });
+
+            // Render TBD games if any exist (from the last processed trip)
+            const lastTrip = trips[trips.length - 1];
+            if (lastTrip && lastTrip.tbd_games && lastTrip.tbd_games.length > 0) {
+                try {
+                    renderTbdGames(lastTrip.tbd_games, lastTrip.must_teams || []);
+                } catch (error) {
+                    console.error('❌ Failed to render TBD games:', error);
+                }
+            }
+        }
+
+        async function loadSearchHistory() {
+            try {
+                console.log('📋 Loading search history...');
+                
+                const response = await window.apiService.getTripRequestHistory(20);
+                searchHistory = response.requests || [];
+                
+                console.log(`✅ Loaded ${searchHistory.length} search requests`);
+                displaySearchHistory(searchHistory);
+                
+            } catch (error) {
+                console.error('❌ Failed to load search history:', error);
+                document.getElementById('searchHistoryContainer').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h5>Failed to Load History</h5>
+                        <p>There was an error loading your search history.</p>
+                        <button class="btn btn-primary" onclick="loadSearchHistory()">Try Again</button>
+                    </div>
+                `;
+            }
+        }
+
+        function displaySearchHistory(requests) {
+            const container = document.getElementById('searchHistoryContainer');
+            
+            if (!requests || requests.length === 0) {
+                container.innerHTML = `
+                    <div class="simple-empty-state">
+                        <i class="fas fa-search"></i>
+                        <h5>No Search History</h5>
+                        <p>Your trip search history will appear here.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = requests.map(request => createRequestItem(request)).join('');
+        }
+
+        function createRequestItem(request) {
+            const statusClass = request.status === 'failed' ? 'failed' : request.status === 'pending' ? 'pending' : '';
+            const statusIcon = {
+                'completed': 'fas fa-check-circle text-success',
+                'failed': 'fas fa-times-circle text-danger',
+                'pending': 'fas fa-clock text-warning',
+                'cancelled': 'fas fa-ban text-secondary'
+            }[request.status] || 'fas fa-question-circle text-muted';
+
+            const date = new Date(request.created_at).toLocaleString();
+            
+            return `
+                <div class="request-item ${statusClass}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="${statusIcon} me-2"></i>
+                                <strong>${request.start_location}</strong>
+                                <span class="mx-2">•</span>
+                                <span>${request.trip_duration} days</span>
+                                <span class="mx-2">•</span>
+                                <small class="text-muted">${date}</small>
+                            </div>
+                            <div class="text-muted small">
+                                <i class="fas fa-calendar me-1"></i>Start: ${request.start_date}
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock me-1"></i>Max travel: ${Math.floor(request.max_travel_time / 60)}h ${request.max_travel_time % 60}m
+                                ${request.preferred_leagues?.length ? `
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-trophy me-1"></i>Leagues: ${request.preferred_leagues.join(', ')}
+                                ` : ''}
+                            </div>
+                            ${request.results_summary ? `
+                                <div class="mt-2">
+                                    <span class="badge bg-success">
+                                        Found ${request.results_summary.trip_groups_count} trip options
+                                    </span>
+                                </div>
+                            ` : ''}
+                            ${request.error_message ? `
+                                <div class="mt-2 text-danger small">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>${request.error_message}
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="text-end">
+                            ${request.processing_time_ms ? `
+                                <small class="text-muted">${request.processing_time_ms}ms</small>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateStatsCards() {
+            const totalTrips = savedTrips.length;
+            const favoriteTrips = savedTrips.filter(trip => trip.is_favorite).length;
+            const totalSearches = searchHistory.length;
+            
+            document.getElementById('totalTripsCount').textContent = totalTrips;
+            document.getElementById('favoriteTripsCount').textContent = favoriteTrips;
+            document.getElementById('totalSearchesCount').textContent = totalSearches;
+        }
+
+        function setupEventListeners() {
+            // Trip search and filters
+            document.getElementById('tripSearchInput')?.addEventListener('input', filterTrips);
+            document.getElementById('tripSortSelect')?.addEventListener('change', filterTrips);
+            document.getElementById('tripFilterSelect')?.addEventListener('change', filterTrips);
+
+            // Profile form
+            document.getElementById('profileForm')?.addEventListener('submit', handleProfileUpdate);
+        }
+
+        function filterTrips() {
+            const searchTerm = document.getElementById('tripSearchInput').value.toLowerCase();
+            const sortBy = document.getElementById('tripSortSelect').value;
+            const filterBy = document.getElementById('tripFilterSelect').value;
+
+            let filteredTrips = [...savedTrips];
+
+            // Apply search filter
+            if (searchTerm) {
+                filteredTrips = filteredTrips.filter(trip => 
+                    trip.trip_name.toLowerCase().includes(searchTerm) ||
+                    (trip.trip_data?.start_location || '').toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Apply category filter
+            switch (filterBy) {
+                case 'favorites':
+                    filteredTrips = filteredTrips.filter(trip => trip.is_favorite);
+                    break;
+                case 'recent':
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    filteredTrips = filteredTrips.filter(trip => 
+                        new Date(trip.created_at) >= thirtyDaysAgo
+                    );
+                    break;
+            }
+
+            // Apply sorting
+            switch (sortBy) {
+                case 'oldest':
+                    filteredTrips.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                    break;
+                case 'name':
+                    filteredTrips.sort((a, b) => a.trip_name.localeCompare(b.trip_name));
+                    break;
+                case 'location':
+                    filteredTrips.sort((a, b) => 
+                        (a.trip_data?.start_location || '').localeCompare(b.trip_data?.start_location || '')
+                    );
+                    break;
+                case 'newest':
+                default:
+                    filteredTrips.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                    break;
+            }
+
+            displaySavedTrips(filteredTrips);
+        }
+
+        // Global functions for trip management
+        window.toggleTripFavorite = async function(tripId, currentFavoriteStatus) {
+            try {
+                await window.apiService.toggleTripFavorite(tripId, !currentFavoriteStatus);
+                
+                // Update local data
+                const trip = savedTrips.find(t => t.id === tripId);
+                if (trip) {
+                    trip.is_favorite = !currentFavoriteStatus;
+                }
+                
+                // Refresh display
+                filterTrips();
+                updateStatsCards();
+                
+                showToast(`Trip ${!currentFavoriteStatus ? 'added to' : 'removed from'} favorites`, 'success');
+                
+            } catch (error) {
+                console.error('Failed to toggle favorite:', error);
+                showToast('Failed to update favorite status', 'error');
+            }
+        };
+
+        // New custom delete confirmation function
+window.showDeleteConfirm = function(tripId, tripName) {
+    // Set the trip name in the modal
+    document.getElementById('deleteConfirmTripName').textContent = tripName;
+    
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    modal.show();
+    
+    // Set up the confirm button click handler
+    document.getElementById('confirmDeleteBtn').onclick = async function() {
+        try {
+            await window.apiService.unsaveTrip(tripId);
+            
+            // Remove from local data
+            savedTrips = savedTrips.filter(trip => trip.id !== tripId);
+            
+            // Refresh display
+            filterTrips();
+            updateStatsCards();
+            
+            // Hide modal
+            modal.hide();
+            
+            showToast('Trip deleted successfully', 'success');
+            
+        } catch (error) {
+            console.error('Failed to delete trip:', error);
+            showToast('Failed to delete trip', 'error');
+            modal.hide();
+        }
+    };
+};
+
+        async function handleProfileUpdate(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value;
+            
+            try {
+                const result = await window.authService.updateProfile({
+                    full_name: fullName
+                });
+                
+                if (result.success) {
+                    showToast('Profile updated successfully', 'success');
+                    document.getElementById('profileName').textContent = fullName || 'My Account';
+                    
+                    if (window.updateNavigationState) {
+                        await updateNavigationState();
+                    }
+                } else {
+                    showToast('Failed to update profile', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Profile update failed:', error);
+                showToast('Failed to update profile', 'error');
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} alert-dismissible fade show position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            toast.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 5000);
+        }
+
+        // Add this function after your existing JavaScript:
+
+function cleanupTripCards() {
+    // Remove unwanted elements that might have been added dynamically
+    setTimeout(() => {
+        // Remove trip header h3 elements
+        document.querySelectorAll('.trip-card .trip-header-main h3, .card-header h3').forEach(el => {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.style.height = '0';
+            el.remove();
+        });
+        
+        // Remove match count badges
+        document.querySelectorAll('.trip-card .match-count-badge, .match-badge, .trip-badge').forEach(el => {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.style.height = '0';
+            el.remove();
+        });
+        
+        // Remove save trip buttons
+        document.querySelectorAll('.trip-card .btn-save, .trip-card .btn-modern, .trip-card button[onclick*="showSaveTripDialog"]').forEach(el => {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.remove();
+        });
+        
+        // Remove trip header meta sections
+        document.querySelectorAll('.trip-card .trip-header-meta').forEach(el => {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.style.height = '0';
+            el.remove();
+        });
+        
+        // Remove entire card headers that contain unwanted elements
+        document.querySelectorAll('.trip-card .card-header').forEach(header => {
+            const hasUnwantedElements = 
+                header.querySelector('h3') || 
+                header.querySelector('.match-count-badge') ||
+                header.querySelector('.trip-header-meta');
+            
+            if (hasUnwantedElements) {
+                header.style.display = 'none';
+                header.style.visibility = 'hidden';
+                header.style.height = '0';
+                header.remove();
+            }
+        });
+        
+        console.log('🧹 Cleaned up unwanted trip card elements');
+    }, 100);
+}
+    </script>
+</body>
+</html>

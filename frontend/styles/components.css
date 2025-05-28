@@ -110,3 +110,9 @@
     background-color: var(--primary-color, #043d7c);
 }
 
+.hidden-admin-link {
+    display: none;
+}
+.hidden-element {
+    display: none;
+}

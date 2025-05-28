@@ -10,322 +10,413 @@ window.renderTripCard = renderTripCard;
 // Store the current request ID globally
 window.currentRequestId = null;
 
-// Simplified handleSearch function
+// Wait for both auth service and user to be ready
+async function waitForAuthentication() {
+    return new Promise((resolve, reject) => {
+        const checkAuth = async () => {
+            try {
+                if (window.authService && window.authService.initialized) {
+                    const user = await window.authService.getCurrentUser();
+                    if (user && window.authService.getAuthToken()) {
+                        console.log('✅ Authentication ready for API calls');
+                        resolve(user);
+                    } else {
+                        console.log('⏳ Waiting for user authentication...');
+                        setTimeout(checkAuth, 200);
+                    }
+                } else {
+                    console.log('⏳ Waiting for auth service...');
+                    setTimeout(checkAuth, 200);
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                reject(error);
+            }
+        };
+        
+        checkAuth();
+        
+        // Timeout after 10 seconds
+        setTimeout(() => {
+            reject(new Error('Authentication timeout - please refresh and try again'));
+        }, 10000);
+    });
+}
+
+// Updated handleSearch function with authentication
 async function handleSearch(e) {
     e.preventDefault();
     if (!validateForm()) {
         return;
     }
     
-    // Reset loading UI to visible state
-    resetLoadingUI(true);
+    console.log('🔍 Starting trip search...');
     
-    // Clean up any previous search state
-    document.body.classList.remove('has-filter-drawer');
-    
-    // IMPORTANT: Reset loading animation elements
-    const loadingAnimation = document.getElementById('loadingAnimation');
-    const loadingMessages = document.getElementById('loadingMessages');
-    const cancelSearchButton = document.getElementById('cancelSearch');
-    const noResultsMessage = document.getElementById('noResultsMessage');
-    
-    if (loadingAnimation) loadingAnimation.classList.remove('d-none');
-    if (loadingMessages) loadingMessages.classList.remove('d-none'); 
-    if (cancelSearchButton) cancelSearchButton.classList.remove('d-none');
-    if (noResultsMessage) noResultsMessage.classList.add('d-none');
-    
-    // Reset filter button visibility
-    const filterButton = document.querySelector('.filter-button');
-    if (filterButton) {
-        filterButton.style.display = 'none';
-    }
-    
-    // Declare variables at the top level so they're accessible in all blocks
-    let searchCancelled = false;
-    let response = null;
-    let error = null;
-    let noResultsShown = false;
-    
-    // STEP 1: GET A REQUEST ID FIRST - before anything else happens
-    let requestId = null;
     try {
-        // Simple fetch to get an ID
-        const idResponse = await fetch(`${API_BASE_URL}/register-request`);
-        const idData = await idResponse.json();
-        requestId = idData.request_id;
-        window.currentRequestId = requestId; // Store globally
-        console.log("Got request ID:", requestId);
-    } catch (error) {
-        console.error("Failed to get request ID:", error);
-        showErrorToast("Server connection error");
-        return;
-    }
-    
-    // STEP 2: SET UP CANCEL BUTTON WITH THE ID
-    const cancelButton = document.getElementById('cancelSearch');
-    if (cancelButton) {
-        // Reset existing event listeners
-        const newCancelButton = cancelButton.cloneNode(true);
-        cancelButton.parentNode.replaceChild(newCancelButton, cancelButton);
+        // STEP 1: Check authentication first
+        console.log('🔐 Checking authentication...');
+        await waitForAuthentication();
+        console.log('✅ User authenticated, proceeding with search');
         
-        newCancelButton.addEventListener('click', async function() {
-            // Set button to canceling state
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Canceling...';
-            
-            searchCancelled = true;
-            
-            try {
-                // Cancel request without showing notification
-                await cancelTripRequest(requestId);
-                console.log(`Search cancelled for request ${requestId}`);
-                // No notification here, just logging
-            } catch (err) {
-                console.error("Error cancelling search:", err);
-            } finally {
-                // Reset search state and return to form
-                resetLoadingUI(false);
-                window.returnToSearch();
-                
-                // Only show one notification
-                showSuccessToast("Search cancelled successfully");
-            }
-        });
-    }
-    
-    // STEP 3: SHOW UI, HIDE PREVIOUS RESULTS
-    // Hide results container while searching
-    const resultsContainer = document.getElementById('resultsContainer');
-    if (resultsContainer) {
-        resultsContainer.classList.add('d-none');
-    }
-    
-    // Clear previous results
-    const tripResults = document.getElementById('tripResults');
-    if (tripResults) {
-        tripResults.innerHTML = '';
-    }
-
-    // Hide filters container AND filter card during search
-    const filtersContainer = document.getElementById('filtersContainer');
-    if (filtersContainer) {
-        filtersContainer.classList.add('d-none');
-    }
-    
-    // Hide the entire filter results card
-    const filterResultsCard = document.getElementById('filterResultsCard');
-    if (filterResultsCard) {
-        filterResultsCard.classList.add('d-none');
-    }
-    
-    // Remove any existing filter drawer
-    const existingFilterBtn = document.querySelector('.filter-btn');
-    const existingFilterDrawer = document.querySelector('.filter-drawer');
-    const existingOverlay = document.querySelector('.drawer-overlay');
-    
-    if (existingFilterBtn) existingFilterBtn.remove();
-    if (existingFilterDrawer) existingFilterDrawer.remove();
-    if (existingOverlay) existingOverlay.remove();
-    
-    // Reset the module-level references to filter elements
-    try {
-        const filtersModule = await import('../services/filters.js');
-        if (filtersModule && typeof filtersModule.resetFilterDrawerReferences === 'function') {
-            filtersModule.resetFilterDrawerReferences();
-        }
-    } catch (err) {
-        console.warn('Could not reset filter drawer references:', err);
-    }
-    
-    // IMPORTANT: Reset the active filters GLOBALLY to prevent persistence between searches
-    if (window.activeFilters) {
-        window.activeFilters.team = null;
-        window.activeFilters.city = null;
-        window.activeFilters.minGames = 1;
-        window.activeFilters.maxHotelChanges = 7;
-    } else {
-        // Create activeFilters if it doesn't exist
-        window.activeFilters = {
-            team: null,
-            city: null,
-            minGames: 1,
-            maxHotelChanges: 7
-        };
-    }
-    
-    // Also reset the original filter state in the filters.js module
-    try {
-        const filtersModule = await import('../services/filters.js');
-        if (filtersModule && typeof filtersModule.resetFilters === 'function') {
-            filtersModule.resetFilters();
-        }
-    } catch (err) {
-        console.warn('Could not reset filters module state:', err);
-    }
-
-    // Hide trip options header
-    const tripOptionsHeader = document.getElementById('tripOptionsHeader');
-    if (tripOptionsHeader) {
-        tripOptionsHeader.classList.add('d-none');
-    }
-    
-    // Hide results count container
-    const resultsCountContainer = document.getElementById('resultsCountContainer');
-    if (resultsCountContainer) {
-        resultsCountContainer.classList.add('d-none');
-    }
-
-    // Show loading state and prevent page scrolling
-    window.DOM.loadingIndicator = document.getElementById('loading');
-    window.DOM.loadingIndicator.classList.remove('d-none');
-    document.body.classList.add('no-scroll'); // Prevent scrolling
-    window.DOM.resultsSection.classList.remove('d-none');
-
-    // Fix the null reference error by adding a null check
-    if (window.DOM.noResultsMessage) {
-        window.DOM.noResultsMessage.classList.add('d-none');
-    }
-    
-    // STEP 4: BUILD PAYLOAD WITH THE REQUEST ID
-    try {
-        // Use Select2's API to get selected values
-        const selectedLeagues = $(window.DOM.preferredLeaguesSelect).val() || [];
-        const selectedTeams = $(window.DOM.mustTeamsSelect).val() || [];
+        // Reset loading UI to visible state
+        resetLoadingUI(true);
         
-        const payload = {
-            start_location: window.DOM.startLocationSelect.value,
-            start_date: window.DOM.startDateInput.value || null,
-            trip_duration: parseInt(window.DOM.tripDurationInput.value),
-            max_travel_time: parseInt(window.DOM.maxTravelTimeInput.value),
-            preferred_leagues: selectedLeagues.length > 0 ? selectedLeagues : null,
-            must_teams: selectedTeams.length > 0 ? selectedTeams : [],
-            min_games: parseInt(window.DOM.minGamesInput.value || "2"),
-            request_id: requestId  // Include the request ID in the payload
-        };
+        // Clean up any previous search state
+        document.body.classList.remove('has-filter-drawer');
         
-        // Ensure the date has a year
-        if (payload.start_date && !payload.start_date.includes("2025") && !payload.start_date.includes("2026")) {
-            // Add current year if missing
-            const currentYear = new Date().getFullYear();
-            payload.start_date = `${payload.start_date} ${currentYear}`;
+        // IMPORTANT: Reset loading animation elements
+        const loadingAnimation = document.getElementById('loadingAnimation');
+        const loadingMessages = document.getElementById('loadingMessages');
+        const cancelSearchButton = document.getElementById('cancelSearch');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        
+        if (loadingAnimation) loadingAnimation.classList.remove('d-none');
+        if (loadingMessages) loadingMessages.classList.remove('d-none'); 
+        if (cancelSearchButton) cancelSearchButton.classList.remove('d-none');
+        if (noResultsMessage) noResultsMessage.classList.add('d-none');
+        
+        // Reset filter button visibility
+        const filterButton = document.querySelector('.filter-button');
+        if (filterButton) {
+            filterButton.style.display = 'none';
         }
         
-        // STEP 5: MAKE THE REQUEST
-        console.log(`Planning trip with ID: ${requestId}`);
-        response = await planTrip(payload);  // Assign to the outer variable
+        // Declare variables at the top level so they're accessible in all blocks
+        let searchCancelled = false;
+        let response = null;
+        let error = null;
+        let noResultsShown = false;
         
-        // STEP 6: PROCESS RESPONSE
-        // Show results container if we got results
-        if (resultsContainer && response && response.trip_groups && response.trip_groups.length > 0) {
-            resultsContainer.classList.remove('d-none');
-        }
-        
-        // Show filter card only if we have results
-        if (response && response.trip_groups && response.trip_groups.length > 0) {
-            if (filterResultsCard) {
-                filterResultsCard.classList.remove('d-none');
+        // STEP 2: GET A REQUEST ID FIRST - with authentication
+        let requestId = null;
+        try {
+            console.log('🎫 Getting authenticated request ID...');
+            requestId = await window.apiService.getRequestId();
+            window.currentRequestId = requestId;
+            console.log("Got request ID:", requestId);
+            
+            if (!requestId) {
+                throw new Error('Failed to get request ID - please try again');
             }
+        } catch (error) {
+            console.error("Failed to get request ID:", error);
             
-            // Show trip options header
-            if (tripOptionsHeader) {
-                tripOptionsHeader.classList.remove('d-none');
-            }
-            
-            // Show results count container
-            if (resultsCountContainer) {
-                resultsCountContainer.classList.remove('d-none');
-            }
-            
-            // Update results count
-            const resultsCount = document.getElementById('resultsCount');
-            if (resultsCount) {
-                resultsCount.textContent = response.trip_groups.length;
-            }
-        } else {
-            // Show the no results message within the loading container
-            const loadingAnimation = document.getElementById('loadingAnimation');
-            const loadingMessages = document.getElementById('loadingMessages');
-            const cancelButton = document.getElementById('cancelSearch');
-            const noResultsMessage = document.getElementById('noResultsMessage');
-            
-            if (loadingAnimation) loadingAnimation.classList.add('d-none');
-            if (loadingMessages) loadingMessages.classList.add('d-none');
-            if (cancelButton) cancelButton.classList.add('d-none');
-            if (noResultsMessage) noResultsMessage.classList.remove('d-none');
-            
-            // Keep the loading overlay visible to show the no results message
-            // Skip hiding the loading indicator in the finally block
-            noResultsShown = true; // Add this flag to track state
-        }
-        
-        // Render the results
-        renderResults(response, false); // Add a parameter to indicate we want to keep the loading overlay if no results
-
-        // Show success message with the count of trip options
-        const tripCount = response.trip_groups?.length || 0;
-        if (tripCount > 0) {
-            showSuccessToast(`Found ${tripCount} trip option${tripCount !== 1 ? 's' : ''}!`);
-            
-            // Hide loading and show results
-            window.DOM.loadingIndicator.classList.add('d-none');
-            document.body.classList.remove('no-scroll');
-            
-            // Scroll directly to results section 
-            setTimeout(() => {
-                window.DOM.resultsSection.scrollIntoView({ 
-                    behavior: "smooth", 
-                    block: "start" 
-                });
-            }, 100);
-        }
-        
-    } catch (err) {
-        // Store the caught error in our variable
-        error = err;  // Assign to the outer variable
-        
-        if (!searchCancelled) {
-            console.error("Error in handleSearch:", error);
-            
-            // Only show error toast for actual errors, not "no results" scenarios
-            if (error.message !== "No trips found matching your criteria") {
-                showErrorToast(error.message || "Error planning trip");
-            }
-            
-            // Display no results message
-            if (window.DOM.noResultsMessage) {
-                window.DOM.noResultsMessage.classList.remove('d-none');
-                
-                // Scroll to no results message with delay to ensure it's rendered
+            // Handle authentication errors specifically
+            if (error.message.includes('Authentication failed')) {
+                showErrorToast("Please log in again to plan your trip");
                 setTimeout(() => {
-                    // Calculate the centered position considering the viewport height
-                    const viewHeight = window.innerHeight;
-                    const noResultsHeight = window.DOM.noResultsMessage.offsetHeight;
-                    const topOffset = Math.max(50, (viewHeight - noResultsHeight) / 2);
-                    
-                    window.scrollTo({
-                        top: window.DOM.noResultsMessage.offsetTop - topOffset,
-                        behavior: 'smooth'
-                    });
-                }, 200);
+                    window.location.href = './login.html';
+                }, 2000);
+            } else {
+                showErrorToast("Server connection error - please try again");
             }
+            return;
         }
-    } finally {
-        // Now these variables are all in scope
-        const shouldHideLoading = searchCancelled || 
-            (response && response.trip_groups && response.trip_groups.length > 0) ||
-            (error && error.message !== "No trips found matching your criteria");
         
-        if (shouldHideLoading) {
-            // Hide loading and restore scrolling
-            window.DOM.loadingIndicator.classList.add('d-none');
-            document.body.classList.remove('no-scroll');
+        // STEP 3: SET UP CANCEL BUTTON WITH THE ID
+        const cancelButton = document.getElementById('cancelSearch');
+        if (cancelButton) {
+            // Reset existing event listeners
+            const newCancelButton = cancelButton.cloneNode(true);
+            cancelButton.parentNode.replaceChild(newCancelButton, cancelButton);
+            
+            newCancelButton.addEventListener('click', async function() {
+                // Set button to canceling state
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Canceling...';
+                
+                searchCancelled = true;
+                
+                try {
+                    // Cancel request using authenticated API service
+                    await window.apiService.cancelTrip(requestId);
+                    console.log(`Search cancelled for request ${requestId}`);
+                } catch (err) {
+                    console.error("Error cancelling search:", err);
+                } finally {
+                    // Reset search state and return to form
+                    resetLoadingUI(false);
+                    window.returnToSearch();
+                    
+                    showSuccessToast("Search cancelled successfully");
+                }
+            });
         }
-        // Only clear the request ID if we're done or had an error
-        const shouldClearRequest = !window.DOM.loadingIndicator.classList.contains('d-none') || error;
-        if (shouldClearRequest) {
-            window.currentRequestId = null;
+        
+        // STEP 4: SHOW UI, HIDE PREVIOUS RESULTS
+        // Hide results container while searching
+        const resultsContainer = document.getElementById('resultsContainer');
+        if (resultsContainer) {
+            resultsContainer.classList.add('d-none');
         }
-        // Otherwise, keep the loading indicator visible with the "No Results" message
+        
+        // Clear previous results
+        const tripResults = document.getElementById('tripResults');
+        if (tripResults) {
+            tripResults.innerHTML = '';
+        }
+
+        // Hide filters container AND filter card during search
+        const filtersContainer = document.getElementById('filtersContainer');
+        if (filtersContainer) {
+            filtersContainer.classList.add('d-none');
+        }
+        
+        // Hide the entire filter results card
+        const filterResultsCard = document.getElementById('filterResultsCard');
+        if (filterResultsCard) {
+            filterResultsCard.classList.add('d-none');
+        }
+        
+        // Remove any existing filter drawer
+        const existingFilterBtn = document.querySelector('.filter-btn');
+        const existingFilterDrawer = document.querySelector('.filter-drawer');
+        const existingOverlay = document.querySelector('.drawer-overlay');
+        
+        if (existingFilterBtn) existingFilterBtn.remove();
+        if (existingFilterDrawer) existingFilterDrawer.remove();
+        if (existingOverlay) existingOverlay.remove();
+        
+        // Reset the module-level references to filter elements
+        try {
+            const filtersModule = await import('../services/filters.js');
+            if (filtersModule && typeof filtersModule.resetFilterDrawerReferences === 'function') {
+                filtersModule.resetFilterDrawerReferences();
+            }
+        } catch (err) {
+            console.warn('Could not reset filter drawer references:', err);
+        }
+        
+        // IMPORTANT: Reset the active filters GLOBALLY to prevent persistence between searches
+        if (window.activeFilters) {
+            window.activeFilters.team = null;
+            window.activeFilters.city = null;
+            window.activeFilters.minGames = 1;
+            window.activeFilters.maxHotelChanges = 7;
+        } else {
+            // Create activeFilters if it doesn't exist
+            window.activeFilters = {
+                team: null,
+                city: null,
+                minGames: 1,
+                maxHotelChanges: 7
+            };
+        }
+        
+        // Also reset the original filter state in the filters.js module
+        try {
+            const filtersModule = await import('../services/filters.js');
+            if (filtersModule && typeof filtersModule.resetFilters === 'function') {
+                filtersModule.resetFilters();
+            }
+        } catch (err) {
+            console.warn('Could not reset filters module state:', err);
+        }
+
+        // Hide trip options header
+        const tripOptionsHeader = document.getElementById('tripOptionsHeader');
+        if (tripOptionsHeader) {
+            tripOptionsHeader.classList.add('d-none');
+        }
+        
+        // Hide results count container
+        const resultsCountContainer = document.getElementById('resultsCountContainer');
+        if (resultsCountContainer) {
+            resultsCountContainer.classList.add('d-none');
+        }
+
+        // Show loading state and prevent page scrolling
+        window.DOM.loadingIndicator = document.getElementById('loading');
+        window.DOM.loadingIndicator.classList.remove('d-none');
+        document.body.classList.add('no-scroll'); // Prevent scrolling
+        window.DOM.resultsSection.classList.remove('d-none');
+
+        // Fix the null reference error by adding a null check
+        if (window.DOM.noResultsMessage) {
+            window.DOM.noResultsMessage.classList.add('d-none');
+        }
+        
+        // STEP 5: BUILD PAYLOAD WITH THE REQUEST ID
+        try {
+            // Use Select2's API to get selected values
+            const selectedLeagues = $(window.DOM.preferredLeaguesSelect).val() || [];
+            const selectedTeams = $(window.DOM.mustTeamsSelect).val() || [];
+            
+            const payload = {
+                start_location: window.DOM.startLocationSelect.value,
+                start_date: window.DOM.startDateInput.value || null,
+                trip_duration: parseInt(window.DOM.tripDurationInput.value),
+                max_travel_time: parseInt(window.DOM.maxTravelTimeInput.value),
+                preferred_leagues: selectedLeagues.length > 0 ? selectedLeagues : null,
+                must_teams: selectedTeams.length > 0 ? selectedTeams : [],
+                min_games: parseInt(window.DOM.minGamesInput.value || "2"),
+                request_id: requestId  // Include the request ID in the payload
+            };
+            
+            // Ensure the date has a year
+            if (payload.start_date && !payload.start_date.includes("2025") && !payload.start_date.includes("2026")) {
+                // Add current year if missing
+                const currentYear = new Date().getFullYear();
+                payload.start_date = `${payload.start_date} ${currentYear}`;
+            }
+            
+            console.log('📝 Trip payload prepared:', payload);
+            
+            // STORE SEARCH REQUEST FOR TRIP SAVING
+            if (window.tripSaver) {
+                window.tripSaver.storeSearchRequest(payload);
+                console.log('🔄 Stored search request for saving:', payload);
+            }
+
+            // STEP 6: MAKE THE AUTHENTICATED REQUEST
+            console.log(`🚀 Planning trip with authenticated request ID: ${requestId}`);
+            response = await window.apiService.planTrip(payload);
+            
+            // STEP 7: PROCESS RESPONSE
+            // Show results container if we got results
+            if (resultsContainer && response && response.trip_groups && response.trip_groups.length > 0) {
+                resultsContainer.classList.remove('d-none');
+            }
+            
+            // Show filter card only if we have results
+            if (response && response.trip_groups && response.trip_groups.length > 0) {
+                if (filterResultsCard) {
+                    filterResultsCard.classList.remove('d-none');
+                }
+                
+                // Show trip options header
+                if (tripOptionsHeader) {
+                    tripOptionsHeader.classList.remove('d-none');
+                }
+                
+                // Show results count container
+                if (resultsCountContainer) {
+                    resultsCountContainer.classList.remove('d-none');
+                }
+                
+                // Update results count
+                const resultsCount = document.getElementById('resultsCount');
+                if (resultsCount) {
+                    resultsCount.textContent = response.trip_groups.length;
+                }
+            } else {
+                // Show the no results message within the loading container
+                const loadingAnimation = document.getElementById('loadingAnimation');
+                const loadingMessages = document.getElementById('loadingMessages');
+                const cancelButton = document.getElementById('cancelSearch');
+                const noResultsMessage = document.getElementById('noResultsMessage');
+                
+                if (loadingAnimation) loadingAnimation.classList.add('d-none');
+                if (loadingMessages) loadingMessages.classList.add('d-none');
+                if (cancelButton) cancelButton.classList.add('d-none');
+                if (noResultsMessage) noResultsMessage.classList.remove('d-none');
+                
+                // Keep the loading overlay visible to show the no results message
+                // Skip hiding the loading indicator in the finally block
+                noResultsShown = true;
+            }
+            
+            // Render the results
+            renderResults(response, false);
+
+            // Show success message with the count of trip options
+            const tripCount = response.trip_groups?.length || 0;
+            if (tripCount > 0) {
+                showSuccessToast(`Found ${tripCount} trip option${tripCount !== 1 ? 's' : ''}!`);
+                
+                // Hide loading and show results
+                window.DOM.loadingIndicator.classList.add('d-none');
+                document.body.classList.remove('no-scroll');
+                
+                // Scroll directly to results section 
+                setTimeout(() => {
+                    window.DOM.resultsSection.scrollIntoView({ 
+                        behavior: "smooth", 
+                        block: "start" 
+                    });
+                }, 100);
+            }
+            
+        } catch (err) {
+            // Store the caught error in our variable
+            error = err;
+            
+            if (!searchCancelled) {
+                console.error("Error in handleSearch:", error);
+                
+                // Handle authentication errors specifically
+                if (error.message.includes('Authentication failed')) {
+                    showErrorToast("Please log in again to plan your trip");
+                    setTimeout(() => {
+                        window.location.href = './login.html';
+                    }, 2000);
+                    return;
+                }
+                
+                // Only show error toast for actual errors, not "no results" scenarios
+                if (error.message !== "No trips found matching your criteria") {
+                    showErrorToast(error.message || "Error planning trip");
+                }
+                
+                // Display no results message
+                if (window.DOM.noResultsMessage) {
+                    window.DOM.noResultsMessage.classList.remove('d-none');
+                    
+                    // Scroll to no results message with delay to ensure it's rendered
+                    setTimeout(() => {
+                        // Calculate the centered position considering the viewport height
+                        const viewHeight = window.innerHeight;
+                        const noResultsHeight = window.DOM.noResultsMessage.offsetHeight;
+                        const topOffset = Math.max(50, (viewHeight - noResultsHeight) / 2);
+                        
+                        window.scrollTo({
+                            top: window.DOM.noResultsMessage.offsetTop - topOffset,
+                            behavior: 'smooth'
+                        });
+                    }, 200);
+                }
+            }
+        } finally {
+            // Now these variables are all in scope
+            const shouldHideLoading = searchCancelled || 
+                (response && response.trip_groups && response.trip_groups.length > 0) ||
+                (error && error.message !== "No trips found matching your criteria");
+            
+            if (shouldHideLoading) {
+                // Hide loading and restore scrolling
+                window.DOM.loadingIndicator.classList.add('d-none');
+                document.body.classList.remove('no-scroll');
+            }
+            // Only clear the request ID if we're done or had an error
+            const shouldClearRequest = !window.DOM.loadingIndicator.classList.contains('d-none') || error;
+            if (shouldClearRequest) {
+                window.currentRequestId = null;
+            }
+            // Otherwise, keep the loading indicator visible with the "No Results" message
+        }
+        
+    } catch (authError) {
+        console.error('Authentication error:', authError);
+        
+        // Handle authentication timeout or failure
+        let errorMessage = 'Authentication required to plan trips.';
+        
+        if (authError.message.includes('timeout')) {
+            errorMessage = 'Authentication timeout. Please refresh the page and try again.';
+        } else if (authError.message.includes('Authentication failed')) {
+            errorMessage = 'Please log in again to plan your trip.';
+        }
+        
+        showErrorToast(errorMessage);
+        
+        // Redirect to login after a delay
+        setTimeout(() => {
+            window.location.href = './login.html';
+        }, 2000);
+        
+        // Reset UI state
+        resetLoadingUI(false);
+        document.body.classList.remove('no-scroll');
     }
 }
 

@@ -650,3 +650,71 @@ export const helpers = {
     showListView,
     clearFilters
 };
+
+// Add this function to handle authentication checks
+
+function checkAuthenticationForTripPlanning() {
+    const user = window.authService?.currentUser;
+    
+    if (!user) {
+        // Show login modal instead of error
+        showLoginPrompt();
+        return false;
+    }
+    return true;
+}
+
+function showLoginPrompt() {
+    const modalHTML = `
+        <div class="modal fade" id="loginPromptModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login Required
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-user-circle fa-3x text-primary mb-3"></i>
+                            <h6>Please log in to plan your trip</h6>
+                            <p class="text-muted">You need an account to save and manage your trip plans.</p>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a href="./login.html" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login
+                            </a>
+                            <a href="./register.html" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing modal if any
+    const existingModal = document.getElementById('loginPromptModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('loginPromptModal'));
+    modal.show();
+}
+
+// Update your existing form submission handler
+document.getElementById('tripSearchForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Check authentication first
+    if (!checkAuthenticationForTripPlanning()) {
+        return;
+    }
+});

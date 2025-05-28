@@ -292,6 +292,28 @@ function renderTripCard(group, index, tripContext = {}) {
         </div>
     </div>
     
+    <div class="trip-actions-header">
+        <div class="action-buttons-container">
+            <button class="btn-modern btn-save" 
+                    onclick="showSaveTripDialog(window.tripData_${index})">
+                <div class="btn-content">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Save Trip</span>
+                </div>
+                <div class="btn-glow"></div>
+            </button>
+            
+            <button class="btn-modern btn-share" 
+                    onclick="shareTripLink('${group.base_trip?.request_id || 'unknown'}')">
+                <div class="btn-content">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Share</span>
+                </div>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+    </div>
+    
     ${allMatches.length > 0 ? `
         <div class="match-preview">
             <div class="preview-section-title">
@@ -368,6 +390,25 @@ function renderTripCard(group, index, tripContext = {}) {
         <i class="fas fa-chevron-down"></i> Show Details
     </button>
 `;
+    
+    // Store trip data globally for the save function
+    const tripDataKey = `tripData_${index}`;
+    window[tripDataKey] = {
+        // Preserve the exact structure from search results
+        request_id: group.base_trip?.request_id || `trip_${Date.now()}_${index}`,
+        start_location: defaultVariant.start_location || 'Unknown',
+        start_date: tripStartDate || new Date().toISOString().split('T')[0],
+        trip_duration: tripContext.tripDuration || 3,
+        max_travel_time: tripContext.maxTravelTime || 120,
+        preferred_leagues: tripContext.preferredLeagues || [],
+        must_teams: tripContext.mustTeams || [],
+        min_games: tripContext.minGames || 2,
+        no_trips_available: false,
+        trip_groups: [group], // The full group data
+        tbd_games: [],
+        cancelled: false,
+        message: `Trip option ${index + 1}`
+    };
     
     // Trip details - initially collapsed
     const details = document.createElement('div');
@@ -1624,5 +1665,170 @@ document.querySelectorAll('.toggle-details-button').forEach(button => {
   });
 });
 
+// Add this function to trip-card.js
+
+async function checkTripSavedStatus(tripData, index) {
+    try {
+        if (!window.apiService || !window.authService?.getCurrentUser()) {
+            return false;
+        }
+        
+        // Get saved trips and check if this one exists
+        const savedTripsResponse = await window.apiService.getSavedTrips(100);
+        const savedTrips = savedTripsResponse.trips || [];
+        
+        const currentTripId = tripData.request_id;
+        const isAlreadySaved = savedTrips.some(saved => saved.request_id === currentTripId);
+        
+        // Update the save button if trip is already saved
+        if (isAlreadySaved) {
+            updateSaveButtonForSavedTrip(index);
+        }
+        
+        return isAlreadySaved;
+        
+    } catch (error) {
+        console.error('Error checking saved status:', error);
+        return false;
+    }
+}
+
+function updateSaveButtonForSavedTrip(index) {
+    const saveButton = document.querySelector(`[onclick="handleTripSave(${index})"]`);
+    if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.className = 'btn btn-secondary btn-sm save-trip-btn';
+        saveButton.innerHTML = '<i class="fas fa-check me-1"></i> Already Saved';
+        saveButton.onclick = null;
+        
+        // Add tooltip
+        saveButton.title = 'This trip is already saved in your account';
+    }
+}
+
+// Update the handleTripSave function:
+
+window.handleTripSave = async function(tripIndex) {
+    console.log('💾 Checking trip save status for index:', tripIndex);
+    
+    // Get the stored trip data
+    const tripDataKey = `tripData_${tripIndex}`;
+    const tripData = window[tripDataKey];
+    
+    if (!tripData) {
+        console.error('❌ No trip data found for index:', tripIndex);
+        alert('Error: Trip data not found. Please try searching again.');
+        return;
+    }
+    
+    // Check if already saved before proceeding
+    const isAlreadySaved = await checkTripSavedStatus(tripData, tripIndex);
+    if (isAlreadySaved) {
+        return; // Button should already be disabled and show "Already Saved"
+    }
+    
+    // Check if trip saver is available
+    if (!window.tripSaver) {
+        console.error('❌ Trip saver not available');
+        alert('Error: Trip saving service not available. Please refresh the page.');
+        return;
+    }
+    
+    // Show save dialog
+    window.tripSaver.showSaveDialog(tripData);
+};
+
 // Export the functions so they can be used by other modules
 export { renderTripCard, initializeMatchesExpander, renderTbdGames, extractHotelSummary, renderTravelSegments, renderAirportDistances, renderItineraryForVariant };
+
+window.shareTripLink = function(requestId) {
+    console.log('🔗 Sharing trip link for request:', requestId);
+    
+    // Create the share URL
+    const url = `${window.location.origin}${window.location.pathname}?shared=${requestId}`;
+    
+    // Try modern Web Share API first (mobile devices)
+    if (navigator.share) {
+        navigator.share({
+            title: 'Check out this football trip!',
+            text: 'I found an amazing football trip in Germany',
+            url: url
+        }).catch(err => {
+            console.log('Share failed:', err);
+            fallbackShare(url);
+        });
+    } else {
+        fallbackShare(url);
+    }
+    
+    function fallbackShare(url) {
+        // Try clipboard API
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(() => {
+                showShareSuccess('Trip link copied to clipboard!');
+            }).catch(() => {
+                // Fallback to prompt
+                promptShare(url);
+            });
+        } else {
+            // Final fallback - prompt
+            promptShare(url);
+        }
+    }
+    
+    function promptShare(url) {
+        // Create a temporary input element for selection
+        const tempInput = document.createElement('input');
+        tempInput.value = url;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        tempInput.setSelectionRange(0, 99999); // For mobile
+        
+        try {
+            // Try to copy using execCommand (older browsers)
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showShareSuccess('Trip link copied to clipboard!');
+            } else {
+                // Last resort - show prompt
+                prompt('Copy this trip link:', url);
+            }
+        } catch (err) {
+            // Very last resort
+            prompt('Copy this trip link:', url);
+        } finally {
+            document.body.removeChild(tempInput);
+        }
+    }
+    
+    function showShareSuccess(message) {
+        // Create a simple success notification
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: opacity 0.3s ease;
+        `;
+        toast.innerHTML = `<i class="fas fa-check me-2"></i>${message}`;
+        
+        document.body.appendChild(toast);
+        
+        // Fade out after 3 seconds
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+};
