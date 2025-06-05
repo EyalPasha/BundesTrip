@@ -1,6 +1,6 @@
 # ⚽ Bundesliga Trip Planner - BundesTrip
 
-*A sophisticated web application that automatically generates personalized football trip itineraries for Bundesliga matches, combining real-time match data with intelligent travel planning algorithms.*
+*Full-stack app that generates football trips in Germany using real-time match data, live train times, intelligent routing, and hotel planning algorithms.*
 
 ---
 
