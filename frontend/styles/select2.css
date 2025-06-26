@@ -341,3 +341,103 @@ body.select2-open {
   display: inline-block;
 }
 
+/* Remove Scrollbar Arrows from Select2 Dropdowns - Add to select2.css */
+
+/* Remove all scrollbar arrows/buttons from Select2 dropdowns */
+.select2-results__options::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+}
+
+/* Remove increment/decrement buttons specifically */
+.select2-results__options::-webkit-scrollbar-button:increment,
+.select2-results__options::-webkit-scrollbar-button:decrement {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+}
+
+/* Remove corner buttons */
+.select2-results__options::-webkit-scrollbar-corner {
+    background: transparent !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Also target any other Select2 scrollable elements */
+.select2-dropdown::-webkit-scrollbar-button,
+.select2-results::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+.select2-dropdown::-webkit-scrollbar-button:increment,
+.select2-dropdown::-webkit-scrollbar-button:decrement,
+.select2-results::-webkit-scrollbar-button:increment,
+.select2-results::-webkit-scrollbar-button:decrement {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Ensure clean track without button spaces */
+.select2-results__options::-webkit-scrollbar-track {
+    border-radius: 2px !important;
+    margin: 0 !important;
+    background: #f1f1f1 !important;
+}
+
+/* Keep the beautiful blue scrollbar styling */
+.select2-results__options::-webkit-scrollbar {
+    width: 4px !important;
+}
+
+.select2-results__options::-webkit-scrollbar-thumb {
+    background: var(--primary-color) !important;
+    border-radius: 2px !important;
+    border: none !important;
+}
+
+.select2-results__options::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark) !important;
+}
+
+/* Remove any track pieces that might contain arrows */
+.select2-results__options::-webkit-scrollbar-track-piece {
+    background: transparent !important;
+    margin: 0 !important;
+}
+
+/* Also add this for native form elements that might show in the index */
+.form-select::-webkit-scrollbar-button,
+select::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+.form-select::-webkit-scrollbar-button:increment,
+.form-select::-webkit-scrollbar-button:decrement,
+select::-webkit-scrollbar-button:increment,
+select::-webkit-scrollbar-button:decrement {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Clean up any other potential arrow sources */
+.select2-container *::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Ensure no space is reserved for buttons */
+.select2-results__options::-webkit-scrollbar-track {
+    border-radius: 2px !important;
+    background-clip: content-box !important;
+}

@@ -20,11 +20,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Custom styles -->
+    <link rel="stylesheet" href="./styles/base.css">
     <link rel="stylesheet" href="./styles/select2.css">
     <link rel="stylesheet" href="./styles/schedules.css">
     <link rel="stylesheet" href="./styles/calendar.css">
     <link rel="stylesheet" href="./styles/mobile.css">
-    <link rel="stylesheet" href="./styles/footer.css">
 
     <!-- Add this style tag before other scripts -->
     <style>
@@ -166,8 +166,9 @@
                     </li>
                     <!-- When logged in -->
                     <li class="nav-item dropdown d-none" id="userDropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="User Profile Menu">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user-circle me-1"></i>
+                            <span id="userDisplayName">User</span>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="./profile.html">
@@ -194,15 +195,6 @@
         <!-- Filters Bar -->
         <div class="filter-bar mb-4 p-3 bg-white rounded shadow-sm hidden-filter-bar">
             <div class="row g-3 align-items-end">
-                <!-- Clear Button Column -->
-                <div class="col-auto">
-                    <button id="clearFilters" class="btn btn-outline-danger d-none">
-                        <i class="fas fa-times-circle"></i>
-                        <span>Clear Filters</span>
-                    </button>
-                </div>
-                
-                <!-- League Filter Column -->
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="leagueFilter" class="form-label">Filter by League</label>
@@ -212,8 +204,6 @@
                         </select>
                     </div>
                 </div>
-                
-                <!-- Team Filter Column -->
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="teamFilter" class="form-label">Filter by Team</label>
@@ -223,14 +213,25 @@
                         </select>
                     </div>
                 </div>
-                
-                <!-- Date Filter Column -->
                 <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label for="dateFilter" class="form-label">Jump to Date</label>
                         <input type="text" id="dateFilter" class="form-control" placeholder="Select a date...">
                     </div>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Active Filters Display -->
+        <div id="activeFilters" class="mb-4 d-none">
+            <div class="d-flex align-items-center">
+                <h3 class="h6 mb-0 me-2">Active Filters:</h3>
+                <div id="filterBadges" class="d-flex flex-wrap gap-2">
+                    <!-- Filter badges will be added here dynamically -->
+                </div>
+                <button id="clearFilters" class="btn btn-link btn-sm ms-auto p-0">
+                    <i class="fas fa-times-circle me-1"></i>Clear All
+                </button>
             </div>
         </div>
         
@@ -260,8 +261,7 @@
         </div>
     </main>
     
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-4">
+    <footer class="bg-dark text-light py-4 mt-auto">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -305,7 +305,7 @@
                 <small>&copy; 2025 BundesTrip. All rights reserved.</small>
             </div>
         </div>
-    </footer>
+</footer>
 
     <!-- Scripts -->
     <!-- Load jQuery first -->

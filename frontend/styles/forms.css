@@ -133,3 +133,32 @@ input.flatpickr-input,
     padding-bottom: 0.15rem;
     animation: fadeInSection 0.4s ease forwards;
 }
+
+/* Additional scrollbar arrow removal for form elements */
+
+/* Remove arrows from all form-related scrollbars */
+select::-webkit-scrollbar-button,
+.form-select option::-webkit-scrollbar-button,
+datalist::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Remove increment/decrement specifically */
+select::-webkit-scrollbar-button:increment,
+select::-webkit-scrollbar-button:decrement,
+.form-select::-webkit-scrollbar-button:increment,
+.form-select::-webkit-scrollbar-button:decrement {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Clean corner styling */
+select::-webkit-scrollbar-corner,
+.form-select::-webkit-scrollbar-corner {
+    background: transparent !important;
+    width: 0 !important;
+    height: 0 !important;
+}

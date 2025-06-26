@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Keep your existing head content -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account - BundesTrip</title>
@@ -10,21 +11,15 @@
     <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://localhost:8000 http://0.0.0.0:8000 http://127.0.0.1:8000 http://10.0.0.28:8000 http://10.0.0.67:8000 http://172.30.2.216:8000 https://*.ngrok-free.app https://*.ngrok.io https://ouurqpbwidicivdysdnq.supabase.co https://*.supabase.co;">
     
     <!-- Load the same CSS files as index.html -->
-        <link rel="stylesheet" href="styles/base.css">
-        <link rel="stylesheet" href="styles/profile.css">
-        <link rel="stylesheet" href="styles/layout.css">
-        <link rel="stylesheet" href="styles/components.css">
-        <link rel="stylesheet" href="styles/forms.css">
-        <link rel="stylesheet" href="styles/select2.css">
-        <link rel="stylesheet" href="styles/animations.css">
-        <link rel="stylesheet" href="styles/calendar.css">
-        <link rel="stylesheet" href="styles/trip-cards.css">
-        <link rel="stylesheet" href="styles/loading-animation.css">
-        <link rel="stylesheet" href="styles/mobile.css">
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/trip-cards.css">
+    <link rel="stylesheet" href="styles/mobile.css">
+    <link rel="stylesheet" href="styles/footer.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <!-- Keep your existing navbar content -->
         <div class="container">
             <a class="navbar-brand" href="./index.html">
                 <img src="./logos/blank_logo.png" alt="BundesTrip Logo" height="30" class="d-inline-block align-middle me-2">
@@ -47,9 +42,8 @@
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown" id="userDropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" title="User Account Menu">
                             <i class="fas fa-user-circle me-1"></i>
-                            <span id="userDisplayName">User</span>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="./profile.html">
@@ -66,263 +60,289 @@
         </div>
     </nav>
 
-    <!-- Profile Header -->
-    <div class="profile-header">
-        <div class="container text-center">
-            <div class="profile-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <h1 id="profileName">My Account</h1>
-            <p id="profileEmail">user@example.com</p>
-        </div>
-    </div>
-
-    <!-- Dashboard Tabs -->
-    <div class="container dashboard-tabs">
-        <div class="card">
-            <div class="card-body p-0">
-                <ul class="nav nav-pills nav-fill p-3" id="dashboardTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="trips-tab" data-bs-toggle="pill" data-bs-target="#trips" type="button" role="tab">
-                            <i class="fas fa-suitcase-rolling me-2"></i>My Trips
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="history-tab" data-bs-toggle="pill" data-bs-target="#history" type="button" role="tab">
-                            <i class="fas fa-history me-2"></i>Search History
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="pill" data-bs-target="#profile" type="button" role="tab">
-                            <i class="fas fa-user-cog me-2"></i>Profile Settings
-                        </button>
-                    </li>
-                </ul>
+    <!-- MAIN CONTENT WRAPPER -->
+    <main class="flex-grow-1">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="container text-center">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h1 id="profileName"></h1>
+                <p id="profileEmail"></p>
             </div>
         </div>
-    </div>
 
-    <!-- Tab Content -->
-    <div class="container my-4">
-        <div class="tab-content" id="dashboardTabsContent">
-            
-            <!-- My Trips Tab -->
-            <div class="tab-pane fade show active" id="trips" role="tabpanel">
-                <!-- Stats Cards -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="card stats-card">
-                            <div class="stats-number" id="totalTripsCount">0</div>
-                            <div>Total Trips</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card stats-card">
-                            <div class="stats-number" id="favoriteTripsCount">0</div>
-                            <div>Favorites</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card stats-card">
-                            <div class="stats-number" id="totalSearchesCount">0</div>
-                            <div>Searches</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card stats-card">
-                            <div class="stats-number" id="memberSinceCount">0</div>
-                            <div>Days as Member</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Filter Controls -->                                
-                <div class="filter-controls">
-                    <div class="row align-items-end g-3">
-                        <div class="col-md-6">
-                            <div class="filter-section-title">
-                                <i class="fas fa-search"></i>
-                                Search Trips
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-search"></i>
-                                </span>                                
-                                <input type="text" class="form-control" id="tripSearchInput" 
-                                       placeholder="Search trips, locations, hotels, teams, venues...">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="filter-section-title">
-                                <i class="fas fa-sort"></i>
-                                Sort By
-                            </div>
-                            <select class="form-select" id="tripSortSelect" aria-label="Sort Trips By">
-                                <option value="newest">📅 Newest First</option>
-                                <option value="oldest">📅 Oldest First</option>
-                                <option value="name">🔤 Trip Name</option>
-                                <option value="location">📍 Location</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="filter-section-title">
-                                <i class="fas fa-filter"></i>
-                                Filter
-                            </div>
-                            <select class="form-select" id="tripFilterSelect" aria-label="Filter Trips">
-                                <option value="all">📋 All Trips</option>
-                                <option value="favorites">❤️ Favorites Only</option>
-                                <option value="recent">🕒 Recent (30 days)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Trips Container - EXACT SAME STRUCTURE AS SEARCH RESULTS -->
-                <div id="tripsContainer">
-                    <div class="loading-spinner">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
+        <!-- Dashboard Tabs -->
+        <div class="container dashboard-tabs">
+            <div class="card">
+                <div class="card-body p-0">
+                    <ul class="nav nav-pills nav-fill p-3" id="dashboardTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="trips-tab" data-bs-toggle="pill" data-bs-target="#trips" type="button" role="tab" aria-controls="trips" aria-selected="true">
+                                <i class="fas fa-map-marked-alt me-2"></i>My Trips
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="settings-tab" data-bs-toggle="pill" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+                                <i class="fas fa-cog me-2"></i>Settings
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            
-            <div class="tab-pane fade" id="history" role="tabpanel">
-                <div class="card search-history-card">
-                    <div class="card-header">
-                        <h5>
-                            <i class="fas fa-clock"></i>
-                            Recent Search Requests
-                        </h5>
-                        <p class="search-history-subtitle">
-                            Track your trip planning history and search performance
-                        </p>
-                        <div class="search-history-stats" id="searchHistoryStats">
-                            <span id="historyStatsText">Loading...</span>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="container my-4">
+            <div class="tab-content" id="dashboardTabsContent">
+                <!-- Keep all your existing tab content here -->
+                <!-- My Trips Tab -->
+                <div class="tab-pane fade show active" id="trips" role="tabpanel">
+                    <!-- Keep all your existing trips content -->
+                    <!-- Stats Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card stats-card">
+                                <div class="stats-number" id="totalTripsCount">—</div>
+                                <div>Total Trips</div>
+                            </div>
                         </div>
-                        <div class="header-decoration"></div>
-                    </div>
-                    <div class="card-body">
-                        <div id="searchHistoryContainer">
-                            <div class="loading-spinner">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
+                        <div class="col-md-4">
+                            <div class="card stats-card">
+                                <div class="stats-number" id="favoriteTripsCount">—</div>
+                                <div>Favorites</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card stats-card">
+                                <div class="stats-number" id="memberSinceCount">—</div>
+                                <div>Days as Member</div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-                        <!-- Replace the Profile Settings Tab content: -->
-            
-            <div class="tab-pane fade" id="profile" role="tabpanel">
-                <div class="profile-settings-container">
-                    <!-- Profile Form -->
-                    <div class="profile-form-section">
-                        <div class="profile-form-header">
-                            <h5>
-                                <i class="fas fa-user-edit me-2"></i>
-                                Profile Settings
-                            </h5>
-                            <p>Manage your account information and preferences</p>
-                        </div>
-                        <div class="profile-form-body">
-                            <form id="profileForm">
-                                <div class="form-group-enhanced">
-                                    <label for="fullName" class="form-label-enhanced">
-                                        <i class="fas fa-user"></i>
-                                        Full Name
-                                    </label>
-                                    <input type="text" class="form-control-enhanced" id="fullName" 
-                                           placeholder="Enter your full name">
-                                    <div class="form-help-text">
-                                        <i class="fas fa-info-circle"></i>
-                                        This name will be displayed in your profile
-                                    </div>
-                                </div>
-            
-                                <div class="form-group-enhanced">
-                                    <label for="email" class="form-label-enhanced">
-                                        <i class="fas fa-envelope"></i>
-                                        Email Address
-                                    </label>
-                                    <div class="readonly-input-container">
-                                        <input type="email" class="form-control-enhanced form-control-readonly" 
-                                               id="email" readonly>
-                                        <span class="readonly-indicator">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                                    </div>
-                                    <div class="form-help-text">
-                                        <i class="fas fa-shield-alt"></i>
-                                        Email cannot be changed for security reasons
-                                    </div>
-                                </div>
-            
-                                <div class="form-group-enhanced">
-                                    <label for="joinDate" class="form-label-enhanced">
-                                        <i class="fas fa-calendar-plus"></i>
-                                        Member Since
-                                    </label>
-                                    <div class="readonly-input-container">
-                                        <input type="text" class="form-control-enhanced form-control-readonly" 
-                                               id="joinDate" readonly>
-                                        <span class="readonly-indicator">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                                    </div>
-                                    <div class="form-help-text">
-                                        <i class="fas fa-clock"></i>
-                                        Your account creation date
-                                    </div>
-                                </div>
-            
-                                <div class="text-center">
-                                    <button type="submit" class="profile-update-btn">
-                                        <i class="fas fa-save me-2"></i>
-                                        Update Profile
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                    <!-- Filter Controls -->                                
+                    <div class="filter-controls">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="filter-section-title">
+                <i class="fas fa-search"></i>
+                Search Trips
             </div>
-
-    <!-- Custom Delete Confirmation Modal -->
-<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-danger text-white border-0">
-                <h5 class="modal-title" id="deleteConfirmModalLabel">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Confirm Delete
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="input-group">
+                <input type="text" 
+                       class="form-control custom-search-input" 
+                       id="tripSearchInput" 
+                       placeholder="Search by destination, teams...">
             </div>
-            <div class="modal-body text-center py-4">
-                <div class="mb-3">
-                    <i class="fas fa-trash-alt text-danger modal-delete-icon"></i>
-                </div>
-                <h6 class="mb-3">Are you sure you want to delete this trip?</h6>
-                <p class="text-muted mb-0" id="deleteConfirmTripName">Trip name will appear here</p>
-                <small class="text-muted">This action cannot be undone.</small>
+        </div>
+        <div class="col-md-4">
+            <div class="filter-section-title">
+                <i class="fas fa-filter"></i>
+                Filter By
             </div>
-            <div class="modal-footer border-0 justify-content-center">
-                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-2"></i>Cancel
+            <div class="custom-dropdown-container">
+                <button class="custom-dropdown-button" id="tripFilterButton" type="button">
+                    <span>All Trips</span>
                 </button>
-                <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
-                    <i class="fas fa-trash me-2"></i>Delete Trip
+                <div class="custom-dropdown-menu" id="tripFilterMenu">
+                    <div class="custom-dropdown-option selected" data-value="all">All Trips</div>
+                    <div class="custom-dropdown-option" data-value="favorites">Favorites Only</div>
+                    <div class="custom-dropdown-option" data-value="recent">Recent Trips</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="filter-section-title">
+                <i class="fas fa-sort"></i>
+                Sort By
+            </div>
+            <div class="custom-dropdown-container">
+                <button class="custom-dropdown-button" id="tripSortButton" type="button">
+                    <span>Newest First</span>
                 </button>
+                <div class="custom-dropdown-menu" id="tripSortMenu">
+                    <div class="custom-dropdown-option selected" data-value="newest">Newest First</div>
+                    <div class="custom-dropdown-option" data-value="oldest">Oldest First</div>
+                    <div class="custom-dropdown-option" data-value="alphabetical">A-Z</div>
+                    <div class="custom-dropdown-option" data-value="favorites">Favorites First</div>
+                    <div class="custom-dropdown-option" data-value="matches">Most Matches</div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-    <!-- Scripts - INCLUDE ALL THE SAME SCRIPTS AS INDEX.HTML -->
+                    <!-- Trips Container - EXACT SAME STRUCTURE AS SEARCH RESULTS -->
+                    <div id="tripsContainer">
+                        <div class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane fade" id="settings" role="tabpanel">
+                    <!-- Keep all your existing settings content -->
+                    <div class="profile-settings-container">
+                        <!-- Profile Form -->
+                        <div class="profile-form-section">
+                            <div class="profile-form-header">
+                                <h5>
+                                    <i class="fas fa-user-edit me-2"></i>
+                                    Profile Settings
+                                </h5>
+                                <p>Manage your account information and preferences</p>
+                            </div>
+                            <div class="profile-form-body">
+                                <form id="profileForm">
+                                    <div class="form-group-enhanced">
+                                        <label for="fullName" class="form-label-enhanced">
+                                            <i class="fas fa-user"></i>
+                                            Full Name
+                                        </label>
+                                        <input type="text" class="form-control-enhanced" id="fullName" 
+                                               placeholder="Enter your full name">
+                                        <div class="form-help-text">
+                                            <i class="fas fa-info-circle"></i>
+                                            This name will be displayed in your profile
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group-enhanced">
+                                        <label for="email" class="form-label-enhanced">
+                                            <i class="fas fa-envelope"></i>
+                                            Email Address
+                                        </label>
+                                        <div class="readonly-input-container">
+                                            <input type="email" class="form-control-enhanced form-control-readonly" 
+                                                   id="email" readonly>
+                                            <span class="readonly-indicator">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </div>
+                                        <div class="form-help-text">
+                                            <i class="fas fa-shield-alt"></i>
+                                            Email cannot be changed for security reasons
+                                        </div>
+                                    </div>
+                
+                                    <div class="form-group-enhanced">
+                                        <label for="joinDate" class="form-label-enhanced">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            Member Since
+                                        </label>
+                                        <div class="readonly-input-container">
+                                            <input type="text" class="form-control-enhanced form-control-readonly" 
+                                                   id="joinDate" readonly>
+                                            <span class="readonly-indicator">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </div>
+                                        <div class="form-help-text">
+                                            <i class="fas fa-clock"></i>
+                                            Your account creation date
+                                        </div>
+                                    </div>
+                
+                                    <div class="text-center">
+                                        <button type="submit" class="profile-update-btn">
+                                            <i class="fas fa-save me-2"></i>
+                                            Update Profile
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal (outside of main) -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <!-- Keep your existing modal content -->
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-trash-alt text-danger modal-delete-icon"></i>
+                    </div>
+                    <h6 class="mb-3">Are you sure you want to delete this trip?</h6>
+                    <p class="text-muted mb-0" id="deleteConfirmTripName">Trip name will appear here</p>
+                    <small class="text-muted">This action cannot be undone.</small>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
+                        <i class="fas fa-trash me-2"></i>Delete Trip
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer (outside of main) -->
+    <footer class="bg-dark text-light py-4 mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="company-info">
+                        <h3>BundesTrip</h3>
+                        <p>Your ultimate companion for planning football trips across Germany. Discover the best matches, plan your journey, and create unforgettable memories.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-section">
+                        <h5>Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="./index.html" class="text-light">Home</a></li>
+                            <li><a href="./schedules.html" class="text-light">Schedules</a></li>
+                            <li><a href="./about.html" class="text-light">About Us</a></li>
+                            <li><a href="./profile.html" class="text-light">My Account</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-section">
+                        <h5>Follow Us</h5>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/eyalpasha/" class="text-light" target="_blank" rel="noopener" title="LinkedIn">
+                                <i class="fab fa-linkedin"></i>
+                                <span class="visually-hidden">LinkedIn</span>
+                            </a>
+                            <a href="https://www.facebook.com/eyal.pasha" class="text-light" target="_blank" rel="noopener" title="Facebook">
+                                <i class="fab fa-facebook"></i>
+                                <span class="visually-hidden">Facebook</span>
+                            </a>
+                            <a href="https://www.instagram.com/eyalpasha" class="text-light" target="_blank" rel="noopener" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span class="visually-hidden">Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 text-center">
+                <small>&copy; 2025 BundesTrip. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Keep all your existing scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="./services/supabase-auth.js"></script>
@@ -343,8 +363,587 @@
         
         let currentUser = null;
         let savedTrips = [];
-        let searchHistory = [];
 
+        // Custom dropdown helper function
+        function getCustomDropdownValue(dropdownType) {
+            const menu = document.getElementById(`${dropdownType}Menu`);
+            if (!menu) return null;
+            
+            const selectedOption = menu.querySelector('.custom-dropdown-option.selected');
+            return selectedOption ? selectedOption.getAttribute('data-value') : null;
+        }
+    
+        // Custom dropdown initialization function
+        function initCustomDropdown(dropdownType, defaultValue) {
+            const button = document.getElementById(`${dropdownType}Button`);
+            const menu = document.getElementById(`${dropdownType}Menu`);
+            
+            if (!button || !menu) {
+                console.warn(`Dropdown elements not found for ${dropdownType}`);
+                return;
+            }
+            
+            // Set default selection
+            const defaultOption = menu.querySelector(`[data-value="${defaultValue}"]`);
+            if (defaultOption) {
+                // Remove previous selection
+                menu.querySelectorAll('.custom-dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Set new selection
+                defaultOption.classList.add('selected');
+                button.querySelector('span').textContent = defaultOption.textContent;
+            }
+            
+            // Handle button click
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Close other dropdowns
+                document.querySelectorAll('.custom-dropdown-menu.show').forEach(dropdown => {
+                    if (dropdown !== menu) {
+                        dropdown.classList.remove('show');
+                        const otherButton = dropdown.previousElementSibling;
+                        if (otherButton) otherButton.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current dropdown
+                menu.classList.toggle('show');
+                button.classList.toggle('active');
+            });
+            
+            // Handle option clicks
+            menu.addEventListener('click', function(e) {
+                if (e.target.classList.contains('custom-dropdown-option')) {
+                    const value = e.target.getAttribute('data-value');
+                    const text = e.target.textContent;
+                    
+                    // Update selection
+                    menu.querySelectorAll('.custom-dropdown-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    e.target.classList.add('selected');
+                    
+                    // Update button text
+                    button.querySelector('span').textContent = text;
+                    
+                    // Close dropdown
+                    menu.classList.remove('show');
+                    button.classList.remove('active');
+                    
+                    // Trigger change handler
+                    if (dropdownType === 'tripFilter') {
+                        handleFilterChange(value);
+                    } else if (dropdownType === 'tripSort') {
+                        handleSortChange(value);
+                    }
+                }
+            });
+        }
+    
+        // Filter function
+        function filterTrips() {
+            const searchTerm = document.getElementById('tripSearchInput').value.toLowerCase();
+            const sortBy = getCustomDropdownValue('tripSort') || 'newest';
+            const filterBy = getCustomDropdownValue('tripFilter') || 'all';
+        
+            let filteredTrips = [...savedTrips];
+        
+            // Apply enhanced search filter (using the logic from profileold.html)
+            if (searchTerm) {
+                filteredTrips = filteredTrips.filter(trip => {
+                    // Search in trip name (with German character support)
+                    if (normalizeGermanText(trip.trip_name).includes(normalizeGermanText(searchTerm))) {
+                        return true;
+                    }
+                    
+                    // Search in start location (with German character support)
+                    const startLocation = trip.start_location || trip.trip_data?.start_location || trip.original_request?.start_location || '';
+                    if (searchInLocation(searchTerm, startLocation)) {
+                        return true;
+                    }
+                    
+                    // Search in trip groups using the correct structure
+                    const tripGroups = trip.trip_groups || [];
+                    for (const group of tripGroups) {
+                        // Check base_trip.Itinerary (main structure)
+                        if (group.base_trip && group.base_trip.Itinerary) {
+                            for (const day of group.base_trip.Itinerary) {
+                                // Skip the summary day (usually last item)
+                                if (day.hotel_stays || day.hotel_changes) continue;
+                                
+                                // Search in hotel locations (with German character support)
+                                if (searchInLocation(searchTerm, day.location)) {
+                                    return true;
+                                }
+                                
+                                // Search in hotel names (with German character support)
+                                if (day.hotel && (
+                                    normalizeGermanText(day.hotel).includes(normalizeGermanText(searchTerm)) ||
+                                    day.hotel.toLowerCase().includes(searchTerm.toLowerCase())
+                                )) {
+                                    return true;
+                                }
+                                
+                                // Search in matches for team names
+                                if (day.matches && day.matches.length > 0) {
+                                    for (const match of day.matches) {
+                                        // Extract team names from match string
+                                        const matchText = match.match || '';
+                                        const teams = extractTeamsFromMatchString(matchText);
+                                        
+                                        // Search in extracted team names (with German character support)
+                                        if (teams.home && searchInTeamNames(searchTerm, teams.home)) {
+                                            return true;
+                                        }
+                                        if (teams.away && searchInTeamNames(searchTerm, teams.away)) {
+                                            return true;
+                                        }
+                                        
+                                        // Search in venue/location (with German character support)
+                                        if (searchInLocation(searchTerm, match.location)) {
+                                            return true;
+                                        }
+                                        
+                                        // Search in travel_from (with German character support)
+                                        if (searchInLocation(searchTerm, match.travel_from)) {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Check variations array (alternative structure)
+                        if (group.variations) {
+                            for (const variation of group.variations) {
+                                if (variation.Itinerary) {
+                                    for (const day of variation.Itinerary) {
+                                        // Search in hotel locations (with German character support)
+                                        if (searchInLocation(searchTerm, day.hotel_location)) {
+                                            return true;
+                                        }
+                                        
+                                        // Search in hotel names (with German character support)
+                                        if (day.hotel_name && (
+                                            normalizeGermanText(day.hotel_name).includes(normalizeGermanText(searchTerm)) ||
+                                            day.hotel_name.toLowerCase().includes(searchTerm.toLowerCase())
+                                        )) {
+                                            return true;
+                                        }
+                                        
+                                        // Search in matches
+                                        if (day.matches) {
+                                            for (const match of day.matches) {
+                                                if (searchInTeamNames(searchTerm, match.home_team) || 
+                                                    searchInTeamNames(searchTerm, match.away_team)) {
+                                                    return true;
+                                                }
+                                                
+                                                if (searchInLocation(searchTerm, match.venue)) {
+                                                    return true;
+                                                }
+                                                
+                                                if (searchInLocation(searchTerm, match.location)) {
+                                                    return true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Search in must_teams (preferred teams) with German character support
+                    const mustTeams = trip.must_teams || trip.original_request?.must_teams || [];
+                    for (const team of mustTeams) {
+                        if (searchInTeamNames(searchTerm, team)) {
+                            return true;
+                        }
+                    }
+                    
+                    // Search in preferred_leagues with German character support
+                    const preferredLeagues = trip.preferred_leagues || trip.original_request?.preferred_leagues || [];
+                    for (const league of preferredLeagues) {
+                        if (normalizeGermanText(league).includes(normalizeGermanText(searchTerm)) ||
+                            league.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            return true;
+                        }
+                    }
+                    
+                    // Search in TBD games with German character support
+                    const tbdGames = trip.tbd_games || [];
+                    for (const game of tbdGames) {
+                        if (searchInTeamNames(searchTerm, game.home_team) || 
+                            searchInTeamNames(searchTerm, game.away_team)) {
+                            return true;
+                        }
+                        if (searchInLocation(searchTerm, game.venue)) {
+                            return true;
+                        }
+                        if (searchInLocation(searchTerm, game.location)) {
+                            return true;
+                        }
+                    }
+                    
+                    return false;
+                });
+            }
+        
+            // Apply category filter - FIXED LOGIC
+            switch (filterBy) {
+                case 'favorites':
+                    filteredTrips = filteredTrips.filter(trip => trip.is_favorite);
+                    break;
+                case 'recent':
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    filteredTrips = filteredTrips.filter(trip => 
+                        new Date(trip.created_at) >= thirtyDaysAgo
+                    );
+                    break;
+                case 'all':
+                default:
+                    // No additional filtering
+                    break;
+            }
+        
+            // Apply sorting
+            switch (sortBy) {
+                case 'oldest':
+                    filteredTrips.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                    break;
+                case 'alphabetical':
+                    filteredTrips.sort((a, b) => a.trip_name.localeCompare(b.trip_name));
+                    break;
+                case 'favorites':
+                    filteredTrips.sort((a, b) => {
+                        if (a.is_favorite && !b.is_favorite) return -1;
+                        if (!a.is_favorite && b.is_favorite) return 1;
+                        return new Date(b.created_at) - new Date(a.created_at);
+                    });
+                    break;
+                case 'matches':
+                    filteredTrips.sort((a, b) => {
+                        const getMatchCount = (trip) => {
+                            let count = 0;
+                            const tripGroups = trip.trip_groups || [];
+                            tripGroups.forEach(group => {
+                                if (group.base_trip && group.base_trip.Itinerary) {
+                                    group.base_trip.Itinerary.forEach(day => {
+                                        if (day.matches) count += day.matches.length;
+                                    });
+                                }
+                                if (group.variations) {
+                                    group.variations.forEach(variation => {
+                                        if (variation.Itinerary) {
+                                            variation.Itinerary.forEach(day => {
+                                                if (day.matches) count += day.matches.length;
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                            return count;
+                        };
+                        return getMatchCount(b) - getMatchCount(a);
+                    });
+                    break;
+                case 'newest':
+                default:
+                    filteredTrips.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                    break;
+            }
+        
+            displaySavedTrips(filteredTrips);
+        }
+        
+        // Add this new helper function to check if trip has games from specific league:
+        function tripHasLeague(trip, targetLeague) {
+            // First check preferred_leagues (what user originally requested)
+            const preferredLeagues = trip.preferred_leagues || trip.original_request?.preferred_leagues || [];
+            if (preferredLeagues.includes(targetLeague)) {
+                return true;
+            }
+            
+            // Then check actual matches in the trip to see if any are from this league
+            const tripGroups = trip.trip_groups || [];
+            for (const group of tripGroups) {
+                // Check base_trip.Itinerary
+                if (group.base_trip && group.base_trip.Itinerary) {
+                    for (const day of group.base_trip.Itinerary) {
+                        if (day.matches && day.matches.length > 0) {
+                            for (const match of day.matches) {
+                                // Check if match has league information
+                                if (match.league && match.league === targetLeague) {
+                                    return true;
+                                }
+                                // Also check competition field
+                                if (match.competition && match.competition === targetLeague) {
+                                    return true;
+                                }
+                                // For matches without explicit league info, try to infer from team names
+                                if (inferLeagueFromMatch(match, targetLeague)) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Check variations array
+                if (group.variations) {
+                    for (const variation of group.variations) {
+                        if (variation.Itinerary) {
+                            for (const day of variation.Itinerary) {
+                                if (day.matches) {
+                                    for (const match of day.matches) {
+                                        if (match.league && match.league === targetLeague) {
+                                            return true;
+                                        }
+                                        if (match.competition && match.competition === targetLeague) {
+                                            return true;
+                                        }
+                                        if (inferLeagueFromMatch(match, targetLeague)) {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Check TBD games
+            const tbdGames = trip.tbd_games || [];
+            for (const game of tbdGames) {
+                if (game.league && game.league === targetLeague) {
+                    return true;
+                }
+                if (game.competition && game.competition === targetLeague) {
+                    return true;
+                }
+                if (inferLeagueFromMatch(game, targetLeague)) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        // Helper function to infer league from team names
+        function inferLeagueFromMatch(match, targetLeague) {
+            const bundesligaTeams = [
+                'Bayern München', 'Borussia Dortmund', 'RB Leipzig', 'FC Schalke 04',
+                'Eintracht Frankfurt', 'Bayer Leverkusen', 'Borussia Mönchengladbach',
+                'VfL Wolfsburg', 'SC Freiburg', 'TSG Hoffenheim', 'VfB Stuttgart',
+                'FC Augsburg', '1. FC Köln', '1. FSV Mainz 05', 'Hertha Berlin',
+                'Werder Bremen', 'VfL Bochum', '1. FC Heidenheim'
+            ];
+            
+            const bundesliga2Teams = [
+                '1. FC Magdeburg', 'Preußen Münster', 'Eintracht Braunschweig',
+                '1. FC Kaiserslautern', 'Fortuna Düsseldorf', 'Hannover 96',
+                '1. FC Nürnberg', 'Karlsruher SC', 'SC Paderborn 07'
+            ];
+            
+            if (targetLeague === 'Bundesliga') {
+                const homeTeam = match.home_team || extractTeamsFromMatchString(match.match || '').home || '';
+                const awayTeam = match.away_team || extractTeamsFromMatchString(match.match || '').away || '';
+                
+                return bundesligaTeams.some(team => 
+                    normalizeGermanText(homeTeam).includes(normalizeGermanText(team)) ||
+                    normalizeGermanText(awayTeam).includes(normalizeGermanText(team)) ||
+                    normalizeGermanText(team).includes(normalizeGermanText(homeTeam)) ||
+                    normalizeGermanText(team).includes(normalizeGermanText(awayTeam))
+                );
+            }
+            
+            if (targetLeague === '2. Bundesliga') {
+                const homeTeam = match.home_team || extractTeamsFromMatchString(match.match || '').home || '';
+                const awayTeam = match.away_team || extractTeamsFromMatchString(match.match || '').away || '';
+                
+                return bundesliga2Teams.some(team => 
+                    normalizeGermanText(homeTeam).includes(normalizeGermanText(team)) ||
+                    normalizeGermanText(awayTeam).includes(normalizeGermanText(team)) ||
+                    normalizeGermanText(team).includes(normalizeGermanText(homeTeam)) ||
+                    normalizeGermanText(team).includes(normalizeGermanText(awayTeam))
+                );
+            }
+            
+            return false;
+        }
+        
+        // Add all the helper functions from profileold.html:
+        function normalizeGermanText(text) {
+            if (!text) return '';
+            
+            return text
+                .replace(/ü/g, 'u')    // ü -> u
+                .replace(/ö/g, 'o')    // ö -> o  
+                .replace(/ä/g, 'a')    // ä -> a
+                .replace(/ß/g, 'ss')   // ß -> ss
+                .replace(/Ü/g, 'U')    // Ü -> U
+                .replace(/Ö/g, 'O')    // Ö -> O
+                .replace(/Ä/g, 'A')    // Ä -> A
+                .toLowerCase();
+        }
+        
+        function searchInLocation(searchTerm, location) {
+            if (!location) return false;
+            
+            const term = normalizeGermanText(searchTerm.toLowerCase());
+            const loc = normalizeGermanText(location.toLowerCase());
+            
+            // Direct match with normalized text
+            if (loc.includes(term)) {
+                return true;
+            }
+            
+            // Also check original text without normalization
+            if (location.toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true;
+            }
+            
+            // Common German city aliases
+            const cityAliases = {
+                'munich': ['münchen', 'munchen'],
+                'munchen': ['münchen', 'munich'],
+                'münchen': ['munich', 'munchen'],
+                'cologne': ['köln', 'koln'],
+                'koln': ['köln', 'cologne'],
+                'köln': ['cologne', 'koln'],
+                'nuremberg': ['nürnberg', 'nurnberg'],
+                'nurnberg': ['nürnberg', 'nuremberg'],
+                'nürnberg': ['nuremberg', 'nurnberg'],
+                'dusseldorf': ['düsseldorf'],
+                'düsseldorf': ['dusseldorf']
+            };
+            
+            // Check city aliases
+            for (const [key, aliases] of Object.entries(cityAliases)) {
+                const normalizedKey = normalizeGermanText(key);
+                if (term.includes(normalizedKey) || normalizedKey.includes(term)) {
+                    return aliases.some(alias => {
+                        const normalizedAlias = normalizeGermanText(alias);
+                        return normalizedAlias.includes(term) || loc.includes(normalizedAlias);
+                    });
+                }
+            }
+            
+            return false;
+        }
+        
+        function searchInTeamNames(searchTerm, teamName) {
+            if (!teamName) return false;
+            
+            const term = normalizeGermanText(searchTerm.toLowerCase());
+            const team = normalizeGermanText(teamName.toLowerCase());
+            
+            // Direct match with normalized text
+            if (team.includes(term)) {
+                return true;
+            }
+            
+            // Also check original text without normalization
+            if (teamName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true;
+            }
+            
+            // Enhanced German team abbreviations and alternate names
+            const teamAliases = {
+                // Bundesliga teams
+                'bayern': ['bayern munich', 'fc bayern', 'fcb', 'fc bayern münchen', 'fc bayern munchen'],
+                'munich': ['bayern munich', 'fc bayern', 'bayern münchen', 'bayern munchen'],
+                'munchen': ['bayern munich', 'fc bayern', 'bayern münchen', 'münchen'],
+                'dortmund': ['borussia dortmund', 'bvb', 'bvb 09', 'borussia'],
+                'leipzig': ['rb leipzig', 'red bull leipzig', 'rasenballsport'],
+                'schalke': ['fc schalke 04', 's04', 'schalke 04'],
+                'frankfurt': ['eintracht frankfurt', 'sge'],
+                'leverkusen': ['bayer leverkusen', 'bayer 04', 'werkself'],
+                'gladbach': ['borussia mönchengladbach', 'borussia monchengladbach', 'bmg', 'borussia mg', 'mönchengladbach', 'monchengladbach'],
+                'wolfsburg': ['vfl wolfsburg', 'wob'],
+                'berlin': ['hertha berlin', 'hertha bsc', 'union berlin', '1. fc union'],
+                'hamburg': ['hamburger sv', 'hsv', 'hamburg sv'],
+                'bremen': ['werder bremen', 'sv werder', 'werder'],
+                'cologne': ['1. fc köln', '1. fc koln', 'fc köln', 'fc koln', 'köln', 'koln'],
+                'koln': ['1. fc köln', 'fc köln', 'köln', 'cologne'],
+                'stuttgart': ['vfb stuttgart', 'vfb'],
+                'hoffenheim': ['tsg hoffenheim', 'tsg 1899', 'tsg'],
+                'freiburg': ['sc freiburg', 'sport-club freiburg'],
+                'mainz': ['1. fsv mainz 05', 'fsv mainz', 'mainz 05'],
+                'augsburg': ['fc augsburg', 'fca'],
+                'bochum': ['vfl bochum', 'vfl bochum 1848'],
+                'heidenheim': ['1. fc heidenheim', 'fc heidenheim'],
+                
+                // 2. Bundesliga teams
+                'magdeburg': ['1. fc magdeburg', 'fc magdeburg'],
+                'munster': ['preußen münster', 'preussen münster', 'sc preußen münster', 'sc preussen munster', 'münster'],
+                'münster': ['preußen münster', 'preussen münster', 'sc preußen münster', 'preussen munster'],
+                'preussen': ['preußen münster', 'preussen münster', 'sc preußen münster'],
+                'braunschweig': ['eintracht braunschweig'],
+                'kaiserslautern': ['1. fc kaiserslautern', 'fck', 'fc kaiserslautern'],
+                'dusseldorf': ['fortuna düsseldorf', 'fortuna dusseldorf', 'f95', 'fortuna'],
+                'düsseldorf': ['fortuna düsseldorf', 'fortuna dusseldorf', 'f95', 'fortuna'],
+                'hannover': ['hannover 96', 'h96'],
+                'nuremberg': ['1. fc nürnberg', '1. fc nurnberg', 'fcn', 'nürnberg', 'nurnberg'],
+                'nurnberg': ['1. fc nürnberg', 'fcn', 'nürnberg', 'nuremberg'],
+                'nürnberg': ['1. fc nürnberg', '1. fc nurnberg', 'fcn', 'nurnberg', 'nuremberg'],
+                'karlsruhe': ['karlsruher sc', 'ksc'],
+                'paderborn': ['sc paderborn 07', 'scp']
+            };
+            
+            // Check if search term matches any alias (with normalization)
+            for (const [key, aliases] of Object.entries(teamAliases)) {
+                const normalizedKey = normalizeGermanText(key);
+                if (term.includes(normalizedKey) || normalizedKey.includes(term)) {
+                    return aliases.some(alias => {
+                        const normalizedAlias = normalizeGermanText(alias);
+                        return normalizedAlias.includes(term) || team.includes(normalizedAlias);
+                    });
+                }
+            }
+            
+            return false;
+        }
+        
+        function extractTeamsFromMatchString(matchString) {
+            // Match string format: "1. FC Magdeburg vs Preußen Münster (17:30)"
+            if (!matchString) return { home: null, away: null };
+            
+            // Remove time in parentheses and extract teams
+            const cleanMatch = matchString.replace(/\s*\([^)]*\)\s*$/, '');
+            const vsPatterns = [' vs ', ' v ', ' - ', ' : '];
+            
+            for (const pattern of vsPatterns) {
+                if (cleanMatch.includes(pattern)) {
+                    const teams = cleanMatch.split(pattern);
+                    if (teams.length === 2) {
+                        return {
+                            home: teams[0].trim(),
+                            away: teams[1].trim()
+                        };
+                    }
+                }
+            }
+            
+            return { home: null, away: null };
+        }
+        // Change handlers
+        function handleFilterChange(filterValue) {
+            console.log('Filter changed to:', filterValue);
+            setTimeout(() => filterTrips(), 50);
+        }
+    
+        function handleSortChange(sortValue) {
+            console.log('Sort changed to:', sortValue);
+            setTimeout(() => filterTrips(), 50);
+        }
+    
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', async () => {
             console.log('🚀 Initializing profile dashboard...');
@@ -373,7 +972,7 @@
                 window.location.href = './login.html';
                 return;
             }
-
+    
             // Initialize API service
             if (!window.apiService) {
                 const { ApiService } = await import('./services/api.js');
@@ -393,10 +992,29 @@
             if (window.updateNavigationState) {
                 await updateNavigationState();
             }
-
+    
+            // Initialize custom dropdowns
+            setTimeout(() => {
+                initCustomDropdown('tripFilter', 'all');
+                initCustomDropdown('tripSort', 'newest');
+                
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', function(event) {
+                    const dropdowns = document.querySelectorAll('.custom-dropdown-menu.show');
+                    dropdowns.forEach(dropdown => {
+                        const container = dropdown.closest('.custom-dropdown-container');
+                        if (!container.contains(event.target)) {
+                            dropdown.classList.remove('show');
+                            const button = container.querySelector('.custom-dropdown-button');
+                            if (button) button.classList.remove('active');
+                        }
+                    });
+                });
+            }, 500);
+            
             console.log('✅ Profile dashboard initialized successfully');
         });
-
+    
         function populateProfileData() {
             const fullName = currentUser.user_metadata?.full_name || '';
             const email = currentUser.email || '';
@@ -407,21 +1025,18 @@
             document.getElementById('fullName').value = fullName;
             document.getElementById('email').value = email;
             document.getElementById('joinDate').value = joinDate;
-
+    
             // Calculate days since joining
             const daysSinceJoin = Math.floor((new Date() - new Date(currentUser.created_at)) / (1000 * 60 * 60 * 24));
             document.getElementById('memberSinceCount').textContent = daysSinceJoin;
         }
-
+    
         async function loadDashboardData() {
             try {
                 console.log('📊 Loading dashboard data...');
                 
                 // Load saved trips
                 await loadSavedTrips();
-                
-                // Load search history
-                await loadSearchHistory();
                 
                 // Update stats
                 updateStatsCards();
@@ -431,7 +1046,7 @@
                 showToast('Failed to load dashboard data', 'error');
             }
         }
-
+    
         async function loadSavedTrips() {
             try {
                 console.log('🗂️ Loading saved trips...');
@@ -440,8 +1055,6 @@
                 savedTrips = response.trips || [];
                 
                 console.log(`✅ Loaded ${savedTrips.length} saved trips`);
-                console.log('📋 Sample trip data:', savedTrips[0]); // Debug log
-                
                 displaySavedTrips(savedTrips);
                 
             } catch (error) {
@@ -451,12 +1064,12 @@
                         <i class="fas fa-exclamation-triangle"></i>
                         <h5>Failed to Load Trips</h5>
                         <p>There was an error loading your saved trips.</p>
-                        <button class="btn btn-primary" onclick="loadSavedTrips()">Try Again</button>
+                        <button class="btn btn-primary" onclick="location.reload()">Try Again</button>
                     </div>
                 `;
             }
         }
-
+    
         function displaySavedTrips(trips) {
             const container = document.getElementById('tripsContainer');
             
@@ -467,29 +1080,28 @@
                         <h5>No Saved Trips Yet</h5>
                         <p>Start planning your next football adventure!</p>
                         <a href="./index.html" class="btn btn-primary">
-                            <i class="fas fa-plus me-2"></i>Plan Your Next Trip
+                            Plan Your Next Trip
                         </a>
                     </div>
                 `;
                 return;
             }
-
+    
             // Clear container and add results structure
             container.innerHTML = `
                 <div id="tripResults" class="trip-results-container">
                     <!-- Trip cards will be rendered here -->
                 </div>
             `;
-
+    
             const tripResults = document.getElementById('tripResults');
-            let tripIndex = 0;
-
+            let tripIndex = 1;
+    
             trips.forEach((savedTrip) => {
                 console.log('🔍 Processing saved trip:', savedTrip);
                 
                 // Extract data from the correct locations
                 const tripGroups = savedTrip.trip_groups || [];
-                const tbdGames = savedTrip.tbd_games || [];
                 const startLocation = savedTrip.start_location || savedTrip.original_request?.start_location || 'Unknown';
                 const startDate = savedTrip.start_date || savedTrip.original_request?.start_date || 'Unknown';
                 const tripDuration = savedTrip.trip_duration || savedTrip.original_request?.trip_duration || 3;
@@ -497,7 +1109,7 @@
                 const preferredLeagues = savedTrip.preferred_leagues || savedTrip.original_request?.preferred_leagues || [];
                 const mustTeams = savedTrip.must_teams || savedTrip.original_request?.must_teams || [];
                 const minGames = savedTrip.min_games || savedTrip.original_request?.min_games || 2;
-
+    
                 if (tripGroups && tripGroups.length > 0) {
                     tripGroups.forEach((group, groupIndex) => {
                         console.log(`🎯 Rendering trip group ${groupIndex + 1}:`, group);
@@ -506,53 +1118,19 @@
                         const savedTripHeader = document.createElement('div');
                         savedTripHeader.className = 'saved-trip-header';
                         savedTripHeader.innerHTML = `
-                            <div class="trip-header-main">
-                                <div class="trip-info-section">
-                                    <h5 class="trip-title">
-                                        <i class="fas fa-bookmark"></i>
-                                        <span class="trip-name">${savedTrip.trip_name}</span>
-                                        ${group.variations?.[0]?.Itinerary ? `
-                                        ` : ''}
-                                    </h5>
-                                    <div class="trip-meta-info">
-                                        <div class="trip-meta-item">
-                                            <i class="fas fa-calendar-plus"></i>
-                                            <span>Saved ${new Date(savedTrip.created_at).toLocaleDateString()}</span>
-                                        </div>
-                                        <div class="trip-meta-item">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            <span>${startLocation}</span>
-                                        </div>
-                                        <div class="trip-meta-item">
-                                            <i class="fas fa-calendar"></i>
-                                            <span>${startDate}</span>
-                                        </div>
-                                        <div class="trip-meta-item">
-                                            <i class="fas fa-clock"></i>
-                                            <span>${tripDuration}</span>
-                                        </div>
-                                        ${group.variations?.length ? `
-                                            <div class="trip-meta-item">
-                                                <i class="fas fa-route"></i>
-                                                <span>${group.variations.length} travel options</span>
-                                            </div>
-                                        ` : ''}
-                                    </div>
-                                </div>
-                                <div class="trip-actions-header">
-                                    <button class="btn btn-sm btn-favorite ${savedTrip.is_favorite ? 'favorited' : ''}" 
-                                            onclick="toggleTripFavorite('${savedTrip.id}', ${savedTrip.is_favorite})" 
-                                            title="${savedTrip.is_favorite ? 'Remove from favorites' : 'Add to favorites'}">
-                                        <i class="fas fa-heart"></i>
-                                        ${savedTrip.is_favorite ? 'Favorited' : 'Favorite'}
-                                    </button>
-                                    <button class="btn btn-sm btn-delete" 
-                                            onclick="showDeleteConfirm('${savedTrip.id}', '${savedTrip.trip_name}')" 
-                                            title="Delete this trip">
-                                        <i class="fas fa-trash"></i>
-                                        Delete
-                                    </button>
-                                </div>
+                            <div class="trip-actions-header">
+                                <button class="btn btn-sm btn-favorite ${savedTrip.is_favorite ? 'favorited' : ''}" 
+                                        onclick="toggleTripFavorite('${savedTrip.id}', ${savedTrip.is_favorite})" 
+                                        title="${savedTrip.is_favorite ? 'Remove from favorites' : 'Add to favorites'}">
+                                    <i class="fas fa-heart"></i>
+                                    ${savedTrip.is_favorite ? 'Favorited' : 'Favorite'}
+                                </button>
+                                <button class="btn btn-sm btn-delete" 
+                                        onclick="showDeleteConfirm('${savedTrip.id}', '${savedTrip.trip_name}')" 
+                                        title="Delete this trip">
+                                    <i class="fas fa-trash"></i>
+                                    Delete
+                                </button>
                             </div>
                         `;
                         tripResults.appendChild(savedTripHeader);
@@ -566,9 +1144,7 @@
                             minGames: minGames
                         };
                         
-                        console.log('🎯 Trip context for renderTripCard:', tripContext);
-                        
-                        // Use the EXACT same renderTripCard function as search results
+                        // Use the renderTripCard function
                         try {
                             renderTripCard(group, tripIndex, tripContext);
                             console.log(`✅ Successfully rendered trip card ${tripIndex}`);
@@ -594,7 +1170,7 @@
                         tripIndex++;
                     });
                 } else {
-                    // Handle trips with no results (show basic info)
+                    // Handle trips with no results
                     const noResultsCard = document.createElement('div');
                     noResultsCard.className = 'card trip-card shadow-sm mb-4';
                     noResultsCard.innerHTML = `
@@ -624,11 +1200,14 @@
                                     </div>
                                 </div>
                                 <div class="trip-actions-header">
-                                    <button class="btn btn-sm btn-favorite" onclick="toggleTripFavorite('${savedTrip.id}', ${savedTrip.is_favorite})">
-                                        <i class="fas ${savedTrip.is_favorite ? 'fa-heart' : 'fa-heart'} me-1"></i>
+                                    <button class="btn btn-sm btn-favorite ${savedTrip.is_favorite ? 'favorited' : ''}" 
+                                            onclick="toggleTripFavorite('${savedTrip.id}', ${savedTrip.is_favorite})">
+                                        <i class="fas fa-heart me-1"></i>
                                         ${savedTrip.is_favorite ? 'Favorited' : 'Favorite'}
                                     </button>
-                                    <button class="btn btn-sm btn-delete" onclick="showDeleteConfirm('${savedTrip.id}', '${savedTrip.trip_name}')" title="Delete this trip">
+                                    <button class="btn btn-sm btn-delete" 
+                                            onclick="showDeleteConfirm('${savedTrip.id}', '${savedTrip.trip_name}')" 
+                                            title="Delete this trip">
                                         <i class="fas fa-trash me-1"></i>
                                         Delete
                                     </button>
@@ -645,8 +1224,8 @@
                     tripResults.appendChild(noResultsCard);
                 }
             });
-
-            // Render TBD games if any exist (from the last processed trip)
+    
+            // Render TBD games if any exist
             const lastTrip = trips[trips.length - 1];
             if (lastTrip && lastTrip.tbd_games && lastTrip.tbd_games.length > 0) {
                 try {
@@ -657,665 +1236,122 @@
             }
         }
 
-        async function loadSearchHistory() {
-            try {
-                console.log('📋 Loading search history...');
-                
-                const response = await window.apiService.getTripRequestHistory(20);
-                searchHistory = response.requests || [];
-                
-                console.log(`✅ Loaded ${searchHistory.length} search requests`);
-                displaySearchHistory(searchHistory);
-                
-            } catch (error) {
-                console.error('❌ Failed to load search history:', error);
-                document.getElementById('searchHistoryContainer').innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h5>Failed to Load History</h5>
-                        <p>There was an error loading your search history.</p>
-                        <button class="btn btn-primary" onclick="loadSearchHistory()">Try Again</button>
-                    </div>
-                `;
-            }
-        }
-
-        function displaySearchHistory(requests) {
-            const container = document.getElementById('searchHistoryContainer');
-            
-            // Update stats in header - ADD THIS LINE
-            updateSearchHistoryStats(requests);
-            
-            if (!requests || requests.length === 0) {
-                container.innerHTML = `
-                    <div class="simple-empty-state">
-                        <i class="fas fa-search"></i>
-                        <h5>No Search History</h5>
-                        <p>Your trip search history will appear here after you start planning trips.</p>
-                        <a href="./index.html" class="btn btn-primary mt-3">
-                            <i class="fas fa-plus me-2"></i>Start Planning
-                        </a>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = `
-                <div class="search-history-container">
-                    ${requests.map(request => createEnhancedRequestItem(request)).join('')}
-                </div>
-            `;
-        }
-
-        // Add this function after displaySearchHistory():
-
-function updateSearchHistoryStats(requests) {
-    const statsElement = document.getElementById('historyStatsText');
-    if (!statsElement || !requests) return;
-    
-    const totalRequests = requests.length;
-    const completedRequests = requests.filter(r => r.status === 'completed').length;
-    const failedRequests = requests.filter(r => r.status === 'failed').length;
-    
-    if (totalRequests === 0) {
-        statsElement.textContent = 'No searches yet';
-        return;
-    }
-    
-    const successRate = totalRequests > 0 ? Math.round((completedRequests / totalRequests) * 100) : 0;
-    statsElement.innerHTML = `
-        <span>${totalRequests} searches</span>
-        <span style="margin-left: 0.5rem; opacity: 0.8;">•</span>
-        <span style="margin-left: 0.5rem;">${successRate}% success</span>
-    `;
-}
-
+        // CORRECTED VERSION:
         function updateStatsCards() {
             const totalTrips = savedTrips.length;
             const favoriteTrips = savedTrips.filter(trip => trip.is_favorite).length;
-            const totalSearches = searchHistory.length;
             
             document.getElementById('totalTripsCount').textContent = totalTrips;
             document.getElementById('favoriteTripsCount').textContent = favoriteTrips;
-            document.getElementById('totalSearchesCount').textContent = totalSearches;
+            // ✅ Removed the searchHistory reference since we removed that functionality
         }
-
+        
         function setupEventListeners() {
-            // Trip search and filters
-            document.getElementById('tripSearchInput')?.addEventListener('input', filterTrips);
-            document.getElementById('tripSortSelect')?.addEventListener('change', filterTrips);
-            document.getElementById('tripFilterSelect')?.addEventListener('change', filterTrips);
-
+            // Trip search input
+            const searchInput = document.getElementById('tripSearchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', filterTrips);
+            }
+    
             // Profile form
-            document.getElementById('profileForm')?.addEventListener('submit', handleProfileUpdate);
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                profileForm.addEventListener('submit', handleProfileUpdate);
+            }
         }
-
-        function updateFilterResultsInfo(filteredTrips, searchTerm, filterBy) {
-            const infoElement = document.getElementById('filterResultsInfo');
-            const textElement = document.getElementById('filterResultsText');
-            
-            if (!infoElement || !textElement) return;
-            
-            let message = `Showing ${filteredTrips.length} of ${savedTrips.length} trips`;
-            
-            if (searchTerm) {
-                message += ` matching "${searchTerm}"`;
-            }
-            
-            if (filterBy !== 'all') {
-                const filterNames = {
-                    'favorites': 'favorites',
-                    'recent': 'recent (30 days)'
-                };
-                message += ` (${filterNames[filterBy]})`;
-            }
-            
-            textElement.textContent = message;
-            infoElement.style.display = filteredTrips.length !== savedTrips.length || searchTerm || filterBy !== 'all' ? 'flex' : 'none';
-        }
-
-        // Replace the search section in filterTrips function with this corrected version:
-
-function filterTrips() {
-    const searchTerm = document.getElementById('tripSearchInput').value.toLowerCase();
-    const sortBy = document.getElementById('tripSortSelect').value;
-    const filterBy = document.getElementById('tripFilterSelect').value;
-
-    let filteredTrips = [...savedTrips];
-
-    // Apply enhanced search filter
-    if (searchTerm) {
-        filteredTrips = filteredTrips.filter(trip => {
-            // Search in trip name (with German character support)
-            if (normalizeGermanText(trip.trip_name).includes(normalizeGermanText(searchTerm))) {
-                return true;
-            }
-            
-            // Search in start location (with German character support)
-            const startLocation = trip.start_location || trip.trip_data?.start_location || trip.original_request?.start_location || '';
-            if (searchInLocation(searchTerm, startLocation)) {
-                return true;
-            }
-            
-            // Search in trip groups using the correct structure
-            const tripGroups = trip.trip_groups || [];
-            for (const group of tripGroups) {
-                // Check base_trip.Itinerary (main structure)
-                if (group.base_trip && group.base_trip.Itinerary) {
-                    for (const day of group.base_trip.Itinerary) {
-                        // Skip the summary day (usually last item)
-                        if (day.hotel_stays || day.hotel_changes) continue;
-                        
-                        // Search in hotel locations (with German character support)
-                        if (searchInLocation(searchTerm, day.location)) {
-                            return true;
-                        }
-                        
-                        // Search in hotel names (with German character support)
-                        if (day.hotel && (
-                            normalizeGermanText(day.hotel).includes(normalizeGermanText(searchTerm)) ||
-                            day.hotel.toLowerCase().includes(searchTerm.toLowerCase())
-                        )) {
-                            return true;
-                        }
-                        
-                        // Search in matches for team names
-                        if (day.matches && day.matches.length > 0) {
-                            for (const match of day.matches) {
-                                // Extract team names from match string
-                                const matchText = match.match || '';
-                                const teams = extractTeamsFromMatchString(matchText);
-                                
-                                // Search in extracted team names (with German character support)
-                                if (teams.home && searchInTeamNames(searchTerm, teams.home)) {
-                                    return true;
-                                }
-                                if (teams.away && searchInTeamNames(searchTerm, teams.away)) {
-                                    return true;
-                                }
-                                
-                                // Search in venue/location (with German character support)
-                                if (searchInLocation(searchTerm, match.location)) {
-                                    return true;
-                                }
-                                
-                                // Search in travel_from (with German character support)
-                                if (searchInLocation(searchTerm, match.travel_from)) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                // Check variations array (alternative structure)
-                if (group.variations) {
-                    for (const variation of group.variations) {
-                        if (variation.Itinerary) {
-                            for (const day of variation.Itinerary) {
-                                // Search in hotel locations (with German character support)
-                                if (searchInLocation(searchTerm, day.hotel_location)) {
-                                    return true;
-                                }
-                                
-                                // Search in hotel names (with German character support)
-                                if (day.hotel_name && (
-                                    normalizeGermanText(day.hotel_name).includes(normalizeGermanText(searchTerm)) ||
-                                    day.hotel_name.toLowerCase().includes(searchTerm.toLowerCase())
-                                )) {
-                                    return true;
-                                }
-                                
-                                // Search in matches
-                                if (day.matches) {
-                                    for (const match of day.matches) {
-                                        if (searchInTeamNames(searchTerm, match.home_team) || 
-                                            searchInTeamNames(searchTerm, match.away_team)) {
-                                            return true;
-                                        }
-                                        
-                                        if (searchInLocation(searchTerm, match.venue)) {
-                                            return true;
-                                        }
-                                        
-                                        if (searchInLocation(searchTerm, match.location)) {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            // Search in must_teams (preferred teams) with German character support
-            const mustTeams = trip.must_teams || trip.original_request?.must_teams || [];
-            for (const team of mustTeams) {
-                if (searchInTeamNames(searchTerm, team)) {
-                    return true;
-                }
-            }
-            
-            // Search in preferred_leagues with German character support
-            const preferredLeagues = trip.preferred_leagues || trip.original_request?.preferred_leagues || [];
-            for (const league of preferredLeagues) {
-                if (normalizeGermanText(league).includes(normalizeGermanText(searchTerm)) ||
-                    league.toLowerCase().includes(searchTerm.toLowerCase())) {
-                    return true;
-                }
-            }
-            
-            // Search in TBD games with German character support
-            const tbdGames = trip.tbd_games || [];
-            for (const game of tbdGames) {
-                if (searchInTeamNames(searchTerm, game.home_team) || 
-                    searchInTeamNames(searchTerm, game.away_team)) {
-                    return true;
-                }
-                if (searchInLocation(searchTerm, game.venue)) {
-                    return true;
-                }
-                if (searchInLocation(searchTerm, game.location)) {
-                    return true;
-                }
-            }
-            
-            return false;
-        });
-    }
-
-    // Apply category filter
-    switch (filterBy) {
-        case 'favorites':
-            filteredTrips = filteredTrips.filter(trip => trip.is_favorite);
-            break;
-        case 'recent':
-            const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-            filteredTrips = filteredTrips.filter(trip => 
-                new Date(trip.created_at) >= thirtyDaysAgo
-            );
-            break;
-    }
-
-    // Apply sorting
-    switch (sortBy) {
-        case 'oldest':
-            filteredTrips.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-            break;
-        case 'name':
-            filteredTrips.sort((a, b) => a.trip_name.localeCompare(b.trip_name));
-            break;
-        case 'location':
-            filteredTrips.sort((a, b) => 
-                (a.start_location || a.trip_data?.start_location || '').localeCompare(
-                    b.start_location || b.trip_data?.start_location || ''
-                )
-            );
-            break;
-        case 'newest':
-        default:
-            filteredTrips.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            break;
-    }
-
-    displaySavedTrips(filteredTrips);
-    updateFilterResultsInfo(filteredTrips, searchTerm, filterBy);
-}
-
-        // Global functions for trip management
-        window.toggleTripFavorite = async function(tripId, currentFavoriteStatus) {
+    
+        // Trip management functions
+        async function toggleTripFavorite(tripId, currentState) {
             try {
-                await window.apiService.toggleTripFavorite(tripId, !currentFavoriteStatus);
-                
-                // Update local data
-                const trip = savedTrips.find(t => t.id === tripId);
-                if (trip) {
-                    trip.is_favorite = !currentFavoriteStatus;
+                const response = await window.apiService.toggleTripFavorite(tripId, !currentState);
+                if (response.success) {
+                    // Update local state
+                    const trip = savedTrips.find(t => t.id === tripId);
+                    if (trip) {
+                        trip.is_favorite = !currentState;
+                    }
+                    
+                    // Reload display
+                    displaySavedTrips(savedTrips);
+                    updateStatsCards();
+                    
+                    showToast(
+                        currentState ? 'Trip removed from favorites' : 'Trip added to favorites',
+                        'success'
+                    );
                 }
-                
-                // Refresh display
-                filterTrips();
-                updateStatsCards();
-                
-                showToast(`Trip ${!currentFavoriteStatus ? 'added to' : 'removed from'} favorites`, 'success');
-                
             } catch (error) {
-                console.error('Failed to toggle favorite:', error);
+                console.error('❌ Failed to toggle favorite:', error);
                 showToast('Failed to update favorite status', 'error');
             }
-        };
-
-        // New custom delete confirmation function
-window.showDeleteConfirm = function(tripId, tripName) {
-    // Set the trip name in the modal
-    document.getElementById('deleteConfirmTripName').textContent = tripName;
-    
-    // Show the modal
-    const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-    modal.show();
-    
-    // Set up the confirm button click handler
-    document.getElementById('confirmDeleteBtn').onclick = async function() {
-        try {
-            await window.apiService.unsaveTrip(tripId);
-            
-            // Remove from local data
-            savedTrips = savedTrips.filter(trip => trip.id !== tripId);
-            
-            // Refresh display
-            filterTrips();
-            updateStatsCards();
-            
-            // Hide modal
-            modal.hide();
-            
-            showToast('Trip deleted successfully', 'success');
-            
-        } catch (error) {
-            console.error('Failed to delete trip:', error);
-            showToast('Failed to delete trip', 'error');
-            modal.hide();
         }
-    };
-};
-
+    
+        function showDeleteConfirm(tripId, tripName) {
+            document.getElementById('deleteConfirmTripName').textContent = tripName;
+            document.getElementById('confirmDeleteBtn').onclick = () => deleteTripConfirmed(tripId);
+            
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
+        }
+    
+        async function deleteTripConfirmed(tripId) {
+            try {
+                const response = await window.apiService.deleteSavedTrip(tripId);
+                if (response.success) {
+                    // Remove from local state
+                    savedTrips = savedTrips.filter(trip => trip.id !== tripId);
+                    
+                    // Reload display
+                    displaySavedTrips(savedTrips);
+                    updateStatsCards();
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
+                    modal.hide();
+                    
+                    showToast('Trip deleted successfully', 'success');
+                }
+            } catch (error) {
+                console.error('❌ Failed to delete trip:', error);
+                showToast('Failed to delete trip', 'error');
+            }
+        }
+    
         async function handleProfileUpdate(e) {
             e.preventDefault();
             
             const fullName = document.getElementById('fullName').value;
             
             try {
-                const result = await window.authService.updateProfile({
-                    full_name: fullName
-                });
-                
-                if (result.success) {
+                const response = await window.authService.updateProfile({ full_name: fullName });
+                if (response.success) {
                     showToast('Profile updated successfully', 'success');
-                    document.getElementById('profileName').textContent = fullName || 'My Account';
-                    
-                    if (window.updateNavigationState) {
-                        await updateNavigationState();
-                    }
                 } else {
                     showToast('Failed to update profile', 'error');
                 }
-                
             } catch (error) {
-                console.error('Profile update failed:', error);
+                console.error('❌ Failed to update profile:', error);
                 showToast('Failed to update profile', 'error');
             }
         }
-
+    
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            toast.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} alert-dismissible fade show position-fixed`;
-            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
-            toast.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
+            toast.className = `alert alert-${type === 'error' ? 'danger' : type} position-fixed top-0 end-0 m-3`;
+            toast.style.zIndex = '9999';
+            toast.textContent = message;
             
             document.body.appendChild(toast);
             
             setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 5000);
+                toast.remove();
+            }, 3000);
         }
-
-        // Add this helper function after searchInTeamNames:
-
-function extractTeamsFromMatchString(matchString) {
-    // Match string format: "1. FC Magdeburg vs Preußen Münster (17:30)"
-    if (!matchString) return { home: null, away: null };
     
-    // Remove time in parentheses and extract teams
-    const cleanMatch = matchString.replace(/\s*\([^)]*\)\s*$/, '');
-    const vsPatterns = [' vs ', ' v ', ' - ', ' : '];
-    
-    for (const pattern of vsPatterns) {
-        if (cleanMatch.includes(pattern)) {
-            const teams = cleanMatch.split(pattern);
-            if (teams.length === 2) {
-                return {
-                    home: teams[0].trim(),
-                    away: teams[1].trim()
-                };
-            }
-        }
-    }
-    
-    return { home: null, away: null };
-}
-
-function createEnhancedRequestItem(request) {
-    const statusClass = request.status === 'failed' ? 'failed' : 
-                       request.status === 'pending' ? 'pending' : 
-                       request.status === 'completed' ? 'completed' : '';
-    
-    const statusIcon = {
-        'completed': 'fas fa-check-circle',
-        'failed': 'fas fa-times-circle',
-        'pending': 'fas fa-clock',
-        'cancelled': 'fas fa-ban'
-    }[request.status] || 'fas fa-question-circle';
-
-    const date = new Date(request.created_at);
-    const formattedDate = date.toLocaleDateString();
-    const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
-    const processingTime = request.processing_time_ms ? 
-        request.processing_time_ms < 1000 ? 
-            `${request.processing_time_ms}ms` : 
-            `${(request.processing_time_ms / 1000).toFixed(1)}s` 
-        : 'N/A';
-    
-    return `
-        <div class="request-item ${statusClass}">
-            <div class="request-header">
-                <h6 class="request-title">
-                    <i class="${statusIcon}"></i>
-                    ${request.start_location}
-                    <span class="text-muted">→ ${request.trip_duration} days</span>
-                </h6>
-                <span class="request-status-badge ${statusClass}">
-                    ${request.status}
-                </span>
-            </div>
-            
-            <div class="request-details">
-                <div class="request-detail-item">
-                    <i class="fas fa-calendar"></i>
-                    <span>Start: ${request.start_date}</span>
-                </div>
-                <div class="request-detail-item">
-                    <i class="fas fa-clock"></i>
-                    <span>Max travel: ${Math.floor(request.max_travel_time / 60)}h ${request.max_travel_time % 60}m</span>
-                </div>
-                <div class="request-detail-item">
-                    <i class="fas fa-gamepad"></i>
-                    <span>Min games: ${request.min_games || 2}</span>
-                </div>
-                <div class="request-detail-item">
-                    <i class="fas fa-calendar-day"></i>
-                    <span>${formattedDate} at ${formattedTime}</span>
-                </div>
-                ${request.preferred_leagues?.length ? `
-                    <div class="request-detail-item">
-                        <i class="fas fa-trophy"></i>
-                        <span>Leagues: ${request.preferred_leagues.join(', ')}</span>
-                    </div>
-                ` : ''}
-                ${request.must_teams?.length ? `
-                    <div class="request-detail-item">
-                        <i class="fas fa-star"></i>
-                        <span>Teams: ${request.must_teams.join(', ')}</span>
-                    </div>
-                ` : ''}
-            </div>
-            
-            ${request.results_summary ? `
-                <div class="request-summary">
-                    <i class="fas fa-chart-bar me-2"></i>
-                    <strong>Results:</strong> Found ${request.results_summary.trip_groups_count} trip options
-                    ${request.results_summary.total_matches ? ` with ${request.results_summary.total_matches} matches` : ''}
-                </div>
-            ` : ''}
-            
-            ${request.error_message ? `
-                <div class="request-error">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    <strong>Error:</strong> ${request.error_message}
-                </div>
-            ` : ''}
-            
-            <div class="request-timing">
-                Processing time: ${processingTime}
-            </div>
-        </div>
-    `;
-}
-
-// Replace the existing searchInTeamNames function with this enhanced version:
-
-function searchInTeamNames(searchTerm, teamName) {
-    if (!teamName) return false;
-    
-    const term = normalizeGermanText(searchTerm.toLowerCase());
-    const team = normalizeGermanText(teamName.toLowerCase());
-    
-    // Direct match with normalized text
-    if (team.includes(term)) {
-        return true;
-    }
-    
-    // Also check original text without normalization
-    if (teamName.toLowerCase().includes(searchTerm.toLowerCase())) {
-        return true;
-    }
-    
-    // Enhanced German team abbreviations and alternate names
-    const teamAliases = {
-        // Bundesliga teams
-        'bayern': ['bayern munich', 'fc bayern', 'fcb', 'fc bayern münchen', 'fc bayern munchen'],
-        'munich': ['bayern munich', 'fc bayern', 'bayern münchen', 'bayern munchen'],
-        'munchen': ['bayern munich', 'fc bayern', 'bayern münchen', 'münchen'],
-        'dortmund': ['borussia dortmund', 'bvb', 'bvb 09', 'borussia'],
-        'leipzig': ['rb leipzig', 'red bull leipzig', 'rasenballsport'],
-        'schalke': ['fc schalke 04', 's04', 'schalke 04'],
-        'frankfurt': ['eintracht frankfurt', 'sge'],
-        'leverkusen': ['bayer leverkusen', 'bayer 04', 'werkself'],
-        'gladbach': ['borussia mönchengladbach', 'borussia monchengladbach', 'bmg', 'borussia mg', 'mönchengladbach', 'monchengladbach'],
-        'wolfsburg': ['vfl wolfsburg', 'wob'],
-        'berlin': ['hertha berlin', 'hertha bsc', 'union berlin', '1. fc union'],
-        'hamburg': ['hamburger sv', 'hsv', 'hamburg sv'],
-        'bremen': ['werder bremen', 'sv werder', 'werder'],
-        'cologne': ['1. fc köln', '1. fc koln', 'fc köln', 'fc koln', 'köln', 'koln'],
-        'koln': ['1. fc köln', 'fc köln', 'köln', 'cologne'],
-        'stuttgart': ['vfb stuttgart', 'vfb'],
-        'hoffenheim': ['tsg hoffenheim', 'tsg 1899', 'tsg'],
-        'freiburg': ['sc freiburg', 'sport-club freiburg'],
-        'mainz': ['1. fsv mainz 05', 'fsv mainz', 'mainz 05'],
-        'augsburg': ['fc augsburg', 'fca'],
-        'bochum': ['vfl bochum', 'vfl bochum 1848'],
-        'heidenheim': ['1. fc heidenheim', 'fc heidenheim'],
-        
-        // 2. Bundesliga teams
-        'magdeburg': ['1. fc magdeburg', 'fc magdeburg'],
-        'munster': ['preußen münster', 'preussen münster', 'sc preußen münster', 'sc preussen munster', 'münster'],
-        'münster': ['preußen münster', 'preussen münster', 'sc preußen münster', 'preussen munster'],
-        'preussen': ['preußen münster', 'preussen münster', 'sc preußen münster'],
-        'braunschweig': ['eintracht braunschweig'],
-        'kaiserslautern': ['1. fc kaiserslautern', 'fck', 'fc kaiserslautern'],
-        'dusseldorf': ['fortuna düsseldorf', 'fortuna dusseldorf', 'f95', 'fortuna'],
-        'düsseldorf': ['fortuna düsseldorf', 'fortuna dusseldorf', 'f95', 'fortuna'],
-        'hannover': ['hannover 96', 'h96'],
-        'nuremberg': ['1. fc nürnberg', '1. fc nurnberg', 'fcn', 'nürnberg', 'nurnberg'],
-        'nurnberg': ['1. fc nürnberg', 'fcn', 'nürnberg', 'nuremberg'],
-        'nürnberg': ['1. fc nürnberg', '1. fc nurnberg', 'fcn', 'nurnberg', 'nuremberg'],
-        'karlsruhe': ['karlsruher sc', 'ksc'],
-        'paderborn': ['sc paderborn 07', 'scp']
-    };
-    
-    // Check if search term matches any alias (with normalization)
-    for (const [key, aliases] of Object.entries(teamAliases)) {
-        const normalizedKey = normalizeGermanText(key);
-        if (term.includes(normalizedKey) || normalizedKey.includes(term)) {
-            return aliases.some(alias => {
-                const normalizedAlias = normalizeGermanText(alias);
-                return normalizedAlias.includes(term) || team.includes(normalizedAlias);
-            });
-        }
-    }
-    
-    return false;
-}
-
-// Add this new helper function for German character normalization:
-
-function normalizeGermanText(text) {
-    if (!text) return '';
-    
-    return text
-        .replace(/ü/g, 'u')    // ü -> u
-        .replace(/ö/g, 'o')    // ö -> o  
-        .replace(/ä/g, 'a')    // ä -> a
-        .replace(/ß/g, 'ss')   // ß -> ss
-        .replace(/Ü/g, 'U')    // Ü -> U
-        .replace(/Ö/g, 'O')    // Ö -> O
-        .replace(/Ä/g, 'A')    // Ä -> A
-        .toLowerCase();
-}
-
-// Add this enhanced location search function:
-
-function searchInLocation(searchTerm, location) {
-    if (!location) return false;
-    
-    const term = normalizeGermanText(searchTerm.toLowerCase());
-    const loc = normalizeGermanText(location.toLowerCase());
-    
-    // Direct match with normalized text
-    if (loc.includes(term)) {
-        return true;
-    }
-    
-    // Also check original text without normalization
-    if (location.toLowerCase().includes(searchTerm.toLowerCase())) {
-        return true;
-    }
-    
-    // Common German city aliases
-    const cityAliases = {
-        'munich': ['münchen', 'munchen'],
-        'munchen': ['münchen', 'munich'],
-        'münchen': ['munich', 'munchen'],
-        'cologne': ['köln', 'koln'],
-        'koln': ['köln', 'cologne'],
-        'köln': ['cologne', 'koln'],
-        'nuremberg': ['nürnberg', 'nurnberg'],
-        'nurnberg': ['nürnberg', 'nuremberg'],
-        'nürnberg': ['nuremberg', 'nurnberg'],
-        'dusseldorf': ['düsseldorf'],
-        'düsseldorf': ['dusseldorf']
-    };
-    
-    // Check city aliases
-    for (const [key, aliases] of Object.entries(cityAliases)) {
-        const normalizedKey = normalizeGermanText(key);
-        if (term.includes(normalizedKey) || normalizedKey.includes(term)) {
-            return aliases.some(alias => {
-                const normalizedAlias = normalizeGermanText(alias);
-                return normalizedAlias.includes(term) || loc.includes(normalizedAlias);
-            });
-        }
-    }
-    
-    return false;
-}
+        // Make functions globally available
+        window.toggleTripFavorite = toggleTripFavorite;
+        window.showDeleteConfirm = showDeleteConfirm;
+        window.filterTrips = filterTrips;
     </script>
-</body>
+    </body>
 </html>

@@ -12,7 +12,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        
+        <link rel="stylesheet" href="styles/select2.css">
+
         <!-- Add this immediately after your meta tags but before other scripts/stylesheets -->
         <script>
             // Early mobile detection - runs before page render
@@ -34,12 +35,12 @@
         <link rel="stylesheet" href="styles/layout.css">
         <link rel="stylesheet" href="styles/components.css">
         <link rel="stylesheet" href="styles/forms.css">
-        <link rel="stylesheet" href="styles/select2.css">
         <link rel="stylesheet" href="styles/animations.css">
         <link rel="stylesheet" href="styles/calendar.css">
         <link rel="stylesheet" href="styles/trip-cards.css">
         <link rel="stylesheet" href="styles/loading-animation.css">
         <link rel="stylesheet" href="styles/mobile.css">
+        <link rel="stylesheet" href="styles/footer.css">
         
         <!-- Add this in the <head> section, before your existing scripts -->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -82,9 +83,8 @@
                 </li>
                 <!-- When logged in -->
                 <li class="nav-item dropdown d-none" id="userDropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="User Menu" aria-label="User Menu">
                         <i class="fas fa-user-circle me-1"></i>
-                        <span id="userDisplayName">User</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="./profile.html">

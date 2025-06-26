@@ -16,8 +16,6 @@ const DOM = {
     noSchedule: document.getElementById('noSchedule'),
     
     // Filter display
-    activeFilters: document.getElementById('activeFilters'),
-    filterBadges: document.getElementById('filterBadges'),
     clearFilters: document.getElementById('clearFilters')
 };
 
@@ -951,12 +949,15 @@ function createMobileFilterButton() {
     // Initialize filter count
     updateFilterCount();
     
-    // Modify updateActiveFiltersDisplay to also update mobile filter count
-    const originalUpdateFilters = updateActiveFiltersDisplay;
-    updateActiveFiltersDisplay = function() {
-        originalUpdateFilters();
-        updateFilterCount();
-    };
+    // Update filter count when filters change
+    updateClearButton = (function(original) {
+        return function() {
+            original.call(this);
+            if (typeof updateFilterCount === 'function') {
+                updateFilterCount();
+            }
+        };
+    })(updateClearButton);
 
     // More reliable method to populate filters after Select2 initialization
     function populateMobileFilters() {
@@ -1108,7 +1109,7 @@ async function applyFilters() {
     state.filters.team = DOM.teamFilter.value;
     
     // Show active filters if any
-    updateActiveFiltersDisplay();
+    updateClearButton();
     
     // Remove this line:
     // state.pagination.currentPage = 1;
@@ -1173,56 +1174,21 @@ async function applyFilters() {
     }
 }
 
-// Update active filters display
-function updateActiveFiltersDisplay() {
+// Update clear button visibility and active filters display
+function updateClearButton() {
+    const clearButton = document.getElementById('clearFilters');
     const { league, team } = state.filters;
     
-    // Clear current badges
-    DOM.filterBadges.innerHTML = '';
+    // Check if any filters are active
+    const hasActiveFilters = (league !== 'all') || (team !== 'all');
     
-    let hasActiveFilters = false;
-    
-    // Add league filter badge if active
-    if (league !== 'all') {
-        const leagueName = getLeagueDisplayName(league);
-        addFilterBadge('league', leagueName, league);
-        hasActiveFilters = true;
+    if (clearButton) {
+        if (hasActiveFilters) {
+            clearButton.classList.remove('d-none');
+        } else {
+            clearButton.classList.add('d-none');
+        }
     }
-    
-    // Add team filter badge if active
-    if (team !== 'all') {
-        addFilterBadge('team', team, team);
-        hasActiveFilters = true;
-    }
-    
-    // Show or hide active filters section
-    if (hasActiveFilters) {
-        DOM.activeFilters.classList.remove('d-none');
-    } else {
-        DOM.activeFilters.classList.add('d-none');
-    }
-}
-
-// Add a filter badge
-function addFilterBadge(type, text, value) {
-    const badge = document.createElement('span');
-    badge.className = 'badge rounded-pill bg-primary d-flex align-items-center';
-    badge.innerHTML = `
-        ${type === 'league' ? 
-            `<img src="${getLeagueLogoUrl(value)}" class="me-1" width="16" height="16" alt="${text}">` : 
-            (type === 'team' ? 
-                `<img src="${getTeamLogoUrl(value)}" class="me-1" width="16" height="16" alt="${text}">` : 
-                '')}
-        ${text}
-        <button class="btn-close btn-close-white ms-2" data-filter-type="${type}" aria-label="Remove ${type} filter"></button>
-    `;
-    
-    // Add click handler to remove filter
-    badge.querySelector('.btn-close').addEventListener('click', () => {
-        removeFilter(type);
-    });
-    
-    DOM.filterBadges.appendChild(badge);
 }
 
 // Remove a specific filter
@@ -1240,22 +1206,31 @@ function removeFilter(type) {
 
 // Clear all filters
 function clearFilters() {
+    // Reset filter dropdowns
     DOM.leagueFilter.value = 'all';
     DOM.teamFilter.value = 'all';
-    $(DOM.leagueFilter).trigger('change');
-    $(DOM.teamFilter).trigger('change');
     
+    // Trigger change events if using Select2
+    if (window.$ && $(DOM.leagueFilter).hasClass('select2-hidden-accessible')) {
+        $(DOM.leagueFilter).trigger('change');
+    }
+    if (window.$ && $(DOM.teamFilter).hasClass('select2-hidden-accessible')) {
+        $(DOM.teamFilter).trigger('change');
+    }
+    
+    // Reset state
     state.filters = {
         league: 'all',
         team: 'all',
         date: null
     };
     
-    DOM.activeFilters.classList.add('d-none');
+    // Hide clear button
+    updateClearButton();
     
+    // Reload all games
     loadAllGames();
 }
-
 // Jump to a specific date
 // Jump to a specific date in the existing schedule view
 function jumpToDate(date) {
