@@ -3,29 +3,29 @@ import {
     loadLeagues, 
     loadTeams,
     loadAvailableDates
-} from './services/data-loader.js';
+} from './data-loader.js';
 
-import { applyTeamLogoStyles, preloadLogos, formatTeamOptionWithLogo, formatTeamSelectionWithLogo, formatLeagueOptionWithLogo, formatLeagueSelectionWithLogo } from './services/team-logos.js';
+import { applyTeamLogoStyles, preloadLogos, formatTeamOptionWithLogo, formatTeamSelectionWithLogo, formatLeagueOptionWithLogo, formatLeagueSelectionWithLogo } from './team-logos.js';
 
 import { 
     showComponentLoading, 
     hideComponentLoading,
     showListView,
     clearFilters 
-} from './services/ui-helpers.js';
+} from './ui-helpers.js';
 
-import { handleSearch, initFormHandlers, updateMinGamesOptions } from './services/trip-service.js';
-import { renderResults } from './components/results-display.js';
-import { checkHealth } from './services/api.js';
-import { initFilterDrawer } from './services/filters.js'; // Add this import
+import { handleSearch, initFormHandlers, updateMinGamesOptions } from './trip-service.js';
+import { renderResults } from '../components/results-display.js';
+import { checkHealth } from './api.js';
+import { initFilterDrawer } from './filters.js'; // Add this import
 
-import { initPreferredLeaguesSelect } from './services/select2-init.js';
+import { initPreferredLeaguesSelect } from './select2-init.js';
 
 // Import cancellation function
-import { cancelTripRequest } from './services/api.js';
+import { cancelTripRequest } from './api.js';
 
 // Add this import at the top with your other imports
-import { initializeMatchesExpander } from './components/trip-card.js';
+import { initializeMatchesExpander } from '../components/trip-card.js';
 
 // Create a global DOM object to share references between modules
 window.DOM = {};
@@ -639,7 +639,7 @@ window.returnToSearch = returnToSearch;
 window.renderItineraryForVariant = null;
 
 // Import and expose trip-card.js functions globally
-import('./components/trip-card.js').then(module => {
+import('../components/trip-card.js').then(module => {
     window.renderItineraryForVariant = module.renderItineraryForVariant;
 });
 
