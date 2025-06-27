@@ -321,12 +321,15 @@ function setupEventListeners() {
         updateMinGamesOptions();
     });
     
-    // Handle preferred leagues selection changes
+    // Setup selection limits
+    setupSelectionLimits();
+    
+    // Handle preferred leagues selection changes (keep existing code)
     $('#preferredLeagues').on('select2:select select2:unselect', function(e) {
         updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
     });
     
-    // Handle must teams selection changes
+    // Handle must teams selection changes (keep existing code)
     $('#mustTeams').on('select2:select select2:unselect', function(e) {
         updateSelectionClasses($(this), $('#mustTeamsContainer'));
     });
@@ -718,3 +721,116 @@ document.getElementById('tripSearchForm').addEventListener('submit', async funct
         return;
     }
 });
+
+// Add selection limit handlers
+function setupSelectionLimits() {
+    // Preferred Leagues - Max 3
+    $('#preferredLeagues').on('select2:select', function(e) {
+        const selectedCount = $(this).val()?.length || 0;
+        const warningElement = document.getElementById('leaguesLimitWarning');
+        
+        if (selectedCount >= 3) {
+            // Disable remaining options
+            $(this).find('option:not(:selected)').each(function() {
+                $(this).prop('disabled', true);
+            });
+            $(this).select2('destroy').select2({
+                placeholder: 'Maximum 3 leagues selected',
+                width: '100%',
+                closeOnSelect: false,
+                allowClear: true,
+                minimumResultsForSearch: Infinity,
+                selectionCssClass: 'select2-selection--clean',
+                dropdownCssClass: 'select2-dropdown--clean',
+                templateResult: formatLeagueOptionWithLogo,
+                templateSelection: formatLeagueSelectionWithLogo,
+                dropdownParent: $('body')
+            });
+            
+            warningElement.classList.add('show');
+        }
+        
+        updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
+    });
+
+    $('#preferredLeagues').on('select2:unselect', function(e) {
+        const selectedCount = $(this).val()?.length || 0;
+        const warningElement = document.getElementById('leaguesLimitWarning');
+        
+        if (selectedCount < 3) {
+            // Re-enable all options
+            $(this).find('option').prop('disabled', false);
+            $(this).select2('destroy').select2({
+                placeholder: 'Select Leagues',
+                width: '100%',
+                closeOnSelect: false,
+                allowClear: true,
+                minimumResultsForSearch: Infinity,
+                selectionCssClass: 'select2-selection--clean',
+                dropdownCssClass: 'select2-dropdown--clean',
+                templateResult: formatLeagueOptionWithLogo,
+                templateSelection: formatLeagueSelectionWithLogo,
+                dropdownParent: $('body')
+            });
+            
+            warningElement.classList.remove('show');
+        }
+        
+        updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
+    });
+
+    // Must Include Teams - Max 3
+    $('#mustTeams').on('select2:select', function(e) {
+        const selectedCount = $(this).val()?.length || 0;
+        const warningElement = document.getElementById('teamsLimitWarning');
+        
+        if (selectedCount >= 3) {
+            // Disable remaining options
+            $(this).find('option:not(:selected)').each(function() {
+                $(this).prop('disabled', true);
+            });
+            $(this).select2('destroy').select2({
+                placeholder: 'Maximum 3 teams selected',
+                width: '100%',
+                closeOnSelect: false,
+                allowClear: true,
+                minimumResultsForSearch: Infinity,
+                selectionCssClass: 'select2-selection--clean',
+                dropdownCssClass: 'select2-dropdown--clean',
+                templateResult: formatTeamOptionWithLogo,
+                templateSelection: formatTeamSelectionWithLogo,
+                dropdownParent: $('body')
+            });
+            
+            warningElement.classList.add('show');
+        }
+        
+        updateSelectionClasses($(this), $('#mustTeamsContainer'));
+    });
+
+    $('#mustTeams').on('select2:unselect', function(e) {
+        const selectedCount = $(this).val()?.length || 0;
+        const warningElement = document.getElementById('teamsLimitWarning');
+        
+        if (selectedCount < 3) {
+            // Re-enable all options
+            $(this).find('option').prop('disabled', false);
+            $(this).select2('destroy').select2({
+                placeholder: 'Select Teams',
+                width: '100%',
+                closeOnSelect: false,
+                allowClear: true,
+                minimumResultsForSearch: Infinity,
+                selectionCssClass: 'select2-selection--clean',
+                dropdownCssClass: 'select2-dropdown--clean',
+                templateResult: formatTeamOptionWithLogo,
+                templateSelection: formatTeamSelectionWithLogo,
+                dropdownParent: $('body')
+            });
+            
+            warningElement.classList.remove('show');
+        }
+        
+        updateSelectionClasses($(this), $('#mustTeamsContainer'));
+    });
+}

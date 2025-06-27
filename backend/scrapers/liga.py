@@ -7,7 +7,7 @@ import re
 
 # Output file
 file_path = r"C:\Users\Eyalp\Desktop\Bundes\backend\scrapers\liga3_games.txt"
-START = 29 # starts on 1, ends on 38 (for 38 need to write 39)
+START = 1 # starts on 1, ends on 38 (for 38 need to write 39)
 END = 39
 
 # Overwrite the file with a header row
@@ -58,7 +58,7 @@ session = get_fresh_session()
 time_pattern = re.compile(r"^\d{1,2}:\d{2}$")
 
 for matchday in range(START, END):
-    url = f"https://www.kicker.de/3-liga/spieltag/2024-25/{matchday}"
+    url = f"https://www.kicker.de/3-liga/spieltag/2025-26/{matchday}"
     print(f"\n--- Attempting to fetch 3. Liga matchday {matchday} ---")
     print(f"URL: {url}")
 

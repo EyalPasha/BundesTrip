@@ -180,12 +180,11 @@ body {
 /* Hero Section - Modern Glass Morphism Design */
 .hero {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  min-height: 100vh;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding: var(--space-3xl) 0;
+  padding: var(--space-xl) 0;
 }
 
 .hero::before {
@@ -261,7 +260,7 @@ body {
   background: var(--neutral-light);
   position: relative;
   overflow: hidden;
-  padding: var(--space-3xl) 0;
+  padding: var(--space-lg) 0 !important;
 }
 
 #about::before {
