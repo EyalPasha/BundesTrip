@@ -4,7 +4,7 @@ from datetime import datetime
 import re
 from synonyms import TEAM_SYNONYMS 
 import os
-from synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, third_liga_stadiums
+from synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, third_liga_stadiums, other_teams_stadiums
 
 # Year assumption
 YEAR = 2025
@@ -51,8 +51,8 @@ def normalize_team_name(team_raw: str) -> str:
 def create_station_lookup():
     station_lookup = {}
     
-    # Process all stadium lists
-    for team_data in bundesliga_1_stadiums + bundesliga_2_stadiums + third_liga_stadiums:
+    # Process all stadium lists including other teams
+    for team_data in bundesliga_1_stadiums + bundesliga_2_stadiums + third_liga_stadiums + other_teams_stadiums:
         team_name = team_data["team"].lower()
         station_name = team_data["hbf"]["name"]
         station_lookup[team_name] = station_name

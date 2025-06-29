@@ -291,20 +291,7 @@ span.flatpickr-weekday {
 }
 
 /* Fix cursor for disabled days - update this block */
-.flatpickr-day.flatpickr-disabled,
-.flatpickr-day.flatpickr-disabled:hover,
-.flatpickr-day.prevMonthDay,
-.flatpickr-day.prevMonthDay:hover,
-.flatpickr-day.nextMonthDay,
-.flatpickr-day.nextMonthDay:hover {
-    color: #bbb;
-    background: transparent !important;
-    pointer-events: auto !important; /* Allow hover for cursor change */
-    border-left: none !important;
-    box-shadow: none !important;
-    opacity: 0.5;
-    cursor: not-allowed !important; /* Show not-allowed cursor */
-}
+
 
 /* Ensure no interactions still work */
 .flatpickr-day.flatpickr-disabled,
@@ -313,12 +300,18 @@ span.flatpickr-weekday {
     pointer-events: none; /* Prevent clicking */
 }
 
-/* Override pointer-events for cursor visibility only */
-.dayContainer:hover .flatpickr-day.flatpickr-disabled,
-.dayContainer:hover .flatpickr-day.prevMonthDay,
-.dayContainer:hover .flatpickr-day.nextMonthDay {
-    pointer-events: auto;
+/* Really disabled days – show 🚫 cursor but ignore clicks */
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay,
+.flatpickr-day.flatpickr-disabled {
+    color: #bbb;
+    background: transparent !important;
+    pointer-events: none !important;   /* block the click */
+    border-left: none !important;
+    box-shadow: none !important;
+    opacity: 0.5;
 }
+
 
 /* Disabled and out of month days - completely remove hover effects and make them non-interactive */
 .flatpickr-day.flatpickr-disabled.has-matches {

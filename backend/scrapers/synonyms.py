@@ -212,6 +212,27 @@ TEAM_SYNONYMS = {
 
     "sv wehen wiesbaden": "SV Wehen Wiesbaden",
     "wiesbaden": "SV Wehen Wiesbaden",
+    
+    # New 3. Liga teams added
+    "msv duisburg": "MSV Duisburg",
+    "duisburg": "MSV Duisburg",
+    "meidericher sv": "MSV Duisburg",
+    "msv": "MSV Duisburg",
+    
+    "tsv havelse": "TSV Havelse",
+    "havelse": "TSV Havelse",
+    
+    "tsg 1899 hoffenheim ii": "TSG Hoffenheim II",
+    "tsg hoffenheim ii": "TSG Hoffenheim II",
+    "hoffenheim ii": "TSG Hoffenheim II",
+    "tsg ii": "TSG Hoffenheim II",
+    "hoffenheim 2": "TSG Hoffenheim II",
+    
+    "1. fc schweinfurt 05": "1. FC Schweinfurt 05",
+    "fc schweinfurt 05": "1. FC Schweinfurt 05",
+    "schweinfurt 05": "1. FC Schweinfurt 05",
+    "schweinfurt": "1. FC Schweinfurt 05",
+    "fc schweinfurt": "1. FC Schweinfurt 05",
 
     "rostock": "Hansa Rostock",
     "fc hansa rostock": "Hansa Rostock",
@@ -235,18 +256,19 @@ bundesliga_1_stadiums = [
     {"team": "Borussia Mönchengladbach", "stadium": "BORUSSIA-PARK", "stadium_location": [51.1746, 6.3855], "hbf": {"name": "Mönchengladbach hbf", "location": [51.1960, 6.4413]}},
     {"team": "Werder Bremen", "stadium": "Weserstadion", "stadium_location": [53.0664, 8.8376], "hbf": {"name": "Bremen hbf", "location": [53.0833, 8.8136]}},
     {"team": "FC Augsburg", "stadium": "WWK Arena", "stadium_location": [48.3233, 10.8840], "hbf": {"name": "Augsburg hbf", "location": [48.3655, 10.8850]}},
-    {"team": "VfL Bochum", "stadium": "Vonovia Ruhrstadion", "stadium_location": [51.4899, 7.2364], "hbf": {"name": "Bochum hbf", "location": [51.4786, 7.2245]}},
     {"team": "1. FC Heidenheim", "stadium": "Voith-Arena", "stadium_location": [48.6826, 10.1616], "hbf": {"name": "Heidenheim hbf", "location": [48.6740, 10.1540]}},
     {"team": "FC St. Pauli", "stadium": "Millerntor-Stadion", "stadium_location": [53.5549, 9.9676], "hbf": {"name": "Hamburg hbf", "location": [53.5526, 10.0067]}},
-    {"team": "Holstein Kiel", "stadium": "Holstein-Stadion", "stadium_location": [54.3439, 10.1228], "hbf": {"name": "Kiel hbf", "location": [54.3140, 10.1319]}}
+    {"team": "1. FC Köln", "stadium": "RheinEnergieStadion", "stadium_location": [50.9335, 6.8750], "hbf": {"name": "Köln hbf", "location": [50.9423, 6.9583]}},
+    {"team": "Hamburger SV", "stadium": "Volksparkstadion", "stadium_location": [53.5877, 9.8986], "hbf": {"name": "Hamburg hbf", "location": [53.5526, 10.0067]}}
 ]
 
 # Bundesliga 2 teams, their stadiums, and Hauptbahnhof coordinates
 bundesliga_2_stadiums = [
-    {"team": "1. FC Köln", "stadium": "RheinEnergieStadion", "stadium_location": [50.9335, 6.8750], "hbf": {"name": "Köln hbf", "location": [50.9423, 6.9583]}},
+    {"team": "Arminia Bielefeld", "stadium": "Schüco-Arena", "stadium_location": [52.0296, 8.5164], "hbf": {"name": "Bielefeld hbf", "location": [52.0294, 8.5325]}},
+    {"team": "VfL Bochum", "stadium": "Vonovia Ruhrstadion", "stadium_location": [51.4899, 7.2364], "hbf": {"name": "Bochum hbf", "location": [51.4786, 7.2245]}},
+    {"team": "Holstein Kiel", "stadium": "Holstein-Stadion", "stadium_location": [54.3439, 10.1228], "hbf": {"name": "Kiel hbf", "location": [54.3140, 10.1319]}},
     {"team": "SV Darmstadt 98", "stadium": "Merck-Stadion am Böllenfalltor", "stadium_location": [49.8573, 8.6680], "hbf": {"name": "Darmstadt hbf", "location": [49.8728, 8.6298]}},
     {"team": "Fortuna Düsseldorf", "stadium": "Merkur Spiel-Arena", "stadium_location": [51.2612, 6.7333], "hbf": {"name": "Düsseldorf hbf", "location": [51.2190, 6.7949]}},
-    {"team": "Hamburger SV", "stadium": "Volksparkstadion", "stadium_location": [53.5877, 9.8986], "hbf": {"name": "Hamburg hbf", "location": [53.5526, 10.0067]}},
     {"team": "Karlsruher SC", "stadium": "Wildparkstadion", "stadium_location": [49.0246, 8.4293], "hbf": {"name": "Karlsruhe hbf", "location": [48.9939, 8.4006]}},
     {"team": "Hannover 96", "stadium": "HDI-Arena", "stadium_location": [52.3600, 9.7312], "hbf": {"name": "Hannover hbf", "location": [52.3779, 9.7415]}},
     {"team": "SC Paderborn 07", "stadium": "Benteler-Arena", "stadium_location": [51.7191, 8.7408], "hbf": {"name": "Paderborn hbf", "location": [51.7191, 8.7575]}},
@@ -258,30 +280,39 @@ bundesliga_2_stadiums = [
     {"team": "1. FC Kaiserslautern", "stadium": "Fritz-Walter-Stadion", "stadium_location": [49.4352, 7.7766], "hbf": {"name": "Kaiserslautern hbf", "location": [49.4403, 7.7498]}},
     {"team": "1. FC Magdeburg", "stadium": "MDCC-Arena", "stadium_location": [52.1204, 11.6714], "hbf": {"name": "Magdeburg hbf", "location": [52.1306, 11.6266]}},
     {"team": "Eintracht Braunschweig", "stadium": "Eintracht-Stadion", "stadium_location": [52.2846, 10.5550], "hbf": {"name": "Braunschweig hbf", "location": [52.2481, 10.5377]}},
-    {"team": "SSV Ulm 1846", "stadium": "Donaustadion", "stadium_location": [48.4027, 10.0058], "hbf": {"name": "Ulm hbf", "location": [48.3984, 9.9916]}},
     {"team": "Preußen Münster", "stadium": "Preußenstadion", "stadium_location": [51.9290, 7.6245], "hbf": {"name": "Münster (Westf) hbf", "location": [51.9565, 7.6346]}},
-    {"team": "SSV Jahn Regensburg", "stadium": "Jahnstadion Regensburg", "stadium_location": [48.990856, 12.107238], "hbf": {"name": "Regensburg hbf", "location": [49.012222, 12.099444]}}
+    {"team": "Dynamo Dresden", "stadium": "Rudolf-Harbig-Stadion", "stadium_location": [51.0358, 13.7461], "hbf": {"name": "Dresden hbf", "location": [51.0406, 13.7326]}}
 ]
 
 third_liga_stadiums = [
+    {"team": "SSV Ulm 1846", "stadium": "Donaustadion", "stadium_location": [48.4027, 10.0058], "hbf": {"name": "Ulm hbf", "location": [48.3984, 9.9916]}},
+    {"team": "SSV Jahn Regensburg", "stadium": "Jahnstadion Regensburg", "stadium_location": [48.990856, 12.107238], "hbf": {"name": "Regensburg hbf", "location": [49.012222, 12.099444]}},
     {"team": "Alemannia Aachen", "stadium": "Tivoli", "stadium_location": [50.7910, 6.1059], "hbf": {"name": "Aachen hbf", "location": [50.7678, 6.0915]}},
-    {"team": "Arminia Bielefeld", "stadium": "Schüco-Arena", "stadium_location": [52.0296, 8.5164], "hbf": {"name": "Bielefeld hbf", "location": [52.0294, 8.5325]}},
-    {"team": "Borussia Dortmund II", "stadium": "Stadion Rote Erde", "stadium_location": [51.4925, 7.4519], "hbf": {"name": "Dortmund hbf", "location": [51.5175, 7.4593]}},
-    {"team": "Dynamo Dresden", "stadium": "Rudolf-Harbig-Stadion", "stadium_location": [51.0358, 13.7461], "hbf": {"name": "Dresden hbf", "location": [51.0406, 13.7326]}},
     {"team": "Energie Cottbus", "stadium": "Stadion der Freundschaft", "stadium_location": [51.7453, 14.3564], "hbf": {"name": "Cottbus hbf", "location": [51.7457, 14.3343]}},
     {"team": "Erzgebirge Aue", "stadium": "Erzgebirgsstadion", "stadium_location": [50.5856, 12.7114], "hbf": {"name": "Aue (Sachs) Bahnhof", "location": [50.5861, 12.6956]}},
-    {"team": "Hannover 96 II", "stadium": "Eilenriedestadion", "stadium_location": [52.3770, 9.7610], "hbf": {"name": "Hannover hbf", "location": [52.3779, 9.7415]}},
     {"team": "Hansa Rostock", "stadium": "Ostseestadion", "stadium_location": [54.0849, 12.0951], "hbf": {"name": "Rostock hbf", "location": [54.0755, 12.1327]}},
     {"team": "FC Ingolstadt 04", "stadium": "Audi Sportpark", "stadium_location": [48.7194, 11.4575], "hbf": {"name": "Ingolstadt hbf", "location": [48.7320, 11.4057]}},
     {"team": "TSV 1860 Munich", "stadium": "Grünwalder Stadion", "stadium_location": [48.1056, 11.5748], "hbf": {"name": "München hbf", "location": [48.1402, 11.5586]}},
     {"team": "VfL Osnabrück", "stadium": "Stadion an der Bremer Brücke", "stadium_location": [52.2785, 8.0681], "hbf": {"name": "Osnabrück hbf", "location": [52.2725, 8.0530]}},
     {"team": "Rot-Weiss Essen", "stadium": "Stadion an der Hafenstraße", "stadium_location": [51.4875, 6.9731], "hbf": {"name": "Essen hbf", "location": [51.4513, 7.0134]}},
     {"team": "FC Saarbrücken", "stadium": "Ludwigsparkstadion", "stadium_location": [49.2525, 6.9725], "hbf": {"name": "Saarbrücken hbf", "location": [49.2415, 6.9916]}},
-    {"team": "SV Sandhausen", "stadium": "Hardtwaldstadion", "stadium_location": [49.3525, 8.6461], "hbf": {"name": "Heidelberg hbf", "location": [49.4010, 8.6750]}},
-    {"team": "SpVgg Unterhaching", "stadium": "Sportpark Unterhaching", "stadium_location": [48.0647, 11.6136], "hbf": {"name": "München hbf", "location": [48.1402, 11.5586]}},
     {"team": "VfB Stuttgart II", "stadium": "Gazi-Stadion auf der Waldau", "stadium_location": [48.7561, 9.1906], "hbf": {"name": "Stuttgart hbf", "location": [48.7850, 9.1829]}},
     {"team": "SC Verl", "stadium": "Sportclub Arena", "stadium_location": [51.8833, 8.5144], "hbf": {"name": "Gütersloh hbf", "location": [51.9069, 8.3785]}},
     {"team": "Viktoria Köln", "stadium": "Sportpark Höhenberg", "stadium_location": [50.9431, 7.0106], "hbf": {"name": "Köln hbf", "location": [50.9423, 6.9583]}},
     {"team": "Waldhof Mannheim", "stadium": "Carl-Benz-Stadion", "stadium_location": [49.4775, 8.5006], "hbf": {"name": "Mannheim hbf", "location": [49.4794, 8.4689]}},
-    {"team": "SV Wehen Wiesbaden", "stadium": "BRITA-Arena", "stadium_location": [50.0736, 8.2386], "hbf": {"name": "Wiesbaden hbf", "location": [50.0717, 8.2433]}}
+    {"team": "SV Wehen Wiesbaden", "stadium": "BRITA-Arena", "stadium_location": [50.0736, 8.2386], "hbf": {"name": "Wiesbaden hbf", "location": [50.0717, 8.2433]}},
+    #New teams added
+    {"team": "TSG Hoffenheim II", "stadium": "Dietmar-Hopp-Stadion", "stadium_location": [49.2736322388, 8.8385966456], "hbf": {"name": "Sinsheim (Elsenz) hbf", "location": [49.2528, 8.8787]}},
+    {"team": "MSV Duisburg", "stadium": "MSV-Arena", "stadium_location": [51.4054183783, 6.77386190454], "hbf": {"name": "Duisburg hbf", "location": [51.4292, 6.7750]}},
+    {"team": "TSV Havelse", "stadium": "Wilhelm-Langrehr-Stadion", "stadium_location": [52.40887, 9.60198], "hbf": {"name": "Hannover hbf", "location": [52.3779, 9.7415]}},
+    {"team": "1. FC Schweinfurt 05", "stadium": "Sachs-Stadion", "stadium_location": [50.05199, 10.20168], "hbf": {"name": "Schweinfurt hbf", "location": [50.0444, 10.2358]}}
+
+]
+
+# Add this new section after third_liga_stadiums
+other_teams_stadiums = [
+    {"team": "Borussia Dortmund II", "stadium": "Stadion Rote Erde", "stadium_location": [51.4925, 7.4519], "hbf": {"name": "Dortmund hbf", "location": [51.5175, 7.4593]}},
+    {"team": "Hannover 96 II", "stadium": "Eilenriedestadion", "stadium_location": [52.3770, 9.7610], "hbf": {"name": "Hannover hbf", "location": [52.3779, 9.7415]}},
+    {"team": "SV Sandhausen", "stadium": "Hardtwaldstadion", "stadium_location": [49.3525, 8.6461], "hbf": {"name": "Heidelberg hbf", "location": [49.4010, 8.6750]}},
+    {"team": "SpVgg Unterhaching", "stadium": "Sportpark Unterhaching", "stadium_location": [48.0647, 11.6136], "hbf": {"name": "München hbf", "location": [48.1402, 11.5586]}}
 ]

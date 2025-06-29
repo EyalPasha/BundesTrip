@@ -4,6 +4,20 @@ from datetime import datetime, timedelta
 import time
 import random
 import re
+import calendar  # Add this import
+from synonyms import other_teams_stadiums, TEAM_SYNONYMS
+
+
+CURRENT_YEAR = 2025
+
+def get_season_year(month_name):
+    """Return the correct year based on season logic (July-June)"""
+    month_num = datetime.strptime(month_name, "%B").month
+    if month_num >= 7:  # July to December
+        return CURRENT_YEAR
+    else:  # January to June
+        return CURRENT_YEAR + 1
+
 
 START_MD         = 1 # starts on 1, ends on 6 (for 6 need to write 7)
 END_MD           = 7   
@@ -11,6 +25,9 @@ file_path = r"C:\Users\Eyalp\Desktop\Bundes\backend\scrapers\dfb_pokal_games.txt
 
 # We want only home teams if their trailing league is in:
 ALLOWED_LEAGUES = {"Bundesliga", "2. Bundesliga", "3. Liga"}
+
+# Create a set of team names from other_teams_stadiums for fast lookup
+OTHER_TEAM_NAMES = {team_data["team"] for team_data in other_teams_stadiums}
 
 # Consider matches older than 1 month (30 days) “too old.”
 ONE_MONTH_AGO = datetime.now() - timedelta(days=30)
@@ -74,13 +91,29 @@ session = get_fresh_session()
 def fix_date_string(date_str: str) -> str:
     """
     If kicker shows '08.04.' (missing year), remove trailing '.' if present,
-    then append '.2025' if no 4-digit year => '08.04.2025'.
+    then append the correct year based on season logic.
     """
     date_str = date_str.strip()
     if date_str.endswith("."):
         date_str = date_str[:-1]
+    
+    # Only add year if no 4-digit year is present
     if not re.search(r"\b20\d{2}\b", date_str):
-        date_str += ".2025"
+        try:
+            # Parse date to get month (expecting format like "08.04")
+            parts = date_str.split(".")
+            if len(parts) >= 2:
+                month_num = int(parts[1])
+                month_name = calendar.month_name[month_num]
+                correct_year = get_season_year(month_name)
+                date_str += f".{correct_year}"
+            else:
+                # Fallback to default year if parsing fails
+                date_str += f".{CURRENT_YEAR}"
+        except (ValueError, IndexError):
+            # Fallback to default year if parsing fails
+            date_str += f".{CURRENT_YEAR}"
+    
     return date_str
 
 
@@ -88,7 +121,7 @@ def fix_date_string(date_str: str) -> str:
 # 2) Main Loop
 #########################
 for matchday in range(START_MD, END_MD):
-    url = f"https://www.kicker.de/{BASE_SLUG}/spieltag/2024-25/{matchday}"
+    url = f"https://www.kicker.de/{BASE_SLUG}/spieltag/2025-26/{matchday}"
     print(f"\n--- {COMPETITION_NAME}, matchday {matchday} ---")
     print(f"URL: {url}")
 
@@ -171,17 +204,44 @@ for matchday in range(START_MD, END_MD):
         raw_home = teams[0].get_text(strip=True)
         raw_away = teams[1].get_text(strip=True)
 
-        # Parse home side => must end in "Bundesliga" / "2. Bundesliga" / "3. Liga"
+        # Parse home side - try the original pattern first
         home_match = league_pattern.match(raw_home)
-        if not home_match:
-            # If we can't parse e.g. 'AalenOberliga...' => skip
-            continue
+        if home_match:
+            home_name = home_match.group(1).strip()     # e.g. "Bielefeld"
+            home_league = home_match.group(2).strip()   # e.g. "3. Liga"
+        else:
+            # If original pattern doesn't match, check if it's a team from other_teams_stadiums
+            # Try to extract team name by checking against our known team list
+            home_name = None
+            home_league = "Unknown"
+            
+            # First, check if any team from other_teams_stadiums is a prefix of raw_home
+            for team_data in other_teams_stadiums:
+                team_name = team_data["team"]
+                if raw_home.startswith(team_name):
+                    home_name = team_name
+                    # Extract the league part (everything after the team name)
+                    home_league = raw_home[len(team_name):].strip()
+                    break
+            
+            # If still not found, check through TEAM_SYNONYMS
+            if home_name is None:
+                # Try to find the longest matching synonym that could be at the start
+                for synonym, canonical_name in TEAM_SYNONYMS.items():
+                    if raw_home.lower().startswith(synonym.lower()):
+                        # Check if the canonical name is in other_teams_stadiums
+                        if canonical_name in OTHER_TEAM_NAMES:
+                            home_name = canonical_name
+                            # Extract the league part (everything after the synonym)
+                            home_league = raw_home[len(synonym):].strip()
+                            break
+            
+            # If we couldn't find a match, skip this match
+            if home_name is None:
+                continue
 
-        home_name = home_match.group(1).strip()     # e.g. "Bielefeld"
-        home_league = home_match.group(2).strip()   # e.g. "3. Liga"
-
-        # We only keep the row if home_league is in ALLOWED_LEAGUES
-        if home_league not in ALLOWED_LEAGUES:
+        # Modified logic: Allow if home_league is in ALLOWED_LEAGUES OR home_name is in other_teams_stadiums
+        if home_league not in ALLOWED_LEAGUES and home_name not in OTHER_TEAM_NAMES:
             continue
 
         # Parse away side similarly, but we do NOT require them to be in any particular league

@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.edge.service import Service
 from selenium.webdriver.edge.options import Options
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, third_liga_stadiums
+from synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, third_liga_stadiums, other_teams_stadiums
 
 # Set up Selenium for Microsoft Edge
 options = Options()
@@ -127,7 +127,7 @@ def get_fastest_train_time(home_city, away_city, retries=3):
     attempt = 0
     while attempt < retries:
         try:
-            search_query = f"{home_city} to {away_city} trains march 22"
+            search_query = f"{home_city} to {away_city} trains june 29"
             google_url = f"https://www.google.com/search?q={search_query.replace(' ', '+')}"
             driver.get(google_url)
             human_like_delay()
@@ -174,8 +174,7 @@ else:
     existing_pairs = set()
 
 # Combine all Bundesliga 1 and 2 teams with their respective Hauptbahnhof locations
-all_teams = bundesliga_1_stadiums + bundesliga_2_stadiums + third_liga_stadiums
-
+all_teams = bundesliga_1_stadiums + bundesliga_2_stadiums + third_liga_stadiums + other_teams_stadiums
 # Extract unique city names from Hbf entries
 city_hbf_mapping = {team["hbf"]["name"]: team["hbf"]["name"] for team in all_teams}
 
@@ -191,22 +190,24 @@ batch_entries = []
 
 for idx, (home, away) in enumerate(city_pairs):
     # --------------------------------
+    #    Check if already exists FIRST
+    # --------------------------------
+    if (home, away) in existing_pairs or (away, home) in existing_pairs:
+        print(f"Skipping {home} to {away}, already in CSV.")
+        continue
+    
+    # --------------------------------
     #    Same-city scenario
     # --------------------------------
     if home == away:
-        # Instead of skipping, call the function to add same-city time:
+        # Add same-city time and mark as processed
         add_same_city_time(home, csv_file)
-        # Mark it in existing_pairs if you like:
         existing_pairs.update([(home, away)])
         continue
 
     # --------------------------------
     #    Different city scenario
     # --------------------------------
-    if (home, away) in existing_pairs or (away, home) in existing_pairs:
-        print(f"Skipping {home} to {away}, already in CSV.")
-        continue
-
     # Change user agent every 20 requests
     if idx % 20 == 0:
         refresh_user_agent()

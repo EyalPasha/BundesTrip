@@ -4,6 +4,12 @@ const totalSteps = 3;
 
 // Initialize step form
 function initStepForm() {
+    // Set initial step class immediately
+    const stepNavigation = document.querySelector('.step-navigation');
+    if (stepNavigation) {
+        stepNavigation.className = `step-navigation step-${currentStep}`;
+    }
+    
     updateStepVisibility();
     setupStepNavigation();
     setupMinGamesLogic();
@@ -46,29 +52,35 @@ function updateStepVisibility() {
         currentPanel.classList.add('active');
     }
     
+    // Update navigation container class
+    const stepNavigation = document.querySelector('.step-navigation');
+    stepNavigation.className = `step-navigation step-${currentStep}`;
+    
     // Update navigation buttons
     const nextBtn = document.getElementById('nextStep');
     const prevBtn = document.getElementById('prevStep');
     const submitBtn = document.getElementById('submitForm');
     
-    // Previous button
+    // Previous button - hide completely on step 1
     if (currentStep === 1) {
         prevBtn.classList.add('hidden-step-button');
-        prevBtn.style.visibility = 'hidden';
     } else {
         prevBtn.classList.remove('hidden-step-button');
-        prevBtn.style.visibility = 'visible';
     }
     
-    // Next/Submit button
+    // Next/Submit button - swap between them but maintain same position
     if (currentStep === totalSteps) {
+        // Hide next button
         nextBtn.style.display = 'none';
         nextBtn.classList.add('d-none');
+        // Show submit button in same position
         submitBtn.style.display = 'flex';
         submitBtn.classList.remove('d-none');
     } else {
+        // Show next button
         nextBtn.style.display = 'flex';
         nextBtn.classList.remove('d-none');
+        // Hide submit button
         submitBtn.style.display = 'none';
         submitBtn.classList.add('d-none');
     }
@@ -160,7 +172,6 @@ function setupMinGamesLogic() {
 
 // Call this after your existing initialization
 document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        initStepForm();
-    }, 500); // Allow other initialization to complete first
+    // Initialize immediately, don't wait
+    initStepForm();
 });

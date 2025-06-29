@@ -121,41 +121,6 @@ body {
   transform: scale(1.05);
 }
 
-.nav-link {
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-weight: 500;
-  padding: var(--space-sm) var(--space-md) !important;
-  border-radius: var(--radius-md);
-  transition: all var(--duration-fast) ease;
-  position: relative;
-}
-
-.nav-link::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--secondary-color);
-  transition: all var(--duration-normal) ease;
-  transform: translateX(-50%);
-}
-
-.nav-link:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--white) !important;
-}
-
-.nav-link:hover::before,
-.nav-link.active::before {
-  width: 80%;
-}
-
-.nav-link.active {
-  color: var(--white) !important;
-  font-weight: 600;
-}
 
 .dropdown-menu {
   background: var(--white);

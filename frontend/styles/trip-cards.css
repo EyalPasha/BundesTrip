@@ -422,6 +422,10 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   z-index: 2;
 }
 
+.toggle-details-button i {
+  color: white !important;
+}
+
 .toggle-details-button::after {
   content: '';
   position: absolute;
@@ -502,6 +506,15 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 .nav-tabs .nav-link:hover {
   color: var(--primary-color);
   background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Nav tab buttons - make inactive tabs blue text */
+.nav-tabs .nav-link:not(.active) {
+  color: var(--primary-color) !important;
+}
+
+.nav-tabs .nav-link:not(.active) i {
+  color: var(--primary-color) !important;
 }
 
 /* Tab content */
@@ -914,6 +927,11 @@ i.fa-map-marker-alt {
   animation: fadeIn 0.5s ease-out forwards;
   animation-delay: 0.3s;
   opacity: 0;
+}
+
+/* Timeline end marker - make icon white */
+.timeline-end-marker i {
+  color: white !important;
 }
 
 /* Updated day header styling */
@@ -1490,7 +1508,8 @@ font-weight: 500;
   font-size: 0.75rem;
   font-weight: 500;
   background: none;
-  color: var(--secondary-color);
+  color: var(--primary-color) !important;
+  font-weight: 600;
   border: none;
   padding: 0;
 }
@@ -2220,6 +2239,35 @@ font-weight: 500;
     transform: translateY(0);
 }
 
+/* Load more button - make text and icon primary blue */
+.btn-outline-primary.load-more-btn {
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.btn-outline-primary.load-more-btn i {
+  color: var(--primary-color) !important;
+}
+
+.btn-outline-primary.load-more-btn .badge {
+  color: var(--primary-color) !important;
+  background-color: white !important;
+  border: 1px solid var(--primary-color) !important;
+}
+
+/* Hover states */
+.btn-outline-primary.load-more-btn:hover {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.btn-outline-primary.load-more-btn:hover i,
+.btn-outline-primary.load-more-btn:hover .badge {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  border-color: white !important;
+}
+
 /* Add this to trip-cards.css */
 .load-more-btn .badge {
   background-color: var(--primary-color) !important; /* Use main blue background */
@@ -2288,23 +2336,6 @@ font-weight: 500;
   color: white;
 }
 
-/* Option number styling */
-.nav-tabs .nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 15%;
-  right: 15%;
-  height: 3px;
-  background: linear-gradient(to right, var(--primary-light), var(--primary-light));
-  opacity: 0;
-  transition: all 0.3s ease;
-  border-radius: 3px;
-}
-
-.nav-tabs .nav-link:hover::after {
-  opacity: 0.7;
-}
 
 /* Fix exchange icon position in tabs */
 .nav-tabs .nav-link .fas.fa-exchange-alt {
@@ -2321,6 +2352,9 @@ font-weight: 500;
   box-shadow: 0 4px 12px rgba(4, 61, 124, 0.2);
   border-bottom: none !important;
   margin-bottom: 0;
+}
+.nav-tabs .nav-link.active i {
+  color: white !important;
 }
 
 /* Hover effect for tabs */
@@ -2485,6 +2519,13 @@ font-weight: 500;
     margin-bottom: 0.5rem;
     border-radius: 30px;
 }
+
+/* Travel time badges - make text white */
+.badge.bg-light.text-dark {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+}
+
 
 /* Make badges look better when active */
 #teamFilters .badge.bg-primary, 
@@ -2743,6 +2784,10 @@ body.mustteams-dropdown-open .select2-dropdown {
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
     border: 2px solid rgba(255, 255, 255, 0.4);
     transition: transform 0.3s ease;
+}
+
+.results-icon i {
+  color: white !important;
 }
 
 .results-header:hover .results-icon {
@@ -3506,7 +3551,11 @@ body.mustteams-dropdown-open .select2-dropdown {
 .btn-save {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    border: 2px solid transparent;
+    box-shadow: 0 3px 8px rgba(4, 61, 124, 0.12); /* Remove inset shadow */
+}
+
+.btn-save i {
+    color: white !important;
 }
 
 .btn-save:hover {

@@ -110,7 +110,6 @@
                 <div class="col-md-6">
                     <div class="card shadow search-card">
                         <div class="card-body">
-                            <h2 class="card-title mb-4">Find Your Trip</h2>
                             <form id="tripSearchForm">
                                 <!-- Multi-Step Progress Indicator -->
                                 <div class="step-progress">
@@ -219,7 +218,7 @@
                                         <div class="multi-select-container">
                                             <div class="form-label-with-help">
                                                 <label for="preferredLeagues" class="form-label-main">
-                                                    <i class="fas fa-trophy icon"></i> Preferred Leagues
+                                                    <i class="fas fa-trophy icon"></i> Preferred Leagues (Max. 3)
                                                 </label>
                                                 <span class="form-label-help">Leave empty for all leagues!</span>
                                             </div>
@@ -227,31 +226,44 @@
                                                 <select class="form-select select-hidden" id="preferredLeagues" multiple="multiple">
                                                 </select>
                                             </div>
-                                            <div class="selection-limit-warning" id="leaguesLimitWarning">
-                                                Maximum 3 leagues can be selected
-                                            </div>
                                         </div>
                                         
+                                        <!-- NEW: Individual team selection boxes -->
                                         <div class="multi-select-container">
                                             <div class="form-label-with-help">
-                                                <label for="mustTeams" class="form-label-main">
+                                                <label class="form-label-main">
                                                     <i class="fas fa-futbol icon"></i> Must Include Teams
                                                 </label>
                                                 <span class="form-label-help">Leave empty for every game!</span>
                                             </div>
-                                            <div id="mustTeamsContainer" class="position-relative">
-                                                <select class="form-select select-hidden" id="mustTeams" multiple="multiple">
-                                                </select>
-                                            </div>
-                                            <div class="selection-limit-warning" id="teamsLimitWarning">
-                                                Maximum 3 teams can be selected
+                                            <div class="individual-team-selects">
+                                                <div class="team-select-box">
+                                                    <select class="form-select select-hidden team-select" id="mustTeam1" aria-label="Must include team 1">
+                                                        <option value="" selected>Select Team 1</option>
+                                                    </select>
+                                                </div>
+                                                <div class="team-select-box">
+                                                    <select class="form-select select-hidden team-select" id="mustTeam2" aria-label="Must include team 2">
+                                                        <option value="" selected>Select Team 2</option>
+                                                    </select>
+                                                </div>
+                                                <div class="team-select-box">
+                                                    <select class="form-select select-hidden team-select" id="mustTeam3" aria-label="Must include team 3">
+                                                        <option value="" selected>Select Team 3</option>
+                                                    </select>
+                                                </div>
+                                                <div class="team-select-box">
+                                                    <select class="form-select select-hidden team-select" id="mustTeam4" aria-label="Must include team 4">
+                                                        <option value="" selected>Select Team 4</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Step Navigation -->
-                                <div class="step-navigation">
+                                <div class="step-navigation step-1">
                                     <button type="button" class="btn-step btn-step-prev hidden-step-button" id="prevStep">
                                         <i class="fas fa-chevron-left"></i> Back
                                     </button>

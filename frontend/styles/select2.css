@@ -63,23 +63,27 @@
 
 /* Selected items */
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: #043d7c !important;
-    color: white !important;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    color: #043d7c !important;
     border: none !important;
     border-radius: 0.25rem !important;
     padding: 0.2rem 0.5rem 0.2rem 1.8rem !important;
-    margin: 4px 5px 4px 0 !important; /* Consistent margins */
-    font-size: 0.9rem !important;
+    margin: 2px 3px 2px 0 !important; /* Reduce margins for tighter fit */
+    font-size: 0.85rem !important; /* Slightly smaller font */
     position: relative !important;
     display: flex !important;
     align-items: center !important;
-    height: 28px !important; /* Fixed height for consistency */
-    max-width: calc(100% - 10px) !important; /* Prevent overflow */
+    height: 24px !important; /* Reduce height to fit better */
+    max-width: calc(33% - 6px) !important; /* Limit width to show max 3 items per row */
+    flex-shrink: 0 !important; /* Prevent shrinking */
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
 /* Remove button (X) in selections */
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    color: white !important;
+    color: #043d7c !important;
     border: none !important;
     background: none !important;
     opacity: 0.8;
@@ -91,6 +95,39 @@
     font-size: 1rem !important;
 }
 
+/* Clear All Button (X) styling */
+.select2-container--default .select2-selection--multiple .select2-selection__clear {
+    position: absolute !important;
+    top: 13.5px !important; /* Adjust to match the visual center of the container */
+    right: 8px !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: none !important;
+    color: #6c757d !important;
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    opacity: 0.7 !important;
+    transition: all 0.2s ease !important;
+    z-index: 10 !important;
+    width: 20px !important;
+    height: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__clear:focus {
+    outline: 2px solid var(--primary-color) !important;
+    outline-offset: 1px !important;
+}
+
+/* Hide clear button when no selections */
+.select2-container--default .select2-selection--multiple:not(.has-selections) .select2-selection__clear {
+    display: none !important;
+}
+
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
     opacity: 1;
     background-color: rgba(255, 255, 255, 0.1) !important; /* Slight background on hover */
@@ -100,21 +137,20 @@
 /* Make the container tall enough for the content */
 .select2-container--default .select2-selection--multiple {
     min-height: 42px !important;
-    height: 42px !important; /* Fixed initial height */
-    transition: height 0.2s ease-out; /* Smooth transition when growing */
-    cursor: pointer; /* Add pointer cursor */
-    overflow: hidden !important; /* Change to hidden */
-    padding: 0 5px !important; /* Add consistent padding to selection area */
+    height: 42px !important; /* Keep fixed height */
+    transition: none !important; /* Remove transition that allows growth */
+    cursor: pointer;
+    overflow: hidden !important; /* Ensure content doesn't overflow */
+    padding: 0 5px !important;
     display: flex !important;
-    align-items: center !important;
+    align-items: flex-start !important; /* Change to flex-start for better content handling */
 }
 
-/* Make the container grow when items are added */
+/* Remove the container growth when items are added */
 .select2-container--default .select2-selection--multiple.has-selections {
-    height: auto !important; /* Allow growth when selections are present */
+    height: 42px !important; /* Keep fixed height instead of auto */
     min-height: 42px !important;
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
+    padding: 5px 5px !important; /* Equal padding top and bottom */
 }
 
 /* Ensure text doesn't overlap with remove button */
@@ -166,15 +202,15 @@ select.form-select[multiple] {
 #mustTeamsContainer {
     position: relative;
     min-height: 42px !important;
-    height: 42px !important; /* Fixed initial height */
+    height: 42px !important; /* Keep fixed height */
     margin-bottom: 1rem !important;
-    transition: height 0.2s ease-out;
+    transition: none !important; /* Remove transition */
 }
 
-/* Allow containers to grow when selections are made */
+/* Remove the auto-growth for containers */
 #preferredLeaguesContainer.has-selections,
 #mustTeamsContainer.has-selections {
-    height: auto !important;
+    height: 42px !important; /* Keep fixed instead of auto */
     min-height: 42px !important;
 }
 

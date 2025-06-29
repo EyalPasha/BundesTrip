@@ -11,7 +11,7 @@
   overflow: hidden;
   position: relative;
   transition: all var(--duration-normal) ease;
-  height: 500px; /* Changed from fixed height to min-height */
+  height: 480px; /* Changed from fixed height to min-height */
 }
 
 .search-card::before {
@@ -21,7 +21,6 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
   opacity: 0;
   transition: opacity var(--duration-normal) ease;
 }
@@ -40,27 +39,6 @@
   padding: var(--space-xl);
   position: relative;
   z-index: 1;
-}
-
-.search-card .card-title {
-  color: var(--gray-800);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  margin-bottom: var(--space-md);
-  text-align: center;
-  position: relative;
-}
-
-.search-card .card-title::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  width: 40px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-  border-radius: var(--radius-sm);
-  transform: translateX(-50%);
 }
 
 /* Multi-Step Progress Indicator */
@@ -269,13 +247,43 @@
   color: var(--error-color);
 }
 
-/* Step Navigation Buttons */
+/* Step Navigation Buttons - Fixed Layout */
 .step-navigation {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr; /* Start with single column for step 1 */
+  justify-items: center; /* Center by default */
   align-items: center;
   margin-top: var(--space-lg);
   gap: var(--space-md);
+  min-height: 50px; /* Fixed minimum height */
+}
+
+/* Step 2 and 3 - two column layout */
+.step-navigation.step-2,
+.step-navigation.step-3 {
+  grid-template-columns: 1fr 1fr; /* Two equal columns for steps 2 and 3 */
+  justify-items: stretch; /* Stretch buttons to fill columns */
+}
+
+.step-navigation.step-3 {
+  margin-top: -6px;
+}
+/* Special case for step 1 - center the next button */
+.step-navigation.step-1 {
+  grid-template-columns: 1fr; /* Single column for step 1 */
+  justify-items: center; /* Center the button */
+}
+
+.step-navigation.step-1 .btn-step-next {
+  grid-column: 1; /* Take the single column */
+  max-width: 200px; /* Limit width for better appearance */
+}
+
+/* For steps 2 and 3, reset the next button grid column */
+.step-navigation.step-2 .btn-step-next,
+.step-navigation.step-3 .btn-step-next {
+  grid-column: 2; /* Second column for steps 2 and 3 */
+  max-width: none; /* Remove width limit */
 }
 
 .btn-step {
@@ -287,21 +295,26 @@
   letter-spacing: 0.05em;
   transition: all var(--duration-fast) ease;
   border: 2px solid;
-  min-height: 42px;
+  height: 42px; /* Fixed height instead of min-height */
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-xs);
-  min-width: 100px;
+  width: 100%; /* Full width of grid column */
 }
 
 .btn-step-prev {
   background: transparent;
   border-color: var(--gray-300);
   color: var(--gray-600);
+  grid-column: 1; /* Always in first column */
 }
 
-.btn-step-prev:hover {
+.btn-step-prev.hidden-step-button {
+  display: none; /* Completely hide instead of visibility: hidden */
+}
+
+.btn-step-prev:hover:not(.hidden-step-button) {
   background: var(--gray-100);
   border-color: var(--gray-400);
   color: var(--gray-700);
@@ -314,6 +327,13 @@
   color: var(--white);
   position: relative;
   overflow: hidden;
+  grid-column: 2; /* Always in second column */
+}
+
+.btn-step-next i,
+.btn-step-next .fas,
+.btn-step-next .fa-chevron-right {
+  color: white !important;
 }
 
 .btn-step-next::before {
@@ -339,17 +359,42 @@
 }
 
 .btn-step-submit {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-color: var(--primary-color);
   color: var(--white);
-  flex: 1;
-  max-width: none;
-  min-width: auto;
+  position: relative;
+  overflow: hidden;
+  grid-column: 2; /* Same position as next button */
+  grid-row: 1; /* Same row as next button */
+  height: 42px; /* Same height as other buttons */
+}
+
+.btn-step-submit i,
+.btn-step-submit .fas {
+  color: white !important;
+}
+
+
+.btn-step-submit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
 }
 
 .btn-step-submit:hover {
   background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+  border-color: var(--primary-dark);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
+}
+
+.btn-step-submit:hover::before {
+  left: 100%;
 }
 
 .btn-step i {
@@ -406,28 +451,85 @@
   margin: 0;
 }
 
-/* Limit selection styling */
-.selection-limit-reached {
-  background-color: var(--gray-100) !important;
-  color: var(--gray-500) !important;
-  cursor: not-allowed !important;
-}
-
-.selection-limit-warning {
-  color: var(--warning-color);
-  font-size: 0.6rem;
-  font-weight: 600;
-  margin-top: var(--space-xs);
-  display: none;
-}
-
-.selection-limit-warning.show {
-  display: block;
-}
-
 /* Hide original form sections - we'll use steps instead */
 .form-section {
   display: none;
+}
+
+/* Individual team selection boxes */
+.individual-team-selects {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+    margin-top: var(--space-xs);
+}
+
+.team-select-box {
+    position: relative;
+}
+
+.team-select-box .select2-container {
+    width: 100% !important;
+}
+
+.team-select-box .select2-selection--single {
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.8rem !important;
+    border: 2px solid var(--gray-200) !important;
+    border-radius: var(--radius-sm) !important;
+    background: var(--white) !important;
+    display: flex !important;
+    align-items: center !important;
+    transition: all var(--duration-fast) ease;
+}
+
+.team-select-box .select2-selection--single:focus,
+.team-select-box .select2-selection--single:hover {
+    border-color: var(--secondary-color) !important;
+    box-shadow: 0 0 0 2px var(--primary-light) !important;
+}
+
+.team-select-box .select2-selection__rendered {
+    color: var(--gray-700) !important;
+    font-size: 0.8rem !important;
+    line-height: 1.2 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--space-xs);
+}
+
+.team-select-box .select2-selection__arrow {
+    height: 34px !important;
+    width: 20px !important;
+    right: 6px !important;
+}
+
+.team-select-box .select2-selection__arrow b {
+    border-color: var(--gray-500) transparent transparent transparent !important;
+    border-width: 4px 4px 0 4px !important;
+}
+
+/* Selected state styling */
+.team-select-box .select2-selection--single.has-team {
+    border-color: var(--primary-color) !important;
+    background: linear-gradient(135deg, var(--primary-light), var(--white)) !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 576px) {
+    .individual-team-selects {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+    }
+    
+    .team-select-box .select2-selection--single {
+        height: 36px !important;
+        min-height: 36px !important;
+        font-size: 0.75rem !important;
+    }
 }
 
 /* Responsive Design - Mobile First */
@@ -472,10 +574,13 @@
   }
   
   .btn-step {
-    min-height: 40px;
+    height: 40px; /* Fixed height for mobile too */
     font-size: 0.75rem;
     padding: var(--space-xs) var(--space-md);
-    min-width: 80px;
+  }
+  
+  .step-navigation {
+    min-height: 46px; /* Slightly larger for mobile */
   }
   
   .form-label {

@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-url = "https://www.kicker.de/3-liga/spieltag/2024-25/14"
+url = "https://www.kicker.de/dfb-pokal/spieltag/2025-26/1"
 
 headers = {
     "User-Agent": (

@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import time
 import random
 import re
+import calendar  # Add this import
 
 # Output file
 file_path = r"C:\Users\Eyalp\Desktop\Bundes\backend\scrapers\liga3_games.txt"
@@ -57,6 +58,39 @@ session = get_fresh_session()
 
 time_pattern = re.compile(r"^\d{1,2}:\d{2}$")
 
+CURRENT_YEAR = 2025
+
+def get_season_year(month_name):
+    """Return the correct year based on season logic (July-June)"""
+    month_num = datetime.strptime(month_name, "%B").month
+    if month_num >= 7:  # July to December
+        return CURRENT_YEAR
+    else:  # January to June
+        return CURRENT_YEAR + 1
+
+def fix_date_with_year(date_str):
+    """Add correct year to date string if missing"""
+    date_str = date_str.strip()
+    
+    # Only add year if no 4-digit year is present
+    if not re.search(r"\b20\d{2}\b", date_str):
+        try:
+            # Parse date to get month (expecting format like "28.03")
+            parts = date_str.split(".")
+            if len(parts) >= 2:
+                month_num = int(parts[1])
+                month_name = calendar.month_name[month_num]
+                correct_year = get_season_year(month_name)
+                date_str += f".{correct_year}"
+            else:
+                # Fallback to default year if parsing fails
+                date_str += f".{CURRENT_YEAR}"
+        except (ValueError, IndexError):
+            # Fallback to default year if parsing fails
+            date_str += f".{CURRENT_YEAR}"
+    
+    return date_str
+
 for matchday in range(START, END):
     url = f"https://www.kicker.de/3-liga/spieltag/2025-26/{matchday}"
     print(f"\n--- Attempting to fetch 3. Liga matchday {matchday} ---")
@@ -100,6 +134,7 @@ for matchday in range(START, END):
         parts = header_text.split(",", 1)
         if len(parts) == 2:
             date_str = parts[1].strip()
+            date_str = fix_date_with_year(date_str)  # Add this line
             time_found = None
             holders = first_row.find_all("div", class_="kick__v100-scoreBoard__dateHolder")
             for h in holders:
@@ -137,6 +172,7 @@ for matchday in range(START, END):
             continue
 
         block_date_str = parts[1].strip()
+        block_date_str = fix_date_with_year(block_date_str)  # Add this line
 
         # Extract home/away teams via CSS selector
         teams = row.select("div.kick__v100-gameCell__team__shortname")

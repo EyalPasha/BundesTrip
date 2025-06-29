@@ -6,11 +6,24 @@ import random
 import re
 from synonyms import TEAM_SYNONYMS
 from synonyms import bundesliga_1_stadiums
+import calendar
 
-START_CL_EL = 7 # starts on 1, ends on 13 (for 13 need to write 14)
+START_CL_EL = 1 # starts on 1, ends on 13 (for 13 need to write 14)
 END_CL_EL = 14
-START_CF = 7 # starts on 1, ends on 11 (for 11 need to write 12)
+START_CF = 1 # starts on 1, ends on 11 (for 11 need to write 12)
 END_CF = 12
+
+
+CURRENT_YEAR = 2025
+
+def get_season_year(month_name):
+    """Return the correct year based on season logic (July-June)"""
+    month_num = datetime.strptime(month_name, "%B").month
+    if month_num >= 7:  # July to December
+        return CURRENT_YEAR
+    else:  # January to June
+        return CURRENT_YEAR + 1
+
 file_path = r"C:\Users\Eyalp\Desktop\Bundes\backend\scrapers\uefa_games.txt"
 # Build a set of canonical German team names – all in lowercase
 GERMAN_TEAMS = {entry["team"].lower() for entry in bundesliga_1_stadiums}
@@ -72,13 +85,30 @@ def pick_german_team_if_slash(raw_home: str) -> str:
 def fix_date_string(date_str: str) -> str:
     """
     If Kicker shows something like '08.04.', remove trailing '.' if present,
-    then append '.2025' if no 4-digit year is present => '08.04.2025'.
+    then append the correct season year based on month.
     """
     date_str = date_str.strip()
     if date_str.endswith("."):
         date_str = date_str[:-1]
+    
+    # Only add year if no 4-digit year is present
     if not re.search(r"\b20\d{2}\b", date_str):
-        date_str += ".2025"
+        # Parse the month to determine correct year
+        try:
+            # Parse date to get month (expecting format like "08.04")
+            parts = date_str.split(".")
+            if len(parts) >= 2:
+                month_num = int(parts[1])
+                month_name = calendar.month_name[month_num]
+                correct_year = get_season_year(month_name)
+                date_str += f".{correct_year}"
+            else:
+                # Fallback to default year if parsing fails
+                date_str += f".{CURRENT_YEAR}"
+        except (ValueError, IndexError):
+            # Fallback to default year if parsing fails
+            date_str += f".{CURRENT_YEAR}"
+    
     return date_str
 
 # We'll consider anything more than 7 days old as "too old".
@@ -141,7 +171,7 @@ time_pattern = re.compile(r"^\d{1,2}:\d{2}$")
 
 for league_name, kicker_slug, start_md, end_md in competitions:
     for matchday in range(start_md, end_md):
-        url = f"https://www.kicker.de/{kicker_slug}/spieltag/2024-25/{matchday}"
+        url = f"https://www.kicker.de/{kicker_slug}/spieltag/2025-26/{matchday}"
         print(f"\n--- {league_name}, matchday {matchday} ---")
         print(f"URL: {url}")
 

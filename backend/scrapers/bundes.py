@@ -7,7 +7,7 @@ import calendar
 # If month >= July, use current year; if month < July, use next year
 CURRENT_YEAR = 2025
 START = 1
-END = 5
+END = 35
 
 def get_season_year(month_name):
     """Return the correct year based on season logic (July-June)"""

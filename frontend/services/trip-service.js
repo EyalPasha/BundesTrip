@@ -240,7 +240,9 @@ async function handleSearch(e) {
         try {
             // Use Select2's API to get selected values
             const selectedLeagues = $(window.DOM.preferredLeaguesSelect).val() || [];
-            const selectedTeams = $(window.DOM.mustTeamsSelect).val() || [];
+            
+            // NEW: Get teams from individual selects instead of multi-select
+            const selectedTeams = getSelectedTeams(); // Use the new function from script.js
             
             const payload = {
                 start_location: window.DOM.startLocationSelect.value,
@@ -248,9 +250,9 @@ async function handleSearch(e) {
                 trip_duration: parseInt(window.DOM.tripDurationInput.value),
                 max_travel_time: parseInt(window.DOM.maxTravelTimeInput.value),
                 preferred_leagues: selectedLeagues.length > 0 ? selectedLeagues : null,
-                must_teams: selectedTeams.length > 0 ? selectedTeams : [],
+                must_teams: selectedTeams.length > 0 ? selectedTeams : [], // Updated to use new function
                 min_games: parseInt(window.DOM.minGamesInput.value || "2"),
-                request_id: requestId  // Include the request ID in the payload
+                request_id: requestId
             };
             
             // Ensure the date has a year

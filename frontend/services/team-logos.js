@@ -57,7 +57,11 @@ const TEAM_LOGO_MAPPING = {
     "SC Verl": "Verl.png", //
     "Viktoria Köln": "Viktoria_Köln.png", //
     "Waldhof Mannheim": "Mannheim.png",//
-    "SV Wehen Wiesbaden": "Wiesbaden.png" //
+    "SV Wehen Wiesbaden": "Wiesbaden.png", //
+    "MSV Duisburg": "duisburg.png", //
+    "TSV Havelse": "Havelse.png", //
+    "1. FC Schweinfurt 05": "Schweinfurt.png", //
+    "TSG Hoffenheim II": "Hoffenheim.png", //
 };
 
 // League logo mapping

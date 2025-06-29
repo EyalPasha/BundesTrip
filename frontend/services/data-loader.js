@@ -41,11 +41,11 @@ const LEAGUE_PRIORITY = {
 const LEAGUE_DISPLAY_NAMES = {
     "bundesliga": "Bundesliga",
     "2bundesliga": "2. Bundesliga",
-    "Champions League": "UEFA Champions League",
-    "DFB-Pokal": "DFB-Pokal (German Cup)",
+    "Champions League": "Champions League",
+    "DFB-Pokal": "DFB-Pokal",
     "3-liga": "3. Liga",
-    "Europa League": "UEFA Europa League",
-    "Conference League": "UEFA Conference League"
+    "Europa League": "Europa League",
+    "Conference League": "Conference League"
 };
 
 // Update this function in data-loader.js
@@ -133,34 +133,26 @@ async function loadLeagues() {
 
 async function loadTeams() {
     try {
-        showComponentLoading(window.DOM.mustTeamsSelect.parentElement);
-        const data = await getTeams();
+        // Remove the loading indicator since we don't have mustTeamsSelect anymore
+        // showComponentLoading(window.DOM.mustTeamsSelect.parentElement);
         
-        // Clear all existing options
-        window.DOM.mustTeamsSelect.innerHTML = '';
+        const data = await getTeams();
         
         // IMPORTANT: Filter to only include German teams
         const germanTeams = data.teams.filter(team => GERMAN_TEAMS.includes(team));
         
-        // Add each team to the dropdown
-        germanTeams.forEach(team => {
-            const option = document.createElement('option');
-            option.value = team;
-            option.textContent = team;
-            
-            // Add a data attribute to help with logo lookup
-            option.dataset.team = team;
-            
-            window.DOM.mustTeamsSelect.appendChild(option);
-        });
-        
-        // Initialize Select2 with logo formatting right after loading teams
-        initMustTeamsSelect();
+        // Return the teams data instead of populating a dropdown
+        return germanTeams.map(team => ({
+            id: team,
+            name: team
+        }));
         
     } catch (error) {
         showErrorToast(`Failed to load teams: ${error.message}`);
+        return []; // Return empty array on error
     } finally {
-        hideComponentLoading(window.DOM.mustTeamsSelect.parentElement);
+        // Remove the loading indicator cleanup since we don't have mustTeamsSelect anymore
+        // hideComponentLoading(window.DOM.mustTeamsSelect.parentElement);
     }
 }
 
