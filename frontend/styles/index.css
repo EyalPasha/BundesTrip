@@ -720,3 +720,18 @@ footer .social-links a:hover .far {
   min-height: 42px !important; /* Reduced from 50px to 49.5px */
 }
 
+/* Remove extra hover effect and make icon white on hover for Load More button */
+.btn-outline-primary.load-more-btn:hover .fas.fa-chevron-down {
+    color: #fff !important;
+    background: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    transition: color 0.2s;
+}
+
+/* Prevent icon from having a background or shadow by default */
+.btn-outline-primary.load-more-btn .fas.fa-chevron-down {
+    background: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+}

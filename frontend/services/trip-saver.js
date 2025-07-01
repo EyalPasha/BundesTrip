@@ -160,7 +160,7 @@ class TripSaver {
             modal.hide();
             
             // Show success message with the auto-generated name
-            this.showSuccessMessage(`Trip saved as "${result.trip_name}"`);
+            this.showSuccessMessage(`Trip saved successfully!`);
             
             // Log the save action
             await window.apiService.logUserActivity('trip_saved', {
@@ -260,37 +260,29 @@ class TripSaver {
         });
     }
 
-    showSuccessMessage(tripName) {
-        // Create success toast
+    showSuccessMessage(message) {
+        // Create success toast - simple style like the search results
         const toastHtml = `
             <div class="toast align-items-center text-white bg-success border-0" role="alert">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <i class="fas fa-check-circle me-2"></i>
-                        Trip saved successfully as "${tripName}"!
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                <div class="toast-body">
+                    ${message || 'Trip saved successfully!'}
                 </div>
             </div>
         `;
-
+    
         this.showToast(toastHtml);
     }
-
+    
     showErrorMessage(message) {
-        // Create error toast
+        // Create error toast - simple style
         const toastHtml = `
             <div class="toast align-items-center text-white bg-danger border-0" role="alert">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <i class="fas fa-exclamation-circle me-2"></i>
-                        ${message}
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                <div class="toast-body">
+                    ${message}
                 </div>
             </div>
         `;
-
+    
         this.showToast(toastHtml);
     }
 
@@ -300,19 +292,23 @@ class TripSaver {
         if (!toastContainer) {
             toastContainer = document.createElement('div');
             toastContainer.id = 'toastContainer';
-            toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
-            toastContainer.style.zIndex = '9999';
+            toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
+            toastContainer.style.zIndex = '5';
             document.body.appendChild(toastContainer);
+        } else {
+            // Ensure correct classes and style in case it was created differently before
+            toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
+            toastContainer.style.zIndex = '5';
         }
-
+    
         // Add toast
         toastContainer.insertAdjacentHTML('beforeend', toastHtml);
-        
+    
         // Show toast
         const toastElement = toastContainer.lastElementChild;
         const toast = new bootstrap.Toast(toastElement, { delay: 4000 });
         toast.show();
-
+    
         // Remove from DOM after hiding
         toastElement.addEventListener('hidden.bs.toast', () => {
             toastElement.remove();
@@ -925,6 +921,7 @@ class TripSaver {
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
+                        <div class="modal-body modern-body">
                             <div class="trip-preview-card">
                                 <div class="preview-header">
                                     <i class="fas fa-eye"></i>
@@ -1026,7 +1023,7 @@ class TripSaver {
             modal.hide();
             
             // Show success message
-            this.showSuccessMessage(`"${savedTrip.trip_name}" has been removed from your saved trips`);
+            this.showSuccessMessage(`Trip removed successfully!`);
             
             // Log additional client-side activity
             await window.apiService.logUserActivity('trip_unsaved_confirmed', {

@@ -46,9 +46,6 @@ async function logoutUser() {
     console.log('🔓 Attempting to log out...');
     
     try {
-        // Show loading state
-        showNavigationToast('Logging out...', 'info');
-        
         // Clear local state first
         if (window.authService) {
             window.authService.currentUser = null;
@@ -68,7 +65,6 @@ async function logoutUser() {
             console.log('Supabase sign out result:', result);
         } catch (supabaseError) {
             console.warn('Supabase sign out failed (but continuing with local logout):', supabaseError);
-            // Don't throw error - local logout is sufficient for UX
         }
         
         // Clear any stored tokens in localStorage
@@ -79,8 +75,7 @@ async function logoutUser() {
             console.warn('Error clearing storage:', storageError);
         }
         
-        // Show success message
-        showNavigationToast('Logged out successfully', 'success');
+        // REMOVED: showNavigationToast('Logged out successfully', 'success');
         
         // Redirect to home if on protected page
         const protectedPages = ['profile.html', 'admin.html'];
@@ -90,7 +85,6 @@ async function logoutUser() {
                 window.location.href = './index.html';
             }, 1000);
         } else {
-            // Just refresh the current page to clear any cached data
             setTimeout(() => {
                 window.location.reload();
             }, 1000);
@@ -107,9 +101,8 @@ async function logoutUser() {
         }
         
         await updateNavigationState();
-        showNavigationToast('Logged out (with some issues)', 'warning');
+        // REMOVED: showNavigationToast('Logged out (with some issues)', 'warning');
         
-        // Still redirect/refresh
         setTimeout(() => {
             window.location.reload();
         }, 1000);

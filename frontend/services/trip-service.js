@@ -137,8 +137,6 @@ async function handleSearch(e) {
                     // Reset search state and return to form
                     resetLoadingUI(false);
                     window.returnToSearch();
-                    
-                    showSuccessToast("Search cancelled successfully");
                 }
             });
         }
@@ -320,24 +318,6 @@ async function handleSearch(e) {
             
             // Render the results
             renderResults(response, false);
-
-            // Show success message with the count of trip options
-            const tripCount = response.trip_groups?.length || 0;
-            if (tripCount > 0) {
-                showSuccessToast(`Found ${tripCount} trip option${tripCount !== 1 ? 's' : ''}!`);
-                
-                // Hide loading and show results
-                window.DOM.loadingIndicator.classList.add('d-none');
-                document.body.classList.remove('no-scroll');
-                
-                // Scroll directly to results section 
-                setTimeout(() => {
-                    window.DOM.resultsSection.scrollIntoView({ 
-                        behavior: "smooth", 
-                        block: "start" 
-                    });
-                }, 100);
-            }
             
         } catch (err) {
             // Store the caught error in our variable
