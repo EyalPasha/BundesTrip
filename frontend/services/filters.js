@@ -1,6 +1,7 @@
 import { clearFilters } from './ui-helpers.js';
 import { renderNextBatch } from '../components/results-display.js';
 import { getTeamLogoUrl } from './team-logos.js';
+import { formatCityForDisplay, formatCityForBackend } from './city-formatter.js'; // ADD THIS LINE
 
 // Global state to track active filters
 const activeFilters = {
@@ -379,6 +380,11 @@ function updateDrawerCityFilters() {
         badges.forEach(badge => {
             const clonedBadge = badge.cloneNode(true);
             
+            // Update the text content to use formatted display
+            if (badge.dataset.city) {
+                clonedBadge.textContent = formatCityForDisplay(badge.dataset.city); // ADD THIS LINE
+            }
+            
             // Update classes for active state if needed
             if (badge.dataset.city === pendingFilters.city) {
                 clonedBadge.classList.remove('bg-light');
@@ -389,7 +395,7 @@ function updateDrawerCityFilters() {
             
             // Add click event for drawer (not immediate application)
             if (clonedBadge.dataset.city) {
-                clonedBadge.addEventListener('click', () => drawerFilterByCity(clonedBadge.dataset.city));
+                clonedBadge.addEventListener('click', () => drawerFilterByCity(formatCityForBackend(clonedBadge.dataset.city))); // CHANGE THIS LINE
             } else {
                 // Clear button inside drawer
                 clonedBadge.addEventListener('click', clearDrawerFilters);
@@ -1249,9 +1255,9 @@ function renderFilters(tripGroups) {
     cities.forEach(city => {
         const badge = document.createElement('span');
         badge.className = 'badge bg-light text-dark border m-1';
-        badge.textContent = city.replace(' hbf', '');
-        badge.dataset.city = city;
-        badge.onclick = () => filterByCity(city);
+        badge.textContent = formatCityForDisplay(city); // CHANGE THIS LINE
+        badge.dataset.city = formatCityForBackend(city); // CHANGE THIS LINE
+        badge.onclick = () => filterByCity(formatCityForBackend(city)); // CHANGE THIS LINE
         badge.style.cursor = 'pointer';
         cityFiltersContainer.appendChild(badge);
     });

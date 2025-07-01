@@ -7,7 +7,7 @@ import {
     getTeamLogoUrl,
     getLeagueLogoUrl
 } from './team-logos.js';
-
+import { formatCityForDisplay, formatCityForBackend } from './city-formatter.js';
 import { initMustTeamsSelect, initPreferredLeaguesSelect } from './select2-init.js';
 
 // German teams list - this should match the teams in your backend database
@@ -24,7 +24,8 @@ const GERMAN_TEAMS = [
     "Dynamo Dresden", "Energie Cottbus", "Erzgebirge Aue", "Hannover 96 II", 
     "Hansa Rostock", "FC Ingolstadt 04", "TSV 1860 Munich", "VfL Osnabrück", 
     "Rot-Weiss Essen", "FC Saarbrücken", "SV Sandhausen", "SpVgg Unterhaching", 
-    "VfB Stuttgart II", "SC Verl", "Viktoria Köln", "Waldhof Mannheim", "SV Wehen Wiesbaden"
+    "VfB Stuttgart II", "SC Verl", "Viktoria Köln", "Waldhof Mannheim", "SV Wehen Wiesbaden", 
+    "TSG Hoffenheim II", "MSV Duisburg", "TSV Havelse", "1. FC Schweinfurt 05"
 ];
 
 // This should match the priority in your backend's league_priority
@@ -70,8 +71,9 @@ async function loadCities() {
         // Add cities from the backend response
         data.cities.forEach(city => {
             const option = document.createElement('option');
-            option.value = city.id;
-            option.textContent = city.name;
+            option.value = city.id; // Keep original ID for backend
+            option.textContent = formatCityForDisplay(city.name); // Display only first word
+            option.dataset.originalName = city.name; // Store original name for backend
             window.DOM.startLocationSelect.appendChild(option);
         });
         
@@ -84,7 +86,6 @@ async function loadCities() {
         hideComponentLoading(window.DOM.startLocationSelect.parentElement);
     }
 }
-
 async function loadLeagues() {
     try {
         showComponentLoading(window.DOM.preferredLeaguesSelect.parentElement);

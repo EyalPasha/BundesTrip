@@ -1,6 +1,7 @@
 import { applyTeamLogoStyles, preloadLogos, formatTeamOptionWithLogo, formatLeagueOptionWithLogo, getTeamLogoUrl, getLeagueLogoUrl } from './team-logos.js';
 import { fetchAllTeams, fetchLeagues, fetchAvailableDates, fetchGamesByDate, fetchTeamSchedule } from './schedule-service.js';
 import { GERMAN_TEAMS } from './data-loader.js';
+import { formatCityForDisplay, formatCityForBackend } from './city-formatter.js';
 
 // DOM Elements
 const DOM = {
@@ -1756,7 +1757,7 @@ function createGameCard(game) {
     desktopLocationDisplay.innerHTML = `
         <div class="match-location text-end">
             <i class="fas fa-map-marker-alt me-1"></i>
-            <span>${game.display_location || game.location}</span>
+            <span>${formatCityForDisplay(game.display_location || game.location)}</span>
         </div>
     `;
     
@@ -1769,7 +1770,7 @@ function createGameCard(game) {
                 <i class="far fa-clock"></i> ${displayTime}
             </div>
             <div class="match-location-detail">
-                <i class="fas fa-map-marker-alt"></i> ${game.display_location || game.location}
+                <i class="fas fa-map-marker-alt"></i> ${formatCityForDisplay(game.display_location || game.location)}
             </div>
         </div>
     `;

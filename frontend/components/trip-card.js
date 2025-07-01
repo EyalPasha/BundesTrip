@@ -1,5 +1,5 @@
 import { getTeamLogoUrl } from '../services/team-logos.js';
-
+import { formatCityForDisplay, formatCityForBackend } from '../services/city-formatter.js';
 /**
  * Date formatting helper functions
  */
@@ -104,10 +104,14 @@ function renderTripCard(group, index, tripContext = {}) {
     header.className = 'trip-header position-relative';
 
     // Get first and last cities
-    const firstCity = defaultVariant.start_location?.replace(' hbf', '') || 
-                     (defaultVariant.cities?.length > 0 ? defaultVariant.cities[0] : 'Unknown');
-    const finalCity = defaultVariant.end_location?.replace(' hbf', '') || 
-                     (defaultVariant.cities?.length > 0 ? defaultVariant.cities[defaultVariant.cities.length - 1] : 'Unknown');
+    const firstCity = formatCityForDisplay(
+        defaultVariant.start_location || 
+        (defaultVariant.cities?.length > 0 ? defaultVariant.cities[0] : 'Unknown')
+    );
+    const finalCity = formatCityForDisplay(
+        defaultVariant.end_location || 
+        (defaultVariant.cities?.length > 0 ? defaultVariant.cities[defaultVariant.cities.length - 1] : 'Unknown')
+    );
 
     // Extract start and end dates for the trip
     let tripStartDate = '';
@@ -205,7 +209,7 @@ function renderTripCard(group, index, tripContext = {}) {
                     match: cleanMatch,
                     matchTime: time,
                     date: day.day,
-                    location: match.location.replace(' hbf', ''),
+                    location: formatCityForDisplay(match.location),
                     contains_must_team: match.contains_must_team || false
                 });
             });
@@ -266,9 +270,9 @@ function renderTripCard(group, index, tripContext = {}) {
     // Get the end city for airport preview
     let endCityForAirports = '';
     if (defaultVariant.end_location) {
-        endCityForAirports = defaultVariant.end_location.replace(' hbf', '');
+        endCityForAirports = formatCityForDisplay(defaultVariant.end_location);
     } else if (defaultVariant.cities && defaultVariant.cities.length > 0) {
-        endCityForAirports = defaultVariant.cities[defaultVariant.cities.length - 1];
+        endCityForAirports = formatCityForDisplay(defaultVariant.cities[defaultVariant.cities.length - 1]);
     }
     
     header.innerHTML = `
@@ -334,7 +338,7 @@ function renderTripCard(group, index, tripContext = {}) {
                             <div class="match-content-grid">
                                 <!-- Left side location for desktop -->
                                 <div class="match-location-side">
-                                    <i class="fas fa-map-marker-alt"></i> ${match.location}
+                                    <i class="fas fa-map-marker-alt"></i> ${formatCityForDisplay(match.location)}
                                 </div>
                                 
                                 <!-- Teams in center - works on both desktop and mobile -->
@@ -370,7 +374,7 @@ function renderTripCard(group, index, tripContext = {}) {
                                         </div>
                                     </div>
                                     <div class="match-location-detail">
-                                        <i class="fas fa-map-marker-alt"></i> ${match.location}
+                                        <i class="fas fa-map-marker-alt"></i> ${formatCityForDisplay(match.location)}
                                     </div>
                                 </div>
                             </div>
@@ -471,10 +475,14 @@ function renderTripCard(group, index, tripContext = {}) {
             contentPane.setAttribute('aria-labelledby', `${optionId}-tab`);
 
             // Extract route path
-            const firstCity = variant.start_location?.replace(' hbf', '') || 
-                             (variant.cities?.length > 0 ? variant.cities[0] : 'Unknown');
-            const finalCity = variant.end_location?.replace(' hbf', '') || 
-                             (variant.cities?.length > 0 ? variant.cities[variant.cities.length - 1] : 'Unknown');
+            const firstCity = formatCityForDisplay(
+                variant.start_location || 
+                (variant.cities?.length > 0 ? variant.cities[0] : 'Unknown')
+            );
+            const finalCity = formatCityForDisplay(
+                variant.end_location || 
+                (variant.cities?.length > 0 ? variant.cities[variant.cities.length - 1] : 'Unknown')
+            );
 
             // First, extract hotel summary for this variant
             const hotelSummary = [];
@@ -527,7 +535,6 @@ function renderTripCard(group, index, tripContext = {}) {
             }
 
             // Add complete travel option info with modern styling
-            
             contentPane.innerHTML = `
                 <div class="variant-summary">
                     <!-- Main Summary Header - Combined Stats -->
@@ -564,7 +571,7 @@ function renderTripCard(group, index, tripContext = {}) {
                         ${variant.airport_distances ? `
                             <div class="airports-section">
                                 <div class="section-heading">
-                                    <i class="fas fa-plane-departure"></i> Airports near ${finalCity}
+                                    <i class="fas fa-plane-departure"></i> Airports near ${formatCityForDisplay(finalCity)}
                                 </div>
                                 <div class="airport-list">
                                     ${(variant.airport_distances.end || []).slice(0, 2).map(airport => {
@@ -683,7 +690,7 @@ function initializeMatchesExpander() {
                                 match: cleanMatch,
                                 matchTime: time,
                                 date: day.day,
-                                location: match.location.replace(' hbf', ''),
+                                location: formatCityForDisplay(match.location),
                                 contains_must_team: match.contains_must_team || false
                             });
                         });
@@ -710,7 +717,7 @@ function initializeMatchesExpander() {
                     matchItem.innerHTML = `
                         <div class="match-content-grid">
                             <div class="match-location-side">
-                                <i class="fas fa-map-marker-alt"></i> ${match.location}
+                                <i class="fas fa-map-marker-alt"></i> ${formatCityForDisplay(match.location)}
                             </div>
                             <div class="match-teams-preview">
                                 <strong>${homeTeam}</strong>
@@ -742,7 +749,7 @@ function initializeMatchesExpander() {
                                     </div>
                                 </div>
                                 <div class="match-location-detail">
-                                    <i class="fas fa-map-marker-alt"></i> ${match.location}
+                                    <i class="fas fa-map-marker-alt"></i> ${formatCityForDisplay(match.location)}
                                 </div>
                             </div>
                         </div>
@@ -1191,7 +1198,7 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
         gamesList.className = 'match-preview';
         
         groupedGames[date].forEach(game => {
-            const location = game.location.replace(' hbf', '');
+            const location = formatCityForDisplay(game.location);
             
             // Extract teams - assuming game.match contains "Team A vs Team B" format
             const teams = game.match.split(' vs ');
@@ -1211,7 +1218,7 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
                     <img src="${getTeamLogoUrl(awayTeam)}" class="tbd-away-logo" alt="${awayTeam} logo">
                     <div class="tbd-away-team">${awayTeam}</div>
                     <span class="tbd-location">
-                        <i class="fas fa-map-marker-alt"></i> ${game.location || 'TBD'}
+                        <i class="fas fa-map-marker-alt"></i> ${formatCityForDisplay(game.location || 'TBD')}
                     </span>
                     ${game.has_must_team ? '<span class="tbd-must-see-badge">Must-See</span>' : ''}
                 </div>
@@ -1439,7 +1446,7 @@ function renderItineraryForVariant(container, group, variantIndex) {
                         <div class="match-meta">
                             <div class="match-location-container">
                                 <i class="fas fa-map-marker-alt"></i> 
-                                <span>${match.location}</span>
+                                <span>${formatCityForDisplay(match.location)}</span>
                                 ${time ? `
                                 <span class="match-time-data">
                                     <i class="fas fa-clock"></i>
@@ -1459,14 +1466,14 @@ function renderItineraryForVariant(container, group, variantIndex) {
                 restDay.className = 'rest-day';
                 
                 // Use the hotel directly as the location since that's what we show in the day header
-                const location = dayInfo.hotel || '---';
+                const location = formatCityForDisplay(dayInfo.hotel || '---');
                 
                 // Find the next location if this is not the last day
                 let nextLocation = '---';
                 if (!isLastDay && dayIndex + 1 < variant.day_itinerary.length) {
                     const nextDayInfo = variant.day_itinerary[dayIndex + 1];
                     if (nextDayInfo.hotel) {
-                        nextLocation = nextDayInfo.hotel;
+                        nextLocation = formatCityForDisplay(nextDayInfo.hotel);
                     }
                 }
                 
@@ -1530,11 +1537,18 @@ function renderItineraryForVariant(container, group, variantIndex) {
 
 // Add this helper function to render travel segments
 function renderTravelSegmentItem(segment, container) {
-    // Clean up location names
-    const fromLocation = typeof segment.from_location === 'string' ? 
-        segment.from_location.replace(' hbf', '') : 'Unknown';
-    const toLocation = typeof segment.to_location === 'string' ? 
-        segment.to_location.replace(' hbf', '') : 'Unknown';
+    // For travel routes, add "Hbf" to single-word cities, keep multi-word cities as-is
+    let fromLocation = typeof segment.from_location === 'string' ? segment.from_location : 'Unknown';
+    let toLocation = typeof segment.to_location === 'string' ? segment.to_location : 'Unknown';
+    
+    // Add "Hbf" if city name is only one word
+    if (fromLocation !== 'Unknown' && fromLocation.split(' ').length === 1) {
+        fromLocation = fromLocation + ' Hbf';
+    }
+    
+    if (toLocation !== 'Unknown' && toLocation.split(' ').length === 1) {
+        toLocation = toLocation + ' Hbf';
+    }
     
     // Get context (purpose)
     const context = segment.context || '';
@@ -1597,7 +1611,7 @@ function renderHotelStayItem(stay) {
   
   return `
     <div class="hotel-stay-item">
-      <div class="hotel-stay-left">${stay.hotel}</div>
+      <div class="hotel-stay-left">${formatCityForDisplay(stay.hotel)}</div>
       <div class="hotel-stay-dates">${dateDisplay}</div>
     </div>
   `;
@@ -1605,7 +1619,7 @@ function renderHotelStayItem(stay) {
 
 // Update the day header in renderItineraryForVariant function to include day name
 function formatDayHeader(dayInfo, dayIndex) {
-  const hotel = dayInfo.hotel || '';
+  const hotel = formatCityForDisplay(dayInfo.hotel || '');
   let dateDisplay = '';
   let dayName = '';
   

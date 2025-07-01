@@ -1,9 +1,8 @@
 import { renderTripCard, renderTbdGames } from './trip-card.js';
 import { renderFilters, initFilterDrawer } from '../services/filters.js'; 
 import { showListView } from '../services/ui-helpers.js';
-// Add this import at the top
 import { showSuccessToast, showErrorToast } from '../services/notifications.js';
-
+import { formatCityForDisplay, formatCityForBackend } from '../services/city-formatter.js';
 /**
  * Renders trip search results with enhanced handling of backend data
  * Properly processes trip groups, variations, hotel information and airport data
@@ -107,7 +106,7 @@ function renderResults(response, hideLoadingOnNoResults = true) {
                                     <span class="badge bg-warning text-dark me-2">TBD</span>
                                     <div>
                                         <strong>${game.match}</strong><br>
-                                        <small>${game.date} at ${game.location.replace(' hbf', '')}</small>
+                                        <small>${game.date} at ${formatCityForDisplay(game.location)}</small>
                                     </div>
                                 </div>
                             </li>
@@ -240,6 +239,7 @@ function extractCities(tripGroups) {
         if (group.variation_details && group.variation_details.length > 0) {
             group.variation_details.forEach(variation => {
                 if (variation.cities && Array.isArray(variation.cities)) {
+                    // Keep original city names for filtering logic
                     variation.cities.forEach(city => cities.add(city));
                 }
             });
