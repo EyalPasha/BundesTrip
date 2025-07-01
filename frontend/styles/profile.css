@@ -2170,3 +2170,38 @@ a.btn-primary i:empty {
     background: var(--primary-dark);
 }
 
+/* Specific Icon Color Override - Match Index Page */
+.fas.fa-clock,
+.fas.fa-map-marker-alt,
+.fas.fa-train,
+.fas.fa-calendar-alt,
+.fas.fa-plane-departure,
+.fas.fa-hotel,
+.fas.fa-exchange-alt,
+.fas.fa-futbol,
+.fas.fa-calendar-day {
+    color: var(--primary-color) !important;
+}
+
+/* Ensure these icons are primary color in all contexts */
+main .fas.fa-clock,
+main .fas.fa-map-marker-alt,
+main .fas.fa-train,
+main .fas.fa-calendar-alt,
+main .fas.fa-plane-departure,
+main .fas.fa-hotel,
+main .fas.fa-exchange-alt,
+main .fas.fa-futbol,
+main .fas.fa-calendar-day,
+.trip-card .fas.fa-clock,
+.trip-card .fas.fa-map-marker-alt,
+.trip-card .fas.fa-train,
+.trip-card .fas.fa-calendar-alt,
+.trip-card .fas.fa-plane-departure,
+.trip-card .fas.fa-hotel,
+.trip-card .fas.fa-exchange-alt,
+.trip-card .fas.fa-futbol,
+.trip-card .fas.fa-calendar-day {
+    color: var(--primary-color) !important;
+}
+
