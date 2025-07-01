@@ -47,7 +47,7 @@ class TripSaver {
                         <div class="modal-header modern-header">
                             <div class="header-content">
                                 <div class="header-icon">
-                                    <i class="fas fa-bookmark"></i>
+                                    <i class="fas fa-bookmark" style="color: white;"></i>
                                 </div>
                                 <div class="header-text">
                                     <h4 class="modal-title">Save Your Trip</h4>
@@ -55,7 +55,7 @@ class TripSaver {
                                 </div>
                             </div>
                             <button type="button" class="btn-close-modern" data-bs-dismiss="modal">
-                                <i class="fas fa-times"></i>
+                                <i class="fas fa-times" style="color: white;"></i>
                             </button>
                         </div>
                         
@@ -63,50 +63,39 @@ class TripSaver {
                             <div class="save-form-container">
                                 <div class="trip-preview-card">
                                     <div class="preview-header">
-                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye" style="color: var(--primary-color);"></i>
                                         <span>Trip Preview</span>
                                     </div>
                                     <div class="preview-content">
                                         <div class="preview-row">
                                             <div class="preview-item">
-                                                <i class="fas fa-map-marker-alt"></i>
+                                                <i class="fas fa-map-marker-alt" style="color: var(--primary-color);"></i>
                                                 <span>From: ${tripData.start_location || 'Unknown'}</span>
                                             </div>
                                             <div class="preview-item">
-                                                <i class="fas fa-calendar-alt"></i>
+                                                <i class="fas fa-calendar-alt" style="color: var(--primary-color);"></i>
                                                 <span>Date: ${this.formatDate(tripData.start_date) || 'Unknown'}</span>
                                             </div>
                                         </div>
                                         <div class="preview-row">
                                             <div class="preview-item">
-                                                <i class="fas fa-clock"></i>
-                                                <span>Duration: ${tripData.trip_duration || 3} days</span>
+                                                <i class="fas fa-clock" style="color: var(--primary-color);"></i>
+                                                <span>Duration: ${tripData.trip_duration || 3}</span>
                                             </div>
                                             <div class="preview-item">
-                                                <i class="fas fa-futbol"></i>
+                                                <i class="fas fa-futbol" style="color: var(--primary-color);"></i>
                                                 <span>Games: ${this.countTotalGames(tripData)} matches</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="alert alert-info modern-alert mt-3">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    This trip will be automatically saved with the next available trip number.
-                                </div>
                             </div>
                         </div>
                         
                         <div class="modal-footer modern-footer">
-                            <button type="button" class="btn-modern btn-cancel" data-bs-dismiss="modal">
-                                <div class="btn-content">
-                                    <i class="fas fa-times"></i>
-                                    <span>Cancel</span>
-                                </div>
-                            </button>
                             <button type="button" class="btn-modern btn-save-primary" id="confirmSaveBtn">
                                 <div class="btn-content">
-                                    <i class="fas fa-bookmark"></i>
+                                    <i class="fas fa-bookmark" style="color: white;"></i>
                                     <span>Save Trip</span>
                                 </div>
                                 <div class="btn-glow"></div>
@@ -448,7 +437,7 @@ class TripSaver {
             <div class="modal fade" id="alreadySavedModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content modern-modal">
-                        <div class="modal-header modern-header" style="background: linear-gradient(135deg, #00b074 0%, #059669 100%);">                            <div class="header-content">
+                        <div class="modal-header modern-header" style="background: var(--primary-color);">                            <div class="header-content">
                                 <div class="header-icon">
                                     <i class="fas fa-info-circle"></i>
                                 </div>
@@ -463,11 +452,6 @@ class TripSaver {
                         </div>
                         
                         <div class="modal-body modern-body">
-                            <div class="alert alert-info modern-alert">
-                                <i class="fas fa-bookmark me-2"></i>
-                                This exact trip has already been saved to your account.
-                            </div>
-                            
                             <div class="trip-preview-card">
                                 <div class="preview-header">
                                     <i class="fas fa-eye"></i>
@@ -476,31 +460,31 @@ class TripSaver {
                                 <div class="preview-content">
                                     <div class="preview-row">
                                         <div class="preview-item">
-                                            <i class="fas fa-tag"></i>
+                                            <i class="fas fa-tag" style="color: var(--primary-color);"></i>
                                             <span><strong>Name:</strong> ${savedTrip.trip_name}</span>
                                         </div>
                                         <div class="preview-item">
-                                            <i class="fas fa-map-marker-alt"></i>
+                                            <i class="fas fa-map-marker-alt" style="color: var(--primary-color);"></i>
                                             <span><strong>From:</strong> ${savedTrip.start_location}</span>
                                         </div>
                                     </div>
                                     <div class="preview-row">
                                         <div class="preview-item">
-                                            <i class="fas fa-calendar"></i>
+                                            <i class="fas fa-calendar" style="color: var(--primary-color);"></i>
                                             <span><strong>Date:</strong> ${this.formatDate(savedTrip.start_date)}</span>
                                         </div>
                                         <div class="preview-item">
-                                            <i class="fas fa-clock"></i>
+                                            <i class="fas fa-clock" style="color: var(--primary-color);"></i>
                                             <span><strong>Duration:</strong> ${this.normalizeDuration(savedTrip.trip_duration)} days</span>
                                         </div>
                                     </div>
                                     <div class="preview-row">
                                         <div class="preview-item">
-                                            <i class="fas fa-futbol"></i>
+                                            <i class="fas fa-futbol" style="color: var(--primary-color);"></i>
                                             <span><strong>Games:</strong> ${this.countTotalGames(savedTrip)} matches</span>
                                         </div>
                                         <div class="preview-item">
-                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star" style="color: var(--primary-color);"></i>
                                             <span><strong>Favorite:</strong> ${savedTrip.is_favorite ? 'Yes' : 'No'}</span>
                                         </div>
                                     </div>
@@ -509,12 +493,6 @@ class TripSaver {
                         </div>
                         
                         <div class="modal-footer modern-footer">
-                            <button type="button" class="btn-modern btn-cancel" data-bs-dismiss="modal">
-                                <div class="btn-content">
-                                    <i class="fas fa-times"></i>
-                                    <span>Close</span>
-                                </div>
-                            </button>
                             <button type="button" class="btn-modern btn-danger" id="unsaveTripBtn">
                                 <div class="btn-content">
                                     <i class="fas fa-trash-alt"></i>
@@ -529,7 +507,7 @@ class TripSaver {
                                 </div>
                                 <div class="btn-glow"></div>
                             </button>
-                            <button type="button" class="btn-modern btn-save-primary" onclick="showDashboard()">
+                            <button type="button" class="btn-modern btn-save-primary" onclick="window.location.href='profile.html'">
                                 <div class="btn-content">
                                     <i class="fas fa-tachometer-alt"></i>
                                     <span>View in Dashboard</span>
@@ -962,21 +940,21 @@ class TripSaver {
                                 <div class="preview-content">
                                     <div class="preview-row">
                                         <div class="preview-item">
-                                            <i class="fas fa-tag"></i>
+                                            <i class="fas fa-tag" style="color: var(--primary-color);"></i>
                                             <span><strong>Name:</strong> ${savedTrip.trip_name}</span>
                                         </div>
                                         <div class="preview-item">
-                                            <i class="fas fa-map-marker-alt"></i>
+                                            <i class="fas fa-map-marker-alt" style="color: var(--primary-color);"></i>
                                             <span><strong>From:</strong> ${savedTrip.start_location}</span>
                                         </div>
                                     </div>
                                     <div class="preview-row">
                                         <div class="preview-item">
-                                            <i class="fas fa-calendar"></i>
+                                            <i class="fas fa-calendar" style="color: var(--primary-color);"></i>
                                             <span><strong>Date:</strong> ${this.formatDate(savedTrip.start_date)}</span>
                                         </div>
                                         <div class="preview-item">
-                                            <i class="fas fa-futbol"></i>
+                                            <i class="fas fa-futbol" style="color: var(--primary-color);"></i>
                                             <span><strong>Games:</strong> ${this.countTotalGames(savedTrip)} matches</span>
                                         </div>
                                     </div>

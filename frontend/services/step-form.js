@@ -22,6 +22,25 @@ function setupStepNavigation() {
 
     nextBtn?.addEventListener('click', nextStep);
     prevBtn?.addEventListener('click', prevStep);
+    
+    // Add these event listeners to clear validation on field changes
+    document.getElementById('startLocation')?.addEventListener('change', function() {
+        this.classList.remove('is-invalid');
+        const errorMsg = this.parentNode.querySelector('.invalid-feedback');
+        if (errorMsg) errorMsg.remove();
+    });
+    
+    document.getElementById('startDate')?.addEventListener('change', function() {
+        this.classList.remove('is-invalid');
+        const errorMsg = this.parentNode.querySelector('.invalid-feedback');
+        if (errorMsg) errorMsg.remove();
+    });
+    
+    document.getElementById('maxTravelTime')?.addEventListener('change', function() {
+        this.classList.remove('is-invalid');
+        const errorMsg = this.parentNode.querySelector('.invalid-feedback');
+        if (errorMsg) errorMsg.remove();
+    });
 }
 
 function nextStep() {
@@ -117,20 +136,84 @@ function validateCurrentStep() {
         const startDate = document.getElementById('startDate').value;
         const tripDuration = document.getElementById('tripDuration').value;
         
-        if (!startLocation || !startDate || !tripDuration) {
-            // Add shake animation or highlight missing fields
-            return false;
+        // Clear ALL previous validation states and error messages first
+        document.getElementById('startLocation').classList.remove('is-invalid');
+        document.getElementById('startDate').classList.remove('is-invalid');
+        
+        // Remove any existing error messages
+        const existingErrors = document.querySelectorAll('.invalid-feedback');
+        existingErrors.forEach(error => error.remove());
+        
+        let isValid = true;
+        
+        // Check each field individually and mark only invalid ones
+        if (!startLocation) {
+            document.getElementById('startLocation').classList.add('is-invalid');
+            showFieldError('startLocation', 'Please select a starting city');
+            isValid = false;
         }
+        
+        if (!startDate) {
+            document.getElementById('startDate').classList.add('is-invalid');
+            showFieldError('startDate', 'Please select a start date');
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            // Add shake animation to the form
+            const currentPanel = document.querySelector(`.step-panel[data-step="${currentStep}"]`);
+            if (currentPanel) {
+                currentPanel.classList.add('shake-animation');
+                setTimeout(() => {
+                    currentPanel.classList.remove('shake-animation');
+                }, 500);
+            }
+        }
+        
+        return isValid;
     }
     
     if (currentStep === 2) {
         const maxTravelTime = document.getElementById('maxTravelTime').value;
+        
+        // Clear previous validation state and error messages
+        document.getElementById('maxTravelTime').classList.remove('is-invalid');
+        const existingErrors = document.querySelectorAll('.invalid-feedback');
+        existingErrors.forEach(error => error.remove());
+        
         if (!maxTravelTime) {
+            document.getElementById('maxTravelTime').classList.add('is-invalid');
+            showFieldError('maxTravelTime', 'Please select maximum travel time');
             return false;
         }
     }
     
     return true;
+}
+
+function showFieldError(fieldId, message) {
+    // Remove existing error message
+    const existingError = document.querySelector(`#${fieldId} + .invalid-feedback`);
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Create error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'invalid-feedback';
+    errorDiv.textContent = message;
+    
+    // Insert after the field
+    const field = document.getElementById(fieldId);
+    if (field) {
+        // For Select2 elements, insert after the container
+        const select2Container = field.nextElementSibling;
+        if (select2Container && select2Container.classList.contains('select2-container')) {
+            select2Container.parentNode.insertBefore(errorDiv, select2Container.nextSibling);
+        } else {
+            field.parentNode.insertBefore(errorDiv, field.nextSibling);
+        }
+    }
 }
 
 function setupMinGamesLogic() {

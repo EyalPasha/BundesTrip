@@ -405,29 +405,36 @@ function showErrorToast(message) {
 
 // Add all remaining event listeners
 function setupEventListeners() {
-    // Form submission
+    // Form submission with auth check
     if(window.DOM.tripSearchForm) {
-        window.DOM.tripSearchForm.addEventListener('submit', handleSearch);
+        window.DOM.tripSearchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Check authentication FIRST - if fails, stop everything
+            if (!checkAuthenticationForTripPlanning()) {
+                console.log("Authentication required - blocking form submission");
+                return; // Stop here - don't call handleSearch
+            }
+            
+            // Only proceed with search if authenticated
+            handleSearch(e);
+        });
     }
     
-    // Trip duration change
+    // Rest of your existing event listeners...
     $('#tripDuration').on('change', function() {
         updateMinGamesOptions();
     });
     
-    // Setup selection limits
     setupSelectionLimits();
     
-    // Handle preferred leagues selection changes
     $('#preferredLeagues').on('select2:select select2:unselect', function(e) {
         updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
     });
     
-    // Fix dropdown position when opened
     $('select').on('select2:open', function() {
         document.body.classList.add('select2-open');
         
-        // Ensure dropdown is properly positioned
         setTimeout(function() {
             const dropdown = document.querySelector('.select2-dropdown');
             if (dropdown) {
@@ -436,12 +443,10 @@ function setupEventListeners() {
         }, 10);
     });
     
-    // Clean up when dropdown closes
     $('select').on('select2:close', function() {
         document.body.classList.remove('select2-open');
     });
     
-    // Initialize loading animation observer
     const loadingIndicator = document.getElementById('loading');
     if (loadingIndicator) {
         const observer = new MutationObserver((mutations) => {
@@ -456,14 +461,12 @@ function setupEventListeners() {
         observer.observe(loadingIndicator, { attributes: true });
     }
     
-    // Initialize filter drawer when results are first shown
     const resultsSection = document.getElementById('results');
     if (resultsSection) {
         const resultObserver = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (mutation.attributeName === 'class' && 
                     !resultsSection.classList.contains('d-none')) {
-                    // Hide the old filter card with CSS
                     const filterCard = document.getElementById('filterResultsCard');
                     if (filterCard) {
                         filterCard.style.display = 'none';
@@ -746,10 +749,11 @@ export const helpers = {
 // Add this function to handle authentication checks
 
 function checkAuthenticationForTripPlanning() {
+    // Use synchronous check - don't call async getCurrentUser()
     const user = window.authService?.currentUser;
     
     if (!user) {
-        // Show login modal instead of error
+        // Show login modal and prevent any further action
         showLoginPrompt();
         return false;
     }
@@ -758,33 +762,418 @@ function checkAuthenticationForTripPlanning() {
 
 function showLoginPrompt() {
     const modalHTML = `
-        <div class="modal fade" id="loginPromptModal" tabindex="-1">
+        <div class="modal fade" id="loginPromptModal" tabindex="-1" aria-labelledby="loginPromptModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            <i class="fas fa-sign-in-alt me-2"></i>Login Required
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-user-circle fa-3x text-primary mb-3"></i>
-                            <h6>Please log in to plan your trip</h6>
-                            <p class="text-muted">You need an account to save and manage your trip plans.</p>
+                <div class="modal-content modern-modal">
+                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <div class="modal-body px-4 py-4">
+                        <div class="text-center mb-4">
+                            <div class="auth-icon-container mb-3">
+                                <i class="fas fa-user-shield fa-1x"></i>
+                                <div class="icon-bg"></div>
+                            </div>
+                            <h4 class="fw-semibold text-dark mb-2">Please log in to plan your trip</h4>
+                            <p class="text-muted mb-0">You need an account to save and manage your personalized trip plans. Join thousands of football fans who trust BundesTrip!</p>
                         </div>
-                        <div class="d-grid gap-2">
-                            <a href="./login.html" class="btn btn-primary">
-                                <i class="fas fa-sign-in-alt me-2"></i>Login
-                            </a>
-                            <a href="./register.html" class="btn btn-outline-primary">
-                                <i class="fas fa-user-plus me-2"></i>Create Account
-                            </a>
+                        
+                        <div class="auth-benefits mb-4">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-save"></i>
+                                        </div>
+                                        <small>Save Your Trips</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-history"></i>
+                                        </div>
+                                        <small>Trip History</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-heart"></i>
+                                        </div>
+                                        <small>Favorite Teams</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-bell"></i>
+                                        </div>
+                                        <small>Match Alerts</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="auth-actions">
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-6">
+                                    <a href="./login.html" class="btn btn-primary btn-lg w-100 auth-btn">
+                                        <i class="fas fa-sign-in-alt me-2"></i>
+                                        <span>Login</span>
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <a href="./register.html" class="btn btn-outline-primary btn-lg w-100 auth-btn">
+                                        <i class="fas fa-user-plus me-2"></i>
+                                        <span>Create Account</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <style>
+        /* Modal Container */
+        .modern-modal {
+            border: none;
+            border-radius: 1.25rem;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25), 0 0 0 1px rgb(255 255 255 / 0.05);
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+        
+        /* Custom Close Button */
+        .btn-close-custom {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 1.125rem;
+            cursor: pointer;
+            z-index: 10;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            background: rgba(100, 116, 139, 0.1);
+        }
+        
+        .btn-close-custom:hover {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+            transform: scale(1.05);
+        }
+        
+        .btn-close-custom:active {
+            transform: scale(0.95);
+        }
+        
+        /* Auth Icon Container */
+        .auth-icon-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .auth-icon-container i {
+            color: #043d7c !important;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .auth-icon-container .icon-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(4, 61, 124, 0.1), rgba(4, 61, 124, 0.05));
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1); 
+                opacity: 0.8; 
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.1); 
+                opacity: 0.4; 
+            }
+        }
+        
+        /* Modal Typography */
+        .modern-modal h4 {
+            color: #1e293b;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        .modern-modal p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+        
+        /* Benefits Grid */
+        .auth-benefits {
+            background: linear-gradient(135deg, rgba(4, 61, 124, 0.03), rgba(4, 61, 124, 0.01));
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(4, 61, 124, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .auth-benefits::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #043d7c, transparent);
+            opacity: 0.3;
+        }
+        
+        .benefit-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0.75rem 0.5rem;
+            transition: transform 0.2s ease;
+        }
+        
+        .benefit-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #043d7c, #032c59);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        
+        .benefit-icon i {
+            color: white !important;
+            font-size: 0.875rem;
+        }
+        
+        .benefit-item small {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.8rem;
+        }
+        
+        /* Auth Buttons */
+        .auth-btn {
+            position: relative;
+            font-weight: 600;
+            border-radius: 0.875rem;
+            padding: 1rem 1.5rem;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            border: 2px solid transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 56px; /* Add this line */
+            box-sizing: border-box; /* Add this line */
+        }
+        
+        .auth-btn span {
+            white-space: nowrap; /* Add this rule */
+        }
+        
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary.auth-btn {
+            background: linear-gradient(135deg, #043d7c 0%, #032c59 100%);
+            border-color: #043d7c;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        
+        .btn-primary.auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            background: linear-gradient(135deg, #032c59 0%, #043d7c 100%);
+            color: white;
+        }
+        
+        .btn-outline-primary.auth-btn {
+            border: 2px solid #043d7c;
+            color: #043d7c;
+            background: transparent;
+        }
+        
+        .btn-outline-primary.auth-btn:hover {
+            background: #043d7c;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+        
+        .auth-btn i {
+            color: inherit !important;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 576px) {
+            .modal-dialog {
+                max-width: calc(100vw - 2rem);
+                margin: 1rem;
+            }
+            
+            .modern-modal .modal-body {
+                padding: 2rem 1.5rem;
+            }
+            
+            .btn-close-custom {
+                top: 1rem;
+                right: 1rem;
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+            
+            .auth-icon-container i {
+                font-size: 1.5rem !important;
+            }
+            
+            .auth-icon-container .icon-bg {
+                width: 55px;
+                height: 55px;
+            }
+            
+            .auth-benefits {
+                padding: 1rem;
+            }
+            
+            .benefit-icon {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .benefit-icon i {
+                font-size: 0.75rem !important;
+            }
+            
+            .benefit-item small {
+                font-size: 0.75rem;
+            }
+            
+            .auth-btn {
+                padding: 0.875rem 1.25rem;
+                font-size: 0.9rem;
+                min-height: 50px; /* Add this line for mobile */
+            }
+            
+            h4 {
+                font-size: 1.25rem !important;
+            }
+            
+            .auth-benefits .row {
+                gap: 0.5rem !important;
+            }
+        }
+        
+        /* Tablet */
+        @media (min-width: 577px) and (max-width: 768px) {
+            .modal-dialog {
+                max-width: 85vw;
+            }
+        }
+        
+        /* Large screens */
+        @media (min-width: 769px) {
+            .modal-dialog {
+                max-width: 520px;
+            }
+        }
+        
+        /* Enhanced Animation */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .auth-btn::before,
+            .auth-icon-container .icon-bg,
+            .benefit-item {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+        
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .modern-modal {
+                border: 2px solid #1e293b;
+            }
+            
+            .auth-benefits {
+                border: 2px solid #043d7c;
+            }
+            
+            .btn-close-custom {
+                border: 1px solid #64748b;
+            }
+        }
+        
+        /* Focus States */
+        .btn-close-custom:focus-visible {
+            outline: 2px solid #043d7c;
+            outline-offset: 2px;
+        }
+        
+        .auth-btn:focus-visible {
+            outline: 2px solid #043d7c;
+            outline-offset: 2px;
+        }
+        </style>
     `;
     
     // Remove existing modal if any
@@ -796,20 +1185,20 @@ function showLoginPrompt() {
     // Add modal to body
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     
-    // Show modal
-    const modal = new bootstrap.Modal(document.getElementById('loginPromptModal'));
+    // Show modal with backdrop: 'static' to prevent dismissal by clicking outside
+    const modal = new bootstrap.Modal(document.getElementById('loginPromptModal'), {
+        backdrop: 'static', // Prevents closing by clicking outside
+        keyboard: false     // Prevents closing with Escape key
+    });
     modal.show();
+    
+    // Add entrance animation
+    const modalElement = document.getElementById('loginPromptModal');
+    modalElement.addEventListener('shown.bs.modal', function() {
+        modalElement.querySelector('.modal-content').style.animation = 'slideUp 0.4s ease-out';
+    });
 }
 
-// Update your existing form submission handler
-document.getElementById('tripSearchForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    // Check authentication first
-    if (!checkAuthenticationForTripPlanning()) {
-        return;
-    }
-});
 
 // Add selection limit handlers
 function setupSelectionLimits() {

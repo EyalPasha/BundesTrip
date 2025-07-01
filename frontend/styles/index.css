@@ -121,13 +121,72 @@ body {
   transform: scale(1.05);
 }
 
+/* Social media icons should be white */
+.fab.fa-linkedin,
+.fab.fa-facebook,
+.fab.fa-instagram {
+    color: var(--white) !important;
+}
 
+/* ADD THESE MISSING NAVBAR LINK STYLES */
+.nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500;
+  padding: var(--space-sm) var(--space-md) !important;
+  border-radius: var(--radius-md);
+  transition: all var(--duration-fast) ease;
+  position: relative;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--secondary-color);
+  transition: all var(--duration-normal) ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--white) !important;
+}
+
+.nav-link:hover::before,
+.nav-link.active::before {
+  width: 80%;
+}
+
+.nav-link.active {
+  color: var(--white) !important;
+  font-weight: 600;
+}
 .dropdown-menu {
   background: var(--white);
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
   padding: var(--space-sm);
+  width: auto;
+  /* Force positioning */
+  top: 100% !important;
+  right: 0 !important;
+  left: auto !important;
+  z-index: 1050;
+  /* Prevent viewport overflow */
+  transform: none !important;
+}
+
+/* Dropdown menu icons should be primary color */
+.dropdown-item .fas {
+  color: var(--primary-color) !important;
+}
+
+.dropdown-item:hover .fas {
+  color: var(--primary-color) !important;
 }
 
 .dropdown-item {
@@ -136,6 +195,7 @@ body {
   border-radius: var(--radius-md);
   transition: all var(--duration-fast) ease;
 }
+
 
 .dropdown-item:hover {
   background: var(--primary-light);
@@ -646,7 +706,7 @@ footer .far {
 footer .social-links a:hover .fas,
 footer .social-links a:hover .fab,
 footer .social-links a:hover .far {
-    color: var(--secondary-color) !important;
+    color: var(--white) !important;
 }
 
 /* Button icons should be white */
@@ -659,3 +719,4 @@ footer .social-links a:hover .far {
 #startDate {
   min-height: 42px !important; /* Reduced from 50px to 49.5px */
 }
+

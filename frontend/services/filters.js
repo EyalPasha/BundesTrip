@@ -65,26 +65,25 @@ function initFilterDrawer() {
             </button>
         </div>
         <div class="drawer-content">
-            <div class="drawer-active-filters"></div>
+            <!-- Remove this line: <div class="drawer-active-filters"></div> -->
             
             <div class="drawer-filter-group">
                 <label class="drawer-filter-label">
-                    <i class="fas fa-futbol me-2"></i> Team Filters
+                    <i class="fas fa-futbol me-2" style="color: var(--primary-color);"></i> Team Filters
                 </label>
                 <div id="drawerTeamFilters" class="mb-3"></div>
             </div>
             
             <div class="drawer-filter-group">
                 <label class="drawer-filter-label">
-                    <i class="fas fa-map-marker-alt me-2"></i> City Filters
+                    <i class="fas fa-map-marker-alt me-2" style="color: var(--primary-color);"></i> City Filters
                 </label>
                 <div id="drawerCityFilters" class="mb-3"></div>
             </div>
-            
             <div class="drawer-filter-group filter-slider-group">
                 <div class="filter-slider-header">
                     <label class="filter-slider-label" for="drawerGamesSlider">
-                        <i class="fas fa-futbol me-1"></i> Minimum Games
+                        <i class="fas fa-futbol me-1" style="color: var(--primary-color);"></i> Minimum Games
                     </label>
                     <span class="filter-slider-value" id="drawerGamesSliderValue">Any</span>
                 </div>
@@ -94,7 +93,7 @@ function initFilterDrawer() {
             <div class="drawer-filter-group filter-slider-group">
                 <div class="filter-slider-header">
                     <label class="filter-slider-label" for="drawerHotelChangesSlider">
-                        <i class="fas fa-hotel me-1"></i> Max Hotel Changes
+                        <i class="fas fa-hotel me-1" style="color: var(--primary-color);"></i> Max Hotel Changes
                     </label>
                     <span class="filter-slider-value" id="drawerHotelChangesValue">Any</span>
                 </div>
@@ -102,10 +101,10 @@ function initFilterDrawer() {
             </div>
         </div>
         <div class="drawer-actions">
-            <button class="btn btn-outline-secondary" id="clearDrawerFilters">
+            <button class="btn btn-outline-primary" id="clearDrawerFilters" style="border-color: var(--primary-color); color: var(--primary-color);">
                 <i class="fas fa-times me-2"></i> Clear All
             </button>
-            <button class="btn btn-primary" id="applyDrawerFilters">
+            <button class="btn btn-primary" id="applyDrawerFilters" style="background-color: var(--primary-color); border-color: var(--primary-color); color: white;">
                 <i class="fas fa-check me-2"></i> Apply Filters
             </button>
         </div>
@@ -145,8 +144,7 @@ function initFilterDrawer() {
         // Update pending filter state
         pendingFilters.minGames = value;
         
-        // Update drawer active filters display
-        updateDrawerActiveFilters();
+        
     });
     
     const drawerHotelChangesSlider = document.getElementById('drawerHotelChangesSlider');
@@ -163,8 +161,7 @@ function initFilterDrawer() {
         // Update pending filter state
         pendingFilters.maxHotelChanges = value;
         
-        // Update drawer active filters display
-        updateDrawerActiveFilters();
+        
     });
     
     // Update filter count based on active filters (not pending)
@@ -290,52 +287,7 @@ function syncFiltersToDrawer() {
     }
     
     // Update active filters display in drawer
-    updateDrawerActiveFilters();
-}
-
-// Update active filters display in drawer
-function updateDrawerActiveFilters() {
-    const activeFiltersContainer = document.querySelector('.drawer-active-filters');
-    if (!activeFiltersContainer) return;
     
-    activeFiltersContainer.innerHTML = '';
-    
-    let hasActiveFilters = false;
-    
-    // Add team filter badge
-    if (pendingFilters.team) {
-        const badge = createDrawerFilterBadge('team', pendingFilters.team);
-        activeFiltersContainer.appendChild(badge);
-        hasActiveFilters = true;
-    }
-    
-    // Add city filter badge
-    if (pendingFilters.city) {
-        const badge = createDrawerFilterBadge('city', pendingFilters.city);
-        activeFiltersContainer.appendChild(badge);
-        hasActiveFilters = true;
-    }
-    
-    // Add min games filter badge - only show if above the min of 2
-    if (pendingFilters.minGames > 2) {
-        const badge = createDrawerFilterBadge('minGames', `${pendingFilters.minGames}+ games`);
-        activeFiltersContainer.appendChild(badge);
-        hasActiveFilters = true;
-    }
-    
-    // Add hotel changes filter badge
-    if (pendingFilters.maxHotelChanges < 7) {
-        const badge = createDrawerFilterBadge('maxHotelChanges', `Max ${pendingFilters.maxHotelChanges} hotel changes`);
-        activeFiltersContainer.appendChild(badge);
-        hasActiveFilters = true;
-    }
-    
-    // Show or hide the active filters section
-    if (hasActiveFilters) {
-        activeFiltersContainer.style.display = 'flex';
-    } else {
-        activeFiltersContainer.style.display = 'none';
-    }
 }
 
 // Create filter badge for drawer
@@ -368,7 +320,7 @@ function createDrawerFilterBadge(type, text) {
         }
         
         // Update drawer UI only
-        updateDrawerActiveFilters();
+        
         updateDrawerTeamFilterUI();
         updateDrawerCityFilterUI();
     });
@@ -487,7 +439,7 @@ function filterByTeam(team) {
     updateFilterCount();
     
     // Update active filters display in drawer
-    updateDrawerActiveFilters();
+    
     
     // Apply all active filters
     applyAllFilters();
@@ -515,7 +467,7 @@ function filterByCity(city) {
     updateFilterCount();
     
     // Update active filters display in drawer
-    updateDrawerActiveFilters();
+    
     
     // Apply all active filters
     applyAllFilters();
@@ -528,7 +480,7 @@ function filterByCity(city) {
 function filterByGames(minGames) {
     activeFilters.minGames = minGames;
     updateFilterCount();
-    updateDrawerActiveFilters();
+    
     applyAllFilters();
     
     // Dispatch event
@@ -681,7 +633,7 @@ function filterByHotelChanges(maxChanges) {
     updateFilterCount();
     
     // Update active filters display in drawer
-    updateDrawerActiveFilters();
+    
     
     // Create a counter to track how many cards we've processed
     let processedCards = 0;
@@ -913,34 +865,17 @@ function showNoFilterMatchesMessage(container, hasTbdGames) {
     noMatchesMessage.id = 'noFilterMatchesMessage';
     noMatchesMessage.className = 'alert alert-info mt-4 text-center fade-in';
     
-    // Different message depending on whether we have TBD games
-    if (hasTbdGames) {
-        noMatchesMessage.innerHTML = `
-            <i class="fas fa-filter me-2"></i>
-            <strong>No trips match your current filters</strong>
-            <p class="mb-2 mt-2">Try adjusting your filters or check out the upcoming matches listed above.</p>
-            <button class="btn btn-outline-primary btn-sm" id="resetFiltersBtn">
-                <i class="fas fa-times me-1"></i> Reset Filters
-            </button>
-        `;
-    } else {
-        noMatchesMessage.innerHTML = `
-            <i class="fas fa-filter me-2"></i>
-            <strong>No trips match your current filters</strong>
-            <p class="mb-2 mt-2">Please adjust your filter criteria and try again.</p>
-            <button class="btn btn-outline-primary btn-sm" id="resetFiltersBtn">
-                <i class="fas fa-times me-1"></i> Reset Filters
-            </button>
-        `;
-    }
+    noMatchesMessage.innerHTML = `
+        <i class="fas fa-filter me-2"></i>
+        <strong>No trips match your current filters</strong>
+        <p class="mb-2 mt-2">Please adjust your filter criteria and try again.</p>
+        <button class="btn btn-outline-primary btn-sm" id="resetFiltersBtn">
+            <i class="fas fa-times me-1"></i> Reset Filters
+        </button>
+    `;
     
-    // Add to the container after the TBD section (if it exists)
-    const tbdSection = container.querySelector('#tbdGamesSection');
-    if (tbdSection) {
-        tbdSection.after(noMatchesMessage);
-    } else {
-        container.appendChild(noMatchesMessage);
-    }
+    // Add the message to the container
+    container.appendChild(noMatchesMessage);
     
     // Add event listener to the reset button
     document.getElementById('resetFiltersBtn').addEventListener('click', clearFiltersEnhanced);
@@ -1191,7 +1126,7 @@ function clearFiltersEnhanced() {
     // Update drawer UI
     updateDrawerTeamFilters();
     updateDrawerCityFilters();
-    updateDrawerActiveFilters();
+    
     
     // Update filter count badge
     updateFilterCount();
@@ -1373,7 +1308,7 @@ function renderFilters(tripGroups) {
         // Otherwise, update filters in the drawer
         updateDrawerTeamFilters();
         updateDrawerCityFilters();
-        updateDrawerActiveFilters();
+        
         updateFilterCount();
     }
     
@@ -1547,7 +1482,7 @@ function initializeDrawerSliders(maxGames, maxHotelChanges) {
                 }
                 
                 // Update active filters display
-                updateDrawerActiveFilters();
+                
             });
         }
     }
@@ -1583,7 +1518,7 @@ function initializeDrawerSliders(maxGames, maxHotelChanges) {
             }
             
             // Update active filters display
-            updateDrawerActiveFilters();
+            
             updateFilterCount();
         });
     }
@@ -1614,7 +1549,7 @@ function resetFilters() {
     if (filterDrawer) {
         updateDrawerTeamFilters();
         updateDrawerCityFilters();
-        updateDrawerActiveFilters();
+        
     }
 }
 
@@ -1629,7 +1564,7 @@ function drawerFilterByTeam(team) {
     
     // Update UI only
     updateDrawerTeamFilterUI();
-    updateDrawerActiveFilters();
+    
 }
 
 function drawerFilterByCity(city) {
@@ -1642,7 +1577,7 @@ function drawerFilterByCity(city) {
     
     // Update UI only
     updateDrawerCityFilterUI();
-    updateDrawerActiveFilters();
+    
 }
 
 // Update drawer filter UI based on pending filters
@@ -1695,7 +1630,7 @@ function clearDrawerFilters() {
     // Reset drawer UI
     updateDrawerTeamFilterUI();
     updateDrawerCityFilterUI();
-    updateDrawerActiveFilters();
+    
     
     // Reset sliders in drawer
     const drawerGamesSlider = document.getElementById('drawerGamesSlider');

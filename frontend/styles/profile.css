@@ -1723,6 +1723,23 @@ a.btn-primary i:empty {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
   padding: var(--space-sm);
+  width: auto;
+  /* Force positioning */
+  top: 100% !important;
+  right: 0 !important;
+  left: auto !important;
+  z-index: 1050;
+  /* Prevent viewport overflow */
+  transform: none !important;
+}
+
+/* Dropdown menu icons should be primary color */
+.dropdown-item .fas {
+  color: var(--primary-color) !important;
+}
+
+.dropdown-item:hover .fas {
+  color: var(--primary-color) !important;
 }
 
 .dropdown-item {

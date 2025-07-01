@@ -8,5 +8,15 @@
     "not ios_saf <= 15.8",
     "not and_ff <= 127",
     "not firefox <= 128"
-  ]
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "min-height: auto"
+        ]
+      }
+    ]
+  }
 }
