@@ -950,3 +950,8 @@ main .fa,
     font-size: 0.9rem;
   }
 }
+.card-body h4.h5 {
+    font-size: 1rem;      /* Make header smaller */
+    white-space: nowrap;  /* Prevent wrapping */
+    line-height: 1.2;     /* Tighter line height */
+}

@@ -925,13 +925,6 @@ class TripSaver {
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
-                        
-                        <div class="modal-body modern-body">
-                            <div class="alert alert-warning modern-alert">
-                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                Are you sure you want to permanently remove this trip from your saved collection?
-                            </div>
-                            
                             <div class="trip-preview-card">
                                 <div class="preview-header">
                                     <i class="fas fa-eye"></i>
@@ -959,17 +952,6 @@ class TripSaver {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div class="unsave-warning">
-                                <h6 class="text-danger">
-                                    <i class="fas fa-info-circle me-2"></i>What happens when you remove this trip:
-                                </h6>
-                                <ul class="list-unstyled ms-3">
-                                    <li><i class="fas fa-times text-danger me-2"></i>Trip will be permanently deleted from your account</li>
-                                    <li><i class="fas fa-times text-danger me-2"></i>You'll lose access to saved itinerary details</li>
-                                    <li><i class="fas fa-times text-danger me-2"></i>This action will be logged in your account activity</li>
-                                </ul>
                             </div>
                         </div>
                         

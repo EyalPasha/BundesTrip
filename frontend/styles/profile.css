@@ -212,7 +212,12 @@ body {
 
 .profile-avatar i {
   font-size: 3rem;
-  color: var(--white);
+  color: var(--white) !important;
+}
+
+/* Force white icon in profile avatar */
+.profile-avatar > i.fas.fa-user {
+    color: var(--white) !important;
 }
 
 .profile-header h1 {
@@ -321,18 +326,6 @@ body {
   position: relative;
   overflow: hidden;
   height: 100%;
-}
-
-.stats-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-  transform: scaleX(0);
-  transition: transform var(--duration-normal) ease;
 }
 
 .stats-card:hover {
@@ -485,6 +478,8 @@ a.btn-primary i:empty {
   display: flex;
   gap: var(--space-sm);
   flex-shrink: 0;
+  margin-bottom: 10px !important; 
+  margin-left: 10px !important;  
 }
 
 /* Modern Buttons */
@@ -525,6 +520,12 @@ a.btn-primary i:empty {
   color: var(--white);
 }
 
+.btn-favorite.favorited:hover,
+.btn-favorite.favorited:focus {
+  background: var(--white);
+  border-color: var(--warning-color);
+  color: var(--warning-color);
+}
 .btn-favorite:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
@@ -2179,7 +2180,10 @@ a.btn-primary i:empty {
 .fas.fa-hotel,
 .fas.fa-exchange-alt,
 .fas.fa-futbol,
-.fas.fa-calendar-day {
+.fas.fa-calendar-day,
+.fas.fa-user,
+.fas.fa-envelope,
+.fas.fa-calendar-plus {
     color: var(--primary-color) !important;
 }
 
@@ -2193,6 +2197,9 @@ main .fas.fa-hotel,
 main .fas.fa-exchange-alt,
 main .fas.fa-futbol,
 main .fas.fa-calendar-day,
+main .fas.fa-user,
+main .fas.fa-envelope,
+main .fas.fa-calendar-plus,
 .trip-card .fas.fa-clock,
 .trip-card .fas.fa-map-marker-alt,
 .trip-card .fas.fa-train,
@@ -2201,7 +2208,9 @@ main .fas.fa-calendar-day,
 .trip-card .fas.fa-hotel,
 .trip-card .fas.fa-exchange-alt,
 .trip-card .fas.fa-futbol,
-.trip-card .fas.fa-calendar-day {
+.trip-card .fas.fa-calendar-day,
+.trip-card .fas.fa-user,
+.trip-card .fas.fa-envelope,
+.trip-card .fas.fa-calendar-plus {
     color: var(--primary-color) !important;
 }
-

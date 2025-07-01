@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://localhost:8000 http://0.0.0.0:8000 http://127.0.0.1:8000 http://10.0.0.28:8000 http://10.0.0.67:8000 http://172.30.2.216:8000 https://*.ngrok-free.app https://*.ngrok.io https://ouurqpbwidicivdysdnq.supabase.co https://*.supabase.co;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | BundesTrip</title>
+    <!-- Add favicon -->
+    <link rel="icon" href="./logos/logo.png" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/about-contact.css">
+    <link rel="stylesheet" href="styles/footer.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="./index.html">
+                <img src="./logos/blank_logo.png" alt="BundesTrip Logo" height="30" class="d-inline-block align-middle me-2">
+                BundesTrip
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation" title="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Trip Planner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./schedules.html">Schedules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./about.html">About Us</a>
+                    </li>
+                </ul>
+                <!-- Authentication Menu -->
+                <ul class="navbar-nav">
+                    <!-- When not logged in -->
+                    <li class="nav-item" id="loginMenuItem">
+                        <a class="nav-link" href="./login.html">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                    </li>
+                    <li class="nav-item" id="registerMenuItem">
+                        <a class="nav-link" href="./register.html">
+                            <i class="fas fa-user-plus me-1"></i>Register
+                        </a>
+                    </li>
+                    <!-- When logged in -->
+                    <li class="nav-item dropdown d-none" id="userDropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="User menu">
+                            <i class="fas fa-user-circle me-1"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="./profile.html">
+                                <i class="fas fa-user me-2"></i>Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logoutUser()">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+        <main class="container my-5">
+      <h1 class="mb-4">Terms of Service</h1>
+      <p>Last updated: July 1, 2025</p>
+    
+      <h2>1. Acceptance of Terms</h2>
+      <p>
+        By accessing or using BundesTrip ("the Service"), you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any part of these terms, you may not use the Service.
+      </p>
+    
+      <h2>2. Use of the Service</h2>
+      <ul>
+        <li>You must be at least 16 years old to use BundesTrip.</li>
+        <li>You agree to use the Service only for lawful purposes and in accordance with these Terms.</li>
+        <li>You are responsible for maintaining the confidentiality of your account and password.</li>
+        <li>You may not use the Service to engage in any activity that is illegal, harmful, or infringes on the rights of others.</li>
+      </ul>
+    
+      <h2>3. Intellectual Property</h2>
+      <p>
+        All content, features, and functionality on BundesTrip, including but not limited to text, graphics, logos, and software, are the exclusive property of BundesTrip and its licensors. You may not reproduce, distribute, modify, or create derivative works without explicit written permission.
+      </p>
+    
+      <h2>4. User Content</h2>
+      <p>
+        By submitting content (such as reviews, comments, or trip plans) to BundesTrip, you grant us a non-exclusive, royalty-free, worldwide license to use, display, and distribute your content in connection with the Service.
+      </p>
+    
+      <h2>5. Disclaimers</h2>
+      <p>
+        The Service is provided "as is" and "as available" without warranties of any kind. We do not guarantee the accuracy, completeness, or reliability of any information on the Service. Your use of the Service is at your own risk.
+      </p>
+    
+      <h2>6. Limitation of Liability</h2>
+      <p>
+        To the fullest extent permitted by law, BundesTrip and its affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, arising out of your use of the Service.
+      </p>
+    
+      <h2>7. Third-Party Links</h2>
+      <p>
+        The Service may contain links to third-party websites or services that are not owned or controlled by BundesTrip. We are not responsible for the content, privacy policies, or practices of any third-party sites.
+      </p>
+    
+      <h2>8. Changes to Terms</h2>
+      <p>
+        We reserve the right to modify these Terms at any time. Changes will be posted on this page with an updated effective date. Your continued use of the Service after changes are posted constitutes your acceptance of the new Terms.
+      </p>
+    
+      <h2>9. Contact</h2>
+      <p>
+        For any questions about these Terms, please contact us at <a href="mailto:eyalpasha112@outlook.com">eyalpasha112@outlook.com</a>.
+      </p>
+    </main>
+
+    
+    <footer class="bg-dark text-light py-4 mt-auto">
+        <div class="container">
+            <div class="row">
+                <!-- Company Info + Social Links -->
+                <div class="col-md-6">
+                    <div class="company-info">
+                        <h3>BundesTrip</h3>
+                        <p>
+                            Your ultimate companion for planning football trips across Germany. Discover the best matches, plan your journey, and create unforgettable memories.
+                        </p>
+                        <div class="social-links mt-3">
+                            <a href="https://www.linkedin.com/in/eyalpasha/" class="text-light me-3" target="_blank" rel="noopener" title="LinkedIn">
+                                <i class="fab fa-linkedin"></i>
+                                <span class="visually-hidden">LinkedIn</span>
+                            </a>
+                            <a href="https://www.facebook.com/eyal.pasha" class="text-light me-3" target="_blank" rel="noopener" title="Facebook">
+                                <i class="fab fa-facebook"></i>
+                                <span class="visually-hidden">Facebook</span>
+                            </a>
+                            <a href="https://www.instagram.com/eyalpasha" class="text-light" target="_blank" rel="noopener" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span class="visually-hidden">Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Quick Links 1 -->
+                <div class="col-md-3">
+                    <div class="footer-section">
+                        <h5>Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="./index.html" class="text-light">Home</a></li>
+                            <li><a href="./schedules.html" class="text-light">Schedules</a></li>
+                            <li><a href="./about.html" class="text-light">About Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Quick Links 2 -->
+                <div class="col-md-3">
+                    <div class="footer-section">
+                        <h5>Account & Legal</h5>
+                        <ul class="list-unstyled">
+                            <li id="footer-account-link">
+                                <a href="./login.html" class="text-light">Sign Up / Log In</a>
+                            </li>
+                            <li><a href="./privacy.html" class="text-light">Privacy Policy</a></li>
+                            <li><a href="./terms.html" class="text-light">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 text-center">
+                <small>&copy; 2025 BundesTrip. All rights reserved.</small>
+            </div>
+        </div>
+</footer>
+
+    <!-- Scripts Section -->
+    <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Load Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Load Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Load services -->
+    <script src="./services/supabase-auth.js"></script>
+    <script src="./services/navigation.js"></script>
+
+    <script>
+    // Initialize navigation state when page loads
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (window.authService) {
+            await new Promise(resolve => {
+                const checkInit = () => {
+                    if (window.authService.initialized) {
+                        resolve();
+                    } else {
+                        setTimeout(checkInit, 100);
+                    }
+                };
+                checkInit();
+            });
+            
+            if (window.updateNavigationState) {
+                await updateNavigationState();
+            }
+        } else {
+            setTimeout(async () => {
+                if (window.updateNavigationState) {
+                    await updateNavigationState();
+                }
+            }, 500);
+        }
+    });
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', async () => {
+    if (window.authService && typeof window.authService.getCurrentUser === 'function') {
+        try {
+            const user = await window.authService.getCurrentUser();
+            const accountLink = document.getElementById('footer-account-link');
+            if (accountLink) {
+                if (user) {
+                    accountLink.innerHTML = '<a href="./profile.html" class="text-light">My Account</a>';
+                } else {
+                    accountLink.innerHTML = '<a href="./login.html" class="text-light">Sign Up / Log In</a>';
+                }
+            }
+        } catch (e) {
+            const accountLink = document.getElementById('footer-account-link');
+            if (accountLink) {
+                accountLink.innerHTML = '<a href="./login.html" class="text-light">Sign Up / Log In</a>';
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>
