@@ -617,18 +617,18 @@ function reorderTripOptions(tripCard, maxHotelChanges, optionsInfo = null) {
                 }, 50);
             }
         }).catch(err => {
-            console.error('Failed to import trip-card module:', err);
+            console.error('Failed to import Wtrip-card module:', err);
         });
     }
-    
-    console.log('Trip options reordered:', {
+
+    /*console.log('Trip options reordered:', {
         card: tripCard,
         options: options.map(o => ({
             index: o.index,
             hotelChanges: o.hotelChanges,
             isValid: o.isValid
         }))
-    });
+    });*/
 }
 
 function filterByHotelChanges(maxChanges) {
@@ -645,7 +645,7 @@ function filterByHotelChanges(maxChanges) {
     let processedCards = 0;
     let totalVisibleCards = 0;
     
-    console.log(`Applying hotel changes filter: max ${maxChanges} changes`);
+    // console.log(`Applying hotel changes filter: max ${maxChanges} changes`);
     
     // IMPORTANT: Process each card first BEFORE applying all filters
     // This prevents timing issues with cards disappearing during processing
@@ -667,7 +667,7 @@ function filterByHotelChanges(maxChanges) {
         }
     });
     
-    console.log(`Processed ${processedCards} out of ${totalVisibleCards} visible cards`);
+    // console.log(`Processed ${processedCards} out of ${totalVisibleCards} visible cards`);
     
     // NOW apply all filters after we've processed all cards
     // This will hide cards that don't meet other filter criteria

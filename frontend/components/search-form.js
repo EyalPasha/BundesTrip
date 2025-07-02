@@ -3,7 +3,7 @@ import { loadCities, loadLeagues, loadTeams } from '../services/data-loader.js';
 
 // Initialize search form
 function initSearchForm() {
-    console.log("Initializing search form...");
+    // console.log("Initializing search form...");
     // Load data for dropdowns immediately
     Promise.all([
         loadCities(),
@@ -15,7 +15,7 @@ function initSearchForm() {
     const waitForDOM = setInterval(() => {
         if (window.DOM && window.DOM.tripSearchForm) {
             clearInterval(waitForDOM);
-            console.log("Adding submit event listener to search form");
+            // console.log("Adding submit event listener to search form");
             window.DOM.tripSearchForm.addEventListener('submit', handleSearch);
         }
     }, 100);

@@ -43,7 +43,7 @@ async function updateNavigationState() {
 }
 
 async function logoutUser() {
-    console.log('🔓 Attempting to log out...');
+    // console.log('🔓 Attempting to log out...');
     
     try {
         // Clear local state first
@@ -62,7 +62,7 @@ async function logoutUser() {
         try {
             const result = await window.authService?.signOut();
             signOutSuccess = result?.success || false;
-            console.log('Supabase sign out result:', result);
+            // console.log('Supabase sign out result:', result);
         } catch (supabaseError) {
             console.warn('Supabase sign out failed (but continuing with local logout):', supabaseError);
         }

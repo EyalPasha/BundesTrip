@@ -16,7 +16,7 @@ import { formatCityForDisplay, formatCityForBackend } from '../services/city-for
 function renderResults(response, hideLoadingOnNoResults = true) {
     // Check for cancelled flag in response
     if (response.cancelled) {
-        console.log("Rendering cancelled response");
+        // console.log("Rendering cancelled response");
         return;
     }
     
@@ -55,7 +55,7 @@ function renderResults(response, hideLoadingOnNoResults = true) {
             startDate: response.start_date
         };
         
-        console.log(`Initialized trip results with ${response.trip_groups.length} trip groups`);
+        // console.log(`Initialized trip results with ${response.trip_groups.length} trip groups`);
     } else {
         window.tripResults = null;
         window.tripContext = null;
@@ -68,20 +68,20 @@ function renderResults(response, hideLoadingOnNoResults = true) {
     const tbdGames = response.tbd_games || response.TBD_Games || [];
     
     // Log the raw TBD games data for debugging
-    console.log("Raw TBD games data:", tbdGames);
+    // console.log("Raw TBD games data:", tbdGames);
     const hasTbdGames = tbdGames && tbdGames.length > 0;
     
-    console.log("TBD games check:", hasTbdGames ? `Found ${tbdGames.length} TBD games` : "No TBD games");
+    // console.log("TBD games check:", hasTbdGames ? `Found ${tbdGames.length} TBD games` : "No TBD games");
 
     // Show TBD games if available (regardless of whether we have trips)
     if (hasTbdGames) {
-        console.log("Rendering TBD games section with:", tbdGames);
+        // console.log("Rendering TBD games section with:", tbdGames);
         renderTbdGames(tbdGames, response.must_teams || []);
     }
     
     // If we have no trips but have TBD games, show the animation instead of the TBD games
     if (noTrips && hasTbdGames) {
-        console.log("Showing TBD games in place of no results");
+        // console.log("Showing TBD games in place of no results");
         
         // Display the TBD games message
         const loadingAnimation = document.getElementById('loadingAnimation');
@@ -290,7 +290,7 @@ function renderNextBatch() {
     const start = state.renderedCount;
     const end = Math.min(start + state.batchSize, state.allTrips.length);
     
-    console.log(`Rendering trips ${start + 1} to ${end} of ${state.allTrips.length}`);
+    // console.log(`Rendering trips ${start + 1} to ${end} of ${state.allTrips.length}`);
     
     // Track the newly rendered cards to filter them
     const newlyRenderedCards = [];
@@ -319,7 +319,7 @@ function renderNextBatch() {
             // Get the newly rendered cards using our marker class
             const newCards = document.querySelectorAll('.trip-card.newly-rendered');
             
-            console.log(`Applying filters to ${newCards.length} newly rendered cards`);
+            // console.log(`Applying filters to ${newCards.length} newly rendered cards`);
             
             // Apply hotel changes filter if it's active
             if (window.activeFilters && window.activeFilters.maxHotelChanges < 7) {

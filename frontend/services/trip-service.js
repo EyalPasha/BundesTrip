@@ -1,6 +1,5 @@
 import { validateForm } from './validators.js';
 import { planTrip, cancelTripRequest, API_BASE_URL } from './api.js';
-import { showErrorToast, showSuccessToast } from './notifications.js';
 import { renderResults } from '../components/results-display.js';
 import { renderTripCard } from '../components/trip-card.js';
 
@@ -18,14 +17,14 @@ async function waitForAuthentication() {
                 if (window.authService && window.authService.initialized) {
                     const user = await window.authService.getCurrentUser();
                     if (user && window.authService.getAuthToken()) {
-                        console.log('✅ Authentication ready for API calls');
+                        // console.log('✅ Authentication ready for API calls');
                         resolve(user);
                     } else {
-                        console.log('⏳ Waiting for user authentication...');
+                        // console.log('⏳ Waiting for user authentication...');
                         setTimeout(checkAuth, 200);
                     }
                 } else {
-                    console.log('⏳ Waiting for auth service...');
+                    // console.log('⏳ Waiting for auth service...');
                     setTimeout(checkAuth, 200);
                 }
             } catch (error) {
@@ -50,13 +49,13 @@ async function handleSearch(e) {
         return;
     }
     
-    console.log('🔍 Starting trip search...');
+    // console.log('🔍 Starting trip search...');
     
     try {
         // STEP 1: Check authentication first
-        console.log('🔐 Checking authentication...');
+        // console.log('🔐 Checking authentication...');
         await waitForAuthentication();
-        console.log('✅ User authenticated, proceeding with search');
+        // console.log('✅ User authenticated, proceeding with search');
         
         // Reset loading UI to visible state
         resetLoadingUI(true);
@@ -90,10 +89,10 @@ async function handleSearch(e) {
         // STEP 2: GET A REQUEST ID FIRST - with authentication
         let requestId = null;
         try {
-            console.log('🎫 Getting authenticated request ID...');
+            // console.log('🎫 Getting authenticated request ID...');
             requestId = await window.apiService.getRequestId();
             window.currentRequestId = requestId;
-            console.log("Got request ID:", requestId);
+            // console.log("Got request ID:", requestId);
             
             if (!requestId) {
                 throw new Error('Failed to get request ID - please try again');
@@ -103,12 +102,9 @@ async function handleSearch(e) {
             
             // Handle authentication errors specifically
             if (error.message.includes('Authentication failed')) {
-                showErrorToast("Please log in again to plan your trip");
                 setTimeout(() => {
                     window.location.href = './login.html';
                 }, 2000);
-            } else {
-                showErrorToast("Server connection error - please try again");
             }
             return;
         }
@@ -130,7 +126,7 @@ async function handleSearch(e) {
                 try {
                     // Cancel request using authenticated API service
                     await window.apiService.cancelTrip(requestId);
-                    console.log(`Search cancelled for request ${requestId}`);
+                    // console.log(`Search cancelled for request ${requestId}`);
                 } catch (err) {
                     console.error("Error cancelling search:", err);
                 } finally {
@@ -260,16 +256,16 @@ async function handleSearch(e) {
                 payload.start_date = `${payload.start_date} ${currentYear}`;
             }
             
-            console.log('📝 Trip payload prepared:', payload);
+            // console.log('📝 Trip payload prepared:', payload);
             
             // STORE SEARCH REQUEST FOR TRIP SAVING
             if (window.tripSaver) {
                 window.tripSaver.storeSearchRequest(payload);
-                console.log('🔄 Stored search request for saving:', payload);
+                // console.log('🔄 Stored search request for saving:', payload);
             }
 
             // STEP 6: MAKE THE AUTHENTICATED REQUEST
-            console.log(`🚀 Planning trip with authenticated request ID: ${requestId}`);
+            // console.log(`🚀 Planning trip with authenticated request ID: ${requestId}`);
             response = await window.apiService.planTrip(payload);
             
             // STEP 7: PROCESS RESPONSE
@@ -328,16 +324,10 @@ async function handleSearch(e) {
                 
                 // Handle authentication errors specifically
                 if (error.message.includes('Authentication failed')) {
-                    showErrorToast("Please log in again to plan your trip");
                     setTimeout(() => {
                         window.location.href = './login.html';
                     }, 2000);
                     return;
-                }
-                
-                // Only show error toast for actual errors, not "no results" scenarios
-                if (error.message !== "No trips found matching your criteria") {
-                    showErrorToast(error.message || "Error planning trip");
                 }
                 
                 // Display no results message
@@ -388,8 +378,6 @@ async function handleSearch(e) {
         } else if (authError.message.includes('Authentication failed')) {
             errorMessage = 'Please log in again to plan your trip.';
         }
-        
-        showErrorToast(errorMessage);
         
         // Redirect to login after a delay
         setTimeout(() => {

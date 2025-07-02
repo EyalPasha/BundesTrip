@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         templateSelection: formatLeagueOptionWithLogo
       }).on('change', function() {
         const value = $(this).val();
-        console.log('League filter changed to:', value);
+        // console.log('League filter changed to:', value);
         window.applyScheduleFilters && window.applyScheduleFilters('league', value);
       });
       
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         templateSelection: formatTeamOptionWithLogo
       }).on('change', function() {
         const value = $(this).val();
-        console.log('Team filter changed to:', value);
+        // console.log('Team filter changed to:', value);
         window.applyScheduleFilters && window.applyScheduleFilters('team', value);
       });
       
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Dispatch an event that the mobile filter can listen for
       document.dispatchEvent(new CustomEvent('select2Initialized'));
       
-      console.log('Select2 bridge initialized with logos and filters connected');
+      // console.log('Select2 bridge initialized with logos and filters connected');
     }).catch(error => {
       console.error('Failed to load team-logos module:', error);
       

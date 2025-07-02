@@ -88,25 +88,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Main application initialization flow
 async function initializeApp() {
-    console.log("Starting application initialization...");
+    // console.log("Starting application initialization...");
     
     // Step 1: Initialize DOM references first
-    console.log("Step 1: Initializing DOM references");
+    // console.log("Step 1: Initializing DOM references");
     initDOMReferences();
     
     // Step 2: Apply visual styles and preload resources
-    console.log("Step 2: Applying visual styles");
+    // console.log("Step 2: Applying visual styles");
     document.body.classList.add('loading-select2');
     applyTeamLogoStyles();
     preloadLogos();
     
     // Step 3: Initialize form handlers and basic event listeners
-    console.log("Step 3: Setting up form handlers");
+    // console.log("Step 3: Setting up form handlers");
     initFormHandlers();
     updateMinGamesOptions();
     
     // Step 4: Load required data from API
-    console.log("Step 4: Loading data from API");
+    // console.log("Step 4: Loading data from API");
     try {
         const [cities, leagues, teams, availableDates] = await Promise.all([
             loadCities(),
@@ -115,30 +115,30 @@ async function initializeApp() {
             loadAvailableDates(),
             checkApiHealth() // Also check API health in parallel
         ]);
-        console.log("Data loading complete");
+        // console.log("Data loading complete");
     } catch (error) {
         console.error("Error loading initial data:", error);
         // Continue with initialization even if some data fails to load
     }
     
     // Step 5: Initialize UI components
-    console.log("Step 5: Initializing UI components");
+    // console.log("Step 5: Initializing UI components");
     await initializeUIComponents();
     
     // Step 6: Apply mobile-specific layout adjustments
-    console.log("Step 6: Applying mobile layout adjustments");
+    // console.log("Step 6: Applying mobile layout adjustments");
     initializeMobileLayout();
     
     // Step 7: Set up remaining event listeners
-    console.log("Step 7: Setting up remaining event listeners");
+    // console.log("Step 7: Setting up remaining event listeners");
     setupEventListeners();
     
     // Step 8: Final UI adjustments and show the form
-    console.log("Step 8: Final UI preparation");
+    // console.log("Step 8: Final UI preparation");
     document.body.classList.add('select2-ready');
     document.body.classList.remove('loading-select2');
     
-    console.log("Application initialization complete");
+    // console.log("Application initialization complete");
 }
 
 // Initialize all UI components (Select2, flatpickr, etc.)
@@ -348,7 +348,7 @@ window.getSelectedTeams = getSelectedTeams;
 async function checkApiHealth() {
     try {
         const health = await checkHealth();
-        console.log("API Health:", health);
+        // console.log("API Health:", health);
         if (health.status !== 'ok') {
             console.warn("API not fully operational - some features may be limited");
         }
@@ -412,7 +412,7 @@ function setupEventListeners() {
             
             // Check authentication FIRST - if fails, stop everything
             if (!checkAuthenticationForTripPlanning()) {
-                console.log("Authentication required - blocking form submission");
+                // console.log("Authentication required - blocking form submission");
                 return; // Stop here - don't call handleSearch
             }
             
@@ -491,7 +491,7 @@ function initializeMobileLayout() {
         return;
     }
     
-    console.log("Mobile layout detected - initializing mobile UI");
+    // console.log("Mobile layout detected - initializing mobile UI");
     
     // Mark as initialized to prevent duplicate initialization
     mobileLayoutInitialized = true;
@@ -673,7 +673,7 @@ function returnToSearch() {
         cancelTripRequest(window.currentRequestId)
             .then(result => {
                 if (result.success) {
-                    console.log("Trip request cancelled successfully");
+                    // console.log("Trip request cancelled successfully");
                     // Remove any notification code here
                 } else {
                     console.warn("Failed to cancel trip request:", result.message);
@@ -1126,18 +1126,6 @@ function showLoginPrompt() {
             }
         }
         
-        /* Enhanced Animation */
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        
         /* Accessibility */
         @media (prefers-reduced-motion: reduce) {
             .auth-btn::before,
@@ -1191,12 +1179,6 @@ function showLoginPrompt() {
         keyboard: false     // Prevents closing with Escape key
     });
     modal.show();
-    
-    // Add entrance animation
-    const modalElement = document.getElementById('loginPromptModal');
-    modalElement.addEventListener('shown.bs.modal', function() {
-        modalElement.querySelector('.modal-content').style.animation = 'slideUp 0.4s ease-out';
-    });
 }
 
 

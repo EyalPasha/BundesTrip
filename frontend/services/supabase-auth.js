@@ -24,34 +24,34 @@ class AuthService {
                 this.currentUser = session.user
                 this.authToken = session.access_token
                 await this.checkAdminStatus()
-                console.log('✅ User session restored:', session.user.email)
+                // console.log('✅ User session restored:', session.user.email)
             }
             
             // Listen for auth state changes (INCLUDING TOKEN REFRESH)
             supabase.auth.onAuthStateChange(async (event, session) => {
-                console.log('🔄 Auth state changed:', event)
+                // console.log('🔄 Auth state changed:', event)
                 
                 if (event === 'SIGNED_IN' && session) {
                     this.currentUser = session.user
                     this.authToken = session.access_token
                     await this.checkAdminStatus()
-                    console.log('✅ User signed in:', session.user.email)
+                    // console.log('✅ User signed in:', session.user.email)
                 } else if (event === 'TOKEN_REFRESHED' && session) {
                     // THIS IS THE KEY PART - handle token refresh
-                    console.log('🔄 Token refreshed automatically')
+                    // console.log('🔄 Token refreshed automatically')
                     this.currentUser = session.user
                     this.authToken = session.access_token
-                    console.log('✅ New token ready for API calls')
+                    // console.log('✅ New token ready for API calls')
                 } else if (event === 'SIGNED_OUT') {
                     this.currentUser = null
                     this.authToken = null
                     this.isAdmin = false
-                    console.log('👋 User signed out')
+                    // console.log('👋 User signed out')
                 }
             })
             
             this.initialized = true
-            console.log('✅ Supabase Auth Service initialized')
+            // console.log('✅ Supabase Auth Service initialized')
         } catch (error) {
             console.error('❌ Failed to initialize auth service:', error)
         }
@@ -113,11 +113,11 @@ class AuthService {
     async signOut() {
         try {
             // Method 1: Try normal Supabase logout
-            console.log('🔓 Attempting Supabase logout...');
+            // console.log('🔓 Attempting Supabase logout...');
             const { error } = await supabase.auth.signOut()
             
             if (!error) {
-                console.log('✅ Supabase logout successful');
+                // console.log('✅ Supabase logout successful');
                 this.currentUser = null
                 this.authToken = null
                 this.isAdmin = false
@@ -151,7 +151,7 @@ class AuthService {
                     }
                 });
                 
-                console.log('✅ Manual logout completed');
+                // console.log('✅ Manual logout completed');
                 return { success: true, message: 'Signed out successfully (manual)' };
                 
             } catch (manualError) {
@@ -213,7 +213,7 @@ class AuthService {
     getAuthToken() {
         // Get fresh token from current session
         if (this.authToken) {
-            console.log('🔑 Using cached token:', this.authToken.substring(0, 20) + '...');
+            // console.log('🔑 Using cached token:', this.authToken.substring(0, 20) + '...');
             
             // Check if token looks valid (basic validation)
             try {
@@ -226,7 +226,7 @@ class AuthService {
                     return null;
                 }
                 
-                console.log('✅ Token validation passed, expires at:', new Date(payload.exp * 1000));
+                // console.log('✅ Token validation passed, expires at:', new Date(payload.exp * 1000));
                 return this.authToken;
             } catch (e) {
                 console.warn('⚠️ Token validation failed:', e);
@@ -241,7 +241,7 @@ class AuthService {
     // Add method to refresh token
     async refreshToken() {
         try {
-            console.log('🔄 Refreshing authentication token...');
+            // console.log('🔄 Refreshing authentication token...');
             const { data: { session }, error } = await supabase.auth.getSession();
             
             if (error) throw error;
@@ -249,7 +249,7 @@ class AuthService {
             if (session) {
                 this.currentUser = session.user;
                 this.authToken = session.access_token;
-                console.log('✅ Token refreshed successfully');
+                // console.log('✅ Token refreshed successfully');
                 return session.access_token;
             } else {
                 console.warn('⚠️ No session found during refresh');
@@ -301,4 +301,4 @@ class AuthService {
 // Create global auth service instance and initialize it
 window.authService = new AuthService()
 
-console.log('🔧 Auth service created and initializing...')
+// console.log('🔧 Auth service created and initializing...')

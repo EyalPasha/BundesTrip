@@ -45,7 +45,7 @@ export function initMustTeamsSelect() {
  * Properly initialize the Preferred Leagues Select2 dropdown with logos
  */
 export function initPreferredLeaguesSelect() {
-    console.log("Initializing league select with logos");
+    // console.log("Initializing league select with logos");
     
     // Destroy any existing Select2 instance first
     if ($.fn.select2 && $('#preferredLeagues').data('select2')) {

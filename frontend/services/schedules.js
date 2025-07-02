@@ -36,11 +36,11 @@ const state = {
 function initializeFlatpickr() {
     // Skip if we're on mobile
     if (window.innerWidth < 768 || !DOM.dateFilter) {
-        console.log('Skipping flatpickr initialization for desktop filters on mobile');
+        // console.log('Skipping flatpickr initialization for desktop filters on mobile');
         return;
     }
     
-    console.log('Initializing flatpickr for desktop date filter');
+    // console.log('Initializing flatpickr for desktop date filter');
     
     // Initialize flatpickr on the date filter
     flatpickr(DOM.dateFilter, {
@@ -69,7 +69,7 @@ function initializeFlatpickr() {
 
 // Initialize the page when DOM is ready
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('Schedule page initialized');
+    // console.log('Schedule page initialized');
     
     // Pre-hide filters with inline styles to prevent flash
     document.head.insertAdjacentHTML('beforeend', `
@@ -105,13 +105,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         `;
         
         // Load data first with proper timing
-        console.log('Loading teams and leagues...');
+        /* console.log('Loading teams and leagues...');
         const [teams, leagues] = await Promise.all([
             loadTeams(),
             loadLeagues()
-        ]);
+        ]); */
         
-        console.log(`Successfully loaded ${teams.length} teams and ${leagues.length} leagues`);
+        // console.log(`Successfully loaded ${teams.length} teams and ${leagues.length} leagues`);
         
         // Initialize flatpickr after data is loaded
         initializeFlatpickr();
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Function to show all filters after loading
 function showAllFilters() {
-    console.log('Showing filters after loading');
+    // console.log('Showing filters after loading');
     
     // Remove the initial hiding style
     const initialStyle = document.getElementById('initial-hide-filters');
@@ -188,12 +188,12 @@ async function loadTeams() {
         // First try to get teams from global state if loaded by main page
         let teams = [];
         if (window.globalTeamsData && window.globalTeamsData.teams) {
-            console.log('Using teams from global state:', window.globalTeamsData.teams.length);
+            // console.log('Using teams from global state:', window.globalTeamsData.teams.length);
             teams = window.globalTeamsData.teams;
         } else {
-            console.log('Fetching teams from API');
+            // console.log('Fetching teams from API');
             teams = await fetchAllTeams();
-            console.log('Fetched teams from API:', teams.length);
+            // console.log('Fetched teams from API:', teams.length);
         }
         
         // Filter to only German teams
@@ -215,7 +215,7 @@ async function loadTeams() {
             DOM.teamFilter.appendChild(option);
         });
         
-        console.log(`Team filter populated with ${germanTeams.length} teams`);
+        // console.log(`Team filter populated with ${germanTeams.length} teams`);
         
         // Trigger an event that mobile filters can listen for
         document.dispatchEvent(new CustomEvent('teamsLoaded'));
@@ -233,12 +233,12 @@ async function loadLeagues() {
         // First try to get leagues from global state if loaded by main page
         let leagues = [];
         if (window.globalLeaguesData && window.globalLeaguesData.leagues) {
-            console.log('Using leagues from global state:', window.globalLeaguesData.leagues);
+            // console.log('Using leagues from global state:', window.globalLeaguesData.leagues);
             leagues = window.globalLeaguesData.leagues;
         } else {
-            console.log('Fetching leagues from API');
+            // console.log('Fetching leagues from API');
             leagues = await fetchLeagues();
-            console.log('Fetched leagues from API:', leagues);
+            // console.log('Fetched leagues from API:', leagues);
         }
         
         state.leagues = leagues;
@@ -258,7 +258,7 @@ async function loadLeagues() {
             DOM.leagueFilter.appendChild(option);
         });
         
-        console.log(`League filter populated with ${leagues.length} leagues`);
+        // console.log(`League filter populated with ${leagues.length} leagues`);
         
         // Trigger an event that mobile filters can listen for
         document.dispatchEvent(new CustomEvent('leaguesLoaded'));
@@ -312,7 +312,7 @@ function setupEventListeners() {
             activeFilters.classList.add('sticky-active-filters');
         }
         
-        console.log('Filters set to sticky mode');
+        // console.log('Filters set to sticky mode');
     }
     
     // Add CSS for sticky behavior
@@ -962,7 +962,7 @@ function createMobileFilterButton() {
 
     // More reliable method to populate filters after Select2 initialization
     function populateMobileFilters() {
-        console.log('Populating mobile filters');
+        // console.log('Populating mobile filters');
         
         // Get references to the mobile filter elements
         const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
@@ -979,7 +979,7 @@ function createMobileFilterButton() {
         
         // Clone options from main filters
         if (DOM.leagueFilter) {
-            console.log(`League filter has ${DOM.leagueFilter.options.length} options`);
+            // console.log(`League filter has ${DOM.leagueFilter.options.length} options`);
             Array.from(DOM.leagueFilter.options).forEach(option => {
                 const newOption = document.createElement('option');
                 newOption.value = option.value;
@@ -991,7 +991,7 @@ function createMobileFilterButton() {
         }
         
         if (DOM.teamFilter) {
-            console.log(`Team filter has ${DOM.teamFilter.options.length} options`);
+            // console.log(`Team filter has ${DOM.teamFilter.options.length} options`);
             Array.from(DOM.teamFilter.options).forEach(option => {
                 const newOption = document.createElement('option');
                 newOption.value = option.value;
@@ -1002,23 +1002,23 @@ function createMobileFilterButton() {
             console.warn('Main team filter not found');
         }
         
-        console.log(`Populated mobile filters. League options: ${mobileLeagueFilter.options.length}, Team options: ${mobileTeamFilter.options.length}`);
+        // console.log(`Populated mobile filters. League options: ${mobileLeagueFilter.options.length}, Team options: ${mobileTeamFilter.options.length}`);
     }
     
     // Listen for teams and leagues loading events
     document.addEventListener('teamsLoaded', function() {
-        console.log('Teams loaded event received, updating mobile filters');
+        // console.log('Teams loaded event received, updating mobile filters');
         populateMobileFilters();
     });
     
     document.addEventListener('leaguesLoaded', function() {
-        console.log('Leagues loaded event received, updating mobile filters');
+        // console.log('Leagues loaded event received, updating mobile filters');
         populateMobileFilters();
     });
     
     // Listen for Select2 initialization to repopulate
     document.addEventListener('select2Initialized', function() {
-        console.log('Select2 initialized event received, updating mobile filters');
+        // console.log('Select2 initialized event received, updating mobile filters');
         populateMobileFilters();
     });
     
@@ -1124,11 +1124,11 @@ async function applyFilters() {
         // If team filter is active, use the dedicated team-schedule API
         if (state.filters.team !== 'all') {
             const teamName = state.filters.team;
-            console.log(`Fetching schedule for team: ${teamName}`);
+            // console.log(`Fetching schedule for team: ${teamName}`);
             
             // Use dedicated API endpoint for team schedules
             const teamData = await fetchTeamSchedule(teamName);
-            console.log('Team schedule data structure:', JSON.stringify(teamData, null, 2));
+            // console.log('Team schedule data structure:', JSON.stringify(teamData, null, 2));
             
             // Check if we have matches
             if (!teamData.matches || teamData.matches.length === 0) {
@@ -1241,7 +1241,7 @@ function jumpToDate(date) {
     const day = String(date.getDate()).padStart(2, '0');
     const apiDateStr = `${year}-${month}-${day}`;
     
-    console.log(`Jumping to date: ${apiDateStr} - Year: ${year}, Month: ${month}, Day: ${day}`);
+    // console.log(`Jumping to date: ${apiDateStr} - Year: ${year}, Month: ${month}, Day: ${day}`);
     
     // Format date for display
     const formattedDate = date.toLocaleDateString('en-US', {
@@ -1255,7 +1255,7 @@ function jumpToDate(date) {
     const dateElement = document.getElementById(`date-${apiDateStr}`);
     
     if (dateElement) {
-        console.log(`Found exact match for date: ${apiDateStr}`);
+        // console.log(`Found exact match for date: ${apiDateStr}`);
         // We found the exact date - scroll to it
         dateElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
@@ -1268,7 +1268,7 @@ function jumpToDate(date) {
         return;
     }
     
-    console.log(`No exact match found for ${apiDateStr}, looking for closest date`);
+    // console.log(`No exact match found for ${apiDateStr}, looking for closest date`);
     
     // If we don't have the exact date, find the closest date
     const allDateSections = document.querySelectorAll('.date-section[id^="date-"]');
@@ -1298,7 +1298,7 @@ function jumpToDate(date) {
         });
     });
     
-    console.log(`Looking for closest date to ${apiDateStr} among ${dates.length} available dates`);
+    // console.log(`Looking for closest date to ${apiDateStr} among ${dates.length} available dates`);
     
     // Find the closest date to our target
     // First try to find dates before or equal to target
@@ -1333,7 +1333,7 @@ function jumpToDate(date) {
         return;
     }
     
-    console.log(`Closest date found: ${closest.dateStr} (${closest.dateParts.year}-${closest.dateParts.month}-${closest.dateParts.day})`);
+    // console.log(`Closest date found: ${closest.dateStr} (${closest.dateParts.year}-${closest.dateParts.month}-${closest.dateParts.day})`);
     
     // Scroll to the closest date
     closest.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1450,7 +1450,7 @@ function fetchGamesForDate(dateStr, container) {
     // Check if we have a team filter active and we have currentTeamData cached
     const { team } = state.filters;
     if (team !== 'all' && window.currentTeamData) {
-        console.log('Using cached team data for date:', dateStr);
+        // console.log('Using cached team data for date:', dateStr);
         
         // Extract the date part to match with our stored data
         const dateParts = dateStr.split('-');
@@ -1464,7 +1464,7 @@ function fetchGamesForDate(dateStr, container) {
                           'July', 'August', 'September', 'October', 'November', 'December'];
         const searchDateStr = `${day} ${monthNames[month]} ${year}`;
         
-        console.log('Looking for matches on date:', searchDateStr);
+        // console.log('Looking for matches on date:', searchDateStr);
         
         // Look for matches on this date in the cached team data
         const matchesForDate = window.currentTeamData.matches.filter(match => {
@@ -1476,7 +1476,7 @@ function fetchGamesForDate(dateStr, container) {
         });
         
         // Log what we found for debugging
-        console.log(`Found ${matchesForDate.length} regular matches and ${tbdMatchesForDate.length} TBD matches for ${searchDateStr}`);
+        // console.log(`Found ${matchesForDate.length} regular matches and ${tbdMatchesForDate.length} TBD matches for ${searchDateStr}`);
         
         // Clear loading indicator
         container.innerHTML = '';
@@ -1927,13 +1927,13 @@ function renderDateView(data) {
                 const homeTeam = matchParts[0].trim();
                 const awayTeam = matchParts[1].trim();
                 
-                console.log(`DateView: Comparing [${homeTeam}] or [${awayTeam}] with filter [${team}]`);
+                // console.log(`DateView: Comparing [${homeTeam}] or [${awayTeam}] with filter [${team}]`);
                 return homeTeam === team || awayTeam === team;
             });
             
             // Skip this league if no games match the team filter
             if (filteredGames.length === 0) {
-                console.log(`DateView: No games in ${league} match team filter: ${team}`);
+                // console.log(`DateView: No games in ${league} match team filter: ${team}`);
                 continue;
             }
         }

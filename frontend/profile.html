@@ -945,18 +945,18 @@
         }
         // Change handlers
         function handleFilterChange(filterValue) {
-            console.log('Filter changed to:', filterValue);
+            // console.log('Filter changed to:', filterValue);
             setTimeout(() => filterTrips(), 50);
         }
     
         function handleSortChange(sortValue) {
-            console.log('Sort changed to:', sortValue);
+            // console.log('Sort changed to:', sortValue);
             setTimeout(() => filterTrips(), 50);
         }
     
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', async () => {
-            console.log('🚀 Initializing profile dashboard...');
+            // console.log('🚀 Initializing profile dashboard...');
             
             // Apply team logo styles
             applyTeamLogoStyles();
@@ -1022,7 +1022,7 @@
                 });
             }, 500);
             
-            console.log('✅ Profile dashboard initialized successfully');
+            // console.log('✅ Profile dashboard initialized successfully');
         });
     
         function populateProfileData() {
@@ -1043,7 +1043,7 @@
     
         async function loadDashboardData() {
             try {
-                console.log('📊 Loading dashboard data...');
+                // console.log('📊 Loading dashboard data...');
                 
                 // Load saved trips
                 await loadSavedTrips();
@@ -1059,12 +1059,12 @@
     
         async function loadSavedTrips() {
             try {
-                console.log('🗂️ Loading saved trips...');
+                // console.log('🗂️ Loading saved trips...');
                 
                 const response = await window.apiService.getSavedTrips(50, false);
                 savedTrips = response.trips || [];
                 
-                console.log(`✅ Loaded ${savedTrips.length} saved trips`);
+                // console.log(`✅ Loaded ${savedTrips.length} saved trips`);
                 displaySavedTrips(savedTrips);
                 
             } catch (error) {
@@ -1108,7 +1108,7 @@
             let tripIndex = 1;
     
             trips.forEach((savedTrip) => {
-                console.log('🔍 Processing saved trip:', savedTrip);
+                // console.log('🔍 Processing saved trip:', savedTrip);
                 
                 // Extract data from the correct locations
                 const tripGroups = savedTrip.trip_groups || [];
@@ -1122,7 +1122,7 @@
     
                 if (tripGroups && tripGroups.length > 0) {
                     tripGroups.forEach((group, groupIndex) => {
-                        console.log(`🎯 Rendering trip group ${groupIndex + 1}:`, group);
+                        // console.log(`🎯 Rendering trip group ${groupIndex + 1}:`, group);
                         
                         // Add saved trip management header
                         const savedTripHeader = document.createElement('div');
@@ -1157,7 +1157,7 @@
                         // Use the renderTripCard function
                         try {
                             renderTripCard(group, tripIndex, tripContext);
-                            console.log(`✅ Successfully rendered trip card ${tripIndex}`);
+                            // console.log(`✅ Successfully rendered trip card ${tripIndex}`);
                         } catch (error) {
                             console.error(`❌ Failed to render trip card ${tripIndex}:`, error);
                             

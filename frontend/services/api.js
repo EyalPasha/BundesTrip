@@ -34,7 +34,7 @@ async function fetchApi(endpoint, options = {}, retries = 2) {
             ...options,
         };
         
-        console.log(`Fetching ${API_BASE_URL}${endpoint}...`);
+        // console.log(`Fetching ${API_BASE_URL}${endpoint}...`);
         
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             ...cacheOptions,
@@ -204,7 +204,7 @@ async function planTrip(tripData) {
         // Extract and store request ID as early as possible
         if (data.request_id) {
             window.currentRequestId = data.request_id;
-            console.log("Request ID received:", data.request_id);
+            // console.log("Request ID received:", data.request_id);
         }
         
         // Provide better error for no trips
@@ -376,12 +376,12 @@ async function cancelTripRequest(requestId) {
         return { success: false, message: "No request ID provided" };
     }
     
-    console.log(`Attempting to cancel request: ${requestId}`);
+    // console.log(`Attempting to cancel request: ${requestId}`);
     
     try {
         // Use direct fetch with API_BASE_URL
         const url = `${API_BASE_URL}/cancel-trip/${requestId}`;
-        console.log(`Sending cancellation request to: ${url}`);
+        // console.log(`Sending cancellation request to: ${url}`);
         
         const response = await fetch(url, {
             method: 'DELETE',
@@ -391,7 +391,7 @@ async function cancelTripRequest(requestId) {
             }
         });
         
-        console.log(`Cancellation response status: ${response.status} ${response.statusText}`);
+        // console.log(`Cancellation response status: ${response.status} ${response.statusText}`);
         
         if (!response.ok) {
             let errorText = await response.text();
@@ -400,7 +400,7 @@ async function cancelTripRequest(requestId) {
         }
         
         const result = await response.json();
-        console.log(`Successfully cancelled request ${requestId}:`, result);
+        // console.log(`Successfully cancelled request ${requestId}:`, result);
         return { success: true, ...result };
     } catch (error) {
         console.error(`Error cancelling trip request ${requestId}:`, error);
@@ -413,7 +413,7 @@ async function cancelTripRequest(requestId) {
 class ApiService {
     constructor() {
         this.baseURL = this.detectApiUrl();
-        console.log(`🌐 API Service initialized with base URL: ${this.baseURL}`);
+        // console.log(`🌐 API Service initialized with base URL: ${this.baseURL}`);
     }
 
     detectApiUrl() {
@@ -446,15 +446,15 @@ class ApiService {
                     window.authService.currentUser = session.user;
                     
                     headers['Authorization'] = `Bearer ${session.access_token}`;
-                    console.log('🔐 Including fresh auth token in request');
+                    // console.log('🔐 Including fresh auth token in request');
                     
                     // Log token expiry for debugging
                     try {
                         const payload = JSON.parse(atob(session.access_token.split('.')[1]));
                         const expiryTime = new Date(payload.exp * 1000);
-                        console.log('🕐 Token expires at:', expiryTime.toLocaleString());
+                        // console.log('🕐 Token expires at:', expiryTime.toLocaleString());
                     } catch (e) {
-                        console.log('🔍 Could not parse token expiry');
+                        // console.log('🔍 Could not parse token expiry');
                     }
                 } else {
                     console.warn('⚠️ No session found - user may need to log in again');
@@ -473,8 +473,8 @@ class ApiService {
         try {
             const headers = await this.getAuthHeaders();
             
-            console.log('📡 Making request to:', url);
-            console.log('🔧 Request headers:', headers);
+            // console.log('📡 Making request to:', url);
+            // console.log('🔧 Request headers:', headers);
             
             const response = await fetch(url, {
                 ...options,
@@ -485,7 +485,7 @@ class ApiService {
                 credentials: 'include'  // Add this for CORS
             });
 
-            console.log('📨 Response status:', response.status);
+            // console.log('📨 Response status:', response.status);
 
             if (!response.ok) {
                 if (response.status === 401) {
@@ -501,7 +501,7 @@ class ApiService {
                     
                     // Try to refresh token and retry once
                     if (window.authService && !options._isRetry) {
-                        console.log('🔄 Attempting token refresh and retry...');
+                        // console.log('🔄 Attempting token refresh and retry...');
                         const newToken = await window.authService.refreshToken();
                         
                         if (newToken) {
@@ -548,7 +548,7 @@ class ApiService {
 
     // Plan a trip with authentication
     async planTrip(tripData) {
-        console.log('🚀 Planning trip with data:', tripData);
+        // console.log('🚀 Planning trip with data:', tripData);
         
         try {
             const result = await this.makeRequest(`${this.baseURL}/plan-trip`, {
@@ -556,7 +556,7 @@ class ApiService {
                 body: JSON.stringify(tripData)
             });
 
-            console.log('✅ Trip planning successful');
+            // console.log('✅ Trip planning successful');
             return result;
         } catch (error) {
             console.error('❌ Trip planning error:', error);
@@ -636,12 +636,12 @@ class ApiService {
         
     async saveTrip(tripData, originalRequest, isFavorite = false) {
         try {
-            console.log('🔄 Saving trip data:', {
+            /* console.log('🔄 Saving trip data:', {
                 tripData: tripData,
                 originalRequest: originalRequest,
                 isFavorite: isFavorite
-            });
-            
+            }); */
+
             const requestBody = {
                 trip_data: tripData,
                 original_request: originalRequest,
@@ -655,7 +655,7 @@ class ApiService {
                 body: JSON.stringify(requestBody)
             });
     
-            console.log('✅ Trip saved successfully:', result);
+            // console.log('✅ Trip saved successfully:', result);
             return result;
             
         } catch (error) {
@@ -679,7 +679,7 @@ class ApiService {
             }
 
             const result = await response.json();
-            console.log('📚 Loaded saved trips:', result);
+            // console.log('📚 Loaded saved trips:', result);
             return result;
             
         } catch (error) {
@@ -730,7 +730,7 @@ class ApiService {
     
     async unsaveTrip(tripId) {
         try {
-            console.log('🗑️ Attempting to unsave trip:', tripId);
+            // console.log('🗑️ Attempting to unsave trip:', tripId);
             
             const response = await fetchApi('/trips/unsave', {  // Note: /trips/unsave not /api/trips/unsave
                 method: 'DELETE',
@@ -743,7 +743,7 @@ class ApiService {
             });
     
             if (response.success) {
-                console.log('✅ Trip unsaved successfully:', response);
+                // console.log('✅ Trip unsaved successfully:', response);
                 
                 // Log user activity
                 await this.logUserActivity('trip_unsaved', {
@@ -786,7 +786,7 @@ class ApiService {
                 body: JSON.stringify(activityData)
             });
             
-            console.log(`📊 User activity logged: ${activityType}`, details);
+            // console.log(`📊 User activity logged: ${activityType}`, details);
             
         } catch (error) {
             console.warn('⚠️ Failed to log user activity:', error);
@@ -797,7 +797,7 @@ class ApiService {
     // Get trip request history
     async getTripRequestHistory(limit = 20) {
         try {
-            console.log('📋 Fetching trip request history...');
+            // console.log('📋 Fetching trip request history...');
             
             const response = await fetchApi(`/api/trip-request-history?limit=${limit}`, {
                 method: 'GET',
@@ -806,7 +806,7 @@ class ApiService {
                 }
             });
 
-            console.log(`✅ Retrieved ${response.requests?.length || 0} trip requests`);
+            // console.log(`✅ Retrieved ${response.requests?.length || 0} trip requests`);
             return response;
             
         } catch (error) {

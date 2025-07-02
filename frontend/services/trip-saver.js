@@ -7,7 +7,7 @@ class TripSaver {
     // Call this function whenever a search is performed to store the request
     storeSearchRequest(searchRequest) {
         this.lastSearchRequest = searchRequest;
-        console.log('🔄 Stored search request for saving:', searchRequest);
+        // console.log('🔄 Stored search request for saving:', searchRequest);
     }
 
     async showSaveDialog(tripData) {
@@ -28,7 +28,7 @@ class TripSaver {
         }
 
         // Check if trip is already saved
-        console.log('🔍 Checking if trip is already saved...');
+        // console.log('🔍 Checking if trip is already saved...');
         const duplicateCheck = await this.checkIfTripAlreadySaved(tripData);
         
         if (duplicateCheck.isDuplicate) {
@@ -140,10 +140,10 @@ class TripSaver {
             // Wait for API service to be available
             await this.waitForApiService();
             
-            console.log('🔄 Attempting to save trip:', {
+            /* console.log('🔄 Attempting to save trip:', {
                 tripData: tripData,
                 originalRequest: this.lastSearchRequest
-            });
+            }); */
 
             // Prepare the data for saving - no trip name, backend will auto-number
             const saveData = {
@@ -155,7 +155,7 @@ class TripSaver {
             // Use the ApiService instance directly without trip name
             const result = await window.apiService.saveTrip(saveData.trip_data, saveData.original_request, saveData.is_favorite);
             
-            console.log('✅ Trip saved successfully:', result);
+            // console.log('✅ Trip saved successfully:', result);
             
             modal.hide();
             
@@ -194,7 +194,7 @@ class TripSaver {
             
             const checkApiService = () => {
                 if (window.apiService && typeof window.apiService.saveTrip === 'function') {
-                    console.log('✅ API service is available');
+                    // console.log('✅ API service is available');
                     resolve();
                     return;
                 }
@@ -377,12 +377,12 @@ class TripSaver {
             const currentDuration = this.normalizeDuration(tripData.trip_duration);
             const currentStartDate = this.normalizeDate(tripData.start_date);
             
-            console.log('🔍 Checking for duplicate trip:', {
+            /* console.log('🔍 Checking for duplicate trip:', {
                 currentGames: currentGames.map(g => `${g.homeTeam} vs ${g.awayTeam}`),
                 currentStartLocation,
                 currentDuration,
                 currentStartDate
-            });
+            }); */
             
             // Compare with each saved trip
             for (const savedTrip of savedTrips) {
@@ -391,12 +391,12 @@ class TripSaver {
                 const savedDuration = this.normalizeDuration(savedTrip.trip_duration);
                 const savedStartDate = this.normalizeDate(savedTrip.start_date);
                 
-                console.log('🔍 Comparing with saved trip:', savedTrip.trip_name, {
+                /* console.log('🔍 Comparing with saved trip:', savedTrip.trip_name, {
                     savedGames: savedGames.map(g => `${g.homeTeam} vs ${g.awayTeam}`),
                     savedStartLocation,
                     savedDuration,
                     savedStartDate
-                });
+                }); */
                 
                 // Check if basic parameters match first (faster)
                 const locationMatch = currentStartLocation === savedStartLocation;
@@ -408,7 +408,7 @@ class TripSaver {
                     const gamesMatch = this.doAllGamesMatch(currentGames, savedGames);
                     
                     if (gamesMatch) {
-                        console.log('✅ Found duplicate trip:', savedTrip.trip_name);
+                        // console.log('✅ Found duplicate trip:', savedTrip.trip_name);
                         return {
                             isDuplicate: true,
                             savedTrip: savedTrip,
@@ -418,7 +418,7 @@ class TripSaver {
                 }
             }
             
-            console.log('✅ No duplicate found - trip can be saved');
+            // console.log('✅ No duplicate found - trip can be saved');
             return { isDuplicate: false };
             
         } catch (error) {
@@ -713,13 +713,13 @@ class TripSaver {
             }
         });
         
-        console.log(`🎯 Total games extracted: ${allGames.length}`, allGames);
+        // console.log(`🎯 Total games extracted: ${allGames.length}`, allGames);
         
         // Remove duplicates and sort for consistent comparison
         const uniqueGames = this.removeDuplicateGames(allGames);
         const sortedGames = this.sortGames(uniqueGames);
         
-        console.log(`🎯 Final unique sorted games: ${sortedGames.length}`, sortedGames);
+        // console.log(`🎯 Final unique sorted games: ${sortedGames.length}`, sortedGames);
         
         return sortedGames;
     }
@@ -730,7 +730,7 @@ class TripSaver {
         if (!game) return null;
         
         try {
-            console.log('🔍 Normalizing game info:', game);
+            // console.log('🔍 Normalizing game info:', game);
             
             let homeTeam = '';
             let awayTeam = '';
@@ -822,12 +822,12 @@ class TripSaver {
     doAllGamesMatch(currentGames, savedGames) {
         // Quick check - if different number of games, they don't match
         if (currentGames.length !== savedGames.length) {
-            console.log(`🔍 Game count mismatch: ${currentGames.length} vs ${savedGames.length}`);
+            // console.log(`🔍 Game count mismatch: ${currentGames.length} vs ${savedGames.length}`);
             return false;
         }
         
         if (currentGames.length === 0) {
-            console.log('🔍 Both trips have no games - considering as match');
+            // console.log('🔍 Both trips have no games - considering as match');
             return true;
         }
         
@@ -838,12 +838,12 @@ class TripSaver {
             );
             
             if (!foundMatch) {
-                console.log(`🔍 Game not found in saved trip: ${currentGame.homeTeam} vs ${currentGame.awayTeam}`);
+                // console.log(`🔍 Game not found in saved trip: ${currentGame.homeTeam} vs ${currentGame.awayTeam}`);
                 return false;
             }
         }
         
-        console.log('🔍 All games match!');
+        // console.log('🔍 All games match!');
         return true;
     }
 
@@ -1012,12 +1012,12 @@ class TripSaver {
             // Wait for API service to be available
             await this.waitForApiService();
             
-            console.log('🗑️ Attempting to unsave trip:', savedTrip);
+            // console.log('🗑️ Attempting to unsave trip:', savedTrip);
 
             // Call the unsave API
             const result = await window.apiService.unsaveTrip(savedTrip.id);
             
-            console.log('✅ Trip unsaved successfully:', result);
+            // console.log('✅ Trip unsaved successfully:', result);
             
             // Close modal
             modal.hide();
@@ -1088,6 +1088,6 @@ window.showUnsaveTripDialog = function(savedTrip) {
 
 // Global function to refresh saved trips list (to be implemented by dashboard pages)
 window.refreshSavedTripsList = function() {
-    console.log('🔄 Refreshing saved trips list...');
+    // console.log('🔄 Refreshing saved trips list...');
     // This will be implemented by pages that show saved trips lists
 };

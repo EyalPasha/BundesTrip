@@ -1723,7 +1723,7 @@ function updateSaveButtonForSavedTrip(index) {
 // Update the handleTripSave function:
 
 window.handleTripSave = async function(tripIndex) {
-    console.log('💾 Checking trip save status for index:', tripIndex);
+    // console.log('💾 Checking trip save status for index:', tripIndex);
     
     // Get the stored trip data
     const tripDataKey = `tripData_${tripIndex}`;
@@ -1756,7 +1756,7 @@ window.handleTripSave = async function(tripIndex) {
 export { renderTripCard, initializeMatchesExpander, renderTbdGames, extractHotelSummary, renderTravelSegments, renderAirportDistances, renderItineraryForVariant };
 
 window.shareTripLink = function(requestId) {
-    console.log('🔗 Sharing trip link for request:', requestId);
+    // console.log('🔗 Sharing trip link for request:', requestId);
     
     // Create the share URL
     const url = `${window.location.origin}${window.location.pathname}?shared=${requestId}`;
@@ -1768,7 +1768,7 @@ window.shareTripLink = function(requestId) {
             text: 'I found an amazing football trip in Germany',
             url: url
         }).catch(err => {
-            console.log('Share failed:', err);
+            // console.log('Share failed:', err);
             fallbackShare(url);
         });
     } else {

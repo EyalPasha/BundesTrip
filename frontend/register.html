@@ -71,25 +71,34 @@
             <!-- Right Side - Register Form -->
             <div class="register-form-section">
                 <div class="form-header">
-                    <h2>Create Account</h2>
-                    <p>Join thousands of football fans planning their perfect trips</p>
+                </div>
+                
+                <!-- Success and Error Messages -->
+                <div id="registrationSuccess" class="alert alert-success d-none mb-3" role="alert">
+                    <i class="fas fa-envelope me-2"></i>
+                    <span id="registrationSuccessMessage"></span>
+                </div>
+
+                <div id="registrationError" class="alert alert-danger d-none mb-3" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span id="registrationErrorMessage"></span>
                 </div>
                 
                 <form id="registerForm" class="auth-form">
                     <div class="form-group">
                         <label for="fullName" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+                        <input type="text" class="form-control" id="fullName" placeholder="Enter your full name">
                     </div>
                     
                     <div class="form-group">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email">
                     </div>
                     
                     <div class="form-group">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="password" placeholder="Create a password" required>
+                            <input type="password" class="form-control" id="password" placeholder="Create a password">
                             <button class="toggle-password" type="button" id="togglePassword" title="Show/Hide Password">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -101,7 +110,7 @@
                     <div class="form-group">
                         <label for="confirmPassword" class="form-label">Confirm Password</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password">
                             <button class="toggle-confirm-password" type="button" id="toggleConfirmPassword" title="Show/Hide Password">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -109,7 +118,7 @@
                     </div>
                     
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                        <input type="checkbox" class="form-check-input" id="agreeTerms">
                         <label class="form-check-label" for="agreeTerms">
                             I agree to the <a href="terms.html" class="terms-link" target="_blank">Terms of Service</a> and 
                             <a href="privacy.html" class="terms-link" target="_blank">Privacy Policy</a>
@@ -292,12 +301,46 @@
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Wait for auth service to be ready
-            const authService = await waitForAuthService();
+            // Clear any existing errors
+            clearFieldErrors();
+            clearMessages();
+            
+            // Validate required fields
+            let hasErrors = false;
+            
+            if (!fullNameInput.value.trim()) {
+                showFieldError(fullNameInput, 'Full name is required');
+                hasErrors = true;
+            }
+            
+            if (!emailInput.value.trim()) {
+                showFieldError(emailInput, 'Email address is required');
+                hasErrors = true;
+            }
+            
+            if (!passwordInput.value.trim()) {
+                showFieldError(passwordInput, 'Password is required');
+                hasErrors = true;
+            }
+            
+            if (!confirmPasswordInput.value.trim()) {
+                showFieldError(confirmPasswordInput, 'Please confirm your password');
+                hasErrors = true;
+            }
+            
+            if (!document.getElementById('agreeTerms').checked) {
+                showFieldError(document.getElementById('agreeTerms'));
+                hasErrors = true;
+            }
             
             // Validate passwords match
-            if (passwordInput.value !== confirmPasswordInput.value) {
-                showToast('Passwords do not match', 'error');
+            if (passwordInput.value && confirmPasswordInput.value && passwordInput.value !== confirmPasswordInput.value) {
+                showFieldError(confirmPasswordInput, 'Passwords do not match');
+                hasErrors = true;
+            }
+            
+            // Stop if there are validation errors
+            if (hasErrors) {
                 return;
             }
             
@@ -309,6 +352,9 @@
                 }
             }
             
+            // Wait for auth service to be ready
+            const authService = await waitForAuthService();
+            
             const submitBtn = registerForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             
@@ -317,7 +363,7 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner loading-spinner me-2"></i>Creating Account...';
             
             try {
-                console.log('Attempting to sign up with:', emailInput.value);
+                // console.log('Attempting to sign up with:', emailInput.value);
                 
                 const result = await authService.signUp(
                     emailInput.value,
@@ -327,24 +373,20 @@
                     }
                 );
                 
-                console.log('Sign up result:', result);
+                // console.log('Sign up result:', result);
                 
                 if (result.success) {
-                    showToast(result.message, 'success');
-                    
-                    // Show success message and redirect
+                    // Show success message
+                    showRegistrationSuccess('Please check your email to verify your account before signing in.');
                     setTimeout(() => {
-                        showToast('Please check your email to verify your account before signing in.', 'info');
-                        setTimeout(() => {
-                            window.location.href = './login.html';
-                        }, 3000);
-                    }, 1000);
+                        window.location.href = './login.html';
+                    }, 3000);
                 } else {
-                    showToast(result.error || 'Registration failed', 'error');
+                    showRegistrationError(result.error || 'Registration failed');
                 }
             } catch (error) {
                 console.error('Registration error:', error);
-                showToast('An unexpected error occurred. Please try again.', 'error');
+                showRegistrationError('An unexpected error occurred. Please try again.');
             } finally {
                 // Reset button
                 submitBtn.disabled = false;
@@ -352,36 +394,73 @@
             }
         });
         
-        // Show toast notification
-        function showToast(message, type = 'info') {
-            const toast = document.getElementById('authToast');
-            const toastMessage = document.getElementById('authToastMessage');
-            const toastHeader = toast.querySelector('.toast-header');
+        // Show field error (red border)
+        function showFieldError(inputElement, message) {
+            inputElement.classList.add('is-invalid');
             
-            // Set message and styling based on type
-            toastMessage.textContent = message;
-            toastHeader.className = `toast-header text-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'primary'}`;
+            // Find or create error message element
+            let errorDiv = inputElement.parentElement.querySelector('.invalid-feedback');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.className = 'invalid-feedback';
+                inputElement.parentElement.appendChild(errorDiv);
+            }
             
-            // Show toast
-            const bsToast = new bootstrap.Toast(toast);
-            bsToast.show();
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            // Clear error when user starts typing/clicking
+            const clearError = () => {
+                inputElement.classList.remove('is-invalid');
+                errorDiv.style.display = 'none';
+                inputElement.removeEventListener('input', clearError);
+                inputElement.removeEventListener('change', clearError);
+            };
+            
+            inputElement.addEventListener('input', clearError);
+            inputElement.addEventListener('change', clearError);
         }
         
-        // Check if already logged in
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const authService = await waitForAuthService();
-                const user = await authService.getCurrentUser();
-                if (user) {
-                    console.log('User already logged in, redirecting...');
-                    window.location.href = './index.html';
-                } else {
-                    console.log('No user logged in, showing registration form');
-                }
-            } catch (error) {
-                console.error('Error checking auth state:', error);
-            }
-        });
+        // Clear all field errors
+        function clearFieldErrors() {
+            const invalidInputs = document.querySelectorAll('.is-invalid');
+            invalidInputs.forEach(input => {
+                input.classList.remove('is-invalid');
+            });
+            
+            const errorDivs = document.querySelectorAll('.invalid-feedback');
+            errorDivs.forEach(div => {
+                div.style.display = 'none';
+            });
+        }
+        
+        // Show registration success message
+        function showRegistrationSuccess(message) {
+            const successDiv = document.getElementById('registrationSuccess');
+            const successMessage = document.getElementById('registrationSuccessMessage');
+            successMessage.textContent = message;
+            successDiv.classList.remove('d-none');
+            
+            // Hide error if showing
+            document.getElementById('registrationError').classList.add('d-none');
+        }
+        
+        // Show registration error message
+        function showRegistrationError(message) {
+            const errorDiv = document.getElementById('registrationError');
+            const errorMessage = document.getElementById('registrationErrorMessage');
+            errorMessage.textContent = message;
+            errorDiv.classList.remove('d-none');
+            
+            // Hide success if showing
+            document.getElementById('registrationSuccess').classList.add('d-none');
+        }
+        
+        // Clear all messages
+        function clearMessages() {
+            document.getElementById('registrationSuccess').classList.add('d-none');
+            document.getElementById('registrationError').classList.add('d-none');
+        }
     </script>
         <script>
     document.addEventListener('DOMContentLoaded', async () => {

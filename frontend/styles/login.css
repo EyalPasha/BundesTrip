@@ -183,7 +183,6 @@ body {
     padding: var(--space-3xl);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     position: relative;
     overflow: hidden;
     min-height: 400px;
@@ -277,11 +276,11 @@ body {
 
 .form-header {
     text-align: center;
-    margin-bottom: var(--space-3xl);
+    margin-bottom: var(--space-sm);
 }
 
 .form-header h2 {
-    font-size: var(--text-3xl);
+    font-size: var(--text-sm);
     font-weight: 700;
     color: var(--gray-800);
     margin-bottom: var(--space-sm);
@@ -949,4 +948,68 @@ footer {
         background: #f0f0f0 !important;
         color: #000 !important;
     }
+}
+
+/* Make alert icons white */
+.alert .fas.fa-exclamation-circle,
+.alert .fas.fa-envelope {
+    color: var(--white) !important;
+}
+
+/* Ensure alert text and icons are properly colored */
+.alert-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: var(--white);
+}
+
+.alert-success {
+    background-color: #198754;
+    border-color: #198754;
+    color: var(--white);
+}
+
+.alert-info {
+    background-color: #0dcaf0;
+    border-color: #0dcaf0;
+    color: var(--white);
+}
+
+/* Remove sliding animation for invalid feedback icons */
+.invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+    animation: none !important; /* Remove any animations */
+    transition: opacity 0.15s ease !important; /* Quick fade-in instead */
+}
+
+.form-control.is-invalid ~ .invalid-feedback {
+    display: block;
+    opacity: 1;
+}
+
+/* Ensure no sliding animations on form elements */
+.form-control.is-invalid {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    animation: none !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+/* Remove any global animations that might affect these elements */
+.invalid-feedback *,
+.form-control.is-invalid * {
+    animation: none !important;
+    transition: none !important;
+}
+/* Disable browser's default password reveal button */
+input[type="password"]::-ms-reveal {
+    display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button {
+    display: none !important;
 }
