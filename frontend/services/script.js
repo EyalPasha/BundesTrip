@@ -133,8 +133,16 @@ async function initializeApp() {
     // console.log("Step 7: Setting up remaining event listeners");
     setupEventListeners();
     
-    // Step 8: Final UI adjustments and show the form
-    // console.log("Step 8: Final UI preparation");
+    // Step 8: Set up session management
+    // console.log("Step 8: Setting up session management");
+    setupSessionManagement();
+    
+    // Step 9: Try to restore page state
+    // console.log("Step 9: Attempting page restoration");
+    await attemptPageRestore();
+    
+    // Step 10: Final UI adjustments and show the form
+    // console.log("Step 10: Final UI preparation");
     document.body.classList.add('select2-ready');
     document.body.classList.remove('loading-select2');
     
@@ -402,6 +410,9 @@ function showErrorToast(message) {
         }
     }, 5000);
 }
+
+// Make renderResults globally available for session restore
+window.renderResults = renderResults;
 
 // Add all remaining event listeners
 function setupEventListeners() {
@@ -1258,4 +1269,49 @@ function setupSelectionLimits() {
 
     // Remove the old mustTeams selection limit code since we now have individual selects
     // The individual selects automatically limit to 4 teams (one per dropdown)
+}
+
+// New function to set up session management
+function setupSessionManagement() {
+    if (window.sessionManager) {
+        // Set up navigation detection
+        window.sessionManager.setupNavigationDetection();
+        
+        // Set up scroll position tracking
+        let scrollTimer;
+        window.addEventListener('scroll', function() {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || 0;
+                if (window.sessionManager && scrollPosition > 0) {
+                    window.sessionManager.updateScrollPosition(scrollPosition);
+                }
+            }, 250); // Throttle scroll updates
+        });
+        
+        // Listen for page visibility changes to save current state
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+                // Page is being hidden (user switching tabs/apps)
+                const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || 0;
+                if (window.sessionManager && scrollPosition > 0) {
+                    window.sessionManager.updateScrollPosition(scrollPosition);
+                }
+            }
+        });
+    }
+}
+
+// New function to attempt page restoration
+async function attemptPageRestore() {
+    if (window.sessionRestore) {
+        try {
+            const restored = await window.sessionRestore.restorePage();
+            if (restored) {
+                console.log('✅ Page state restored from session');
+            }
+        } catch (error) {
+            console.warn('⚠️ Page restoration failed:', error);
+        }
+    }
 }

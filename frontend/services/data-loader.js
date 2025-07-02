@@ -96,21 +96,16 @@ async function loadLeagues() {
         
         // Sort leagues by priority before adding to dropdown
         const sortedLeagues = [...data.leagues].sort((a, b) => {
-            const priorityA = LEAGUE_PRIORITY[a] || 999; // Default high priority for unknown leagues
+            const priorityA = LEAGUE_PRIORITY[a] || 999;
             const priorityB = LEAGUE_PRIORITY[b] || 999;
-            return priorityA - priorityB; // Sort ascending by priority (1 is highest)
+            return priorityA - priorityB;
         });
         
         sortedLeagues.forEach(league => {
             const option = document.createElement('option');
-            option.value = league; // Keep original value for API interactions
-            
-            // Use the display name if available, otherwise use the original
+            option.value = league;
             option.textContent = LEAGUE_DISPLAY_NAMES[league] || league;
-            
-            // Add this data attribute to help with logo lookup
             option.dataset.league = league;
-            
             window.DOM.preferredLeaguesSelect.appendChild(option);
         });
         
@@ -120,9 +115,15 @@ async function loadLeagues() {
         // Force the placeholder to appear
         $(window.DOM.preferredLeaguesSelect).val(null).trigger('change');
         
-        // Set up event listener for league changes
+        // Set up event listener for league changes - but only if team selects exist
         $(window.DOM.preferredLeaguesSelect).on('change', function() {
-            updateTeamsByLeague();
+            // Check if any individual team selects exist before calling updateTeamsByLeague
+            const teamSelectsExist = ['mustTeam1', 'mustTeam2', 'mustTeam3', 'mustTeam4']
+                .some(id => document.getElementById(id));
+                
+            if (teamSelectsExist) {
+                updateTeamsByLeague();
+            }
         });
         
     } catch (error) {
@@ -134,15 +135,12 @@ async function loadLeagues() {
 
 async function loadTeams() {
     try {
-        // Remove the loading indicator since we don't have mustTeamsSelect anymore
-        // showComponentLoading(window.DOM.mustTeamsSelect.parentElement);
-        
         const data = await getTeams();
         
         // IMPORTANT: Filter to only include German teams
         const germanTeams = data.teams.filter(team => GERMAN_TEAMS.includes(team));
         
-        // Return the teams data instead of populating a dropdown
+        // Return the teams data for use by individual team selects
         return germanTeams.map(team => ({
             id: team,
             name: team
@@ -151,9 +149,6 @@ async function loadTeams() {
     } catch (error) {
         showErrorToast(`Failed to load teams: ${error.message}`);
         return []; // Return empty array on error
-    } finally {
-        // Remove the loading indicator cleanup since we don't have mustTeamsSelect anymore
-        // hideComponentLoading(window.DOM.mustTeamsSelect.parentElement);
     }
 }
 
@@ -166,11 +161,17 @@ async function updateTeamsByLeague() {
         return;
     }
     
-    // Remember currently selected teams
-    const selectedTeams = $(window.DOM.mustTeamsSelect).val() || [];
+    // Get all individual team selects
+    const teamSelects = ['mustTeam1', 'mustTeam2', 'mustTeam3', 'mustTeam4'];
+    const currentSelections = {};
     
-    // Show loading indicator
-    showComponentLoading(window.DOM.mustTeamsSelect.parentElement);
+    // Remember currently selected teams
+    teamSelects.forEach(selectId => {
+        const select = document.getElementById(selectId);
+        if (select) {
+            currentSelections[selectId] = select.value;
+        }
+    });
     
     try {
         // Call API to get teams for selected leagues
@@ -190,36 +191,58 @@ async function updateTeamsByLeague() {
         // FILTER: Only keep German teams
         const germanTeams = uniqueTeams.filter(team => GERMAN_TEAMS.includes(team));
         
-        // Update teams dropdown
-        window.DOM.mustTeamsSelect.innerHTML = '';
-        
-        germanTeams.forEach(team => {
-            const option = document.createElement('option');
-            option.value = team;
-            option.textContent = team;
-            option.dataset.team = team; // Add data attribute for logo lookup
-            window.DOM.mustTeamsSelect.appendChild(option);
+        // Update all individual team dropdowns
+        teamSelects.forEach(selectId => {
+            const select = document.getElementById(selectId);
+            if (select) {
+                // Clear existing options except placeholder
+                const placeholder = select.querySelector('option[value=""]');
+                select.innerHTML = '';
+                
+                // Re-add placeholder if it existed
+                if (placeholder) {
+                    select.appendChild(placeholder);
+                }
+                
+                // Add teams
+                germanTeams.forEach(team => {
+                    const option = document.createElement('option');
+                    option.value = team;
+                    option.textContent = team;
+                    option.dataset.team = team;
+                    select.appendChild(option);
+                });
+                
+                // Restore previous selection if still valid
+                if (currentSelections[selectId] && germanTeams.includes(currentSelections[selectId])) {
+                    select.value = currentSelections[selectId];
+                }
+                
+                // Trigger Select2 update if initialized
+                if ($(select).hasClass('select2-hidden-accessible')) {
+                    $(select).trigger('change');
+                }
+            }
         });
         
-        // Restore previously selected teams (if they're still valid)
-        $(window.DOM.mustTeamsSelect).val(selectedTeams.filter(team => germanTeams.includes(team)));
-        $(window.DOM.mustTeamsSelect).trigger('change');
-        
-        initMustTeamsSelect();
     } catch (error) {
         showErrorToast(`Failed to update teams: ${error.message}`);
-    } finally {
-        hideComponentLoading(window.DOM.mustTeamsSelect.parentElement);
     }
 }
 
-// Also update the loadAllTeams function to do the same
+// Update the loadAllTeams function
 async function loadAllTeams() {
-    // Remember currently selected teams
-    const selectedTeams = $(window.DOM.mustTeamsSelect).val() || [];
+    // Get all individual team selects
+    const teamSelects = ['mustTeam1', 'mustTeam2', 'mustTeam3', 'mustTeam4'];
+    const currentSelections = {};
     
-    // Show loading indicator
-    showComponentLoading(window.DOM.mustTeamsSelect.parentElement);
+    // Remember currently selected teams
+    teamSelects.forEach(selectId => {
+        const select = document.getElementById(selectId);
+        if (select) {
+            currentSelections[selectId] = select.value;
+        }
+    });
     
     try {
         // Get all teams
@@ -227,31 +250,45 @@ async function loadAllTeams() {
         
         if (!result || !result.teams) return;
         
-        // FILTER: Only keep German teams - this is the key fix
+        // FILTER: Only keep German teams
         const germanTeams = result.teams.filter(team => GERMAN_TEAMS.includes(team));
         
-        // Update teams dropdown
-        window.DOM.mustTeamsSelect.innerHTML = '';
-        
-        germanTeams.forEach(team => {
-            const option = document.createElement('option');
-            option.value = team;
-            option.textContent = team;
-            option.dataset.team = team; // Add data attribute for logo lookup
-            window.DOM.mustTeamsSelect.appendChild(option);
+        // Update all individual team dropdowns
+        teamSelects.forEach(selectId => {
+            const select = document.getElementById(selectId);
+            if (select) {
+                // Clear existing options except placeholder
+                const placeholder = select.querySelector('option[value=""]');
+                select.innerHTML = '';
+                
+                // Re-add placeholder if it existed
+                if (placeholder) {
+                    select.appendChild(placeholder);
+                }
+                
+                // Add teams
+                germanTeams.forEach(team => {
+                    const option = document.createElement('option');
+                    option.value = team;
+                    option.textContent = team;
+                    option.dataset.team = team;
+                    select.appendChild(option);
+                });
+                
+                // Restore previous selection if still valid
+                if (currentSelections[selectId] && germanTeams.includes(currentSelections[selectId])) {
+                    select.value = currentSelections[selectId];
+                }
+                
+                // Trigger Select2 update if initialized
+                if ($(select).hasClass('select2-hidden-accessible')) {
+                    $(select).trigger('change');
+                }
+            }
         });
-        
-        // Restore previously selected teams (if they're still valid)
-        $(window.DOM.mustTeamsSelect).val(selectedTeams.filter(team => germanTeams.includes(team)));
-        $(window.DOM.mustTeamsSelect).trigger('change');
-        
-        // Initialize Select2 with logo formatting 
-        initMustTeamsSelect();
         
     } catch (error) {
         showErrorToast(`Failed to load teams: ${error.message}`);
-    } finally {
-        hideComponentLoading(window.DOM.mustTeamsSelect.parentElement);
     }
 }
 

@@ -46,6 +46,11 @@ async function logoutUser() {
     // console.log('🔓 Attempting to log out...');
     
     try {
+        // Clear session data before logging out
+        if (window.sessionManager) {
+            window.sessionManager.clearAll();
+        }
+        
         // Clear local state first
         if (window.authService) {
             window.authService.currentUser = null;
@@ -75,8 +80,6 @@ async function logoutUser() {
             console.warn('Error clearing storage:', storageError);
         }
         
-        // REMOVED: showNavigationToast('Logged out successfully', 'success');
-        
         // Redirect to home if on protected page
         const protectedPages = ['profile.html', 'admin.html'];
         const currentPage = window.location.pathname.split('/').pop();
@@ -100,8 +103,12 @@ async function logoutUser() {
             window.authService.isAdmin = false;
         }
         
+        // Clear session data
+        if (window.sessionManager) {
+            window.sessionManager.clearAll();
+        }
+        
         await updateNavigationState();
-        // REMOVED: showNavigationToast('Logged out (with some issues)', 'warning');
         
         setTimeout(() => {
             window.location.reload();

@@ -4,18 +4,12 @@ import { showListView } from '../services/ui-helpers.js';
 import { formatCityForDisplay, formatCityForBackend } from '../services/city-formatter.js';
 /**
  * Renders trip search results with enhanced handling of backend data
- * Properly processes trip groups, variations, hotel information and airport data
- * 
  * @param {Object} response - The API response from the trip planning endpoint
- * @param {boolean} hideLoadingOnNoResults - Indicates whether to keep the loading container visible
+ * @param {boolean} isRestore - Whether this is a session restore
  */
-// Updated renderResults function with pagination support
-// Update renderResults to handle cancelled responses
-// Update the renderResults function to properly show TBD games
-function renderResults(response, hideLoadingOnNoResults = true) {
+function renderResults(response, isRestore = false) {
     // Check for cancelled flag in response
     if (response.cancelled) {
-        // console.log("Rendering cancelled response");
         return;
     }
     
@@ -31,9 +25,25 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         document.body.classList.add('has-filter-drawer');
     }
     
+    // *** CRITICAL: Show results section immediately for restore ***
+    if (isRestore) {
+        const resultsSection = document.getElementById('results');
+        if (resultsSection) {
+            resultsSection.classList.remove('d-none');
+        }
+        
+        // Hide loading container during restore
+        const loadingContainer = document.getElementById('loading');
+        if (loadingContainer) {
+            loadingContainer.classList.add('d-none');
+        }
+        
+        // Enable scrolling
+        document.body.classList.remove('no-scroll');
+    }
+    
     // Initialize the window.tripResults pagination state
     if (response.trip_groups && response.trip_groups.length > 0) {
-        // Initialize pagination state with required properties
         window.tripResults = {
             currentIndex: 0,
             batchSize: 5,
@@ -41,10 +51,9 @@ function renderResults(response, hideLoadingOnNoResults = true) {
             displayedTrips: [],
             filterStates: {},
             context: response,
-            // Add these critical missing properties:
             renderedCount: 0,
             hasMoreTrips: response.trip_groups.length > 0,
-            originalTrips: [...response.trip_groups] // Store original copy for filters
+            originalTrips: [...response.trip_groups]
         };
         
         // Store trip context for rendering
@@ -53,36 +62,23 @@ function renderResults(response, hideLoadingOnNoResults = true) {
             startLocation: response.start_location,
             startDate: response.start_date
         };
-        
-        // console.log(`Initialized trip results with ${response.trip_groups.length} trip groups`);
     } else {
         window.tripResults = null;
         window.tripContext = null;
     }
     
-    // Check if we have both no trips AND TBD games - this is our special case
+    // Check if we have both no trips AND TBD games
     const noTrips = !response.trip_groups || response.trip_groups.length === 0;
-    // IMPORTANT: Give the TBD games its own variable and check for either tbd_games or TBD_Games
-    // as the API might use either format (inconsistency in naming)
     const tbdGames = response.tbd_games || response.TBD_Games || [];
-    
-    // Log the raw TBD games data for debugging
-    // console.log("Raw TBD games data:", tbdGames);
     const hasTbdGames = tbdGames && tbdGames.length > 0;
-    
-    // console.log("TBD games check:", hasTbdGames ? `Found ${tbdGames.length} TBD games` : "No TBD games");
 
-    // Show TBD games if available (regardless of whether we have trips)
+    // Show TBD games if available
     if (hasTbdGames) {
-        // console.log("Rendering TBD games section with:", tbdGames);
         renderTbdGames(tbdGames, response.must_teams || []);
     }
     
-    // If we have no trips but have TBD games, show the animation instead of the TBD games
+    // Handle no trips with TBD games
     if (noTrips && hasTbdGames) {
-        // console.log("Showing TBD games in place of no results");
-        
-        // Display the TBD games message
         const loadingAnimation = document.getElementById('loadingAnimation');
         const loadingMessages = document.getElementById('loadingMessages');
         const cancelButton = document.getElementById('cancelSearch');
@@ -92,7 +88,6 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         if (loadingMessages) loadingMessages.classList.add('d-none');
         if (cancelButton) cancelButton.classList.add('d-none');
         
-        // Add content to noResultsMessage
         if (noResultsMessage) {
             noResultsMessage.innerHTML = `
                 <div class="alert alert-info">
@@ -120,12 +115,21 @@ function renderResults(response, hideLoadingOnNoResults = true) {
     
     // Process trip groups (if any)
     if (!noTrips) {
-        // Create an enhanced results header
+        // *** ENSURE ALL UI ELEMENTS ARE VISIBLE FOR RESTORATION ***
+        const resultsSection = document.getElementById('results');
         const resultsCountContainer = document.getElementById('resultsCountContainer');
+        const filterResultsCard = document.getElementById('filterResultsCard');
+        
+        // Show results section
+        if (resultsSection) {
+            resultsSection.classList.remove('d-none');
+        }
+        
+        // Show and update results count container
         if (resultsCountContainer) {
+            resultsCountContainer.classList.remove('d-none');
             const tripCount = response.trip_groups.length;
             
-            // Create the new header HTML with improved styling
             resultsCountContainer.className = 'results-header mb-4';
             resultsCountContainer.innerHTML = `
                 <div class="results-header-content">
@@ -147,25 +151,22 @@ function renderResults(response, hideLoadingOnNoResults = true) {
         // Generate filters based on match data
         renderFilters(response.trip_groups);
         
-        // Hide the filter card since we're using the drawer now
-        const filterResultsCard = document.getElementById('filterResultsCard');
+        // Hide the old filter card since we're using the drawer
         if (filterResultsCard) {
             filterResultsCard.style.display = 'none';
         }
         
-        // IMPORTANT: Force re-initialize filter drawer and buttons for subsequent searches
+        // Initialize filter drawer with appropriate delay
         setTimeout(() => {
             import('../services/filters.js').then(module => {
                 if (typeof module.initFilterDrawer === 'function') {
                     module.initFilterDrawer();
                     
-                    // Make sure the filter button is visible
                     const filterButton = document.querySelector('.filter-button');
                     if (filterButton) {
                         filterButton.classList.remove('d-none');
                         filterButton.style.display = 'flex';
                         
-                        // Update filter count if needed
                         const filterCount = document.querySelector('.filter-count');
                         if (filterCount) {
                             const activeFilterCount = Object.values(window.activeFilters || {})
@@ -181,9 +182,9 @@ function renderResults(response, hideLoadingOnNoResults = true) {
                     }
                 }
             });
-        }, 100);
+        }, isRestore ? 0 : 100);
         
-        // Enable sorting and list-view controls once results are displayed
+        // Enable sorting and list-view controls
         const sortingControl = document.getElementById('sortResults');
         if (sortingControl) {
             sortingControl.classList.remove('d-none');
@@ -195,12 +196,11 @@ function renderResults(response, hideLoadingOnNoResults = true) {
             viewListBtn.onclick = () => showListView(response.trip_groups);
         }
 
-        // Render first batch
+        // Render first batch of trips
         renderNextBatch();
     } else {
-        // Handle no results message
-        if (hideLoadingOnNoResults && !hasTbdGames) {
-            // Display no results message only if there are no TBD games
+        // Handle no results message for non-restore cases
+        if (!isRestore && !hasTbdGames) {
             const loadingAnimation = document.getElementById('loadingAnimation');
             const loadingMessages = document.getElementById('loadingMessages');
             const cancelButton = document.getElementById('cancelSearch');
@@ -263,7 +263,7 @@ function extractTeams(tripGroups) {
     return [...teams].sort();
 }
 
-// Update the renderNextBatch function in components/results-display.js
+// Update the renderNextBatch function to save progress
 function renderNextBatch() {
     const state = window.tripResults;
     if (!state || !state.allTrips) return;
@@ -283,7 +283,7 @@ function renderNextBatch() {
     const start = state.renderedCount;
     const end = Math.min(start + state.batchSize, state.allTrips.length);
     
-    // console.log(`Rendering trips ${start + 1} to ${end} of ${state.allTrips.length}`);
+    console.log(`Rendering trips ${start + 1} to ${end} of ${state.allTrips.length}`);
     
     // Track the newly rendered cards to filter them
     const newlyRenderedCards = [];
@@ -306,13 +306,18 @@ function renderNextBatch() {
     state.renderedCount = end;
     state.hasMoreTrips = state.renderedCount < state.allTrips.length;
     
+    // *** SAVE PROGRESS TO SESSION STORAGE ***
+    if (window.sessionManager) {
+        window.sessionManager.updateRenderedCount(state.renderedCount);
+    }
+    
     // Apply filters to newly rendered cards with a reliable approach
     setTimeout(() => {
         import('../services/filters.js').then(module => {
             // Get the newly rendered cards using our marker class
             const newCards = document.querySelectorAll('.trip-card.newly-rendered');
             
-            // console.log(`Applying filters to ${newCards.length} newly rendered cards`);
+            console.log(`Applying filters to ${newCards.length} newly rendered cards`);
             
             // Apply hotel changes filter if it's active
             if (window.activeFilters && window.activeFilters.maxHotelChanges < 7) {
@@ -367,6 +372,60 @@ function renderNextBatch() {
     }
 }
 
+// Add function to render multiple batches for restoration
+function renderMultipleBatches(targetCount) {
+    const state = window.tripResults;
+    if (!state || !state.allTrips) return;
+
+    const resultsContainer = document.getElementById('tripResults');
+    if (!resultsContainer) return;
+
+    // Reset current state
+    state.renderedCount = 0;
+    resultsContainer.innerHTML = '';
+    
+    // Render trips up to the target count
+    const totalToRender = Math.min(targetCount, state.allTrips.length);
+    
+    console.log(`Restoring ${totalToRender} trips from session`);
+    
+    // Render all trips at once for restoration (no batching during restore)
+    for (let i = 0; i < totalToRender; i++) {
+        const trip = state.allTrips[i];
+        renderTripCard(trip, i + 1, window.tripContext);
+    }
+    
+    // Update state
+    state.renderedCount = totalToRender;
+    state.hasMoreTrips = state.renderedCount < state.allTrips.length;
+    
+    // Add load more button if needed
+    if (state.hasMoreTrips) {
+        const loadMoreBtn = document.createElement('div');
+        loadMoreBtn.id = 'loadMoreTrips';
+        loadMoreBtn.className = 'text-center my-4';
+        loadMoreBtn.innerHTML = `
+        <button class="btn btn-outline-primary load-more-btn">
+            <i class="fas fa-chevron-down me-2"></i>
+            Load More Trips
+            <span class="ms-2 badge">
+                ${state.renderedCount}/${state.allTrips.length}
+            </span>
+        </button>
+    `;
+        loadMoreBtn.addEventListener('click', renderNextBatch);
+        resultsContainer.appendChild(loadMoreBtn);
+    } else {
+        // All trips are loaded
+        const noMoreTrips = document.createElement('div');
+        noMoreTrips.className = 'text-center text-muted my-4';
+        noMoreTrips.innerHTML = `
+            <p><i class="fas fa-check-circle me-2"></i>All ${state.allTrips.length} trips loaded</p>
+        `;
+        resultsContainer.appendChild(noMoreTrips);
+    }
+}
+
 function resetFilterDrawerReferences() {
     filterButton = null;
     filterCount = null; 
@@ -374,4 +433,4 @@ function resetFilterDrawerReferences() {
     filterDrawer = null;
 }
 
-export { renderResults, extractCities, extractTeams, resetFilterDrawerReferences, renderNextBatch };
+export { renderResults, extractCities, extractTeams, resetFilterDrawerReferences, renderNextBatch, renderMultipleBatches };

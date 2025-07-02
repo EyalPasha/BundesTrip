@@ -735,3 +735,69 @@ footer .social-links a:hover .far {
     box-shadow: none !important;
     filter: none !important;
 }
+
+/* No animations class for session restore */
+.no-animations * {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+}
+
+/* Skip fade-in animations during restore */
+.no-animations .fade-in {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Skip loading animations during restore */
+.no-animations .loading-animation {
+    display: none !important;
+}
+
+/* Skip slide animations during restore */
+.no-animations .slide-down,
+.no-animations .slide-up {
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+/* Skip any Bootstrap animations during restore */
+.no-animations .collapse.show {
+    display: block !important;
+}
+
+.no-animations .collapsing {
+    height: auto !important;
+    transition: none !important;
+}
+
+/* No animations class for session restore */
+.no-animations,
+.no-animations * {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+/* Ensure immediate visibility during restore */
+.no-animations .fade-in {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.no-animations .results-header,
+.no-animations .trip-card,
+.no-animations .filter-button {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+/* Force immediate display during restore */
+.no-animations .d-none {
+    display: none !important;
+}

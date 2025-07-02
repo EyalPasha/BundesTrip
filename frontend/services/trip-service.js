@@ -42,7 +42,7 @@ async function waitForAuthentication() {
     });
 }
 
-// Updated handleSearch function with authentication
+// Updated handleSearch function with session saving
 async function handleSearch(e) {
     e.preventDefault();
     if (!validateForm()) {
@@ -258,6 +258,24 @@ async function handleSearch(e) {
             
             // console.log('📝 Trip payload prepared:', payload);
             
+            // SAVE FORM STATE BEFORE SEARCH
+            if (window.sessionManager) {
+                const formData = {
+                    startLocation: payload.start_location,
+                    startDate: payload.start_date,
+                    tripDuration: payload.trip_duration,
+                    maxTravelTime: payload.max_travel_time,
+                    preferredLeagues: selectedLeagues,
+                    mustTeam1: document.getElementById('mustTeam1')?.value || '',
+                    mustTeam2: document.getElementById('mustTeam2')?.value || '',
+                    mustTeam3: document.getElementById('mustTeam3')?.value || '',
+                    mustTeam4: document.getElementById('mustTeam4')?.value || '',
+                    minGames: payload.min_games
+                };
+                
+                window.sessionManager.saveFormState(formData);
+            }
+            
             // STORE SEARCH REQUEST FOR TRIP SAVING
             if (window.tripSaver) {
                 window.tripSaver.storeSearchRequest(payload);
@@ -267,6 +285,11 @@ async function handleSearch(e) {
             // STEP 6: MAKE THE AUTHENTICATED REQUEST
             // console.log(`🚀 Planning trip with authenticated request ID: ${requestId}`);
             response = await window.apiService.planTrip(payload);
+            
+            // SAVE SEARCH SESSION AFTER SUCCESSFUL RESPONSE
+            if (response && response.trip_groups && window.sessionManager) {
+                window.sessionManager.saveSearchSession(payload, response.trip_groups, requestId);
+            }
             
             // STEP 7: PROCESS RESPONSE
             // Show results container if we got results
