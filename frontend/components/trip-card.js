@@ -1127,7 +1127,7 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
         <div class="trip-header-meta">
             <div class="trip-meta-item">
                 <i class="fas fa-info-circle"></i>
-                <span>Games with unconfirmed times that may be included once scheduled</span>
+                <span>Games with unconfirmed times that may be included once scheduled.</span>
             </div>
         </div>
     `;
@@ -1193,10 +1193,10 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
         const bodyContent = document.createElement('div');
         bodyContent.className = 'accordion-body p-2';
         
-        // Games list styled like match preview items
+        // Games list styled like schedules match cards
         const gamesList = document.createElement('div');
         gamesList.className = 'match-preview';
-        
+
         groupedGames[date].forEach(game => {
             const location = formatCityForDisplay(game.location);
             
@@ -1206,21 +1206,46 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
             const awayTeam = teams[1] || '';
             
             const gameItem = document.createElement('div');
-            gameItem.className = 'match-preview-item' + 
+            gameItem.className = 'card game-card mb-2' + 
                 (game.has_must_team ? ' must-match' : '');
-                        
-            // New grid-based layout with proper team-logo-vs-logo-team order
+            
+            // Fixed structure with proper mobile location dropdown
             gameItem.innerHTML = `
-                <div class="tbd-match-teams-grid">
-                    <div class="tbd-home-team">${homeTeam}</div>
-                    <img src="${getTeamLogoUrl(homeTeam)}" class="tbd-home-logo" alt="${homeTeam} logo">
-                    <div class="tbd-vs-container">vs</div>
-                    <img src="${getTeamLogoUrl(awayTeam)}" class="tbd-away-logo" alt="${awayTeam} logo">
-                    <div class="tbd-away-team">${awayTeam}</div>
-                    <span class="tbd-location">
-                        <i class="fas fa-map-marker-alt"></i> ${formatCityForDisplay(game.location || 'TBD')}
-                    </span>
-                    ${game.has_must_team ? '<span class="tbd-must-see-badge">Must-See</span>' : ''}
+                <div class="card-body py-3">
+                    <div class="match-main-content">
+                        <div class="match-teams-container">
+                            <div class="match-teams">
+                                <div class="home-team">
+                                    <span class="team-name">${homeTeam}</span>
+                                    <img src="${getTeamLogoUrl(homeTeam)}" alt="${homeTeam}" class="team-badge">
+                                </div>
+                                
+                                <div class="vs-container">
+                                    <span class="vs">vs</span>
+                                </div>
+                                
+                                <div class="away-team">
+                                    <img src="${getTeamLogoUrl(awayTeam)}" alt="${awayTeam}" class="team-badge">
+                                    <span class="team-name">${awayTeam}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desktop-location-display">
+                        <div class="match-location">
+                            <i class="fas fa-map-marker-alt me-1"></i>
+                            <span>${formatCityForDisplay(game.location || 'TBD')}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile details section with location dropdown - FIXED -->
+                    <div class="match-details-section">
+                        <div class="match-details-content">
+                            <div class="match-location-detail">
+                                <i class="fas fa-map-marker-alt"></i> ${formatCityForDisplay(game.location || 'TBD')}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
             
@@ -1846,3 +1871,23 @@ window.shareTripLink = function(requestId) {
         }, 3000);
     }
 };
+
+// Add mobile click handler for TBD location dropdown
+document.addEventListener('click', function(event) {
+    // Only handle clicks on mobile
+    if (window.innerWidth >= 768) return;
+    
+    // Check if clicked on a TBD game card
+    const gameCard = event.target.closest('#tbdGamesSection .game-card');
+    if (!gameCard) return;
+    
+    // Prevent event bubbling
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Find the details section
+    const detailsSection = gameCard.querySelector('.match-details-section');
+    if (detailsSection) {
+        detailsSection.classList.toggle('show');
+    }
+});

@@ -1027,3 +1027,36 @@ input[type="password"]::-ms-reveal {
 input[type="password"]::-webkit-credentials-auto-fill-button {
     display: none !important;
 }
+
+/* Fix loading spinner text color for Create Account button */
+.btn-auth .loading-spinner {
+    color: var(--white) !important;
+}
+
+/* Ensure all text in auth button remains white, including loading state */
+.btn-auth,
+.btn-auth:disabled,
+.btn-auth[disabled] {
+    color: var(--white) !important;
+}
+
+/* Make sure spinner icon is white */
+.btn-auth .fas.fa-spinner {
+    color: var(--white) !important;
+    animation: spin 1s linear infinite;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Ensure loading state maintains white text */
+.btn-auth.loading {
+    color: var(--white) !important;
+}
+
+.btn-auth.loading * {
+    color: var(--white) !important;
+}

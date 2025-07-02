@@ -357,7 +357,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="./services/supabase-auth.js"></script>
     <script src="./services/navigation.js"></script>
-    <script src="./services/api.js"></script>
+    <script type="module" src="services/api.js"></script>    
     <script src="./services/trip-saver.js"></script>
     
     <!-- Include trip card and team logo functionality -->
@@ -1053,7 +1053,6 @@
                 
             } catch (error) {
                 console.error('❌ Failed to load dashboard data:', error);
-                showToast('Failed to load dashboard data', 'error');
             }
         }
     
@@ -1284,15 +1283,9 @@
                     // Reload display
                     displaySavedTrips(savedTrips);
                     updateStatsCards();
-                    
-                    showToast(
-                        currentState ? 'Trip removed from favorites' : 'Trip added to favorites',
-                        'success'
-                    );
                 }
             } catch (error) {
                 console.error('❌ Failed to toggle favorite:', error);
-                showToast('Failed to update favorite status', 'error');
             }
         }
     
@@ -1318,12 +1311,9 @@
                     // Close modal
                     const modal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
                     modal.hide();
-                    
-                    showToast('Trip deleted successfully', 'success');
-                }
+                                    }
             } catch (error) {
                 console.error('❌ Failed to delete trip:', error);
-                showToast('Failed to delete trip', 'error');
             }
         }
     
@@ -1335,29 +1325,14 @@
             try {
                 const response = await window.authService.updateProfile({ full_name: fullName });
                 if (response.success) {
-                    showToast('Profile updated successfully', 'success');
                 } else {
-                    showToast('Failed to update profile', 'error');
                 }
             } catch (error) {
                 console.error('❌ Failed to update profile:', error);
-                showToast('Failed to update profile', 'error');
             }
         }
     
-        function showToast(message, type = 'info') {
-            const toast = document.createElement('div');
-            toast.className = `alert alert-${type === 'error' ? 'danger' : type} position-fixed top-0 end-0 m-3`;
-            toast.style.zIndex = '9999';
-            toast.textContent = message;
-            
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-    
+
         // Make functions globally available
         window.toggleTripFavorite = toggleTripFavorite;
         window.showDeleteConfirm = showDeleteConfirm;

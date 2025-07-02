@@ -2214,3 +2214,17 @@ main .fas.fa-calendar-plus,
 .trip-card .fas.fa-calendar-plus {
     color: var(--primary-color) !important;
 }
+
+/* Hide Save Trip button on profile page since trips are already saved */
+body .btn-save,
+#tripsContainer .btn-save,
+.trip-results-container .btn-save {
+    display: none !important;
+}
+
+/* Also hide any other save-related buttons */
+body .btn-modern.btn-save,
+#tripsContainer .btn-modern.btn-save,
+.trip-results-container .btn-modern.btn-save {
+    display: none !important;
+}

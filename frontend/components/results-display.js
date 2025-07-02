@@ -1,7 +1,6 @@
 import { renderTripCard, renderTbdGames } from './trip-card.js';
 import { renderFilters, initFilterDrawer } from '../services/filters.js'; 
 import { showListView } from '../services/ui-helpers.js';
-import { showSuccessToast, showErrorToast } from '../services/notifications.js';
 import { formatCityForDisplay, formatCityForBackend } from '../services/city-formatter.js';
 /**
  * Renders trip search results with enhanced handling of backend data
@@ -212,12 +211,6 @@ function renderResults(response, hideLoadingOnNoResults = true) {
             if (cancelButton) cancelButton.classList.add('d-none');
             if (noResultsMessage) noResultsMessage.classList.remove('d-none');
         }
-    }
-    
-    // Handle error messages - replace this function
-    if (response.message) {
-        // Replace showInfoToast with showSuccessToast since we don't have showInfoToast
-        showSuccessToast(response.message);
     }
 
     // Initialize tooltips on newly rendered elements

@@ -295,6 +295,23 @@ async function handleSearch(e) {
                 if (resultsCount) {
                     resultsCount.textContent = response.trip_groups.length;
                 }
+                
+                // AUTO-SCROLL TO RESULTS - ADD THIS SECTION
+                // Hide loading and show results first
+                window.DOM.loadingIndicator.classList.add('d-none');
+                document.body.classList.remove('no-scroll');
+                
+                // Scroll to results section after rendering
+                setTimeout(() => {
+                    const resultsSection = document.getElementById('results');
+                    if (resultsSection) {
+                        resultsSection.scrollIntoView({ 
+                            behavior: "smooth", 
+                            block: "start" 
+                        });
+                    }
+                }, 300);
+                
             } else {
                 // Show the no results message within the loading container
                 const loadingAnimation = document.getElementById('loadingAnimation');
@@ -351,9 +368,9 @@ async function handleSearch(e) {
         } finally {
             // Now these variables are all in scope
             const shouldHideLoading = searchCancelled || 
-                (response && response.trip_groups && response.trip_groups.length > 0) ||
                 (error && error.message !== "No trips found matching your criteria");
             
+            // Only hide loading for cancellation or errors (not for successful results - handled above)
             if (shouldHideLoading) {
                 // Hide loading and restore scrolling
                 window.DOM.loadingIndicator.classList.add('d-none');

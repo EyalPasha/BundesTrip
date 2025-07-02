@@ -563,11 +563,6 @@ class TripSaver {
                 const newFavoriteStatus = result.trip.is_favorite;
                 button.innerHTML = `<i class="fas fa-star me-1"></i>${newFavoriteStatus ? 'Remove from Favorites' : 'Add to Favorites'}`;
                 
-                // Show success message
-                this.showSuccessMessage(
-                    newFavoriteStatus ? 'Added to favorites!' : 'Removed from favorites!'
-                );
-                
                 // Close modal after short delay
                 setTimeout(() => {
                     modal.hide();
@@ -1021,9 +1016,6 @@ class TripSaver {
             
             // Close modal
             modal.hide();
-            
-            // Show success message
-            this.showSuccessMessage(`Trip removed successfully!`);
             
             // Log additional client-side activity
             await window.apiService.logUserActivity('trip_unsaved_confirmed', {

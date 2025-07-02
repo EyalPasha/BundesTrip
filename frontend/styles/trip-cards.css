@@ -2592,27 +2592,6 @@ body.mustteams-dropdown-open .select2-dropdown {
     z-index: 10000 !important;
 }
 
-/* TBD Games Grid Layout - Fixed alignment for Name-Logo-VS-Logo-Name layout */
-.tbd-match-teams-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 24px 40px 24px minmax(0, 1fr) auto;
-  gap: 6px;
-  width: 100%;
-  align-items: center;
-  position: relative;
-}
-
-.tbd-location {
-  grid-column: 6;
-  grid-row: 1;
-  font-size: 0.75rem;
-  color: #666;
-  margin-left: 12px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
 .tbd-location i {
   color: var(--accent-color);
   font-size: var(--icon-size-small);
@@ -3799,4 +3778,338 @@ body.mustteams-dropdown-open .select2-dropdown {
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     box-shadow: 0 1px 2px rgba(4, 61, 124, 0.1) !important;
+}
+
+/* TBD Games - Match schedules styling exactly */
+#tbdGamesSection .game-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-radius);
+    box-shadow: 0 2px 8px rgba(4, 61, 124, 0.05);
+    transition: all 0.3s ease;
+    margin-bottom: 0.5rem !important;
+}
+
+#tbdGamesSection .game-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(4, 61, 124, 0.1);
+    border-color: var(--secondary-color);
+}
+
+/* Desktop layout - NO TIME column for TBD games */
+#tbdGamesSection .card-body {
+    display: grid;
+    grid-template-columns: 1fr 140px; /* Teams take most space, location gets fixed width */
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem 0.75rem 1rem !important;
+}
+
+#tbdGamesSection .match-main-content {
+    grid-column: 1;
+    justify-self: center;
+    width: 100%;
+    max-width: 500px; /* Prevent over-stretching */
+}
+
+
+#tbdGamesSection .home-team .team-badge {
+    grid-column: 2;
+    order: 2; /* Logo comes after name */
+}
+
+#tbdGamesSection .away-team .team-badge {
+    grid-column: 4;
+    order: 1; /* Logo comes before name */
+}
+
+#tbdGamesSection .match-teams {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+#tbdGamesSection .home-team {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+#tbdGamesSection .vs-container {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+}
+
+#tbdGamesSection .away-team {
+    grid-column: 3;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: flex-start;
+}
+
+#tbdGamesSection .team-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--neutral-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px; /* Prevent long names from breaking layout */
+}
+
+#tbdGamesSection .team-badge {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+#tbdGamesSection .vs {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Location display - fixed width prevents shifting */
+#tbdGamesSection .desktop-location-display {
+    grid-column: 2;
+    justify-self: end;
+    width: 140px; /* Fixed width prevents layout shift */
+    text-align: right;
+}
+
+#tbdGamesSection .match-location {
+    font-size: 0.85rem;
+    color: var(--neutral-text);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#tbdGamesSection .match-location i {
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    flex-shrink: 0; /* Icon doesn't shrink */
+}
+
+/* Must-see styling for TBD games */
+#tbdGamesSection .game-card.must-match {
+    border-left: 4px solid var(--warning-color);
+    background: linear-gradient(135deg, rgba(255, 183, 0, 0.02), var(--card-bg));
+}
+
+/* Remove any unwanted lines or pseudo-elements */
+#tbdGamesSection .match-teams > *::after,
+#tbdGamesSection .team-name::after,
+#tbdGamesSection .vs::after {
+    display: none !important;
+}
+
+/* Mobile responsive for TBD games - Enhanced Design */
+@media (max-width: 768px) {
+    #tbdGamesSection .card-body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem !important;
+        text-align: left;
+    }
+    
+    #tbdGamesSection .desktop-location-display {
+        display: none; /* Hide desktop location on mobile */
+    }
+    
+    #tbdGamesSection .match-main-content {
+        width: 100%;
+        max-width: none;
+        order: 1;
+    }
+    
+    #tbdGamesSection .match-teams {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 0.75rem 0;
+    }
+    
+    #tbdGamesSection .home-team {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+        justify-content: flex-end;
+        min-width: 0;
+    }
+    
+    #tbdGamesSection .away-team {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+        justify-content: flex-start;
+        min-width: 0;
+    }
+    
+    #tbdGamesSection .vs-container {
+        flex-shrink: 0;
+        width: 40px;
+        text-align: center;
+    }
+    
+    #tbdGamesSection .team-name {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--neutral-text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 90px;
+    }
+    
+    #tbdGamesSection .team-badge {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+    
+    #tbdGamesSection .vs {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    /* Mobile location section - clean card design */
+    #tbdGamesSection .match-details-section {
+        display: block !important;
+        order: 2;
+        margin-top: 0.5rem;
+        border-top: 1px solid var(--divider-color);
+        padding-top: 0.75rem;
+    }
+    
+    #tbdGamesSection .match-details-content {
+        background: var(--neutral-light);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--neutral-text);
+        font-weight: 500;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: 1px solid var(--border-color);
+    }
+    
+    #tbdGamesSection .match-details-content:hover,
+    #tbdGamesSection .match-details-content:active {
+        background: var(--primary-light);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(4, 61, 124, 0.1);
+    }
+    
+    #tbdGamesSection .match-location-detail {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+    }
+    
+    #tbdGamesSection .match-location-detail i {
+        color: var(--accent-color);
+        font-size: 0.9rem;
+        width: 16px;
+        text-align: center;
+    }
+    
+    /* Remove dropdown arrow indicator - keep it simple */
+    #tbdGamesSection .match-details-content::after {
+        display: none;
+    }
+    
+    /* Mobile accordion styling improvements */
+    #tbdGamesSection .accordion-button {
+        padding: 1rem 1.25rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 8px !important;
+        margin-bottom: 0.5rem;
+    }
+    
+    #tbdGamesSection .accordion-button:not(.collapsed) {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+    #tbdGamesSection .accordion-body {
+        padding: 0.75rem 1rem 1rem;
+    }
+    
+    #tbdGamesSection .game-card {
+        margin-bottom: 0.75rem !important;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(4, 61, 124, 0.08);
+    }
+    
+    #tbdGamesSection .game-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(4, 61, 124, 0.12);
+    }
+    
+    /* Must-see match styling for mobile */
+    #tbdGamesSection .game-card.must-match {
+        border-left: 4px solid var(--warning-color);
+        background: linear-gradient(135deg, rgba(255, 183, 0, 0.03), var(--card-bg));
+    }
+    
+    #tbdGamesSection .game-card.must-match .match-details-content {
+        background: rgba(255, 183, 0, 0.1);
+        border-color: rgba(255, 183, 0, 0.3);
+    }
+}
+
+/* Tablet responsive (768px - 992px) */
+@media (min-width: 768px) and (max-width: 992px) {
+    #tbdGamesSection .card-body {
+        grid-template-columns: 1fr 120px;
+        gap: 0.75rem;
+        padding: 1rem 1.25rem !important;
+    }
+    
+    #tbdGamesSection .team-name {
+        font-size: 0.85rem;
+        max-width: 100px;
+    }
+    
+    #tbdGamesSection .match-location {
+        font-size: 0.8rem;
+    }
 }
