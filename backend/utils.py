@@ -1606,9 +1606,17 @@ def plan_trip(start_location: str, trip_duration: int, max_travel_time: int, gam
     if must_teams_lower and all_trips:
         all_trips = [
             trip for trip in all_trips
-            if any(match.get("contains_must_team", False) 
-                  for day in trip 
-                  for match in day.get("matches", []))
+            if all(
+                any(
+                    match.get("match", "") and (
+                        is_must_team_match(match.get("match", "").split(" vs ")[0].split(" (")[0], {required_team}) or
+                        is_must_team_match(match.get("match", "").split(" vs ")[1].split(" (")[0], {required_team})
+                    )
+                    for day in trip 
+                    for match in day.get("matches", [])
+                )
+                for required_team in must_teams_lower
+            )
         ]
         
     # Optimize trip variations with different hotel strategies
