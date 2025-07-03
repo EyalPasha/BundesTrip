@@ -1747,7 +1747,7 @@ font-weight: 500;
   position: fixed;
   top: 0;
   right: -85%;
-  width: 85%;
+  width: 65%;
   height: 100%;
   background-color: white;
   z-index: 1002;
@@ -1796,6 +1796,7 @@ font-weight: 500;
 
 /* Filter group */
 .drawer-filter-group {
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
@@ -3583,6 +3584,8 @@ body.mustteams-dropdown-open .select2-dropdown {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
     box-shadow: 0 3px 8px rgba(4, 61, 124, 0.12); /* Remove inset shadow */
+        margin-bottom: 12px !important;
+
 }
 
 .btn-save i {
@@ -3741,7 +3744,7 @@ body.mustteams-dropdown-open .select2-dropdown {
     border: none !important;
     border-radius: 0.25rem !important;
     padding: 0.2rem 0.5rem 0.2rem 0.5rem !important;
-    margin: 2px 3px 2px 0 !important;
+    margin: 2px 8px 2px 0 !important;
     font-size: 0.85rem !important;
     position: relative !important;
     display: inline-flex !important;
