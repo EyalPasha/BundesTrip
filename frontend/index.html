@@ -67,34 +67,31 @@
                     <a class="nav-link" href="./about.html">About Us</a>
                 </li>
             </ul>
-            <!-- Authentication Menu -->
-            <ul class="navbar-nav">
-                <!-- When not logged in -->
-                <li class="nav-item" id="loginMenuItem">
-                    <a class="nav-link" href="./login.html">
-                        <i class="fas fa-sign-in-alt me-1"></i>Login
-                    </a>
-                </li>
-                <li class="nav-item" id="registerMenuItem">
-                    <a class="nav-link" href="./register.html">
-                        <i class="fas fa-user-plus me-1"></i>Register
-                    </a>
-                </li>
-                <!-- When logged in -->
-                <li class="nav-item dropdown d-none" id="userDropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="User Menu" aria-label="User Menu">
-                        <i class="fas fa-user-circle me-1"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="./profile.html">
-                            <i class="fas fa-user me-2"></i>Profile
-                        </a></li>
-
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#" onclick="logoutUser()">
-                            <i class="fas fa-sign-out-alt me-2"></i>Logout
-                        </a></li>
-                    </ul>
+                <!-- Authentication Menu -->
+                <ul class="navbar-nav">
+                    <!-- When not logged in -->
+                    <li class="nav-item" id="loginMenuItem">
+                        <a class="nav-link" href="./login.html">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                    </li>
+                    <li class="nav-item" id="registerMenuItem">
+                        <a class="nav-link" href="./register.html">
+                            <i class="fas fa-user-plus me-1"></i>Register
+                        </a>
+                    </li>
+                    <!-- When logged in -->
+                    <li class="nav-item d-none" id="myAccountMenuItem">
+                        <a class="nav-link" href="./profile.html">
+                            <i class="fas fa-user me-1"></i>My Account
+                        </a>
+                    </li>
+                    <li class="nav-item d-none" id="logoutMenuItem">
+                        <a class="nav-link" href="#" onclick="logoutUser()">
+                            <i class="fas fa-sign-out-alt me-1"></i>Log Out
+                        </a>
+                    </li>
+                </ul>
                 </li>
             </ul>
         </div>
@@ -486,7 +483,6 @@
 </footer>
 
 
-    <!-- At the bottom of your index.html file, before the closing </body> tag -->
     <!-- Load session management services EARLY -->
 <script src="./services/session-manager.js"></script>
 <script src="./services/session-restore.js"></script>

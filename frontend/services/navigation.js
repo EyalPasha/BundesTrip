@@ -7,23 +7,16 @@ async function updateNavigationState() {
         // Get navigation elements
         const loginMenuItem = document.getElementById('loginMenuItem');
         const registerMenuItem = document.getElementById('registerMenuItem');
-        const userDropdown = document.getElementById('userDropdown');
-        const userDisplayName = document.getElementById('userDisplayName');
+        const myAccountMenuItem = document.getElementById('myAccountMenuItem');
+        const logoutMenuItem = document.getElementById('logoutMenuItem');
         const adminLink = document.getElementById('adminLink');
         
         if (user) {
-            // User is logged in - show user dropdown, hide login/register
+            // User is logged in - show my account and logout, hide login/register
             if (loginMenuItem) loginMenuItem.style.display = 'none';
             if (registerMenuItem) registerMenuItem.style.display = 'none';
-            if (userDropdown) userDropdown.classList.remove('d-none');
-            
-            // Set user display name
-            if (userDisplayName) {
-                const displayName = user.user_metadata?.full_name || 
-                                   user.email?.split('@')[0] || 
-                                   'User';
-                userDisplayName.textContent = displayName;
-            }
+            if (myAccountMenuItem) myAccountMenuItem.classList.remove('d-none');
+            if (logoutMenuItem) logoutMenuItem.classList.remove('d-none');
             
             // Show admin link if user is admin
             if (adminLink && window.authService?.isAdmin) {
@@ -31,10 +24,11 @@ async function updateNavigationState() {
             }
             
         } else {
-            // User is not logged in - show login/register, hide user dropdown
+            // User is not logged in - show login/register, hide my account/logout
             if (loginMenuItem) loginMenuItem.style.display = 'block';
             if (registerMenuItem) registerMenuItem.style.display = 'block';
-            if (userDropdown) userDropdown.classList.add('d-none');
+            if (myAccountMenuItem) myAccountMenuItem.classList.add('d-none');
+            if (logoutMenuItem) logoutMenuItem.classList.add('d-none');
             if (adminLink) adminLink.style.display = 'none';
         }
     } catch (error) {

@@ -49,19 +49,15 @@
                         </a>
                     </li>
                     <!-- When logged in -->
-                    <li class="nav-item dropdown d-none" id="userDropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="User menu">
-                            <i class="fas fa-user-circle me-1"></i>
+                    <li class="nav-item d-none" id="myAccountMenuItem">
+                        <a class="nav-link" href="./profile.html">
+                            <i class="fas fa-user me-1"></i>My Account
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="./profile.html">
-                                <i class="fas fa-user me-2"></i>Profile
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" onclick="logoutUser()">
-                                <i class="fas fa-sign-out-alt me-2"></i>Logout
-                            </a></li>
-                        </ul>
+                    </li>
+                    <li class="nav-item d-none" id="logoutMenuItem">
+                        <a class="nav-link" href="#" onclick="logoutUser()">
+                            <i class="fas fa-sign-out-alt me-1"></i>Log Out
+                        </a>
                     </li>
                 </ul>
             </div>

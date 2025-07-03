@@ -388,7 +388,104 @@ body.select2-ready .flatpickr-calendar {
     opacity: 1;
 }
 
+/* Specific fix for floating calendar button */
+.calendar-btn + .flatpickr-calendar {
+  transform-origin: center bottom !important;
+}
+
+/* Add this class to the calendar that's attached to the button */
+.floating-calendar {
+  box-shadow: 0 -2px 15px rgba(0,0,0,0.2) !important;
+}
 @media (max-width: 767.98px) {
+        .flatpickr-weekdaycontainer {
+        padding: 0 8px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+    }
+    
+    .flatpickr-weekday {
+        flex: 1 !important;
+        text-align: center !important;
+        padding: 0 2px !important;
+        font-size: 0.8rem !important;
+        min-width: 0 !important;
+    }
+    
+    /* Ensure weekdays container has proper spacing */
+    .flatpickr-weekdays {
+        padding: 8px 0 4px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    /* Fix day container to match weekday spacing */
+    .dayContainer {
+        padding: 0 8px !important;
+        justify-content: space-between !important;
+    }
+    
+    /* Adjust day cells to match weekday alignment */
+    .flatpickr-day {
+        flex: 1 !important;
+        max-width: calc(14.28% - 3px) !important;
+        margin: 1.5px !important;
+        text-align: center !important;
+    }
+        /* Ensure flatpickr calendar appears above everything on mobile */
+    .flatpickr-calendar.floating-calendar {
+        position: fixed !important;
+        z-index: 9999 !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        max-width: 90vw !important;
+        max-height: 80vh !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+        border-radius: 12px !important;
+        /* Ensure it's always visible */
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+        /* Force the calendar to be visible when open */
+    .flatpickr-calendar.floating-calendar.open {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Style the calendar button to be more prominent */
+    .calendar-btn {
+        background-color: var(--primary-color) !important;
+        border: 2px solid white !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .calendar-btn:hover,
+    .calendar-btn:focus,
+    .calendar-btn:active {
+        background-color: var(--primary-dark) !important;
+        transform: scale(1.05) !important;
+    }
+
+    /* Ensure the hidden input is truly hidden */
+    #mobile-calendar-input {
+        position: absolute !important;
+        left: -9999px !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        width: 1px !important;
+        height: 1px !important;
+    }
+    
+    /* Override any inherited positioning */
+    .flatpickr-calendar.floating-calendar {
+        bottom: auto !important;
+        right: auto !important;
+        margin: 0 !important;
+        position: fixed !important;
+    }
   /* More aggressive fixes for month/year display on mobile */
   .flatpickr-current-month {
     font-size: 14px !important;
@@ -483,11 +580,6 @@ body.select2-ready .flatpickr-calendar {
   }
 }
 
-/* Specific fix for floating calendar button */
-.calendar-btn + .flatpickr-calendar {
-  transform-origin: center bottom !important;
-}
-
 @media (max-width: 767.98px) {
   .calendar-btn + .flatpickr-calendar.open {
     bottom: 80px !important;
@@ -497,7 +589,3 @@ body.select2-ready .flatpickr-calendar {
   }
 }
 
-/* Add this class to the calendar that's attached to the button */
-.floating-calendar {
-  box-shadow: 0 -2px 15px rgba(0,0,0,0.2) !important;
-}

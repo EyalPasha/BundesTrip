@@ -75,30 +75,7 @@
   .mb-3 { margin-bottom: 0.75rem !important; }
   .mb-4 { margin-bottom: 1rem !important; }
   .mb-5 { margin-bottom: 1.5rem !important; }
-  
-  /* ===== 2. NAVIGATION IMPROVEMENTS ===== */
-  .navbar {
-    padding: 0.5rem var(--mobile-padding-md);
-  }
-  
-  .navbar-brand {
-    font-size: 1.2rem;
-    padding: 0;
-  }
-  
-  .navbar-toggler {
-    padding: 0.25rem 0.5rem;
-    font-size: 1rem;
-  }
-  
-  .navbar-nav {
-    padding: 0.5rem 0;
-  }
-  
-  .navbar-nav .nav-link {
-    padding: 0.6rem 0.75rem;
-    min-height: 44px; /* Better touch target */
-  }
+
   
   /* ===== 3. HOME PAGE OPTIMIZATION ===== */
   /* Hero section */
@@ -1112,19 +1089,6 @@
   .travel-options-section {
     margin-top: 0.5rem;
   }
-  
-  /* Navigation tabs */
-  .nav-tabs .nav-link {
-    padding: 0.5rem 0.75rem;
-    font-size: var(--mobile-font-size-xs);
-    min-width: 90px;
-    min-height: 44px; /* Better touch target */
-  }
-  
-  .nav-tabs .nav-link i {
-    font-size: var(--mobile-icon-size-sm);
-  }
-  
   /* Tab content */
   .tab-content {
     padding: 0.75rem;
@@ -1939,10 +1903,6 @@
   h5, .h5 { font-size: 0.9rem !important; }
   h6, .h6 { font-size: 0.85rem !important; }
   
-  /* Navigation */
-  .navbar-brand {
-    font-size: 1.1rem;
-  }
   
   /* Container spacing */
   .container {

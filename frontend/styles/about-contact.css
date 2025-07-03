@@ -89,112 +89,6 @@ body {
   color: var(--neutral-text);
 }
 
-/* Modern Navigation - Same as Profile */
-.navbar {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: var(--shadow-md);
-  padding: var(--space-md) 0;
-}
-
-.navbar-brand {
-  font-weight: 700;
-  font-size: var(--text-xl);
-  color: var(--white) !important;
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  transition: transform var(--duration-fast) ease;
-}
-
-.navbar-brand:hover {
-  transform: translateY(-1px);
-}
-
-.navbar-brand img {
-  border-radius: var(--radius-md);
-  transition: transform var(--duration-normal) ease;
-}
-
-.navbar-brand:hover img {
-  transform: scale(1.05);
-}
-
-.nav-link {
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-weight: 500;
-  padding: var(--space-sm) var(--space-md) !important;
-  border-radius: var(--radius-md);
-  transition: all var(--duration-fast) ease;
-  position: relative;
-}
-
-.nav-link::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--secondary-color);
-  transition: all var(--duration-normal) ease;
-  transform: translateX(-50%);
-}
-
-.nav-link:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--white) !important;
-}
-
-.nav-link:hover::before,
-.nav-link.active::before {
-  width: 80%;
-}
-
-.nav-link.active {
-  color: var(--white) !important;
-  font-weight: 600;
-}
-
-.dropdown-menu {
-  background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
-  padding: var(--space-sm);
-  width: auto;
-  /* Force positioning */
-  top: 100% !important;
-  right: 0 !important;
-  left: auto !important;
-  z-index: 1050;
-  /* Prevent viewport overflow */
-  transform: none !important;
-}
-
-/* Dropdown menu icons should be primary color */
-.dropdown-item .fas {
-  color: var(--primary-color) !important;
-}
-
-.dropdown-item:hover .fas {
-  color: var(--primary-color) !important;
-}
-
-.dropdown-item {
-  color: var(--neutral-text);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
-  transition: all var(--duration-fast) ease;
-}
-
-.dropdown-item:hover {
-  background: var(--primary-light);
-  color: var(--primary-color);
-}
-
 /* Hero Section - Modern Glass Effect */
 .about-hero {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
@@ -580,112 +474,6 @@ ol li {
   font-size: var(--text-lg);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .about-hero {
-    padding: var(--space-2xl) 0;
-  }
-  
-  .about-hero h1 {
-    font-size: var(--text-2xl);
-  }
-  
-  .about-hero .lead {
-    font-size: var(--text-lg);
-  }
-  
-  .card-body {
-    padding: var(--space-lg);
-  }
-  
-  .team-avatar {
-    width: 40px;
-    height: 40px;
-    font-size: var(--text-base);
-  }
-  
-  .feature-card .card-body {
-    padding: var(--space-md);
-  }
-  
-  .social-links a {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .contact-icon {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .section-divider {
-    margin: var(--space-2xl) auto;
-  }
-  
-  .btn {
-    padding: var(--space-sm) var(--space-lg);
-  }
-  
-  .btn-lg {
-    padding: var(--space-md) var(--space-xl);
-    font-size: var(--text-base);
-  }
-}
-
-@media (max-width: 576px) {
-  :root {
-    --space-xs: 0.125rem;
-    --space-sm: 0.25rem;
-    --space-md: 0.5rem;
-    --space-lg: 0.75rem;
-    --space-xl: 1rem;
-    --space-2xl: 1.5rem;
-    --space-3xl: 2rem;
-  }
-  
-  .about-hero {
-    padding: var(--space-xl) 0;
-  }
-  
-  .about-hero h1 {
-    font-size: var(--text-xl);
-  }
-  
-  .about-hero .lead {
-    font-size: var(--text-base);
-  }
-  
-  h2 {
-    font-size: var(--text-xl);
-  }
-  
-  h3 {
-    font-size: var(--text-lg);
-  }
-  
-  .card-body {
-    padding: var(--space-md);
-  }
-  
-  .stats-item {
-    padding: var(--space-sm) 0;
-  }
-  
-  .stats-value {
-    font-size: var(--text-lg);
-  }
-  
-  .social-links {
-    justify-content: center;
-  }
-  
-  .social-links a {
-    width: 35px;
-    height: 35px;
-  }
-  
-}
-
 /* Accessibility & Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -914,44 +702,208 @@ main .fa,
   font-size: 1.1rem;
 }
 
-/* Responsive adjustments for email button */
-@media (max-width: 768px) {
-  .contact-info-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-sm);
-  }
-  
-  .contact-button {
-    align-self: flex-start;
-  }
-  
-  .social-links .btn.rounded-circle {
-    width: 45px !important;
-    height: 45px !important;
-    min-width: 45px !important;
-    min-height: 45px !important;
-  }
-  
-  .social-links .btn.rounded-circle i {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .social-links .btn.rounded-circle {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-  }
-  
-  .social-links .btn.rounded-circle i {
-    font-size: 0.9rem;
-  }
-}
 .card-body h4.h5 {
     font-size: 1rem;      /* Make header smaller */
     white-space: nowrap;  /* Prevent wrapping */
     line-height: 1.2;     /* Tighter line height */
+}
+
+
+/* Mobile Responsive Design - Cleaner Version */
+@media (max-width: 768px) {
+    /* Hero Section - More balanced */
+    .about-hero {
+        padding: var(--space-2xl) 0; /* Not too cramped */
+    }
+    
+    .about-hero h1 {
+        font-size: var(--text-3xl); /* Bigger, more readable */
+        margin-bottom: var(--space-lg);
+        line-height: 1.2;
+    }
+    
+    .about-hero .lead {
+        font-size: var(--text-lg); /* Not too small */
+        line-height: 1.5;
+    }
+    
+    /* Container - proper breathing room */
+    .container {
+        padding-left: var(--space-lg);
+        padding-right: var(--space-lg);
+    }
+    
+    /* Cards - better proportions */
+    .card-body {
+        padding: var(--space-xl); /* Keep generous padding */
+    }
+    
+    /* Team section - properly sized */
+    .team-avatar {
+        width: 45px; /* Not too tiny */
+        height: 45px;
+        font-size: var(--text-lg);
+    }
+    
+    .team-member h4 {
+        font-size: var(--text-lg); /* Readable size */
+        margin-bottom: var(--space-xs);
+    }
+    
+    .team-member p {
+        font-size: var(--text-sm); /* Not microscopic */
+    }
+    
+    /* Social links - better sized */
+    .social-links .btn.rounded-circle {
+        width: 45px !important;
+        height: 45px !important;
+        min-width: 45px !important;
+        min-height: 45px !important;
+    }
+    
+    .social-links .btn.rounded-circle i {
+        font-size: 1.1rem; /* Visible but not huge */
+    }
+    
+    /* Feature cards - balanced */
+    .feature-card .card-body {
+        padding: var(--space-lg); /* Not cramped */
+    }
+    
+    .feature-card h4 {
+        font-size: var(--text-lg); /* Readable */
+        margin-bottom: var(--space-md);
+    }
+    
+    .feature-card p {
+        font-size: var(--text-sm); /* Good readability */
+        line-height: 1.5;
+    }
+    
+    .feature-card i {
+        font-size: 1.3rem; /* Visible icons */
+    }
+    
+    /* Typography - better hierarchy */
+    h2 {
+        font-size: var(--text-3xl); /* Strong hierarchy */
+    }
+    
+    h3 {
+        font-size: var(--text-2xl);
+        margin-bottom: var(--space-md);
+    }
+    
+    .lead {
+        font-size: var(--text-lg); /* Readable lead text */
+    }
+    
+    /* Contact section - cleaner layout */
+    .contact-icon {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .contact-info-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-md);
+    }
+    
+    .contact-button .btn {
+        width: 100%;
+        padding: var(--space-md) var(--space-lg);
+        font-size: var(--text-base);
+    }
+    
+    /* Buttons - proper touch targets */
+    .btn {
+        padding: var(--space-md) var(--space-xl);
+        font-size: var(--text-base);
+        min-height: 44px; /* Touch-friendly */
+    }
+    
+    /* Icons - subtle reduction, not drastic */
+    .fas, .fab, .far, .fal, .fad, .fass, .fasr, .fasl, .fa {
+        font-size: 0.9em !important;
+    }
+    
+    /* Spacing - generous but not excessive */
+    .my-5 {
+        margin-top: var(--space-2xl) !important;
+        margin-bottom: var(--space-2xl) !important;
+    }
+    
+    .section-divider {
+        width: 80px; /* Not too thin */
+        height: 3px;
+        margin: var(--space-3xl) auto;
+    }
+}
+
+/* Extra small mobile - more conservative adjustments */
+@media (max-width: 576px) {
+    .container {
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
+    }
+    
+    .about-hero {
+        padding: var(--space-xl) 0;
+    }
+    
+    .about-hero h1 {
+        font-size: var(--text-2xl);
+    }
+    
+    .card-body {
+        padding: var(--space-lg); /* Still generous */
+    }
+    
+    .team-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: var(--text-base);
+    }
+    
+    .social-links .btn.rounded-circle {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+    }
+    
+    .feature-card h4 {
+        font-size: var(--text-base); /* Still readable */
+    }
+    
+    .feature-card p {
+        font-size: var(--text-sm);
+    }
+    
+    /* Icons - minimal reduction */
+    .fas, .fab, .far, .fal, .fad, .fass, .fasr, .fasl, .fa {
+        font-size: 0.85em !important;
+    }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .about-hero {
+        padding: var(--space-md) 0;
+    }
+    
+    .about-hero h1 {
+        font-size: var(--text-2xl);
+        margin-bottom: var(--space-sm);
+    }
+    
+    .about-hero .lead {
+        font-size: var(--text-base);
+    }
+    
+    .section-divider {
+        margin: var(--space-xl) auto;
+    }
 }

@@ -105,13 +105,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         `;
         
         // Load data first with proper timing
-        /* console.log('Loading teams and leagues...');
+        console.log('Loading teams and leagues...');
         const [teams, leagues] = await Promise.all([
             loadTeams(),
             loadLeagues()
-        ]); */
+        ]);
         
-        // console.log(`Successfully loaded ${teams.length} teams and ${leagues.length} leagues`);
+        console.log(`Successfully loaded ${teams.length} teams and ${leagues.length} leagues`);
         
         // Initialize flatpickr after data is loaded
         initializeFlatpickr();
@@ -188,12 +188,12 @@ async function loadTeams() {
         // First try to get teams from global state if loaded by main page
         let teams = [];
         if (window.globalTeamsData && window.globalTeamsData.teams) {
-            // console.log('Using teams from global state:', window.globalTeamsData.teams.length);
+            console.log('Using teams from global state:', window.globalTeamsData.teams.length);
             teams = window.globalTeamsData.teams;
         } else {
-            // console.log('Fetching teams from API');
+            console.log('Fetching teams from API');
             teams = await fetchAllTeams();
-            // console.log('Fetched teams from API:', teams.length);
+            console.log('Fetched teams from API:', teams.length);
         }
         
         // Filter to only German teams
@@ -215,10 +215,12 @@ async function loadTeams() {
             DOM.teamFilter.appendChild(option);
         });
         
-        // console.log(`Team filter populated with ${germanTeams.length} teams`);
+        console.log(`Team filter populated with ${germanTeams.length} teams`);
         
         // Trigger an event that mobile filters can listen for
-        document.dispatchEvent(new CustomEvent('teamsLoaded'));
+        document.dispatchEvent(new CustomEvent('teamsLoaded', {
+            detail: { teams: germanTeams }
+        }));
         
         return germanTeams;
     } catch (error) {
@@ -233,12 +235,12 @@ async function loadLeagues() {
         // First try to get leagues from global state if loaded by main page
         let leagues = [];
         if (window.globalLeaguesData && window.globalLeaguesData.leagues) {
-            // console.log('Using leagues from global state:', window.globalLeaguesData.leagues);
+            console.log('Using leagues from global state:', window.globalLeaguesData.leagues);
             leagues = window.globalLeaguesData.leagues;
         } else {
-            // console.log('Fetching leagues from API');
+            console.log('Fetching leagues from API');
             leagues = await fetchLeagues();
-            // console.log('Fetched leagues from API:', leagues);
+            console.log('Fetched leagues from API:', leagues);
         }
         
         state.leagues = leagues;
@@ -258,10 +260,12 @@ async function loadLeagues() {
             DOM.leagueFilter.appendChild(option);
         });
         
-        // console.log(`League filter populated with ${leagues.length} leagues`);
+        console.log(`League filter populated with ${leagues.length} leagues`);
         
         // Trigger an event that mobile filters can listen for
-        document.dispatchEvent(new CustomEvent('leaguesLoaded'));
+        document.dispatchEvent(new CustomEvent('leaguesLoaded', {
+            detail: { leagues: leagues }
+        }));
         
         return leagues;
     } catch (error) {
@@ -764,11 +768,62 @@ function createMobileFilterButton() {
         </div>
     `;
     
-    // Add to document
+    // In the createMobileFilterButton() function, after creating the drawer, add Select2 initialization:
+    
+    // After the drawer is added to the document body, initialize Select2 on mobile filters
     document.body.appendChild(filterButton);
     document.body.appendChild(overlay);
     document.body.appendChild(drawer);
     
+    // Initialize Select2 on mobile filters after drawer is added to DOM
+    setTimeout(() => {
+        const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
+        const mobileTeamFilter = document.getElementById('mobileTeamFilter');
+        
+        if (mobileLeagueFilter && window.$) {
+            $(mobileLeagueFilter).select2({
+                dropdownParent: drawer,
+                width: '100%',
+                templateResult: function(option) {
+                    if (!option.id || option.id === 'all') {
+                        return option.text;
+                    }
+                    return formatLeagueOptionWithLogo(option);
+                },
+                templateSelection: function(option) {
+                    if (!option.id || option.id === 'all') {
+                        return option.text;
+                    }
+                    return formatLeagueOptionWithLogo(option);
+                },
+                escapeMarkup: function(markup) {
+                    return markup;
+                }
+            });
+        }
+        
+        if (mobileTeamFilter && window.$) {
+            $(mobileTeamFilter).select2({
+                dropdownParent: drawer,
+                width: '100%',
+                templateResult: function(option) {
+                    if (!option.id || option.id === 'all') {
+                        return option.text;
+                    }
+                    return formatTeamOptionWithLogo(option);
+                },
+                templateSelection: function(option) {
+                    if (!option.id || option.id === 'all') {
+                        return option.text;
+                    }
+                    return formatTeamOptionWithLogo(option);
+                },
+                escapeMarkup: function(markup) {
+                    return markup;
+                }
+            });
+        }
+    }, 100);
     // Initialize flatpickr for mobile date filter
     const mobileDateFilter = document.getElementById('mobileDateFilter');
     if (mobileDateFilter) {
@@ -848,18 +903,31 @@ function createMobileFilterButton() {
         return badge;
     }
     
-    // Event Listeners
+    // Update the filter button click handler:
     filterButton.addEventListener('click', () => {
         drawer.classList.add('open');
         overlay.classList.add('open');
         document.body.style.overflow = 'hidden'; 
         
-        // Set current values - ensure these elements exist first
+        // Set current values using Select2 if available
         const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
         const mobileTeamFilter = document.getElementById('mobileTeamFilter');
         
-        if (mobileLeagueFilter) mobileLeagueFilter.value = state.filters.league;
-        if (mobileTeamFilter) mobileTeamFilter.value = state.filters.team;
+        if (mobileLeagueFilter) {
+            if ($(mobileLeagueFilter).hasClass('select2-hidden-accessible')) {
+                $(mobileLeagueFilter).val(state.filters.league).trigger('change');
+            } else {
+                mobileLeagueFilter.value = state.filters.league;
+            }
+        }
+        
+        if (mobileTeamFilter) {
+            if ($(mobileTeamFilter).hasClass('select2-hidden-accessible')) {
+                $(mobileTeamFilter).val(state.filters.team).trigger('change');
+            } else {
+                mobileTeamFilter.value = state.filters.team;
+            }
+        }
         
         // Update mobile active filters
         updateMobileActiveFilters();
@@ -876,19 +944,38 @@ function createMobileFilterButton() {
         overlay.classList.remove('open');
         document.body.style.overflow = '';
     });
-    
-    // Apply filters button
+        
+    // Apply filters button - update to use Select2 values
     document.getElementById('applyMobileFilters').addEventListener('click', () => {
-        // Update state with mobile filter values
+        // Update state with mobile filter values using Select2
         const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
         const mobileTeamFilter = document.getElementById('mobileTeamFilter');
         
-        if (mobileLeagueFilter) state.filters.league = mobileLeagueFilter.value;
-        if (mobileTeamFilter) state.filters.team = mobileTeamFilter.value;
+        if (mobileLeagueFilter && $(mobileLeagueFilter).hasClass('select2-hidden-accessible')) {
+            state.filters.league = $(mobileLeagueFilter).val();
+        } else if (mobileLeagueFilter) {
+            state.filters.league = mobileLeagueFilter.value;
+        }
+        
+        if (mobileTeamFilter && $(mobileTeamFilter).hasClass('select2-hidden-accessible')) {
+            state.filters.team = $(mobileTeamFilter).val();
+        } else if (mobileTeamFilter) {
+            state.filters.team = mobileTeamFilter.value;
+        }
         
         // Sync with main filters
-        if (DOM.leagueFilter) DOM.leagueFilter.value = state.filters.league;
-        if (DOM.teamFilter) DOM.teamFilter.value = state.filters.team;
+        if (DOM.leagueFilter) {
+            DOM.leagueFilter.value = state.filters.league;
+            if ($(DOM.leagueFilter).hasClass('select2-hidden-accessible')) {
+                $(DOM.leagueFilter).trigger('change');
+            }
+        }
+        if (DOM.teamFilter) {
+            DOM.teamFilter.value = state.filters.team;
+            if ($(DOM.teamFilter).hasClass('select2-hidden-accessible')) {
+                $(DOM.teamFilter).trigger('change');
+            }
+        }
         
         // Apply filters
         applyFilters();
@@ -900,6 +987,60 @@ function createMobileFilterButton() {
         
         // Update filter count
         updateFilterCount();
+    });
+    
+    // Clear filters button - update to work with Select2
+    document.getElementById('clearMobileFilters').addEventListener('click', () => {
+        // Reset mobile filters using Select2 if available
+        const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
+        const mobileTeamFilter = document.getElementById('mobileTeamFilter');
+        
+        if (mobileLeagueFilter) {
+            if ($(mobileLeagueFilter).hasClass('select2-hidden-accessible')) {
+                $(mobileLeagueFilter).val('all').trigger('change');
+            } else {
+                mobileLeagueFilter.value = 'all';
+            }
+        }
+        
+        if (mobileTeamFilter) {
+            if ($(mobileTeamFilter).hasClass('select2-hidden-accessible')) {
+                $(mobileTeamFilter).val('all').trigger('change');
+            } else {
+                mobileTeamFilter.value = 'all';
+            }
+        }
+        
+        // Reset state
+        state.filters.league = 'all';
+        state.filters.team = 'all';
+        state.filters.date = null;
+        
+        // Sync with main filters
+        if (DOM.leagueFilter) {
+            DOM.leagueFilter.value = 'all';
+            if ($(DOM.leagueFilter).hasClass('select2-hidden-accessible')) {
+                $(DOM.leagueFilter).trigger('change');
+            }
+        }
+        if (DOM.teamFilter) {
+            DOM.teamFilter.value = 'all';
+            if ($(DOM.teamFilter).hasClass('select2-hidden-accessible')) {
+                $(DOM.teamFilter).trigger('change');
+            }
+        }
+        
+        // Update UI
+        updateMobileActiveFilters();
+        updateFilterCount();
+        
+        // Load all games
+        loadAllGames();
+        
+        // Close drawer
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
     });
     
     // Clear filters button
@@ -962,7 +1103,7 @@ function createMobileFilterButton() {
 
     // More reliable method to populate filters after Select2 initialization
     function populateMobileFilters() {
-        // console.log('Populating mobile filters');
+        console.log('Populating mobile filters');
         
         // Get references to the mobile filter elements
         const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
@@ -977,42 +1118,50 @@ function createMobileFilterButton() {
         mobileLeagueFilter.innerHTML = '<option value="all">All Leagues</option>';
         mobileTeamFilter.innerHTML = '<option value="all">All Teams</option>';
         
-        // Clone options from main filters
-        if (DOM.leagueFilter) {
-            // console.log(`League filter has ${DOM.leagueFilter.options.length} options`);
-            Array.from(DOM.leagueFilter.options).forEach(option => {
-                const newOption = document.createElement('option');
-                newOption.value = option.value;
-                newOption.textContent = option.textContent;
-                mobileLeagueFilter.appendChild(newOption);
+        // Use state data instead of cloning from DOM
+        if (state.leagues && state.leagues.length > 0) {
+            console.log(`Populating ${state.leagues.length} leagues in mobile filter`);
+            state.leagues.forEach(league => {
+                const option = document.createElement('option');
+                option.value = league;
+                option.textContent = getLeagueDisplayName(league);
+                mobileLeagueFilter.appendChild(option);
             });
         } else {
-            console.warn('Main league filter not found');
+            console.warn('No leagues in state to populate mobile filter');
         }
         
-        if (DOM.teamFilter) {
-            // console.log(`Team filter has ${DOM.teamFilter.options.length} options`);
-            Array.from(DOM.teamFilter.options).forEach(option => {
-                const newOption = document.createElement('option');
-                newOption.value = option.value;
-                newOption.textContent = option.textContent;
-                mobileTeamFilter.appendChild(newOption);
+        if (state.teams && state.teams.length > 0) {
+            console.log(`Populating ${state.teams.length} teams in mobile filter`);
+            state.teams.sort().forEach(team => {
+                const option = document.createElement('option');
+                option.value = team;
+                option.textContent = team;
+                mobileTeamFilter.appendChild(option);
             });
         } else {
-            console.warn('Main team filter not found');
+            console.warn('No teams in state to populate mobile filter');
         }
         
-        // console.log(`Populated mobile filters. League options: ${mobileLeagueFilter.options.length}, Team options: ${mobileTeamFilter.options.length}`);
+        console.log(`Mobile filters populated. League options: ${mobileLeagueFilter.options.length}, Team options: ${mobileTeamFilter.options.length}`);
     }
     
     // Listen for teams and leagues loading events
-    document.addEventListener('teamsLoaded', function() {
-        // console.log('Teams loaded event received, updating mobile filters');
+    document.addEventListener('teamsLoaded', function(event) {
+        console.log('Teams loaded event received, updating mobile filters');
+        // Update state with the loaded teams
+        if (event.detail && event.detail.teams) {
+            state.teams = event.detail.teams;
+        }
         populateMobileFilters();
     });
     
-    document.addEventListener('leaguesLoaded', function() {
-        // console.log('Leagues loaded event received, updating mobile filters');
+    document.addEventListener('leaguesLoaded', function(event) {
+        console.log('Leagues loaded event received, updating mobile filters');
+        // Update state with the loaded leagues
+        if (event.detail && event.detail.leagues) {
+            state.leagues = event.detail.leagues;
+        }
         populateMobileFilters();
     });
     
@@ -1259,12 +1408,6 @@ function jumpToDate(date) {
         // We found the exact date - scroll to it
         dateElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
-        // Highlight the section temporarily
-        dateElement.classList.add('highlight-section');
-        setTimeout(() => {
-            dateElement.classList.remove('highlight-section');
-        }, 2000);
-        
         return;
     }
     
@@ -1338,12 +1481,7 @@ function jumpToDate(date) {
     // Scroll to the closest date
     closest.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     
-    // Highlight the section
-    closest.element.classList.add('highlight-section');
-    setTimeout(() => {
-        closest.element.classList.remove('highlight-section');
-    }, 2000);
-    
+
     // Show a message if it's not the exact date
     if (closest.dateStr !== apiDateStr) {
         const closestFormatted = closest.date.toLocaleDateString('en-US', {

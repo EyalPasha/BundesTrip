@@ -70,79 +70,6 @@ body {
     flex-direction: column;
 }
 
-/* Modern Navigation */
-.navbar {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--shadow-md);
-    padding: var(--space-md) 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.navbar-brand {
-    font-weight: 700;
-    font-size: var(--text-xl);
-    color: var(--white) !important;
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    transition: transform var(--duration-fast) ease;
-}
-
-.navbar-brand:hover {
-    transform: translateY(-1px);
-    color: var(--white) !important;
-}
-
-.navbar-brand img {
-    border-radius: var(--radius-md);
-    transition: transform var(--duration-normal) ease;
-}
-
-.navbar-brand:hover img {
-    transform: scale(1.05);
-}
-
-.nav-link {
-    color: rgba(255, 255, 255, 0.9) !important;
-    font-weight: 500;
-    padding: var(--space-sm) var(--space-md) !important;
-    border-radius: var(--radius-md);
-    transition: all var(--duration-fast) ease;
-    position: relative;
-}
-
-.nav-link::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--secondary-color);
-    transition: all var(--duration-normal) ease;
-    transform: translateX(-50%);
-}
-
-.nav-link:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--white) !important;
-}
-
-.nav-link:hover::before,
-.nav-link.active::before {
-    width: 80%;
-}
-
-.nav-link.active {
-    color: var(--white) !important;
-    font-weight: 600;
-}
-
 /* Main Container - Split Screen Design */
 .main-content {
     flex: 1;
@@ -650,266 +577,6 @@ footer {
     flex-shrink: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .login-container {
-        margin: 0 var(--space-md);
-        max-width: 900px;
-    }
-}
-
-@media (max-width: 992px) {
-    .main-content {
-        padding: var(--space-md) 0;
-    }
-    
-    .login-container {
-        flex-direction: column;
-        max-width: 600px;
-        min-height: auto;
-    }
-    
-    .login-welcome {
-        min-height: 300px;
-        padding: var(--space-2xl) var(--space-xl);
-    }
-    
-    .welcome-title {
-        font-size: var(--text-2xl);
-    }
-    
-    .welcome-subtitle {
-        font-size: var(--text-base);
-    }
-    
-    .login-form-section {
-        padding: var(--space-2xl) var(--space-xl);
-    }
-    
-    .form-header h2 {
-        font-size: var(--text-2xl);
-    }
-}
-
-@media (max-width: 768px) {
-    .login-container {
-        margin: 0 var(--space-sm);
-        border-radius: var(--radius-xl);
-    }
-    
-    .login-welcome {
-        padding: var(--space-xl) var(--space-lg);
-        min-height: 250px;
-    }
-    
-    .welcome-title {
-        font-size: var(--text-xl);
-    }
-    
-    .welcome-subtitle {
-        font-size: var(--text-sm);
-    }
-    
-    .welcome-logo img {
-        height: 40px;
-    }
-    
-    .login-form-section {
-        padding: var(--space-xl) var(--space-lg);
-    }
-    
-    .form-header {
-        margin-bottom: var(--space-xl);
-    }
-    
-    .form-header h2 {
-        font-size: var(--text-xl);
-    }
-    
-    .btn-auth {
-        font-size: var(--text-base);
-        padding: var(--space-md) var(--space-lg);
-    }
-    
-    .form-group {
-        margin-bottom: var(--space-lg);
-    }
-}
-
-@media (max-width: 576px) {
-    .main-content {
-        padding: var(--space-sm) 0;
-    }
-    
-    .login-container {
-        margin: 0 var(--space-xs);
-        border-radius: var(--radius-lg);
-    }
-    
-    .login-welcome {
-        padding: var(--space-lg) var(--space-md);
-        min-height: 200px;
-    }
-    
-    .welcome-title {
-        font-size: var(--text-lg);
-        margin-bottom: var(--space-md);
-    }
-    
-    .welcome-subtitle {
-        font-size: var(--text-xs);
-        margin-bottom: var(--space-md);
-    }
-    
-    .welcome-features {
-        display: none;
-    }
-    
-    .login-form-section {
-        padding: var(--space-lg) var(--space-md);
-    }
-    
-    .form-header h2 {
-        font-size: var(--text-lg);
-    }
-    
-    .form-header p {
-        font-size: var(--text-sm);
-    }
-    
-    .form-control,
-    .toggle-password {
-        padding: var(--space-sm) var(--space-md);
-        font-size: var(--text-sm);
-    }
-    
-    .btn-auth {
-        font-size: var(--text-sm);
-        padding: var(--space-md);
-    }
-    
-    .btn {
-        padding: var(--space-sm) var(--space-md);
-        font-size: var(--text-sm);
-    }
-    
-    .form-group {
-        margin-bottom: var(--space-md);
-    }
-    
-    .form-check {
-        margin-bottom: var(--space-md);
-    }
-    
-    .form-label {
-        font-size: var(--text-xs);
-        margin-bottom: var(--space-xs);
-    }
-    
-    .forgot-password-link {
-        font-size: var(--text-xs);
-    }
-}
-
-/* Extra small screens */
-@media (max-width: 400px) {
-    .login-welcome {
-        padding: var(--space-md) var(--space-sm);
-    }
-    
-    .login-form-section {
-        padding: var(--space-md) var(--space-sm);
-    }
-    
-    .welcome-title {
-        font-size: var(--text-base);
-    }
-    
-    .form-header h2 {
-        font-size: var(--text-base);
-    }
-    
-    .btn-auth {
-        font-size: var(--text-xs);
-        padding: var(--space-sm);
-    }
-}
-
-/* Navbar Responsive Updates */
-.navbar-toggler {
-    border: none;
-    padding: 0.25rem 0.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    transition: all var(--duration-fast) ease;
-}
-
-.navbar-toggler:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.navbar-toggler:focus {
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
-}
-
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-
-@media (max-width: 992px) {
-    .navbar-collapse {
-        margin-top: var(--space-md);
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: var(--radius-lg);
-        padding: var(--space-md);
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
-
-    .nav-link {
-        padding: var(--space-sm) 0 !important;
-        margin: var(--space-xs) 0;
-    }
-
-    .nav-link::before {
-        display: none;
-    }
-
-    .nav-link:hover {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: var(--radius-md);
-        padding-left: var(--space-md) !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .navbar {
-        padding: var(--space-sm) 0;
-    }
-
-    .navbar-brand {
-        font-size: var(--text-lg);
-    }
-
-    .navbar-brand img {
-        height: 25px;
-    }
-}
-
-@media (max-width: 576px) {
-    .navbar-brand {
-        font-size: var(--text-base);
-    }
-
-    .navbar-brand img {
-        height: 20px;
-    }
-
-    .nav-link {
-        font-size: var(--text-sm);
-    }
-}
-
 /* High contrast mode support */
 @media (prefers-contrast: high) {
     :root {
@@ -1036,4 +703,188 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    /* Main content adjustments */
+    .main-content {
+        padding: var(--space-md) 0;
+        min-height: calc(100vh - 60px);
+    }
+    
+    /* Login container - stack vertically on mobile */
+    .login-container {
+        flex-direction: column;
+        margin: 0 var(--space-md);
+        min-height: auto;
+        max-width: none;
+    }
+    
+    /* Welcome section - compact on mobile */
+    .login-welcome {
+        padding: var(--space-xl) var(--space-lg);
+        min-height: 200px;
+        text-align: center;
+    }
+    
+    .welcome-logo img {
+        height: 40px;
+    }
+    
+    .welcome-title {
+        font-size: var(--text-2xl);
+        margin-bottom: var(--space-md);
+    }
+    
+    .welcome-subtitle {
+        font-size: var(--text-base);
+        margin-bottom: var(--space-lg);
+    }
+    
+    .welcome-features {
+        display: none; /* Hide features list on mobile to save space */
+    }
+    
+    /* Form section - more compact */
+    .login-form-section {
+        padding: var(--space-xl) var(--space-lg);
+    }
+    
+    .form-group {
+        margin-bottom: var(--space-lg);
+    }
+    
+    .form-control {
+        padding: var(--space-md) var(--space-sm);
+        font-size: var(--text-sm);
+    }
+    
+    .form-label {
+        font-size: var(--text-xs);
+        margin-bottom: var(--space-xs);
+    }
+    
+    .btn-auth {
+        padding: var(--space-md) var(--space-lg);
+        font-size: var(--text-base);
+        margin-bottom: var(--space-md);
+    }
+    
+    .form-footer {
+        margin-top: var(--space-lg);
+    }
+    
+    .form-footer p {
+        font-size: var(--text-xs);
+    }
+    
+    .forgot-password-link {
+        font-size: var(--text-xs);
+    }
+    
+}
+
+/* Extra small mobile devices */
+@media (max-width: 576px) {
+    .main-content {
+        padding: var(--space-sm) 0;
+    }
+    
+    .login-container {
+        margin: 0 var(--space-sm);
+        border-radius: var(--radius-lg);
+    }
+    
+    .login-welcome {
+        padding: var(--space-lg) var(--space-md);
+        min-height: 150px;
+    }
+    
+    .welcome-title {
+        font-size: var(--text-xl);
+        margin-bottom: var(--space-sm);
+    }
+    
+    .welcome-subtitle {
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-md);
+    }
+    
+    .login-form-section {
+        padding: var(--space-lg) var(--space-md);
+    }
+    
+    .form-control {
+        padding: var(--space-sm);
+        font-size: var(--text-sm);
+    }
+    
+    .toggle-password {
+        padding: var(--space-sm);
+        min-width: 40px;
+    }
+    
+    .btn-auth {
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--text-sm);
+    }
+    
+    .form-check-label {
+        font-size: var(--text-xs);
+    }
+    
+    .btn-outline-secondary {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: var(--text-xs);
+    }
+    
+
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .main-content {
+        padding: var(--space-sm) 0;
+    }
+    
+    .login-welcome {
+        min-height: 120px;
+        padding: var(--space-md) var(--space-lg);
+    }
+    
+    .welcome-title {
+        font-size: var(--text-xl);
+        margin-bottom: var(--space-xs);
+    }
+    
+    .welcome-subtitle {
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-sm);
+    }
+    
+    .login-form-section {
+        padding: var(--space-md) var(--space-lg);
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    .form-control {
+        min-height: 44px; /* Better touch target */
+    }
+    
+    .btn-auth {
+        min-height: 44px;
+    }
+    
+    .toggle-password {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .form-check-input {
+        width: 20px;
+        height: 20px;
+    }
 }
