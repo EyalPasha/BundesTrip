@@ -788,44 +788,6 @@ function showLoginPrompt() {
                             <h4 class="fw-semibold text-dark mb-2">Please log in to plan your trip</h4>
                             <p class="text-muted mb-0">You need an account to save and manage your personalized trip plans. Join thousands of football fans who trust BundesTrip!</p>
                         </div>
-                        
-                        <div class="auth-benefits mb-4">
-                            <div class="row g-3">
-                                <div class="col-6">
-                                    <div class="benefit-item">
-                                        <div class="benefit-icon">
-                                            <i class="fas fa-save"></i>
-                                        </div>
-                                        <small>Save Your Trips</small>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="benefit-item">
-                                        <div class="benefit-icon">
-                                            <i class="fas fa-history"></i>
-                                        </div>
-                                        <small>Trip History</small>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="benefit-item">
-                                        <div class="benefit-icon">
-                                            <i class="fas fa-heart"></i>
-                                        </div>
-                                        <small>Favorite Teams</small>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="benefit-item">
-                                        <div class="benefit-icon">
-                                            <i class="fas fa-bell"></i>
-                                        </div>
-                                        <small>Match Alerts</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
                         <div class="auth-actions">
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
