@@ -209,7 +209,7 @@ function applyAndCloseDrawer() {
     if (mainGamesSlider && mainGamesSliderValue) {
         mainGamesSlider.value = activeFilters.minGames;
         if (activeFilters.minGames === 2) {
-            mainGamesSliderValue.textContent = 'Any (2+)';
+            mainGamesSliderValue.textContent = '2+';
         } else if (activeFilters.minGames === parseInt(mainGamesSlider.max)) {
             mainGamesSliderValue.textContent = activeFilters.minGames;
         } else {
@@ -1091,7 +1091,7 @@ function clearFiltersEnhanced() {
         gamesSlider.value = 2; // Default to 2 games
         const gamesSliderValue = document.getElementById('gamesSliderValue');
         if (gamesSliderValue) {
-            gamesSliderValue.textContent = 'Any (2+)';
+            gamesSliderValue.textContent = '2+';
         }
     }
     
@@ -1110,7 +1110,7 @@ function clearFiltersEnhanced() {
         drawerGamesSlider.value = 2;  // Default to 2 games
         const drawerGamesSliderValue = document.getElementById('drawerGamesSliderValue');
         if (drawerGamesSliderValue) {
-            drawerGamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+            drawerGamesSliderValue.textContent = '2+'; // Changed from '2+' to '2+'
         }
     }
     
@@ -1369,7 +1369,7 @@ function initializeSliders(maxGames, maxHotelChanges) {
             
             // Default to minimum (2 games)
             gamesSlider.value = 2;
-            gamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+            gamesSliderValue.textContent = '2+'; // Changed from '2+' to '2+'
             
             // Set initial filter value
             activeFilters.minGames = 2;
@@ -1379,9 +1379,9 @@ function initializeSliders(maxGames, maxHotelChanges) {
             gamesSlider.addEventListener('input', function() {
                 const value = parseInt(this.value);
                 
-                // Always show the min as "Any (2+)" 
+                // Always show the min as "2+" 
                 if (value === 2) {
-                    gamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+                    gamesSliderValue.textContent = '2+'; // Changed from '2+' to '2+'
                     activeFilters.minGames = 2;
                 } else {
                     gamesSliderValue.textContent = `${value}+`;
@@ -1400,7 +1400,7 @@ function initializeSliders(maxGames, maxHotelChanges) {
             gamesSlider.min = 2;
             gamesSlider.max = 5;
             gamesSlider.value = 2;
-            gamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+            gamesSliderValue.textContent = '2+'; // Changed from '2+' to '2+'
             activeFilters.minGames = 2;
             pendingFilters.minGames = 2;
         }
@@ -1459,9 +1459,9 @@ function initializeDrawerSliders(maxGames, maxHotelChanges) {
             drawerGamesSlider.max = maxGames;
             drawerGamesSlider.value = pendingFilters.minGames;
             
-            // Use "Any (2+)" for minimum
+            // Use "2+" for minimum
             if (pendingFilters.minGames === 2) {
-                drawerGamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+                drawerGamesSliderValue.textContent = '2+'; // Changed from '2+' to '2+'
             } else {
                 drawerGamesSliderValue.textContent = pendingFilters.minGames + '+';
                 if (pendingFilters.minGames === maxGames) {
@@ -1477,7 +1477,7 @@ function initializeDrawerSliders(maxGames, maxHotelChanges) {
             newSlider.addEventListener('input', function() {
                 const value = parseInt(this.value);
                 if (value === 2) {
-                    drawerGamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+                    drawerGamesSliderValue.textContent = '2+'; // Changed from '2+' to '2+'
                     pendingFilters.minGames = 2;
                 } else {
                     drawerGamesSliderValue.textContent = `${value}+`;
@@ -1644,7 +1644,7 @@ function clearDrawerFilters() {
         drawerGamesSlider.value = 2;  // Default to 2 games
         const drawerGamesSliderValue = document.getElementById('drawerGamesSliderValue');
         if (drawerGamesSliderValue) {
-            drawerGamesSliderValue.textContent = 'Any (2+)'; // Changed from '2+' to 'Any (2+)'
+            drawerGamesSliderValue.textContent = '2+'; // Changed from '2+' to '2+'
         }
     }
     

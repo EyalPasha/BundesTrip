@@ -306,15 +306,6 @@ function renderTripCard(group, index, tripContext = {}) {
                 </div>
                 <div class="btn-glow"></div>
             </button>
-            
-            <button class="btn-modern btn-share" 
-                    onclick="shareTripLink('${group.base_trip?.request_id || 'unknown'}')">
-                <div class="btn-content">
-                    <i class="fas fa-share-alt"></i>
-                    <span>Share</span>
-                </div>
-                <div class="btn-glow"></div>
-            </button>
         </div>
     </div>
     
@@ -1779,98 +1770,6 @@ window.handleTripSave = async function(tripIndex) {
 
 // Export the functions so they can be used by other modules
 export { renderTripCard, initializeMatchesExpander, renderTbdGames, extractHotelSummary, renderTravelSegments, renderAirportDistances, renderItineraryForVariant };
-
-window.shareTripLink = function(requestId) {
-    // console.log('🔗 Sharing trip link for request:', requestId);
-    
-    // Create the share URL
-    const url = `${window.location.origin}${window.location.pathname}?shared=${requestId}`;
-    
-    // Try modern Web Share API first (mobile devices)
-    if (navigator.share) {
-        navigator.share({
-            title: 'Check out this football trip!',
-            text: 'I found an amazing football trip in Germany',
-            url: url
-        }).catch(err => {
-            // console.log('Share failed:', err);
-            fallbackShare(url);
-        });
-    } else {
-        fallbackShare(url);
-    }
-    
-    function fallbackShare(url) {
-        // Try clipboard API
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(() => {
-                showShareSuccess('Trip link copied to clipboard!');
-            }).catch(() => {
-                // Fallback to prompt
-                promptShare(url);
-            });
-        } else {
-            // Final fallback - prompt
-            promptShare(url);
-        }
-    }
-    
-    function promptShare(url) {
-        // Create a temporary input element for selection
-        const tempInput = document.createElement('input');
-        tempInput.value = url;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        tempInput.setSelectionRange(0, 99999); // For mobile
-        
-        try {
-            // Try to copy using execCommand (older browsers)
-            const successful = document.execCommand('copy');
-            if (successful) {
-                showShareSuccess('Trip link copied to clipboard!');
-            } else {
-                // Last resort - show prompt
-                prompt('Copy this trip link:', url);
-            }
-        } catch (err) {
-            // Very last resort
-            prompt('Copy this trip link:', url);
-        } finally {
-            document.body.removeChild(tempInput);
-        }
-    }
-    
-    function showShareSuccess(message) {
-        // Create a simple success notification
-        const toast = document.createElement('div');
-        toast.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            z-index: 9999;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transition: opacity 0.3s ease;
-        `;
-        toast.innerHTML = `<i class="fas fa-check me-2"></i>${message}`;
-        
-        document.body.appendChild(toast);
-        
-        // Fade out after 3 seconds
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 300);
-        }, 3000);
-    }
-};
 
 // Add mobile click handler for TBD location dropdown
 document.addEventListener('click', function(event) {
