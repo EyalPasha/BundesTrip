@@ -37,7 +37,7 @@ class SessionManager {
             };
             
             sessionStorage.setItem(this.storageKey, JSON.stringify(sessionData));
-            console.log(`✅ Search session saved successfully (${renderedCount} trips rendered)`);
+            //console.log(`✅ Search session saved successfully (${renderedCount} trips rendered)`);
         } catch (error) {
             console.warn('⚠️ Failed to save search session:', error);
             try {
@@ -74,7 +74,7 @@ class SessionManager {
             };
             
             localStorage.setItem(this.formStateKey, JSON.stringify(formState));
-            console.log('✅ Form state saved successfully (excluding league/team selections)');
+            //console.log('✅ Form state saved successfully (excluding league/team selections)');
         } catch (error) {
             console.warn('⚠️ Failed to save form state:', error);
             // Clear corrupted data
@@ -210,7 +210,7 @@ class SessionManager {
     markNavigatingAway() {
         try {
             sessionStorage.setItem('navigation_away', 'true');
-            console.log('🔄 Navigation away marked');
+            //console.log('🔄 Navigation away marked');
         } catch (error) {
             console.warn('⚠️ Failed to mark navigation:', error);
         }
@@ -236,7 +236,7 @@ class SessionManager {
                     if (targetUrl.pathname !== currentPath) {
                         userNavigating = true;
                         this.markNavigatingAway();
-                        console.log('🔄 User clicked navigation link - marking away');
+                        //console.log('🔄 User clicked navigation link - marking away');
                     }
                 } catch (error) {
                     // Handle invalid URLs
@@ -249,7 +249,7 @@ class SessionManager {
         window.addEventListener('popstate', () => {
             userNavigating = true;
             this.markNavigatingAway();
-            console.log('🔄 Browser navigation detected - marking away');
+            //console.log('🔄 Browser navigation detected - marking away');
         });
         
         // Only clear session on beforeunload if user actually navigated
@@ -257,10 +257,10 @@ class SessionManager {
             if (userNavigating) {
                 // User is actually navigating away, clear the session
                 this.clearSearchSession();
-                console.log('🔄 Navigation confirmed - search session cleared');
+                //console.log('🔄 Navigation confirmed - search session cleared');
             } else {
                 // This might be a refresh, don't clear session
-                console.log('🔄 Page unload without navigation flag - keeping session');
+                //console.log('🔄 Page unload without navigation flag - keeping session');
             }
         });
         

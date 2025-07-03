@@ -17,7 +17,7 @@ class SessionRestore {
             this.restoredFromSession = formRestored || resultsRestored;
             
             if (this.restoredFromSession) {
-                console.log('✅ Page restored from session');
+                //console.log('✅ Page restored from session');
                 // Disable animations for restored content
                 document.body.classList.add('no-animations');
                 
@@ -41,7 +41,7 @@ class SessionRestore {
         const formState = window.sessionManager.getFormState();
         if (!formState) return false;
 
-        console.log('🔄 Restoring form state...');
+        //console.log('🔄 Restoring form state...');
 
         try {
             // Wait for form elements to be ready
@@ -81,7 +81,7 @@ class SessionRestore {
                 $('.select2-hidden-accessible').trigger('change');
             }
 
-            console.log('✅ Form state restored');
+            //console.log('✅ Form state restored');
             return true;
         } catch (error) {
             console.warn('⚠️ Failed to restore form state:', error);
@@ -95,13 +95,13 @@ class SessionRestore {
         
         // Enhanced check for restoration validity
         if (!window.sessionManager.shouldRestoreResults()) {
-            console.log('🚫 Search results restoration not needed');
+            //console.log('🚫 Search results restoration not needed');
             return false;
         }
 
         const session = window.sessionManager.getSearchSession();
         if (!session || !session.results) {
-            console.log('🚫 No valid search session found');
+            //console.log('🚫 No valid search session found');
             return false;
         }
 
@@ -116,17 +116,17 @@ class SessionRestore {
             if (isActualRefresh) {
                 // This is a refresh, clear the flag and proceed
                 sessionStorage.removeItem('navigation_away');
-                console.log('🔄 Navigation flag detected but this is a refresh - proceeding with restore');
+                //console.log('🔄 Navigation flag detected but this is a refresh - proceeding with restore');
             } else {
                 // This is actual navigation, abort restore
-                console.log('🚫 Navigation flag detected - clearing session and aborting restore');
+                //console.log('🚫 Navigation flag detected - clearing session and aborting restore');
                 sessionStorage.removeItem('navigation_away');
                 window.sessionManager.clearSearchSession();
                 return false;
             }
         }
 
-        console.log('🔄 Restoring search results...');
+        //console.log('🔄 Restoring search results...');
         this.isRestoring = true;
 
         try {
@@ -186,7 +186,7 @@ class SessionRestore {
                     // Import and use the multiple batch renderer
                     const { renderMultipleBatches } = await import('../components/results-display.js');
                     renderMultipleBatches(renderedCount);
-                    console.log(`✅ Restored ${renderedCount} trips from session`);
+                    //console.log(`✅ Restored ${renderedCount} trips from session`);
                 }
             }
 
@@ -210,7 +210,7 @@ class SessionRestore {
                 });
             }
 
-            console.log('✅ Search results restored');
+            //console.log('✅ Search results restored');
             return true;
         } catch (error) {
             console.warn('⚠️ Failed to restore search results:', error);

@@ -283,7 +283,7 @@ function renderNextBatch() {
     const start = state.renderedCount;
     const end = Math.min(start + state.batchSize, state.allTrips.length);
     
-    console.log(`Rendering trips ${start + 1} to ${end} of ${state.allTrips.length}`);
+    //console.log(`Rendering trips ${start + 1} to ${end} of ${state.allTrips.length}`);
     
     // Track the newly rendered cards to filter them
     const newlyRenderedCards = [];
@@ -317,7 +317,7 @@ function renderNextBatch() {
             // Get the newly rendered cards using our marker class
             const newCards = document.querySelectorAll('.trip-card.newly-rendered');
             
-            console.log(`Applying filters to ${newCards.length} newly rendered cards`);
+            //console.log(`Applying filters to ${newCards.length} newly rendered cards`);
             
             // Apply hotel changes filter if it's active
             if (window.activeFilters && window.activeFilters.maxHotelChanges < 7) {
@@ -387,7 +387,7 @@ function renderMultipleBatches(targetCount) {
     // Render trips up to the target count
     const totalToRender = Math.min(targetCount, state.allTrips.length);
     
-    console.log(`Restoring ${totalToRender} trips from session`);
+    //console.log(`Restoring ${totalToRender} trips from session`);
     
     // Render all trips at once for restoration (no batching during restore)
     for (let i = 0; i < totalToRender; i++) {

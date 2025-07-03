@@ -1308,7 +1308,7 @@ async function attemptPageRestore() {
         try {
             const restored = await window.sessionRestore.restorePage();
             if (restored) {
-                console.log('✅ Page state restored from session');
+                //console.log('✅ Page state restored from session');
             }
         } catch (error) {
             console.warn('⚠️ Page restoration failed:', error);

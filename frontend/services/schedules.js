@@ -105,13 +105,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         `;
         
         // Load data first with proper timing
-        console.log('Loading teams and leagues...');
+        //console.log('Loading teams and leagues...');
         const [teams, leagues] = await Promise.all([
             loadTeams(),
             loadLeagues()
         ]);
         
-        console.log(`Successfully loaded ${teams.length} teams and ${leagues.length} leagues`);
+        //console.log(`Successfully loaded ${teams.length} teams and ${leagues.length} leagues`);
         
         // Initialize flatpickr after data is loaded
         initializeFlatpickr();
@@ -188,12 +188,12 @@ async function loadTeams() {
         // First try to get teams from global state if loaded by main page
         let teams = [];
         if (window.globalTeamsData && window.globalTeamsData.teams) {
-            console.log('Using teams from global state:', window.globalTeamsData.teams.length);
+            //console.log('Using teams from global state:', window.globalTeamsData.teams.length);
             teams = window.globalTeamsData.teams;
         } else {
-            console.log('Fetching teams from API');
+            //console.log('Fetching teams from API');
             teams = await fetchAllTeams();
-            console.log('Fetched teams from API:', teams.length);
+            //console.log('Fetched teams from API:', teams.length);
         }
         
         // Filter to only German teams
@@ -215,7 +215,7 @@ async function loadTeams() {
             DOM.teamFilter.appendChild(option);
         });
         
-        console.log(`Team filter populated with ${germanTeams.length} teams`);
+        //console.log(`Team filter populated with ${germanTeams.length} teams`);
         
         // Trigger an event that mobile filters can listen for
         document.dispatchEvent(new CustomEvent('teamsLoaded', {
@@ -235,12 +235,12 @@ async function loadLeagues() {
         // First try to get leagues from global state if loaded by main page
         let leagues = [];
         if (window.globalLeaguesData && window.globalLeaguesData.leagues) {
-            console.log('Using leagues from global state:', window.globalLeaguesData.leagues);
+            //console.log('Using leagues from global state:', window.globalLeaguesData.leagues);
             leagues = window.globalLeaguesData.leagues;
         } else {
-            console.log('Fetching leagues from API');
+            //console.log('Fetching leagues from API');
             leagues = await fetchLeagues();
-            console.log('Fetched leagues from API:', leagues);
+            //console.log('Fetched leagues from API:', leagues);
         }
         
         state.leagues = leagues;
@@ -260,7 +260,7 @@ async function loadLeagues() {
             DOM.leagueFilter.appendChild(option);
         });
         
-        console.log(`League filter populated with ${leagues.length} leagues`);
+        //console.log(`League filter populated with ${leagues.length} leagues`);
         
         // Trigger an event that mobile filters can listen for
         document.dispatchEvent(new CustomEvent('leaguesLoaded', {
@@ -1103,7 +1103,7 @@ function createMobileFilterButton() {
 
     // More reliable method to populate filters after Select2 initialization
     function populateMobileFilters() {
-        console.log('Populating mobile filters');
+        //console.log('Populating mobile filters');
         
         // Get references to the mobile filter elements
         const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
@@ -1120,7 +1120,7 @@ function createMobileFilterButton() {
         
         // Use state data instead of cloning from DOM
         if (state.leagues && state.leagues.length > 0) {
-            console.log(`Populating ${state.leagues.length} leagues in mobile filter`);
+            //console.log(`Populating ${state.leagues.length} leagues in mobile filter`);
             state.leagues.forEach(league => {
                 const option = document.createElement('option');
                 option.value = league;
@@ -1132,7 +1132,7 @@ function createMobileFilterButton() {
         }
         
         if (state.teams && state.teams.length > 0) {
-            console.log(`Populating ${state.teams.length} teams in mobile filter`);
+            //console.log(`Populating ${state.teams.length} teams in mobile filter`);
             state.teams.sort().forEach(team => {
                 const option = document.createElement('option');
                 option.value = team;
@@ -1143,12 +1143,12 @@ function createMobileFilterButton() {
             console.warn('No teams in state to populate mobile filter');
         }
         
-        console.log(`Mobile filters populated. League options: ${mobileLeagueFilter.options.length}, Team options: ${mobileTeamFilter.options.length}`);
+        //console.log(`Mobile filters populated. League options: ${mobileLeagueFilter.options.length}, Team options: ${mobileTeamFilter.options.length}`);
     }
     
     // Listen for teams and leagues loading events
     document.addEventListener('teamsLoaded', function(event) {
-        console.log('Teams loaded event received, updating mobile filters');
+        //console.log('Teams loaded event received, updating mobile filters');
         // Update state with the loaded teams
         if (event.detail && event.detail.teams) {
             state.teams = event.detail.teams;
@@ -1157,7 +1157,7 @@ function createMobileFilterButton() {
     });
     
     document.addEventListener('leaguesLoaded', function(event) {
-        console.log('Leagues loaded event received, updating mobile filters');
+        //console.log('Leagues loaded event received, updating mobile filters');
         // Update state with the loaded leagues
         if (event.detail && event.detail.leagues) {
             state.leagues = event.detail.leagues;
