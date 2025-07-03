@@ -214,14 +214,54 @@
                                         </div>
                                         
                                         <div class="multi-select-container">
-                                            <div class="form-label-with-help">
-                                                <label for="preferredLeagues" class="form-label-main">
-                                                    <i class="fas fa-trophy icon"></i> Preferred Leagues (Max. 3)
-                                                </label>
-                                                <span class="form-label-help">Leave empty for all leagues!</span>
-                                            </div>
-                                            <div id="preferredLeaguesContainer" class="position-relative">
-                                                <select class="form-select select-hidden" id="preferredLeagues" multiple="multiple">
+                                            <!-- NEW: Visual league selector boxes -->
+                                            <div id="preferredLeaguesContainer" class="visual-league-selector">
+                                                <div class="league-box" data-league="Bundesliga">
+                                                    <div class="league-icon">
+                                                        <img src="./logos/b1.png" alt="Bundesliga">
+                                                    </div>
+                                                    <span class="league-name">Bundesliga</span>
+                                                </div>
+                                                <div class="league-box" data-league="2. Bundesliga">
+                                                    <div class="league-icon">
+                                                        <img src="./logos/b2.png" alt="2. Bundesliga">
+                                                    </div>
+                                                    <span class="league-name">2. Bundesliga</span>
+                                                </div>
+                                                <div class="league-box" data-league="3. Liga">
+                                                    <div class="league-icon">
+                                                        <img src="./logos/3liga.webp" alt="3. Liga">
+                                                    </div>
+                                                    <span class="league-name">3. Liga</span>
+                                                </div>
+                                                <div class="league-box" data-league="DFB-Pokal">
+                                                    <div class="league-icon">
+                                                        <img src="./logos/dfb.png" alt="DFB-Pokal">
+                                                    </div>
+                                                    <span class="league-name">DFB-Pokal</span>
+                                                </div>
+                                                <div class="league-box" data-league="Champions League">
+                                                    <div class="league-icon">
+                                                        <img src="./logos/cl.png" alt="Champions League">
+                                                    </div>
+                                                    <span class="league-name">Champions League</span>
+                                                </div>
+                                                <div class="league-box" data-league="European Cups" data-combined="Europa League,Conference League">
+                                                    <div class="league-icon combined-icon">
+                                                        <img src="./logos/el.png" alt="Europa League" class="icon-1">
+                                                        <img src="./logos/col.png" alt="Conference League" class="icon-2">
+                                                    </div>
+                                                    <span class="league-name">European Cups</span>
+                                                </div>
+                                                <!-- Hidden select for form compatibility -->
+                                                <select class="d-none" id="preferredLeagues" multiple="multiple" aria-label="Preferred Leagues">
+                                                    <option value="Bundesliga">Bundesliga</option>
+                                                    <option value="2. Bundesliga">2. Bundesliga</option>
+                                                    <option value="3. Liga">3. Liga</option>
+                                                    <option value="DFB-Pokal">DFB-Pokal</option>
+                                                    <option value="Champions League">Champions League</option>
+                                                    <option value="Europa League">Europa League</option>
+                                                    <option value="Conference League">Conference League</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -149,7 +149,7 @@ async function initializeApp() {
     // console.log("Application initialization complete");
 }
 
-// Initialize all UI components (Select2, flatpickr, etc.)
+// Replace the initPreferredLeaguesSelect() call with this:
 async function initializeUIComponents() {
     // Initialize basic Select2 dropdowns
     $('#startLocation, #tripDuration, #maxTravelTime, #minGames').select2({
@@ -222,15 +222,15 @@ async function initializeUIComponents() {
         });
     }
     
-    // Initialize Preferred Leagues Select2
-    initPreferredLeaguesSelect();
+    // Initialize Visual League Selector (REPLACE the old initPreferredLeaguesSelect)
+    initVisualLeagueSelector();
     
     // Initialize Individual Team Select2 dropdowns
     await initIndividualTeamSelects();
     
     // Update selection classes after a short delay to ensure Select2 is ready
     setTimeout(function() {
-        updateSelectionClasses($('#preferredLeagues'), $('#preferredLeaguesContainer'));
+        // Remove the old leagues update since we're using visual selector now
         // Remove the old mustTeams update since we're using individual selects now
     }, 300);
     
@@ -243,6 +243,91 @@ async function initializeUIComponents() {
         }, 300);
     });
 }
+
+// NEW: Visual League Selector initialization
+function initVisualLeagueSelector() {
+    const leagueBoxes = document.querySelectorAll('.league-box');
+    const hiddenSelect = document.getElementById('preferredLeagues');
+    const warningElement = document.getElementById('leaguesLimitWarning');
+    let selectedLeagues = [];
+    
+    leagueBoxes.forEach(box => {
+        box.addEventListener('click', function() {
+            // Remove the disabled check since there's no limit now
+            
+            const leagueValue = this.dataset.league;
+            const combinedLeagues = this.dataset.combined ? this.dataset.combined.split(',') : [leagueValue];
+            
+            if (this.classList.contains('selected')) {
+                // Deselect
+                this.classList.remove('selected');
+                
+                // Remove from selected leagues
+                combinedLeagues.forEach(league => {
+                    const index = selectedLeagues.indexOf(league);
+                    if (index > -1) {
+                        selectedLeagues.splice(index, 1);
+                    }
+                });
+                
+                // Update hidden select
+                combinedLeagues.forEach(league => {
+                    const option = hiddenSelect.querySelector(`option[value="${league}"]`);
+                    if (option) option.selected = false;
+                });
+                
+            } else {
+                // Select (no limit check needed)
+                this.classList.add('selected', 'just-selected');
+                
+                // Add animation class temporarily
+                setTimeout(() => {
+                    this.classList.remove('just-selected');
+                }, 300);
+                
+                // Add to selected leagues
+                combinedLeagues.forEach(league => {
+                    if (!selectedLeagues.includes(league)) {
+                        selectedLeagues.push(league);
+                    }
+                });
+                
+                // Update hidden select
+                combinedLeagues.forEach(league => {
+                    const option = hiddenSelect.querySelector(`option[value="${league}"]`);
+                    if (option) option.selected = true;
+                });
+            }
+            
+            // Trigger change event on hidden select
+            $(hiddenSelect).trigger('change');
+            
+            // Update container state
+            updateLeagueContainerState();
+        });
+    });
+}
+
+function updateLeagueContainerState() {
+    const container = document.getElementById('preferredLeaguesContainer');
+    const selectedBoxes = container.querySelectorAll('.league-box.selected');
+    
+    if (selectedBoxes.length > 0) {
+        container.classList.add('has-selections');
+    } else {
+        container.classList.remove('has-selections');
+    }
+}
+
+// Update the getSelectedLeagues function to work with the new system
+function getSelectedLeagues() {
+    const hiddenSelect = document.getElementById('preferredLeagues');
+    const selectedOptions = Array.from(hiddenSelect.selectedOptions);
+    return selectedOptions.map(option => option.value);
+}
+
+// Make it globally available
+window.getSelectedLeagues = getSelectedLeagues;
 
 // New function to initialize individual team selects
 async function initIndividualTeamSelects() {
@@ -437,7 +522,6 @@ function setupEventListeners() {
         updateMinGamesOptions();
     });
     
-    setupSelectionLimits();
     
     $('#preferredLeagues').on('select2:select select2:unselect', function(e) {
         updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
@@ -1152,85 +1236,6 @@ function showLoginPrompt() {
         keyboard: false     // Prevents closing with Escape key
     });
     modal.show();
-}
-
-
-// Add selection limit handlers
-function setupSelectionLimits() {
-    // Preferred Leagues - Max 3
-    $('#preferredLeagues').on('select2:select', function(e) {
-        const selectedCount = $(this).val()?.length || 0;
-        const warningElement = document.getElementById('leaguesLimitWarning');
-
-        if (selectedCount >= 3) {
-            // Disable remaining options
-            $(this).find('option:not(:selected)').each(function() {
-                $(this).prop('disabled', true);
-            });
-            $(this).select2('destroy').select2({
-                placeholder: 'Maximum 3 leagues selected',
-                width: '100%',
-                closeOnSelect: false,
-                allowClear: true,
-                minimumResultsForSearch: Infinity,
-                selectionCssClass: 'select2-selection--clean',
-                dropdownCssClass: 'select2-dropdown--clean',
-                templateResult: formatLeagueOptionWithLogo,
-                templateSelection: formatLeagueSelectionWithLogo,
-                dropdownParent: $('body')
-            });
-
-            // --- FIX: Re-apply .has-selections class ---
-            const $container = $(this).next('.select2-container').find('.select2-selection--multiple');
-            if ($(this).val() && $(this).val().length > 0) {
-                $container.addClass('has-selections');
-                $('#preferredLeaguesContainer').addClass('has-selections');
-            }
-
-            warningElement.classList.add('show');
-        }
-
-        updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
-    });
-
-    $('#preferredLeagues').on('select2:unselect', function(e) {
-        const selectedCount = $(this).val()?.length || 0;
-        const warningElement = document.getElementById('leaguesLimitWarning');
-
-        if (selectedCount < 3) {
-            // Re-enable all options
-            $(this).find('option').prop('disabled', false);
-            $(this).select2('destroy').select2({
-                placeholder: 'Select Leagues',
-                width: '100%',
-                closeOnSelect: false,
-                allowClear: true,
-                minimumResultsForSearch: Infinity,
-                selectionCssClass: 'select2-selection--clean',
-                dropdownCssClass: 'select2-dropdown--clean',
-                templateResult: formatLeagueOptionWithLogo,
-                templateSelection: formatLeagueSelectionWithLogo,
-                dropdownParent: $('body')
-            });
-
-            // --- FIX: Re-apply .has-selections class ---
-            const $container = $(this).next('.select2-container').find('.select2-selection--multiple');
-            if ($(this).val() && $(this).val().length > 0) {
-                $container.addClass('has-selections');
-                $('#preferredLeaguesContainer').addClass('has-selections');
-            } else {
-                $container.removeClass('has-selections');
-                $('#preferredLeaguesContainer').removeClass('has-selections');
-            }
-
-            warningElement.classList.remove('show');
-        }
-
-        updateSelectionClasses($(this), $('#preferredLeaguesContainer'));
-    });
-
-    // Remove the old mustTeams selection limit code since we now have individual selects
-    // The individual selects automatically limit to 4 teams (one per dropdown)
 }
 
 // New function to set up session management

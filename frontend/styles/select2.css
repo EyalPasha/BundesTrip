@@ -197,8 +197,7 @@ select.form-select[multiple] {
     left: 0;
 }
 
-/* Container styling to maintain consistent height */
-#preferredLeaguesContainer, 
+
 #mustTeamsContainer {
     position: relative;
     min-height: 42px !important;
@@ -207,15 +206,12 @@ select.form-select[multiple] {
     transition: none !important; /* Remove transition */
 }
 
-/* Remove the auto-growth for containers */
-#preferredLeaguesContainer.has-selections,
 #mustTeamsContainer.has-selections {
     height: 42px !important; /* Keep fixed instead of auto */
     min-height: 42px !important;
 }
 
-/* Fix the placeholder loading state by reducing z-index */
-#preferredLeaguesContainer::before,
+
 #mustTeamsContainer::before {
     content: '';
     position: absolute;
@@ -230,7 +226,6 @@ select.form-select[multiple] {
 }
 
 /* Hide the placeholder once Select2 is initialized */
-.select2-container--default + select + #preferredLeaguesContainer::before,
 .select2-container--default + select + #mustTeamsContainer::before {
     display: none;
 }

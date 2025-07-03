@@ -109,9 +109,6 @@ async function loadLeagues() {
             window.DOM.preferredLeaguesSelect.appendChild(option);
         });
         
-        // Initialize Select2 with enhanced styling and templates
-        initPreferredLeaguesSelect();
-        
         // Force the placeholder to appear
         $(window.DOM.preferredLeaguesSelect).val(null).trigger('change');
         
