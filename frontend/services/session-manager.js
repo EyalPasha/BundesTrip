@@ -57,13 +57,24 @@ class SessionManager {
                 return;
             }
             
+            // Create a copy of formData excluding league and team selections
+            const filteredFormData = { ...formData };
+            
+            // Remove league and team selections
+            delete filteredFormData.preferredLeagues;
+            delete filteredFormData.mustTeam1;
+            delete filteredFormData.mustTeam2;
+            delete filteredFormData.mustTeam3;
+            delete filteredFormData.mustTeam4;
+            delete filteredFormData.must_teams; // Alternative naming
+            
             const formState = {
-                ...formData,
+                ...filteredFormData,
                 timestamp: Date.now()
             };
             
             localStorage.setItem(this.formStateKey, JSON.stringify(formState));
-            console.log('✅ Form state saved successfully');
+            console.log('✅ Form state saved successfully (excluding league/team selections)');
         } catch (error) {
             console.warn('⚠️ Failed to save form state:', error);
             // Clear corrupted data

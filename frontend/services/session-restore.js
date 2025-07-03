@@ -54,27 +54,27 @@ class SessionRestore {
             this.setFieldValue('minGames', formState.minGames);
             this.setFieldValue('maxTravelTime', formState.maxTravelTime);
 
-            // Restore team selections
-            this.setFieldValue('mustTeam1', formState.mustTeam1);
-            this.setFieldValue('mustTeam2', formState.mustTeam2);
-            this.setFieldValue('mustTeam3', formState.mustTeam3);
-            this.setFieldValue('mustTeam4', formState.mustTeam4);
+            // Remove these team and league restoration lines since they shouldn't be saved
+            // this.setFieldValue('mustTeam1', formState.mustTeam1);
+            // this.setFieldValue('mustTeam2', formState.mustTeam2);
+            // this.setFieldValue('mustTeam3', formState.mustTeam3);
+            // this.setFieldValue('mustTeam4', formState.mustTeam4);
 
-            // Restore league selections
-            if (formState.preferredLeagues && formState.preferredLeagues.length > 0) {
-                const leaguesSelect = document.getElementById('preferredLeagues');
-                if (leaguesSelect) {
-                    // Clear current selections
-                    Array.from(leaguesSelect.options).forEach(option => {
-                        option.selected = formState.preferredLeagues.includes(option.value);
-                    });
+            // Remove league restoration since it shouldn't be saved
+            // if (formState.preferredLeagues && formState.preferredLeagues.length > 0) {
+            //     const leaguesSelect = document.getElementById('preferredLeagues');
+            //     if (leaguesSelect) {
+            //         // Clear current selections
+            //         Array.from(leaguesSelect.options).forEach(option => {
+            //             option.selected = formState.preferredLeagues.includes(option.value);
+            //         });
                     
-                    // Trigger change event for Select2
-                    if (window.jQuery && $(leaguesSelect).hasClass('select2-hidden-accessible')) {
-                        $(leaguesSelect).trigger('change');
-                    }
-                }
-            }
+            //         // Trigger change event for Select2
+            //         if (window.jQuery && $(leaguesSelect).hasClass('select2-hidden-accessible')) {
+            //             $(leaguesSelect).trigger('change');
+            //         }
+            //     }
+            // }
 
             // Refresh all Select2 instances
             if (window.jQuery && $('.select2-hidden-accessible').length > 0) {
