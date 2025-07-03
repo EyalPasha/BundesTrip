@@ -40,13 +40,11 @@
   position: relative;
   z-index: 1;
 }
-
-/* Multi-Step Progress Indicator */
 .step-progress {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: var(--space-lg) 0;
+  margin: var(--space-xs) 0 var(--space-md) 0 !important; /* Less space above and below */
   position: relative;
 }
 
@@ -533,137 +531,6 @@
     background: linear-gradient(135deg, var(--primary-light), var(--white)) !important;
 }
 
-/* Mobile responsive */
-@media (max-width: 576px) {
-    .individual-team-selects {
-        grid-template-columns: 1fr;
-        gap: var(--space-xs);
-    }
-    
-    .team-select-box .select2-selection--single {
-        height: 36px !important;
-        min-height: 36px !important;
-        font-size: 0.75rem !important;
-    }
-}
-
-/* Responsive Design - Mobile First */
-@media (max-width: 768px) {
-  .search-card {
-    min-height: 480px;
-  }
-  
-  .search-card .card-body {
-    padding: var(--space-lg);
-  }
-  
-  .search-card .card-title {
-    font-size: var(--text-lg);
-    margin-bottom: var(--space-sm);
-  }
-  
-  .step-content {
-    min-height: 240px;
-  }
-  
-  .step-panel[data-step="3"] {
-    min-height: 260px;
-  }
-  
-  .step-indicator {
-    width: 28px;
-    height: 28px;
-    font-size: 0.7rem;
-  }
-  
-  .form-row.two-cols {
-    grid-template-columns: 1fr;
-    gap: var(--space-sm);
-  }
-  
-  .form-control,
-  .form-select {
-    min-height: 40px;
-    padding: var(--space-xs) var(--space-sm);
-    font-size: 0.8rem;
-  }
-  
-  .btn-step {
-    height: 40px; /* Fixed height for mobile too */
-    font-size: 0.75rem;
-    padding: var(--space-xs) var(--space-md);
-  }
-  
-  .step-navigation {
-    min-height: 46px; /* Slightly larger for mobile */
-  }
-  
-  .form-label {
-    font-size: 0.7rem;
-    gap: 4px;
-  }
-  
-  .form-label::before {
-    width: 2px;
-    height: 10px;
-  }
-  
-  .step-title {
-    font-size: var(--text-base);
-  }
-  
-  .step-subtitle {
-    font-size: 0.75rem;
-  }
-  
-  #startDate {
-    min-height: 40px !important;
-  }
-}
-
-@media (max-width: 576px) {
-  .search-card {
-    min-height: 450px;
-  }
-  
-  .step-content {
-    min-height: 220px;
-  }
-  
-  .step-panel[data-step="3"] {
-    min-height: 240px;
-  }
-}
-
-@media (max-width: 400px) {
-  .search-card {
-    min-height: 420px;
-  }
-  
-  .step-content {
-    min-height: 200px;
-  }
-  
-  .step-panel[data-step="3"] {
-    min-height: 220px;
-  }
-}
-
-/* Landscape Mode Optimizations */
-@media (max-width: 768px) and (orientation: landscape) {
-  .search-card {
-    max-height: 380px;
-  }
-  
-  .step-content {
-    min-height: 160px;
-  }
-  
-  #startDate {
-    min-height: 40px !important;
-  }
-}
-
 /* Loading and Animation States */
 .step-panel.entering {
   animation: slideInRight 0.3s ease-out;
@@ -721,3 +588,416 @@
 .hidden-step-button {
     visibility: hidden;
 }
+
+/* Mobile Responsive Design for Trip Form */
+@media (min-width: 768px) and (max-width: 1200px) {
+  .search-card {
+    height: auto !important;
+  }
+  .step-navigation.step-1 .btn-step-next,
+  .step-navigation.step-2 .btn-step-next,
+  .step-navigation.step-2 .btn-step-prev {
+    position: relative;
+    top: 6.5px;
+  }
+
+  .btn-step-submit {
+    font-size: 0.6rem !important;
+  }
+  .btn-step-submit i {
+    font-size: 1em !important;
+    margin-right: 4px;
+  }
+  .btn-step-submit {
+    letter-spacing: 0.01em;
+  }
+  
+  /* League selection improvements for tablet */
+  .select2-selection__choice {
+    padding: 3px 6px !important;
+    margin: 2px !important;
+    font-size: 0.7rem !important;
+    border-radius: var(--radius-sm) !important;
+    background: linear-gradient(135deg, var(--primary-light), rgba(255,255,255,0.9)) !important;
+    border: 1px solid var(--primary-color) !important;
+    max-width: 85px !important;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .select2-selection__choice__remove {
+    background: rgba(220, 53, 69, 0.1) !important;
+    border-radius: 50% !important;
+    width: 14px !important;
+    height: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 3px 0 0 !important;
+    font-size: 9px !important;
+    color: #dc3545 !important;
+    border: 1px solid rgba(220, 53, 69, 0.2) !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .select2-selection__choice__remove:hover {
+    background: #dc3545 !important;
+    color: white !important;
+    transform: scale(1.05) !important;
+  }
+  
+  .select2-selection__choice__display .selected-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .select2-selection__choice .league-logo-small,
+  .select2-selection__choice .team-logo-small {
+    width: 12px !important;
+    height: 12px !important;
+    min-width: 12px !important;
+    object-fit: contain !important;
+    border-radius: 2px !important;
+  }
+  
+  .select2-selection__choice span:last-child {
+    font-size: 0.65rem !important;
+    font-weight: 600 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 55px;
+    color: var(--primary-dark) !important;
+  }
+  
+  /* Container for preferred leagues - ensure proper spacing */
+  .select2-selection--multiple .select2-selection__rendered {
+    max-height: 80px !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 3px !important;
+    padding: 6px 30px 6px 6px !important;
+    min-height: 40px !important;
+  }
+  
+  /* Team selection dropdowns - same as mobile */
+  .team-select-box .select2-selection--single {
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    border: 2px solid var(--gray-200) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--white) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+  }
+  
+  .team-select-box .select2-selection--single:focus,
+  .team-select-box .select2-selection--single:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(48, 104, 204, 0.15) !important;
+    transform: translateY(-1px) !important;
+  }
+  
+  .team-select-box .select2-selection--single.has-team {
+    border-color: var(--primary-color) !important;
+    background: linear-gradient(135deg, var(--primary-light), var(--white)) !important;
+  }
+  
+  .select2-selection--single .selected-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  
+  .select2-selection--single .team-logo-small,
+  .select2-selection--single .league-logo-small {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    border-radius: 3px !important;
+  }
+  
+  .select2-selection--single .selected-item span:last-child {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+    color: var(--gray-800) !important;
+  }
+  
+  /* Clear button for single selects */
+  .select2-selection__clear {
+    color: #dc3545 !important;
+  }
+  
+  /* Step 3 specific - same as mobile 768px */
+  .step-panel[data-step="3"] .step-title,
+  .step-panel[data-step="3"] .step-subtitle {
+    display: none !important;
+  }
+  
+  .step-panel[data-step="3"] .individual-team-selects {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-md) !important;
+    margin-top: var(--space-md) !important;
+  }
+}
+
+@media (max-width: 767.99px) {
+  #startDate {
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  
+}
+
+/* Landscape Mobile */
+@media (max-width: 767.99px) and (orientation: landscape) {
+  .search-card {
+    height: 420px; /* Shorter for landscape */
+  }
+  
+  .step-content {
+    min-height: 200px;
+    max-height: 240px;
+  }
+  
+  .hero {
+    padding: var(--space-xl) 0;
+  }
+}
+
+/* Mobile optimizations for Select2 items */
+@media (max-width: 767.99px) {
+
+    .btn-step-submit {
+    font-size: 0.8rem !important;
+    padding: var(--space-sm) var(--space-md) !important;
+  }
+  .search-card {
+    height: auto !important;
+  }
+  
+  .search-card .card-body {
+    padding: var(--space-sm) 0;
+  }
+  
+  .step-progress {
+    margin: var(--space-sm) 0 var(--space-lg) 0 !important;
+  }
+  
+  /* Hide step titles and subtitles only on step 3 */
+  .step-panel[data-step="3"] .step-title,
+  .step-panel[data-step="3"] .step-subtitle {
+    display: none !important;
+  }
+  
+  /* League selection items - more polished */
+  .select2-selection__choice {
+    padding: 4px 8px !important;
+    margin: 3px !important;
+    font-size: 0.75rem !important;
+    border-radius: var(--radius-md) !important;
+    background: linear-gradient(135deg, var(--primary-light), rgba(255,255,255,0.9)) !important;
+    border: 1px solid var(--primary-color) !important;
+    max-width: 100px !important;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .select2-selection__choice__remove {
+    background: rgba(220, 53, 69, 0.1) !important;
+    border-radius: 50% !important;
+    width: 16px !important;
+    height: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 4px 0 0 !important;
+    font-size: 10px !important;
+    color: #dc3545 !important;
+    border: 1px solid rgba(220, 53, 69, 0.2) !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .select2-selection__choice__remove:hover {
+    background: #dc3545 !important;
+    color: white !important;
+    transform: scale(1.1) !important;
+  }
+  
+  .select2-selection__choice__display .selected-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .select2-selection__choice .league-logo-small,
+  .select2-selection__choice .team-logo-small {
+    width: 14px !important;
+    height: 14px !important;
+    min-width: 14px !important;
+    object-fit: contain !important;
+    border-radius: 2px !important;
+  }
+  
+  .select2-selection__choice span:last-child {
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70px;
+    color: var(--primary-dark) !important;
+  }
+  
+  /* Team selection dropdowns - better spacing */
+  .individual-team-selects {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-md) !important;
+    margin-top: var(--space-md) !important;
+  }
+  
+  /* Single team selection - enhanced */
+  .team-select-box .select2-selection--single {
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    border: 2px solid var(--gray-200) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--white) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+  }
+  
+  .team-select-box .select2-selection--single:focus,
+  .team-select-box .select2-selection--single:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(48, 104, 204, 0.15) !important;
+    transform: translateY(-1px) !important;
+  }
+  
+  .team-select-box .select2-selection--single.has-team {
+    border-color: var(--primary-color) !important;
+    background: linear-gradient(135deg, var(--primary-light), var(--white)) !important;
+  }
+  
+  .select2-selection--single .selected-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  
+  .select2-selection--single .team-logo-small,
+  .select2-selection--single .league-logo-small {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    border-radius: 3px !important;
+  }
+  
+  .select2-selection--single .selected-item span:last-child {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+    color: var(--gray-800) !important;
+  }
+  
+  /* Clear button for single selects */
+  .select2-selection__clear {
+    color: #dc3545 !important;
+  }
+  
+  /* Container for preferred leagues */
+  .select2-selection--multiple .select2-selection__rendered {
+    max-height: 100px !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    padding: 8px !important;
+    min-height: 44px !important;
+  }
+  
+  /* Form improvements */
+  .form-row {
+    gap: var(--space-md) !important;
+    margin-bottom: var(--space-lg) !important;
+  }
+  
+  .multi-select-container {
+    margin-bottom: var(--space-md) !important;
+  }
+  
+  /* Button improvements */
+  .step-navigation {
+    margin-top: var(--space-xl) !important;
+    gap: var(--space-lg) !important;
+  }
+}
+
+/* Extra small mobile - even more compact */
+@media (max-width: 576px) {
+  .select2-selection__choice {
+    max-width: 80px !important;
+    padding: 1px 4px !important;
+  }
+  
+  .select2-selection__choice span:last-child {
+    max-width: 50px !important;
+    font-size: 0.6rem !important;
+  }
+  
+  .select2-selection--single .selected-item span:last-child {
+    max-width: 100px !important;
+    font-size: 0.65rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 990px) {
+  .search-card {
+    height: auto !important;
+    max-width: 120% !important; /* Reduced from 150% to fit better */
+    width: 120% !important;
+    margin-left: -15% !important; /* Shift left to compensate */
+    margin-right: auto !important;
+  }
+  
+  .search-card .card-body {
+    max-width: none !important;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+
+  /* Make headline text smaller to fit */
+  .display-4.fw-bold {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  
+  .lead {
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
+  }
+
+  label[for="maxTravelTime"].form-label {
+    font-size: 0.7rem !important;
+  }
+}}
