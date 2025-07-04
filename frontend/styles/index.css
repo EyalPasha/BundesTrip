@@ -219,7 +219,10 @@ body {
   border-radius: var(--radius-sm);
   transform: translateX(-50%);
 }
-
+#about h2,
+#about .text-center.mb-4 {
+  margin-bottom: 2.5rem !important;
+}
 /* Feature Cards */
 .feature-card {
   background: var(--white);
@@ -369,18 +372,6 @@ footer .list-unstyled a:hover {
 .filter-card-sticky {
   position: sticky;
   top: var(--space-xl);
-}
-
-/* Badge Styling */
-.badge {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: var(--white);
-  font-weight: 600;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 /* Form Range (Sliders) */

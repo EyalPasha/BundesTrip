@@ -2233,7 +2233,6 @@ font-weight: 500;
 
 .load-more-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px var(--button-radius) rgba(4, 61, 124, 0.2);
 }
 
 .load-more-btn:active {
@@ -2250,16 +2249,10 @@ font-weight: 500;
   color: var(--primary-color) !important;
 }
 
-.btn-outline-primary.load-more-btn .badge {
-  color: white !important;
-  background-color: var(--primary-color) !important;
-  border: 1px solid var(--primary-color) !important;
-}
-
 /* Hover states */
 .btn-outline-primary.load-more-btn:hover {
-  background-color: var(--primary-color) !important;
-  color: white !important;
+  background-color: white !important;
+  color: var(--primary-color) !important;
 }
 
 /* Clear All button hover effect */
@@ -2272,17 +2265,15 @@ font-weight: 500;
 .btn-outline-primary#clearDrawerFilters:hover i {
     color: white !important;
 }
-
-.btn-outline-primary.load-more-btn:hover i,
-.btn-outline-primary.load-more-btn:hover .badge {
-  color: white !important;
-  background-color: var(--primary-color) !important;
-  border-color: white !important;
+.btn-outline-primary.load-more-btn:hover i.fas.fa-chevron-down,
+.more-matches-button:hover i.fas.fa-chevron-down {
+  color: var(--primary-color) !important;
 }
+
 
 /* Add this to trip-cards.css */
 .load-more-btn .badge {
-  background-color: var(--primary-color) !important; /* Use main blue background */
+  background-color: var(--primary--color) !important; /* Use main blue background */
   color: white !important; /* White text for contrast */
   font-weight: 500;
   border-radius: 50px;
@@ -2290,19 +2281,6 @@ font-weight: 500;
   transition: all 0.3s ease;
 }
 
-/* Make the Load More button badge text white */
-.load-more-btn .badge {
-  color: white !important;
-}
-
-/* Hover effect changes background to white and text to blue */
-.load-more-btn:hover .badge {
-  background-color: white !important;
-  color: var(--primary-color) !important;
-  box-shadow: 0 2px 5px rgba(4, 61, 124, 0.3);
-  transform: translateY(-1px);
-  border: 1px solid var(--primary-color);
-}
 
 /* Styling for filter sliders */
 .form-range {
@@ -2917,11 +2895,13 @@ body.mustteams-dropdown-open .select2-dropdown {
 }
 
 #loadMoreTrips .badge {
-  padding: 0.5rem var(--icon-size);
-  font-size: 0.9rem;
+  top: 75% !important;
+  font-size: 1em;
   border-radius: 30px;
   margin-left: var(--icon-size);
   transition: all 0.3s ease;
+  font-weight: 600;
+  background-color: var(--primary-color) !important;
 }
 
 
