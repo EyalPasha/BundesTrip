@@ -949,6 +949,7 @@
     margin-top: var(--space-xl) !important;
     gap: var(--space-lg) !important;
   }
+  
 }
 /* Extra small mobile - even more compact */
 @media (max-width: 576px) {
@@ -1039,7 +1040,6 @@
 }
 
 .league-box:hover {
-    border-color: #043d7c;
     background: #f8fafc;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(4, 61, 124, 0.15);
