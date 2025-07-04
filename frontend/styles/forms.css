@@ -11,7 +11,7 @@
   overflow: hidden;
   position: relative;
   transition: all var(--duration-normal) ease;
-  height: 480px; /* Changed from fixed height to min-height */
+  height: 460px; /* Changed from fixed height to min-height */
 }
 
 .search-card::before {
@@ -950,7 +950,6 @@
     gap: var(--space-lg) !important;
   }
 }
-
 /* Extra small mobile - even more compact */
 @media (max-width: 576px) {
   .select2-selection__choice {
@@ -1002,6 +1001,17 @@
   }
 }}
 
+/* On the problematic breakpoint, force auto height */
+@media (min-width: 576px) and (max-width: 767.99px) {
+  .search-card,
+  .step-content,
+  .step-panel {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
 
 .visual-league-selector {
     display: grid;
@@ -1133,5 +1143,140 @@
   }
   .league-name {
     font-size: 0.5rem;
+  }
+}
+/* Always reserve space for the recommendation tip */
+.step-recommendation-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 60px; /* Adjust to match your tip's height */
+  height: 60px;     /* Or use min-height if you want it to grow */
+  display: block;
+}
+
+/* Absolutely position the tip inside the wrapper */
+.step-recommendation-wrapper .step-recommendation.recommendation-tip {
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  margin: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* For 566px to 766px: let the recommendation tip push content down (normal flow) */
+@media (min-width: 566px) and (max-width: 767.99px) {
+  .step-recommendation-wrapper {
+    min-height: 0;
+    height: auto;
+  }
+  .step-recommendation-wrapper .step-recommendation.recommendation-tip {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100%;
+    margin: 1.2rem auto 1rem auto !important;
+    pointer-events: auto;
+  }
+}
+/* Step Recommendation Tip Styling */
+.step-recommendation.recommendation-tip {
+    border: 1.5px solid #e0e7ef;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(4,61,124,0.06);
+    padding: 0.7rem 1.1rem;
+    margin: 0.5rem auto 0.5rem auto; /* Reduced margin */
+    color: #2d3a4a;
+    font-size: 1.02rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    transition: background 0.2s, box-shadow 0.2s;
+    position: absolute;
+    left: 50%;
+    top:70%; /* adjust as needed for vertical placement */
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 90%;
+    max-width: 500px;
+    margin: 0; /* override previous margin */
+    pointer-events: none; /* so it doesn't block form fields */
+}
+
+.step-recommendation.recommendation-tip i {
+    font-size: 1.3rem;
+    color: #fbbf24;
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 2px rgba(251,191,36,0.12));
+}
+
+.step-recommendation.recommendation-tip span {
+    display: inline-block;
+    vertical-align: middle;
+    color: #2d3a4a;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+@media (max-width: 767.99px) {
+    .step-recommendation.recommendation-tip {
+        padding: 0.7rem 0.7rem !important;
+        font-size: 0.95rem !important;
+        margin: 1.2rem auto 1rem auto;
+        border-radius: 10px !important;
+    }
+    .step-recommendation.recommendation-tip i {
+        font-size: 1rem !important;
+    }
+    .step-recommendation.recommendation-tip span {
+    display: inline-block;
+    vertical-align: middle;
+    color: #2d3a4a;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+}
+
+/* For 566px to 766px: let the recommendation tip push content down (normal flow) */
+@media (min-width: 566px) and (max-width: 767.99px) {
+  .step-panel[data-step="2"] .step-recommendation.recommendation-tip {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100%;
+    margin: 1.2rem auto 1rem auto !important;
+    pointer-events: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .step-recommendation-wrapper .step-recommendation.recommendation-tip,
+  .step-recommendation.recommendation-tip {
+    top: 85% !important;
+    font-size: 0.75rem !important;
+  }
+  .step-recommendation.recommendation-tip span {
+    font-size: 0.65rem !important;
+  }
+}
+
+@media (max-width: 767.99px) {
+  .invalid-feedback {
+    font-size: 0.7rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .invalid-feedback {
+    font-size: 0.6rem !important;
   }
 }

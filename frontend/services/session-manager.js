@@ -4,7 +4,7 @@ class SessionManager {
         this.storageKey = 'bundestrip_session';
         this.formStateKey = 'bundestrip_form_state';
         this.sessionTimeout = 30 * 60 * 1000; // 30 minutes
-        this.formStateTimeout = 24 * 60 * 60 * 1000; // 24 hours
+        this.formStateTimeout = 30 * 60 * 1000; // Changed from 24 hours to 30 minutes
     }
 
     // Save search results to session storage
@@ -113,7 +113,7 @@ class SessionManager {
         }
     }
 
-    // Get form state (longer persistence)
+    // Get form state (now with 30-minute expiration)
     getFormState() {
         try {
             const formState = localStorage.getItem(this.formStateKey);
@@ -121,9 +121,10 @@ class SessionManager {
 
             const parsed = JSON.parse(formState);
             
-            // Form state persists for 24 hours
+            // Form state now expires after 30 minutes (same as search session)
             if (Date.now() - parsed.timestamp > this.formStateTimeout) {
                 this.clearFormState();
+                console.log('🔄 Form state expired after 30 minutes - cleared');
                 return null;
             }
 

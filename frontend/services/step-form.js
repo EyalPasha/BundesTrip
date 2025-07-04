@@ -22,27 +22,40 @@ function setupStepNavigation() {
 
     nextBtn?.addEventListener('click', nextStep);
     prevBtn?.addEventListener('click', prevStep);
-    
-    // Add these event listeners to clear validation on field changes
-    document.getElementById('startLocation')?.addEventListener('change', function() {
-        this.classList.remove('is-invalid');
-        const errorMsg = this.parentNode.querySelector('.invalid-feedback');
-        if (errorMsg) errorMsg.remove();
-    });
-    
+
+    // Fix: Remove error when a city is selected (works for both native and Select2)
+    const startLocation = document.getElementById('startLocation');
+    if (startLocation) {
+        // For native select
+        startLocation.addEventListener('change', function() {
+            if (this.value) {
+                this.classList.remove('is-invalid');
+                const errorMsg = this.parentNode.querySelector('.invalid-feedback');
+                if (errorMsg) errorMsg.remove();
+            }
+        });
+        // For Select2 (if used)
+        $(startLocation).on('select2:select', function() {
+            if (this.value) {
+                this.classList.remove('is-invalid');
+                const errorMsg = this.parentNode.querySelector('.invalid-feedback');
+                if (errorMsg) errorMsg.remove();
+            }
+        });
+    }
+
     document.getElementById('startDate')?.addEventListener('change', function() {
         this.classList.remove('is-invalid');
         const errorMsg = this.parentNode.querySelector('.invalid-feedback');
         if (errorMsg) errorMsg.remove();
     });
-    
+
     document.getElementById('maxTravelTime')?.addEventListener('change', function() {
         this.classList.remove('is-invalid');
         const errorMsg = this.parentNode.querySelector('.invalid-feedback');
         if (errorMsg) errorMsg.remove();
     });
 }
-
 function nextStep() {
     if (currentStep < totalSteps && validateCurrentStep()) {
         currentStep++;
