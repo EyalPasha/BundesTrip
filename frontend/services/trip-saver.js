@@ -492,21 +492,21 @@ class TripSaver {
                             <button type="button" class="btn-modern btn-danger" id="unsaveTripBtn">
                                 <div class="btn-content">
                                     <i class="fas fa-trash-alt"></i>
-                                    <span>Remove Trip</span>
+                                    <span>Remove</span>
                                 </div>
                                 <div class="btn-glow"></div>
                             </button>
                             <button type="button" class="btn-modern btn-warning" id="toggleFavoriteBtn">
                                 <div class="btn-content">
                                     <i class="fas fa-star"></i>
-                                    <span>${savedTrip.is_favorite ? 'Remove from Favorites' : 'Add to Favorites'}</span>
+                                    <span>${savedTrip.is_favorite ? 'Unavorite' : 'Favorite'}</span>
                                 </div>
                                 <div class="btn-glow"></div>
                             </button>
                             <button type="button" class="btn-modern btn-save-primary" onclick="window.location.href='profile.html'">
                                 <div class="btn-content">
                                     <i class="fas fa-tachometer-alt"></i>
-                                    <span>View in Dashboard</span>
+                                    <span>Dashboard</span>
                                 </div>
                                 <div class="btn-glow"></div>
                             </button>
@@ -561,12 +561,12 @@ class TripSaver {
             if (result.success) {
                 // Update button text
                 const newFavoriteStatus = result.trip.is_favorite;
-                button.innerHTML = `<i class="fas fa-star me-1"></i>${newFavoriteStatus ? 'Remove from Favorites' : 'Add to Favorites'}`;
+                button.innerHTML = `<i class="fas fa-star me-1"></i>${newFavoriteStatus ? 'Unavorite' : 'Favorite'}`;
                 
                 // Close modal after short delay
                 setTimeout(() => {
                     modal.hide();
-                }, 1500);
+                }, 100);
             }
             
         } catch (error) {

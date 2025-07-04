@@ -654,3 +654,104 @@ footer .social-links a:hover .far {
     margin-bottom: 0 !important;
   }
 }
+
+@media (max-width: 767px) {
+  .drawer-filter-group {
+    padding: 0.7rem 0.5rem 0.5rem 0.5rem !important;
+    background: var(--white) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 2px 12px rgba(4,61,124,0.07) !important;
+    margin-bottom: 1rem !important;
+  }
+  .drawer-filter-label {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: var(--primary-color) !important;
+    margin-bottom: 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.4em !important;
+  }
+  #drawerTeamFilters {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    padding: 0.2rem 0 !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    min-height: 40px !important;
+  }
+  #drawerTeamFilters .badge.bg-light.text-dark.border {
+    background: var(--gray-100) !important;
+    border: none !important;
+    box-shadow: 0 1px 4px rgba(4,61,124,0.06) !important;
+    border-radius: 50% !important;
+    padding: 0.35em !important;
+    margin: 0 !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0 !important; /* Hide text */
+    position: relative !important;
+  }
+  #drawerTeamFilters .badge.bg-primary {
+    background: var(--primary-color) !important;
+    border-radius: 50% !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0 !important; /* Hide text */
+    padding: 0 !important;
+
+  }
+  #drawerTeamFilters .badge.bg-primary img.team-filter-logo {
+    width: 22px !important;
+    height: 22px !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 !important;
+  }
+  #drawerTeamFilters .badge.bg-light.text-dark.border.selected,
+  #drawerTeamFilters .badge.bg-light.text-dark.border.active {
+    box-shadow: 0 0 0 3px var(--secondary-color) !important;
+    background: var(--secondary-color) !important;
+  }
+  #drawerTeamFilters .badge.bg-light.text-dark.border img.team-filter-logo {
+    width: 22px !important;
+    height: 22px !important;
+    object-fit: contain !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+  #drawerTeamFilters .badge.bg-light.text-dark.border.selected img,
+  #drawerTeamFilters .badge.bg-light.text-dark.border.active img {
+    filter: brightness(0) invert(1) !important;
+  }
+  #drawerTeamFilters .badge.bg-secondary {
+    border-radius: 16px !important;
+    font-size: 0.92em !important;
+    padding: 0.25em 0.9em !important;
+    margin-left: 0.3rem !important;
+    margin-right: 0.3rem !important;
+    background: var(--gray-400) !important;
+    color: #fff !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.4em !important;
+    min-width: unset !important;
+    min-height: unset !important;
+    height: 32px !important;
+  }
+  #drawerTeamFilters .badge.bg-secondary i {
+    font-size: 1em !important;
+    margin-right: 0.25em !important;
+  }
+}

@@ -80,6 +80,62 @@
   padding: 0;
 }
 
+/* --- Game Card Row Layout --- */
+.game-card .game-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 56px;
+    padding: 0 0.5rem;
+}
+
+.match-time-box {
+    min-width: 64px;
+    max-width: 64px;
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    padding: 0.5rem 0.25rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.tbd-game .match-time-box {
+    color: var(--neutral-text) !important;
+    font-style: italic;
+    background: #f8fafc;
+}
+
+.match-teams {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    min-width: 0;
+    flex: 1 1 0%;
+}
+
+.match-location-box {
+    min-width: 110px;
+    max-width: 180px;
+    color: #475569;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-left: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -1035,6 +1091,43 @@ main .fa,
 
 /* Mobile Responsive Design - Clean & Professional */
 @media (max-width: 768px) {
+
+    .desktop-time-display,
+  .desktop-location-display {
+    display: none !important;
+  }
+  .mobile-chevron {
+    display: flex !important;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #64748b;
+    margin-left: 8px;
+    transition: transform 0.2s;
+  }
+  .game-row {
+    cursor: pointer;
+  }
+  .match-details-section {
+    display: none;
+    padding: 0.75rem 0.5rem 0.5rem 0.5rem;
+    background: white;
+    border-radius: 0 0 0.75rem 0.75rem;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 0.25rem;
+    font-size: 0.98em;
+    animation: fadeIn 0.2s;
+  }
+  .match-details-section.show {
+    display: block;
+  }
+  .match-time-detail, .match-location-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #334155;
+    font-weight: 500;
+  }
   .bg-light .container {
     display: flex;
     justify-content: center;
@@ -1192,13 +1285,47 @@ main .fa,
   
   /* Game Cards - Mobile optimized */
   .game-card {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     margin-bottom: var(--space-md);
     border-radius: var(--radius-lg);
+    /* Remove fixed height/min-height if present */
   }
-  
   .game-card .card-body {
     padding: var(--space-md);
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
+  .game-row {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .match-teams {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    gap: var(--space-xs);
+  }
+  .home-team, .away-team {
+    flex: 1 1 100%;
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
+  }
+.team-name {
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  font-size: 0.7rem !important;
+  font-weight: 600;
+  display: inline-block;
+  max-width: 100%;
+}
   
   /* Hide desktop elements on mobile */
   .desktop-time-display,
@@ -1206,13 +1333,6 @@ main .fa,
     display: none !important;
   }
   
-  /* Match teams - Stack vertically on very small screens */
-  .match-teams {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-sm);
-    min-height: 44px;
-  }
   
   .home-team,
   .away-team {
@@ -1220,19 +1340,33 @@ main .fa,
     min-width: 0;
   }
   
-  .team-name {
-    font-size: var(--text-sm);
-    font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
   .team-badge {
     width: 24px !important;
     height: 24px !important;
     max-width: 24px !important;
     max-height: 24px !important;
+  }
+
+    /* Reduce gap between team name and logo */
+  .home-team, .away-team {
+    gap: 4px !important; /* was 10px or more */
+  }
+  
+  /* Reduce gap between home, vs, and away */
+  .match-teams {
+    gap: 8px !important; /* was 24px or more */
+  }
+  
+  /* Reduce padding in vs-container */
+  .vs-container {
+    padding: 0 2px !important; /* was var(--space-xs) or more */
+  }
+  
+  /* Remove extra margin from team-badge images */
+  .team-badge {
+    margin: 0 !important;
+    padding: 0 !important;
+    vertical-align: middle;
   }
   
   .vs-container {
@@ -1263,26 +1397,23 @@ main .fa,
   
   .match-details-content {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0 !important;
   }
-  
+    .match-time-detail i,
+  .match-location-detail i {
+    margin-right: 3px !important; /* Reduce icon-to-text gap */
+    margin-bottom: 0 !important;  /* Remove any bottom margin */
+  }
   .match-time-detail,
   .match-location-detail {
-    display: flex;
+    margin-bottom: 0 !important;
+    gap: 3px !important; /* Reduce gap between icon and text */
     align-items: center;
-    gap: var(--space-sm);
-    font-size: var(--text-sm);
-    color: var(--gray-600);
   }
-  
-  .match-time-detail i,
-  .match-location-detail i {
-    width: 16px;
-    text-align: center;
-    color: var(--primary-color);
-  }
-  
   /* No Schedule message */
   #noSchedule {
     padding: var(--space-2xl) var(--space-lg);
@@ -1495,104 +1626,57 @@ main .fa,
   }
 }
 
-/* Extra Small Mobile (phones in portrait) */
+/* Extra small screens (phones ≤576px) */
 @media (max-width: 576px) {
-  .container {
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
-  }
-  
-  .bg-light h1 {
-    font-size: var(--text-2xl);
-  }
-  
-  #scheduleContent {
-    padding: var(--space-md);
-  }
-  
-  .team-header {
-    padding: var(--space-md);
-  }
-  
-  .team-header img {
-    width: 32px !important;
-    height: 32px !important;
-  }
-  
-  .team-header h2 {
-    font-size: var(--text-lg);
-  }
-  
   .game-card .card-body {
     padding: var(--space-sm);
   }
-  
+  .game-row {
+    padding: 0 var(--space-xs);
+    min-height: 44px;
+  }
   .team-badge {
     width: 20px !important;
     height: 20px !important;
     max-width: 20px !important;
     max-height: 20px !important;
   }
-  
   .team-name {
-    font-size: 0.8rem;
+    font-size: 0.65rem !important;
   }
-  
-  .vs {
-    font-size: 0.8rem;
+  .match-details-section {
+    font-size: 0.92em;
+    padding: 0.5rem 0.25rem 0.25rem 0.25rem;
   }
-  
   .match-details-content {
-    font-size: var(--text-xs);
+    gap: 0.25rem;
   }
-  
-  .filter-btn,
-  .calendar-btn {
-    width: 48px;
-    height: 48px;
-    bottom: var(--space-lg);
+}
+
+/* iPad/tablet screens (portrait/landscape: 768px–996px) */
+@media (min-width: 768px) and (max-width: 996px) {
+  .game-card .card-body {
+    padding: var(--space-md);
   }
-  
-  .filter-btn {
-    right: var(--space-lg);
+  .game-row {
+    min-height: 48px;
+    gap: 0.75rem;
   }
-  
-  .calendar-btn {
-    left: var(--space-lg);
+  .team-badge {
+    width: 22px !important;
+    height: 22px !important;
+    max-width: 22px !important;
+    max-height: 22px !important;
   }
-  
-  .filter-drawer {
-    width: 95%;
+  .team-name {
+    font-size: 0.8rem !important;
   }
-  
-  .loading-ball {
-    width: 48px;
-    height: 48px;
+  .match-details-section {
+    font-size: 1em;
+    padding: 0.75rem 0.5rem 0.5rem 0.5rem;
   }
-  
-  .loading-ball::before {
-    font-size: 36px;
-  }
-  
-  .loading-text {
-    font-size: var(--text-base);
-  }
-  
-  /* Even smaller badges and text */
-  .badge {
-    font-size: 0.6rem !important;
-    padding: 0.15rem 0.3rem !important;
-  }
-  
-  .month-section h2,
-  .month-section h3 {
-    font-size: var(--text-lg);
-  }
-  
-  .date-section h3,
-  .date-section h4,
-  .date-section h5 {
-    font-size: var(--text-base);
+  .match-details-content {
+    gap: 0.4rem;
   }
 }
 

@@ -1748,3 +1748,6 @@ body .btn-modern.btn-save,
   }
 }
 
+.fas.fa-sliders-h {
+  color: var(--primary-color) !important;
+}

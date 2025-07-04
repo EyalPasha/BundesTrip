@@ -578,6 +578,118 @@ body.select2-ready .flatpickr-calendar {
     opacity: 1 !important;
     visibility: visible !important;
   }
+
+  .calendar-view {
+    margin-top: 0.75rem;
+  }
+  
+  .calendar-month {
+    margin-bottom: 1rem;
+  }
+  
+  .calendar-grid {
+    gap: 0;
+  }
+  
+  .calendar-day {
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+  
+  .calendar-cell {
+    padding: 1px !important;
+  }
+  
+  .day-number {
+    font-size: var(--mobile-font-size-xs) !important;
+  }
+  
+  .calendar-day-header {
+    padding: 0.25rem !important;
+    font-size: var(--mobile-font-size-xs);
+  }
+  
+  .calendar-day.current-day .day-number {
+    width: 16px !important;
+    height: 16px !important;
+    font-size: var(--mobile-font-size-xs);
+  }
+  
+  .calendar-day .game-count .badge {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.25rem;
+  }
+  
+
+    /* Calendar container positioning */
+    .flatpickr-calendar.open {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s ease-out;
+      position: fixed !important;
+      z-index: 999999 !important;
+      max-width: 300px !important;
+      width: calc(100% - 20px) !important;
+      margin: 0 auto !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      top: 50% !important; /* Center vertically by default */
+      transform: translate(-50%, -50%) !important; /* Center both horizontally and vertically */
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3) !important;
+    }
+
+      /* Only show the calendar once positioned and with proper-position class */
+    .flatpickr-calendar.open.proper-position {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Fix layout for day grid - force 7-column layout */
+    .flatpickr-days {
+      width: 100% !important;
+      min-width: 280px !important;
+    }
+    
+    .dayContainer {
+      min-width: 280px !important;
+      max-width: 280px !important;
+      width: 280px !important;
+      display: grid !important; /* Force grid layout */
+      grid-template-columns: repeat(7, 1fr) !important; /* Force 7 columns */
+      justify-content: space-between !important;
+      gap: 1px !important;
+      overflow: visible !important;
+    }
+    
+    /* Fix day sizes */
+    .flatpickr-day {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: 36px !important;
+      line-height: 36px !important;
+      margin: 0 !important;
+      justify-self: center !important;
+    }
+    
+    /* Hide the arrows that might affect layout */
+    .flatpickr-calendar.arrowTop:before,
+    .flatpickr-calendar.arrowTop:after,
+    .flatpickr-calendar.arrowBottom:before,
+    .flatpickr-calendar.arrowBottom:after {
+      display: none !important;
+    }
+
+    /* Add this to ensure proper calendar state handling */
+  .flatpickr-calendar:not(.open) {
+    display: none !important;
+  }
+
+  /* Make closed calendars fully invisible immediately */
+  .flatpickr-calendar:not(.open),
+  .flatpickr-calendar:not(.proper-position) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
 }
 
 @media (max-width: 767.98px) {

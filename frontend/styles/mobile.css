@@ -22,7 +22,20 @@
     opacity: 0;
     transition: opacity 0.3s ease;
   }
-
+.match-details-section.show {
+  height: auto;
+  margin-top: 6px;
+  border-top: 1px solid rgba(4,61,124,0.07) !important; /* subtle blue line */
+  padding-top: 8px;
+  background-color: transparent !important;
+  border-radius: 4px;
+}
+.match-details-content {
+  margin-left: 15px !important;
+}
+  .match-details-section.show {
+    border-radius: 0 !important;
+  }
   /* Only show form sections when body gets mobile-ready class */
   body.mobile-ready .form-section {
     visibility: visible;
@@ -347,6 +360,7 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
   }
+
   
   .game-card:hover, 
   .game-card:active {
@@ -357,322 +371,251 @@
     display: block;
     padding: 0.75rem 0.5rem !important;
   }
+
   
-  /* Match teams container with expand indicator */
-  .match-teams-container {
-    position: relative;
-    width: 100%;
-    padding-right: 20px; /* Space for chevron */
-  }
-  
-  .match-teams-container::after {
-    content: '\f078'; /* fa-chevron-down */
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.7rem;
-    color: #777;
-    transition: transform 0.2s ease;
-  }
-  
-  .details-expanded .match-teams-container::after {
-    transform: translateY(-50%) rotate(180deg);
-  }
-  
-  /* Match teams layout */
+  /* Match teams layout */  
   .match-teams {
-    display: grid;
-    grid-template-columns: minmax(0, 1.3fr) 30px minmax(0, 1.3fr) !important;
-    gap: 2px;
-    align-items: center;
-    width: 100%;
-    margin-top: 0.5rem;
-  }
-  
-  /* Home and away team styling */
-  .home-team, .away-team {
-    gap: 4px;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .home-team {
-    justify-content: flex-end;
-    padding-right: 0;
-    text-align: right;
-  }
-  
-  .away-team {
-    justify-content: flex-start;
-    padding-left: 0;
-    text-align: left;
-  }
-  
-  /* Team name styling */
-  .team-name {
-    font-size: var(--mobile-font-size-sm) !important;
+    display: grid !important;
+    grid-template-columns: 1fr 22px 32px 22px 1fr !important; /* name, logo, vs, logo, name */
+    align-items: center !important;
+    justify-items: center !important;
+    width: 100% !important;
+    gap: 0 !important;
+    font-size: 0.6rem !important;
     line-height: 1.2 !important;
-    font-weight: 500 !important;
-    white-space: normal !important;
-    width: 100%;
-    overflow: visible !important;
-    display: inline !important;
-    word-break: keep-all !important;
-    overflow-wrap: break-word !important;
-    -webkit-hyphens: none !important;
-    hyphens: none !important;
+    text-align: center !important;
+    margin-bottom: -px !important;
   }
   
-  /* Team badge styling */
-  .team-badge {
-    width: 18px !important;
-    height: 18px !important;
-    flex-shrink: 0;
-    object-fit: contain;
+  .match-teams .team-logo {
+    width: 20px !important;
+    height: 20px !important;
+    object-fit: contain !important;
+    grid-row: 1 !important;
   }
   
-  /* VS container styling */
-  .vs-container {
-    width: 30px !important;
-    min-width: 30px !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    gap: 2px;
-    padding: 0 !important;
-  }
-  
-  .vs {
-    font-size: var(--mobile-font-size-xs) !important;
-    opacity: 0.7;
-    position: static !important;
-    transform: none !important;
-    margin-bottom: -1px;
-  }
-  
-  /* Time display beneath VS */
-  .match-time {
-    font-size: var(--mobile-font-size-xs) !important;
+  .match-teams .vs-text {
+    grid-column: 3 !important;
+    grid-row: 1 / span 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.7rem !important;
     font-weight: 600 !important;
-    position: static !important;
-    display: block;
-    width: 100%;
-    text-align: center;
-    color: #555 !important;
+    color: #234b7a !important;
+    min-width: 32px !important;
+    min-height: 20px !important;
+    height: 100% !important;
+    z-index: 1 !important;
   }
+  
+  .match-teams strong,
+  .match-teams span:not(.vs-text),
+  .match-teams > :not(img):not(.vs-text) {
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    text-align: center !important;
+    max-width: 100% !important;
+    display: block !important;
+    font-size: 0.6rem !important;
+    line-height: 1.15 !important;
+  }
+  
+  .match-teams > :first-child {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    justify-self: end !important;
+    text-align: right !important;
+    padding-right: 2px !important;
+  }
+  
+  .match-teams img.team-logo:first-of-type {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+  }
+  
+  .match-teams img.team-logo:last-of-type {
+    grid-column: 4 !important;
+    grid-row: 1 !important;
+  }
+  
+  .match-teams > :last-child {
+    grid-column: 5 !important;
+    grid-row: 1 !important;
+    justify-self: start !important;
+    text-align: left !important;
+    padding-left: 2px !important;
+  }
+  
+  /* If team name is too long, allow it to wrap to next line */
+  .match-teams > :first-child,
+  .match-teams > :last-child {
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    max-width: 90px !important;
+  }
+  
+  /* Responsive: stack names if too long */
+  @media (max-width: 400px) {
+    .match-teams > :first-child,
+    .match-teams > :last-child {
+      max-width: 60px !important;
+      font-size: 0.55rem !important;
+    }
+  }
+  
   
   /* Details section - collapsed by default */
-  .match-details-section {
-    height: 0;
-    overflow: hidden;
-    transition: height 0.3s ease;
-    margin-top: 0;
-    width: 100%;
-  }
-  
-  /* Show details when expanded */
-  .match-details-section.show {
-    height: auto;
-    margin-top: 6px;
-    border-top: 1px solid rgba(0,0,0,0.05);
-    padding-top: 8px;
-    background-color: rgba(0,0,0,0.015);
-    border-radius: 4px;
-  }
+.match-details-section {
+  height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  width: 100%;
+}
 
-  /* Match location detail alignment */
-  .match-location-detail {
-    justify-content: flex-start;
-    text-align: left;
-  }
+.match-details-content {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important; /* Center content horizontally */
+  gap: 10px !important;
+  font-size: 0.65rem !important;
+  padding: 4px 8px !important;
+  background-color: white !important;
+}
 
-  .match-details-first-row {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 16px; /* Increase spacing between date and time */
-    border-bottom: 1px solid rgba(0,0,0,0.08); /* Single more visible separator */
-    padding-bottom: 8px;
-    margin-bottom: 2px;
-  }
+.match-details-content > * {
+  display: flex !important;
+  align-items: center !important;
+  gap: 2px !important; /* Set icon-text gap to 2px */
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
 
-  .match-date-detail,
-  .match-time-detail {
-    border: none !important;
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-    flex-shrink: 0;
-  }
-  
-  /* Layout for expanded details */
-  .match-details-content {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: var(--mobile-font-size-xs);
-    color: #555;
-    padding: 4px 8px;
-  }
-  
-  /* Individual detail items */
-  .match-time-detail,
-  .match-location-detail,
-  .match-date-detail {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 0;
-    justify-content: flex-start;
-    text-align: left;
-  }
+.match-details-first-row,
+.match-date-detail,
+.match-time-detail,
+.match-location-detail {
+  display: contents !important;
+}
 
-  /* Date spans the full width */
-  .match-date-detail {
-    grid-column: 1 / span 2;
-    border-bottom: 1px dashed rgba(0,0,0,0.06);
-    padding-bottom: 6px;
-    margin-bottom: 4px;
-  }
-  
-  /* Icons in details */
-  .match-time-detail i,
-  .match-location-detail i,
-  .match-date-detail i {
-    font-size: var(--mobile-font-size-xs);
-    width: 14px;
-    text-align: center;
-    flex-shrink: 0;
-    color: var(--secondary-color);
-  }
-  
-  .match-location-detail i {
-    color: var(--accent-color);
-  }
-  
-  /* Hide desktop elements on mobile */
-  .desktop-time-display,
-  .desktop-location-display,
-  .match-location {
-    display: none !important;
-  }
+.match-details-content i {
+  font-size: 0.65rem !important;
+  width: 14px !important;
+  text-align: center;
+  color: var(--secondary-color);
+  margin-right: 0 !important;
+  position: relative;
+  top: -1px; /* Move icon up by 1px */
+}
+
+.match-location-detail i {
+  color: var(--accent-color) !important;
+  margin-right: 0 !important;
+  position: relative;
+  top: -1px; /* Move icon up by 1px */
+}
+/* Show details when expanded */
+.match-details-section.show {
+  height: auto;
+  margin-top: 6px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding-top: 8px;
+  background-color: rgba(0,0,0,0.015);
+  border-radius: 4px;
+}
+
+/* Match location detail alignment */
+.match-location-detail {
+  justify-content: center !important; /* Center alignment */
+  text-align: center !important;
+}
+
+.match-details-first-row {
+  display: flex;
+  align-items: center;
+  justify-content: center !important; /* Center alignment */
+  gap: 36px !important;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  padding-bottom: 8px;
+  margin-bottom: 2px;
+}
+
+.match-date-detail,
+.match-time-detail {
+  border: none !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  flex-shrink: 0;
+  justify-content: center !important; /* Center alignment */
+  text-align: center !important;
+}
+
+/* Layout for expanded details */
+.match-details-content {
+  display: flex !important;
+  flex-direction: row !important; /* Keep items in a single line */
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-size: var(--mobile-font-size-xs);
+  padding: 4px 8px;
+}
+
+/* Individual detail items */
+.match-time-detail,
+.match-location-detail,
+.match-date-detail {
+  display: flex !important;
+  align-items: center !important;
+  gap: 2px !important; /* Set icon-text gap to 2px */
+  padding: 2px 0 !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* Date spans the full width */
+.match-date-detail {
+  grid-column: 1 / span 2;
+  border-bottom: 1px dashed rgba(0,0,0,0.06);
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* Icons in details */
+.match-time-detail i,
+.match-location-detail i,
+.match-date-detail i {
+  font-size: var(--mobile-font-size-xs);
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+  color: var(--secondary-color);
+  position: relative;
+  top: -1px; /* Move icon up by 1px */
+}
+
+.match-location-detail i {
+  color: var(--accent-color);
+  position: relative;
+  top: -1px; /* Move icon up by 1px */
+}
+
+/* Hide desktop elements on mobile */
+.desktop-time-display,
+.desktop-location-display,
+.match-location {
+  display: none !important;
+}
+
   
   /* ===== 8. CALENDAR VIEW OPTIMIZATIONS ===== */
-  .calendar-view {
-    margin-top: 0.75rem;
-  }
   
-  .calendar-month {
-    margin-bottom: 1rem;
-  }
-  
-  .calendar-grid {
-    gap: 0;
-  }
-  
-  .calendar-day {
-    height: 36px !important;
-    min-height: 36px !important;
-  }
-  
-  .calendar-cell {
-    padding: 1px !important;
-  }
-  
-  .day-number {
-    font-size: var(--mobile-font-size-xs) !important;
-  }
-  
-  .calendar-day-header {
-    padding: 0.25rem !important;
-    font-size: var(--mobile-font-size-xs);
-  }
-  
-  .calendar-day.current-day .day-number {
-    width: 16px !important;
-    height: 16px !important;
-    font-size: var(--mobile-font-size-xs);
-  }
-  
-  .calendar-day .game-count .badge {
-    font-size: 0.6rem;
-    padding: 0.1rem 0.25rem;
-  }
-  
-
-    /* Calendar container positioning */
-    .flatpickr-calendar.open {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.15s ease-out;
-      position: fixed !important;
-      z-index: 999999 !important;
-      max-width: 300px !important;
-      width: calc(100% - 20px) !important;
-      margin: 0 auto !important;
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-      top: 50% !important; /* Center vertically by default */
-      transform: translate(-50%, -50%) !important; /* Center both horizontally and vertically */
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3) !important;
-    }
-
-      /* Only show the calendar once positioned and with proper-position class */
-    .flatpickr-calendar.open.proper-position {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    /* Fix layout for day grid - force 7-column layout */
-    .flatpickr-days {
-      width: 100% !important;
-      min-width: 280px !important;
-    }
-    
-    .dayContainer {
-      min-width: 280px !important;
-      max-width: 280px !important;
-      width: 280px !important;
-      display: grid !important; /* Force grid layout */
-      grid-template-columns: repeat(7, 1fr) !important; /* Force 7 columns */
-      justify-content: space-between !important;
-      gap: 1px !important;
-      overflow: visible !important;
-    }
-    
-    /* Fix day sizes */
-    .flatpickr-day {
-      width: 100% !important;
-      max-width: 100% !important;
-      height: 36px !important;
-      line-height: 36px !important;
-      margin: 0 !important;
-      justify-self: center !important;
-    }
-    
-    /* Hide the arrows that might affect layout */
-    .flatpickr-calendar.arrowTop:before,
-    .flatpickr-calendar.arrowTop:after,
-    .flatpickr-calendar.arrowBottom:before,
-    .flatpickr-calendar.arrowBottom:after {
-      display: none !important;
-    }
-
-    /* Add this to ensure proper calendar state handling */
-  .flatpickr-calendar:not(.open) {
-    display: none !important;
-  }
-
-  /* Make closed calendars fully invisible immediately */
-  .flatpickr-calendar:not(.open),
-  .flatpickr-calendar:not(.proper-position) {
-    opacity: 0 !important;
-    visibility: hidden !important;
-  }
   /* ===== 9. TRIP CARDS STYLING ===== */
   /* Trip card container */
   .trip-card {
@@ -1275,18 +1218,9 @@
     gap: 0.35rem;
   }
   
-  .match-teams {
-    font-size: 0.6rem !important;
-    line-height: 1.2;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-  
   .match-teams img {
-    width: 16px !important;
-    height: 16px !important;
+    width: 20px !important;
+    height: 20px !important;
     margin: none !important;
   }
   
@@ -1313,7 +1247,7 @@
     display: flex;
     align-items: center;
     line-height: 1.2;
-    margin: 0 !important;
+    margin: 4px !important;
     padding: 0 !important;
     border: none !important;
   }
@@ -1350,40 +1284,37 @@
     line-height: 1;
     border-radius: 4px;
   }
+
   
-  /* Match time */
-  .match-time-inline {
-    font-size: 0.65rem !important;
-    display: flex;
-    align-items: center;
-    width: auto;
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-    border-left: none !important;
-    margin-top: 0.2rem;
-  }
-  
-  .match-time-inline i {
-    margin-right: 0.2rem !important;
-    font-size: 0.65rem !important;
-    opacity: 0.8;
-    color: var(--secondary-color);
-  }
-  
-  .match-location-container {
+.match-location-container {
     display: flex !important;
-    align-items: center !important;
+    align-items: center !important; /* Center vertically */
     flex-wrap: nowrap !important;
     width: 100% !important;
-    padding: 3px 0 !important;
     margin: 0 !important;
-    margin-top: 6px !important;
-    gap: 0 !important; /* Remove any default gap */
-  }
+    margin-top: 2px !important;
+    gap: 0 !important;
+}
 
+.match-location-container i,
+.match-location-container{
+    vertical-align: middle;
+    align-self: center;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    line-height: 1 !important;
+}
+
+.match-location-container > span,
+.match-location-container {
+    display: flex;
+    align-items: center;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+}
   /* Pin icon with exactly 4px spacing to location */
   .match-location-container i.fa-map-marker-alt {
-    margin-right: 4px !important;
+    margin-right: 0.5px !important;
     font-size: 0.65rem !important;
     color: var(--accent-color);
     flex-shrink: 0;
@@ -1392,46 +1323,43 @@
   }
   /* Location text - make sure it has proper margin */
   .match-location-container > span:first-of-type {
-    margin-right: 4px !important; /* Exactly 4px spacing to clock icon */
+    margin-right: 0.5px !important; /* Exactly 4px spacing to clock icon */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.65rem !important;
-    line-height: 1.2;
+    line-height: 1.5 !important; ;
+  }
+    
+  .match-location-container .match-time-data i.fa-clock {
+      font-size: 0.6rem !important;
+      color: var(--accent-color); /* same as location icon */
+      width: 14px !important;
+      text-align: center;
+      margin-right: 0.5px !important; /* match location icon spacing */
+      flex-shrink: 0;
+            position: relative;
+      top: 0.5px; /* Move the clock icon 2px down */
   }
   
-  /* Exact 2px spacing between location and time */
-  .match-location-container span {
-    margin-right: 2px !important;
+  .match-location-container .match-time-data {
+      font-size: 0.65rem !important;
+      line-height: 1.5 !important;
+      color: inherit; /* inherit color from parent */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      top: 0.5px; /* Move the clock icon 2px down */
+  }
+  .match-location-container > span:first-of-type {
+    margin-right: 8px !important; /* Increased space between location text and time icon */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  /* Time section with clock icon and 1px spacing */
-  .match-time-data {
-    margin-top: 1.1px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    white-space: nowrap;
     font-size: 0.65rem !important;
-    line-height: 1.2;
-  }
-  
-  /* Make clock icon spacing consistent */
-  .match-time-data i {
-    margin-right: 4px !important;
-    font-size: 0.65rem !important;
-    color: var(--secondary-color);
-    flex-shrink: 0;
-    width: 14px !important;
-    text-align: center;
-  }
-  
-  .match-meta {
-    margin-top: 0.25rem !important;
-  }
-
+    line-height: 1.5 !important;
+}
   /* All spans in location container should have consistent styling */
   .match-location-container span {
     font-size: 0.65rem !important;
@@ -1524,24 +1452,33 @@
     width: 100%;
   }
   
-  /* Fix airplane route display */
-  .travel-item-route {
-    font-size: 0.65rem !important;
-    gap: 0.2rem;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    line-height: 1.2;
-  }
-  
-  .travel-item-route i {
-    font-size: 0.65rem !important;
-    opacity: 0.8;
-    flex-shrink: 0;
-  }
-  
+/* Fix airplane route display */
+.travel-item-route {
+  font-size: 0.65rem !important;
+  gap: 0.2rem;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0rem !important;
+}
+
+.travel-item-route > div {
+  position: relative;
+  top: 1px;
+}
+
+.travel-item-route i {
+  color: var(--primary-color) !important;
+  font-size: 0.65rem !important;
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+  .day-date-inline {
+  font-size: 0.8em;
+}
   /* Ensure text doesn't overflow */
   .travel-context {
+    font-size: 0.65rem !important;
     max-width: calc(100% - 25px);
     white-space: nowrap;
     overflow: hidden;
@@ -1550,7 +1487,6 @@
   
   .travel-time {
     font-size: 0.65rem;
-    padding: 0.1rem 0.35rem;
   }
   
   /* ===== 16. HOTEL INFO ===== */
@@ -1617,11 +1553,102 @@
   
   .rest-day-message {
     font-size: 0.65rem !important;
-    padding-left: 1.1rem;
+    padding-left: 0rem !important;
     line-height: 1.3;
   }
+.rest-day::before,
+.rest-day::after {
+  display: none !important;
+}
 
-  
+/* Make hotel stay dates font smaller */
+.hotel-stay-dates {
+  font-size: 0.55rem; /* Adjust as needed (e.g., 0.8rem, 0.7rem, etc.) */
+}
+
+.trip-time-info {
+  font-size: 0.9rem; /* Adjust as needed (e.g., 0.8rem, 0.7rem, etc.) */
+}
+
+.trip-meta-info {
+  font-size: 0.7rem !important;
+}
+
+.trip-meta-info span {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.trip-meta-info span i {
+  position: relative;
+  top: 0;
+  margin-right: 2px;
+  /* Reset icon position */
+}
+.trip-time-info i {
+  position: relative;
+  top: -0.7px;
+  margin-right: -5px !important; /* Reset icon position */
+}
+
+  .nav-link:focus,
+  .nav-link:active,
+  .nav-link:focus-visible,
+  .nav-link.show,
+  button.nav-link:focus,
+  button.nav-link:active,
+  button.nav-link:focus-visible {
+    background-color: transparent !important;
+    color: var(--primary-color) !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .nav-link.active,
+  button.nav-link.active {
+    background-color: var(--primary-color, #e3f0ff) !important;
+    color: #fff !important;
+  }
+  /* Remove iOS tap highlight */
+  .nav-link, button.nav-link {
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+h5.mb-3.d-flex.align-items-center {
+  padding: 0.7rem 0.5rem 0.7rem 0 !important;
+  padding-left: 5px !important; /* 15px (timeline left) + 2.5px (timeline width) + 20px (icon size + gap) */
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: var(--primary-color) !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: -2rem !important;
+  letter-spacing: 0.01em !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+h5.mb-3.d-flex.align-items-center i {
+  font-size: 1.2em !important;
+  left: 15px !important; /* Align with .timeline::before */
+  color: var(--primary-color) !important;
+  margin-right: 0.7rem !important;
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 0.35em;
+  box-shadow: 0 1px 4px rgba(37,99,235,0.08);
+  min-width: 2em;
+  min-height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
   /* ===== 18. LOADING & ERROR STATES ===== */
   .alert {
     padding: 0.65rem;
@@ -1749,24 +1776,6 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* TBD */
-  .tbd-match-teams-grid {
-    grid-template-columns: minmax(0, 1fr) 18px 30px 18px minmax(0, 1fr);
-  }
-  
-  .tbd-location {
-    grid-column: 3;
-    grid-row: 2;
-    margin-top: 8px;
-    justify-self: center;
-    margin-left: 0;
-  }
-  
-  .tbd-must-see-badge {
-    grid-column: 1 / span 5;
-    grid-row: 3;
-  }
-
   .match-info-right {
     gap: 0.5rem;
   }
@@ -1782,7 +1791,12 @@
     gap: 0.75rem;
   }
     /* ===== TRIP COMPLETE STYLING - CENTERED WITH ICON ABOVE ===== */
-  
+    .trip-actions-header {
+    margin-top: 0rem !important;
+    margin-bottom: 0rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
   /* Container for trip complete message - centered */
   .timeline-end {
     position: relative;
@@ -1816,7 +1830,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     margin-bottom: 10px;
     z-index: 5;
-    margin-left: 25px;
+    margin-left: 33px;
   }
   
   .timeline-end-marker i {
@@ -1824,11 +1838,166 @@
     font-size: 0.8rem;
   }
   
+  .btn-modern.btn-save {
+  background: #fff !important;
+  border: 1.5px solid var(--primary-color, #2563eb) !important;
+  color: var(--primary-color, #2563eb) !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  padding: 0.55rem 1.1rem !important;
+  font-size: 0.98rem !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  transition: border-color 0.15s, color 0.15s, background 0.15s !important;
+  margin: 0 auto 0.7rem auto !important;
+  min-width: 140px !important;
+}
+
+.btn-modern.btn-save .btn-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  font-size: 0.98rem !important;
+  color: var(--primary-color, #2563eb) !important;
+}
+
+.btn-modern.btn-save i {
+  font-size: 1.1em !important;
+  color: var(--primary-color, #2563eb) !important;
+  opacity: 0.85 !important;
+}
+
+.btn-modern.btn-save .btn-glow {
+  display: none !important;
+}
+
+.btn-modern.btn-save {
+  background: #fff !important;
+  border: 1.2px solid var(--primary-color, #2563eb) !important;
+  color: var(--primary-color, #2563eb) !important;
+  box-shadow: none !important;
+  border-radius: 7px !important;
+  padding: 0.28rem 0.7rem !important;
+  font-size: 0.78rem !important;
+  font-weight: 400 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.35rem !important;
+  margin: 0 auto 0.5rem auto !important;
+  min-width: 90px !important;
+  height: 32px !important;
+}
+
+.btn-modern.btn-save .btn-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  font-size: 0.78rem !important;
+  color: var(--primary-color, #2563eb) !important;
+}
+
+.btn-modern.btn-save i {
+  font-size: 0.95em !important;
+  color: var(--primary-color, #2563eb) !important;
+  opacity: 0.8 !important;
+}
+
+.btn-modern.btn-save .btn-glow {
+  display: none !important;
+}
+
+.btn-close-modern {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+}
+
+.btn-close-modern i {
+  font-size: 1.1rem !important;
+  color: white !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.modal-footer.modern-footer .btn-modern {
+  min-width: 80px !important;
+  height: 30px !important;
+  padding: 0.18rem 0.55rem !important;
+  font-size: 0.72rem !important;
+  border-radius: 6px !important;
+  font-weight: 400 !important;
+  gap: 0.28rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.modal-footer.modern-footer .btn-modern .btn-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.28rem !important;
+  font-size: 0.72rem !important;
+}
+
+.modal-footer.modern-footer .btn-modern i {
+  font-size: 0.92em !important;
+  opacity: 0.8 !important;
+  margin-right: 0.1em !important;
+}
+
+.modal-footer.modern-footer .btn-glow {
+  display: none !important;
+}
+
+.modal-footer.modern-footer {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  flex-wrap: nowrap !important;
+}
+
+.modal-footer.modern-footer .btn-modern,
+.modal-footer.modern-footer .btn-modern .btn-content {
+  font-size: 0.7rem !important;
+  padding-left: 0.3rem !important;
+  padding-right: 0.3rem !important;
+}
+
+.modal-footer.modern-footer .btn-modern span {
+  font-size: 0.7rem !important;
+  line-height: 1.1 !important;
+  white-space: normal !important;
+}
+
+.trip-actions-header .btn-favorite,
+.trip-actions-header .btn-delete {
+  margin-top: 1rem !important;
+    margin-bottom: 0.5rem !important;
+
+}
   /* Text content styling */
   .timeline-end-text {
-    width: 100%;
+    width: 96% !important;
+    max-width: 420px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     background: white;
-    border-radius: 10px;
+    border-radius: px;
     padding: 0.9rem;
     border: 1px solid rgba(4, 61, 124, 0.1);
     box-shadow: 0 2px 10px rgba(4, 61, 124, 0.08);
@@ -1839,7 +2008,7 @@
   }
   
   .timeline-end-text h5 {
-    font-size: 0.9rem !important;
+    font-size: 0.7rem !important;
     margin-bottom: 0.5rem !important;
     color: var(--primary-color);
   }
@@ -1859,6 +2028,16 @@
     justify-content: center;
     gap: 0.3rem;
   }
+.timeline-end-text .mt-3 {
+  margin-top: 0.7rem !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  justify-content: center !important;
+  gap: 0.3rem !important;
+  align-items: center !important;
+  flex-direction: row !important;
+}
+
 
   /* Add spacing above load more trips button */
   #loadMoreTripsBtn,
@@ -1879,8 +2058,8 @@
   
   /* Compact badges */
   .timeline-end-text .badge {
-    font-size: 0.65rem;
-    padding: 0.1rem 0.4rem;
+    font-size: 0.55rem;
+    padding: 0.12rem 0.42rem;
     font-weight: normal;
     background-color: rgba(4, 61, 124, 0.08) !important;
     color: var(--primary-color) !important;

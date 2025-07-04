@@ -111,28 +111,8 @@
   z-index: 1;
 }
 
-/* Fix TBD Games section to not show separators */
-#tbdGamesSection.trip-card::after,
-body #results #tbdGamesSection.trip-card::before {
-  display: none;
-}
-
 #results, #resultsContainer, .row, .col-lg-8 {
   overflow: visible !important;
-}
-
-#tbdGamesSection .match-info-compact {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 12px;
-  margin-top: -2px;
-  font-size: 0.75rem;
-  color: #666;
-  width: 100%;
-}
-
-body #results #tbdGamesSection.trip-card {
-  margin-bottom: 2rem;
 }
 
 /* Add decorative separator between cards */
@@ -689,7 +669,6 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
 
 .match-location-side i,
 .match-location-inline i,
-.tbd-location i,
 i.fa-map-marker-alt {
   color: var(--accent-color);
 }
@@ -2064,28 +2043,6 @@ font-weight: 500;
     background: #555;
 }
 
-/* Enhanced TBD Games styling */
-
-.accordion-button:not(.collapsed) {
-    background-color: #f8f9fa;
-    color: var(--primary-color);
-}
-
-.accordion-button:focus {
-    box-shadow: none;
-    border-color: rgba(0,0,0,.125);
-}
-
-.accordion-button::after {
-    background-size: var(--icon-size);
-}
-
-/* List group enhancements for TBD games */
-.list-group-item-warning {
-    background-color: rgba(255, 193, 7, 0.1);
-    border-left: 3px solid var(--warning-color, #ffc107);
-}
-
 /* Calendar date with matches styling */
 .flatpickr-day.has-matches {
     background-color: rgba(var(--bs-primary-rgb), 0.1);
@@ -2142,31 +2099,6 @@ font-weight: 500;
 /* Make all text in active tabs white, including the travel time */
 .travel-options-section .nav-link.active .text-muted {
     color: rgba(255, 255, 255, 0.85) !important;
-}
-
-/* Enhanced TBD Games styling - make styling consistent */
-.tbd-game-card {
-    padding: 0.85rem var(--icon-size);
-    border-radius: var(--card-radius);
-    background: white;
-    margin-bottom: var(--item-spacing);
-    border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
-}
-
-.tbd-game-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 3px var(--button-radius) rgba(4, 61, 124, 0.08);
-}
-
-.tbd-game-team {
-    font-weight: 500;
-    color: var(--neutral-text);
-}
-
-/* Ensure consistent animation for TBD games */
-.list-group-item.list-group-item-warning {
-    animation: fadeIn 0.3s ease-out forwards;
 }
 
 /* Day station badges */
@@ -2529,7 +2461,26 @@ font-weight: 500;
     transform: translateY(-1px);
 }
 
-/* Add these rules at the end of your select2.css file */
+.badge.bg-primary {
+  background: linear-gradient(135deg, #043d7c 0%, #3068cc 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 1px 2px rgba(4, 61, 124, 0.10) !important;
+  padding: 0.2rem 0.5rem 0.2rem 0.5rem !important;
+  margin: 2px 10px 2px 0 !important;
+  font-size: 0.85rem !important;
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 24px !important;
+  max-width: calc(50% - 20px) !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
 
 /* Force proper z-index for team dropdown */
 body.mustteams-dropdown-open .select2-container--open {
@@ -2570,107 +2521,6 @@ body.mustteams-dropdown-open .select2-dropdown {
 .select2-dropdown {
     z-index: 10000 !important;
 }
-
-.tbd-location i {
-  color: var(--accent-color);
-  font-size: var(--icon-size-small);
-}
-
-/* Must-see badge positioning */
-.tbd-must-see-badge {
-  grid-column: 1 / span 6;
-  grid-row: 2;
-}
-
-/* Home team name */
-.tbd-home-team {
-  grid-column: 1;
-  text-align: right;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 500;
-  white-space: nowrap;
-  height: 20px; /* Fixed height */
-  line-height: 20px; /* Match height for vertical centering */
-}
-
-/* Away team name */
-.tbd-away-team {
-  grid-column: 5;
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 500;
-  white-space: nowrap;
-  height: 20px; /* Fixed height */
-  line-height: 20px; /* Match height for vertical centering */
-}
-
-/* VS container styles */
-.tbd-vs-container {
-  grid-column: 3;
-  text-align: center;
-  font-size: var(--item-spacing);
-  color: #777;
-  width: 40px;
-  min-width: 40px;
-  height: 20px;
-  line-height: 20px; /* Match height for vertical centering */
-}
-
-/* Logo styles - simplified for proper alignment */
-.tbd-home-logo {
-  grid-column: 2;
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  justify-self: center;
-  display: block; /* Not flex */
-}
-
-.tbd-away-logo {
-  grid-column: 4;
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  justify-self: center;
-  display: block; /* Not flex */
-}
-
-/* Must-see badge positioning */
-.tbd-must-see-badge {
-  grid-column: 1 / span 5;
-  grid-row: 2;
-  font-size: 0.65rem;
-  padding: 0.1rem 0.3rem;
-  background: #ffb700;
-  color: #000;
-  border-radius: 4px;
-  display: inline-block;
-  font-weight: 500;
-  margin-top: 4px;
-  justify-self: center;
-}
-
-#tbdGamesSection .accordion-button .d-flex {
-  width: calc(100% - 20px) !important; /* Make room for the arrow */
-}
-
-#tbdGamesSection .accordion-button .badge {
-  margin-right:var(--button-radius) !important; /* Add more space between badge and arrow */
-}
-
-#tbdGamesSection .accordion-button::after {
-  position: absolute;
-  right: 10px;
-}
-
-/* Ensure the badge doesn't get hidden behind dropdown arrow */
-#tbdGamesSection .accordion-button .d-flex .justify-content-between {
-  width: 100%;
-  padding-right: 10px;
-}
-
 
 /* No Filter Matches Message Styling */
 #noFilterMatchesMessage {
@@ -2963,33 +2813,7 @@ body.mustteams-dropdown-open .select2-dropdown {
     font-size: 0.8rem;
     padding: 0 8px;
   }
-
-  .tbd-match-teams-grid {
-    grid-template-columns: minmax(0, 1fr) 18px 30px 18px minmax(0, 1fr);
-    gap: 4px;
-    height: 26px; /* Adjusted for mobile */
-  }
   
-  .tbd-home-logo, .tbd-away-logo {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .tbd-vs-container {
-    width: 30px;
-    min-width: 30px;
-    font-size: 0.7rem;
-    height: 20px;
-    line-height: 20px;
-  }
-  
-  /* Make team names smaller on mobile */
-  .tbd-home-team, .tbd-away-team {
-    font-size: var(--item-spacing); /* Smaller text on mobile */
-    height: 20px;
-    line-height: 20px;
-  }
-
   .match-preview-item {
     padding: var(--item-spacing);
   }
@@ -3098,12 +2922,6 @@ body.mustteams-dropdown-open .select2-dropdown {
     max-width: var(--container-width-large); /* Add this to create a slightly wider container */
   }
   
-  /* Increase the TBD games section width to match */
-  #tbdGamesSection {
-    max-width: var(--container-width-default);
-    margin-left: auto;
-    margin-right: auto;
-  }
 }
 
 @media (max-width: 991px) {
@@ -3131,7 +2949,6 @@ body.mustteams-dropdown-open .select2-dropdown {
   }
   
   .trip-card,
-  #tbdGamesSection,
   body.has-filter-drawer #results .col-lg-8,
   body.has-filter-drawer #resultsContainer .col-lg-8 {
     max-width: var(--container-width-large);
@@ -3763,6 +3580,271 @@ body.mustteams-dropdown-open .select2-dropdown {
     box-shadow: 0 1px 2px rgba(4, 61, 124, 0.1) !important;
 }
 
+@media (max-width: 768px) {
+  .load-more-btn,
+  .btn-outline-primary.load-more-btn {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    font-size: 1rem !important;
+  }
+  .load-more-btn .badge {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    align-self: center !important;
+  }
+}
+
+h5.mb-3.d-flex.align-items-center {
+  padding: 0.7rem 0.5rem 0.7rem 0 !important;
+  padding-left: 12.2px !important; /* 15px (timeline left) + 2.5px (timeline width) + 20px (icon size + gap) */
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: var(--primary-color) !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: -2rem !important;
+  letter-spacing: 0.01em !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+h5.mb-3.d-flex.align-items-center i {
+  font-size: 1.2em !important;
+  left: 15px !important; /* Align with .timeline::before */
+  color: var(--primary-color) !important;
+  margin-right: 0.7rem !important;
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 0.35em;
+  box-shadow: 0 1px 4px rgba(37,99,235,0.08);
+  min-width: 2em;
+  min-height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Enhanced TBD Games styling */
+
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: var(--primary-color);
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+}
+
+.accordion-button::after {
+    background-size: var(--icon-size);
+}
+
+/* Enhanced TBD Games styling */
+
+.accordion-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: linear-gradient(135deg, #f8fafc 0%, #e9ecef 100%);
+  border: none;
+  border-radius: 16px 16px 0 0;
+  padding: 0.95rem 1.5rem 0.95rem 1.2rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  box-shadow: 0 3px 12px rgba(4,61,124,0.09), 0 1.5px 0 rgba(255,255,255,0.7) inset;
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+  margin-bottom: 0;
+  cursor: pointer;
+  position: relative;
+  letter-spacing: 0.01em;
+  overflow: visible;
+  z-index: 2;
+    z-index: 1;
+}
+
+.accordion-button .d-flex {
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.accordion-button .fas.fa-calendar-day {
+  color: var(--secondary-color);
+  font-size: 1.08em;
+  margin-right: 0.7rem;
+  background: #fff;
+  border-radius: 50%;
+  padding: 0.38em;
+  box-shadow: 0 1px 4px rgba(37,99,235,0.08);
+  min-width: 2em;
+  min-height: 2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  top: 1px !important; /* Adjust icon position */
+  position: relative;
+}
+
+.accordion-button .badge.bg-primary {
+  background: linear-gradient(135deg, #043d7c 0%, #3068cc 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.97em;
+  border-radius: 18px;
+  padding: 0.32em 1.1em;
+  margin-left: 1.1rem;
+  box-shadow: 0 2px 8px rgba(4,61,124,0.10);
+  letter-spacing: 0.01em;
+  border: 1.5px solid #fff;
+  display: flex;
+  align-items: center;
+  min-width: 70px;
+  justify-content: center;
+}
+
+.accordion-button span {
+  font-weight: 500;
+  color: var(--primary-color);
+  font-size: 1em;
+  letter-spacing: 0.01em;
+}
+
+.accordion-button.collapsed {
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  box-shadow: 0 1px 3px rgba(4,61,124,0.04);
+  color: var(--primary-color);
+}
+
+.accordion-button:not(.collapsed) {
+  background: linear-gradient(135deg, #e9ecef 0%, #f8fafc 100%);
+  box-shadow: 0 6px 20px rgba(4,61,124,0.13);
+  color: var(--primary-dark);
+}
+
+.accordion-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--secondary-color, #3068cc);
+}
+
+.accordion-button:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #f8fafc 100%);
+  color: var(--secondary-color);
+  box-shadow: 0 6px 20px rgba(4,61,124,0.15);
+}
+
+.accordion-button::before {
+  content: '';
+  position: absolute;
+  left: 0.45rem; /* Move line further left */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 80%;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  opacity: 0.13;
+  z-index: 0; /* Behind icon */
+  pointer-events: none;
+}
+
+.accordion-button .badge.bg-primary::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  margin-right: 0.5em;
+  box-shadow: 0 0 0 2px #043d7c33;
+}
+
+@media (max-width: 768px) {
+  .accordion-button {
+    font-size: 0.93rem;
+    padding: 0.7rem 0.7rem 0.7rem 0.9rem;
+    border-radius: 12px;
+  }
+  .accordion-button .badge.bg-primary {
+    font-size: 0.89em;
+    padding: 0.22em 0.7em;
+    margin-left: 0.7rem;
+    min-width: 48px;
+  }
+  .accordion-button .fas.fa-calendar-day {
+    font-size: 1em;
+    min-width: 1.7em;
+    min-height: 1.7em;
+    padding: 0.25em;
+  }
+
+    .accordion-button::before {
+    display: none; /* Hide the left line on mobile */
+  }
+  .accordion-button .fas.fa-calendar-day {
+    margin-left: 0rem;
+  }
+}
+/* ===== TBD Games Section Styling ===== */
+
+/* Fix TBD Games section to not show separators */
+#tbdGamesSection.trip-card::after,
+body #results #tbdGamesSection.trip-card::before {
+  display: none;
+}
+
+#tbdGamesSection .match-info-compact {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  margin-top: -2px;
+  font-size: 0.75rem;
+  color: #666;
+  width: 100%;
+}
+
+body #results #tbdGamesSection.trip-card {
+  margin-bottom: 2rem;
+}
+
+/* List group enhancements for TBD games */
+.list-group-item-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-left: 3px solid var(--warning-color, #ffc107);
+}
+
+/* Enhanced TBD Games styling - make styling consistent */
+.tbd-game-card {
+    padding: 0.85rem var(--icon-size);
+    border-radius: var(--card-radius);
+    background: white;
+    margin-bottom: var(--item-spacing);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.tbd-game-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px var(--button-radius) rgba(4, 61, 124, 0.08);
+}
+
+.tbd-game-team {
+    font-weight: 500;
+    color: var(--neutral-text);
+}
+
+/* Ensure consistent animation for TBD games */
+.list-group-item.list-group-item-warning {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
 /* TBD Games - Match schedules styling exactly */
 #tbdGamesSection .game-card {
     background: var(--card-bg);
@@ -3794,7 +3876,6 @@ body.mustteams-dropdown-open .select2-dropdown {
     width: 100%;
     max-width: 500px; /* Prevent over-stretching */
 }
-
 
 #tbdGamesSection .home-team .team-badge {
     grid-column: 2;
@@ -3905,178 +3986,187 @@ body.mustteams-dropdown-open .select2-dropdown {
     display: none !important;
 }
 
-/* Mobile responsive for TBD games - Enhanced Design */
+/* Miscellaneous TBD helpers */
+.tbd-location i {
+  color: var(--accent-color);
+  font-size: var(--icon-size-small);
+}
+
+/* Must-see badge positioning */
+.tbd-must-see-badge {
+  grid-column: 1 / span 5;
+  grid-row: 2;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.3rem;
+  background: #ffb700;
+  color: #000;
+  border-radius: 4px;
+  display: inline-block;
+  font-weight: 500;
+  margin-top: 4px;
+  justify-self: center;
+}
+
+/* Home team name */
+.tbd-home-team {
+  grid-column: 1;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  white-space: nowrap;
+  height: 20px;
+  line-height: 20px;
+}
+
+/* Away team name */
+.tbd-away-team {
+  grid-column: 5;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  white-space: nowrap;
+  height: 20px;
+  line-height: 20px;
+}
+
+/* VS container styles */
+.tbd-vs-container {
+  grid-column: 3;
+  text-align: center;
+  font-size: var(--item-spacing);
+  color: #777;
+  width: 40px;
+  min-width: 40px;
+  height: 20px;
+  line-height: 20px;
+}
+
+/* Logo styles - simplified for proper alignment */
+.tbd-home-logo {
+  grid-column: 2;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  justify-self: center;
+  display: block;
+}
+
+.tbd-away-logo {
+  grid-column: 4;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  justify-self: center;
+  display: block;
+}
+
+
 @media (max-width: 768px) {
-    #tbdGamesSection .card-body {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        padding: 1rem !important;
-        text-align: left;
-    }
-    
-    #tbdGamesSection .desktop-location-display {
-        display: none; /* Hide desktop location on mobile */
-    }
-    
-    #tbdGamesSection .match-main-content {
-        width: 100%;
-        max-width: none;
-        order: 1;
-    }
-    
-    #tbdGamesSection .match-teams {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-        width: 100%;
-        padding: 0.75rem 0;
-    }
-    
-    #tbdGamesSection .home-team {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex: 1;
-        justify-content: flex-end;
-        min-width: 0;
-    }
-    
-    #tbdGamesSection .away-team {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex: 1;
-        justify-content: flex-start;
-        min-width: 0;
-    }
-    
-    #tbdGamesSection .vs-container {
-        flex-shrink: 0;
-        width: 40px;
-        text-align: center;
-    }
-    
-    #tbdGamesSection .team-name {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--neutral-text);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 90px;
-    }
-    
-    #tbdGamesSection .team-badge {
-        width: 20px;
-        height: 20px;
-        flex-shrink: 0;
-    }
-    
-    #tbdGamesSection .vs {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    /* Mobile location section - clean card design */
-    #tbdGamesSection .match-details-section {
-        display: block !important;
-        order: 2;
-        margin-top: 0.5rem;
-        border-top: 1px solid var(--divider-color);
-        padding-top: 0.75rem;
-    }
-    
-    #tbdGamesSection .match-details-content {
-        background: var(--neutral-light);
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-        color: var(--neutral-text);
-        font-weight: 500;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        border: 1px solid var(--border-color);
-    }
-    
-    #tbdGamesSection .match-details-content:hover,
-    #tbdGamesSection .match-details-content:active {
-        background: var(--primary-light);
-        color: var(--primary-color);
-        border-color: var(--primary-color);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(4, 61, 124, 0.1);
-    }
-    
-    #tbdGamesSection .match-location-detail {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 500;
-    }
-    
-    #tbdGamesSection .match-location-detail i {
-        color: var(--accent-color);
-        font-size: 0.9rem;
-        width: 16px;
-        text-align: center;
-    }
-    
-    /* Remove dropdown arrow indicator - keep it simple */
-    #tbdGamesSection .match-details-content::after {
-        display: none;
-    }
-    
-    /* Mobile accordion styling improvements */
-    #tbdGamesSection .accordion-button {
-        padding: 1rem 1.25rem;
-        font-size: 0.95rem;
-        font-weight: 600;
-        border-radius: 8px !important;
-        margin-bottom: 0.5rem;
-    }
-    
-    #tbdGamesSection .accordion-button:not(.collapsed) {
-        background-color: var(--primary-light);
-        color: var(--primary-color);
-        border-color: var(--primary-color);
-    }
-    
-    #tbdGamesSection .accordion-body {
-        padding: 0.75rem 1rem 1rem;
-    }
-    
-    #tbdGamesSection .game-card {
-        margin-bottom: 0.75rem !important;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(4, 61, 124, 0.08);
-    }
-    
-    #tbdGamesSection .game-card:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(4, 61, 124, 0.12);
-    }
-    
-    /* Must-see match styling for mobile */
-    #tbdGamesSection .game-card.must-match {
-        border-left: 4px solid var(--warning-color);
-        background: linear-gradient(135deg, rgba(255, 183, 0, 0.03), var(--card-bg));
-    }
-    
-    #tbdGamesSection .game-card.must-match .match-details-content {
-        background: rgba(255, 183, 0, 0.1);
-        border-color: rgba(255, 183, 0, 0.3);
-    }
+  #tbdGamesSection .game-card {
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 8px rgba(4, 61, 124, 0.08);
+    border: 1px solid var(--border-color);
+    background: #fff;
+  }
+
+  #tbdGamesSection .card-body {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  /* Teams row */
+  #tbdGamesSection .match-teams {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0 0.2rem 0;
+    position: relative;
+  }
+
+  #tbdGamesSection .team-name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 40vw;
+  }
+
+  #tbdGamesSection .team-badge {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    margin: 0 0.2rem;
+  }
+
+  #tbdGamesSection .vs-container {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0 0.2rem;
+  }
+
+  /* Chevron (expand/collapse) */
+  #tbdGamesSection .chevron-toggle {
+    margin-left: 0.5rem;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+  }
+  #tbdGamesSection .chevron-toggle.expanded {
+    transform: rotate(180deg);
+  }
+
+  /* Time & location row */
+  #tbdGamesSection .match-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3rem 0 0.2rem 0;
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    border-top: 1px solid var(--divider-color);
+    margin-top: 0.2rem;
+  }
+  #tbdGamesSection .match-meta-row .match-time,
+  #tbdGamesSection .match-meta-row .match-location {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  #tbdGamesSection .match-meta-row .match-time i,
+  #tbdGamesSection .match-meta-row .match-location i {
+    color: var(--primary-color);
+    font-size: 1em;
+  }
+
+  /* Hide desktop location */
+  #tbdGamesSection .desktop-location-display {
+    display: none !important;
+  }
+
+  /* Details section (expand/collapse) */
+  #tbdGamesSection .match-details-section {
+    display: none;
+    padding: 0.5rem 0 0.2rem 0;
+    font-size: 0.95rem;
+    color: #555;
+  }
+  #tbdGamesSection .game-card.expanded .match-details-section {
+    display: block;
+  }
 }
 
 /* Tablet responsive (768px - 992px) */
@@ -4096,16 +4186,4 @@ body.mustteams-dropdown-open .select2-dropdown {
         font-size: 0.8rem;
     }
 }
-@media (max-width: 768px) {
-  .load-more-btn,
-  .btn-outline-primary.load-more-btn {
-    padding-top: 0.75rem !important;
-    padding-bottom: 0.75rem !important;
-    font-size: 1rem !important;
-  }
-  .load-more-btn .badge {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    align-self: center !important;
-  }
-}
+

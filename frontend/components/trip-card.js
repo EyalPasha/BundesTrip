@@ -414,11 +414,6 @@ function renderTripCard(group, index, tripContext = {}) {
     const travelOptionsSection = document.createElement('div');
     travelOptionsSection.className = 'travel-options-section mt-3 mb-4';
     
-    const travelOptionsHeader = document.createElement('h5');
-    travelOptionsHeader.className = 'mb-3 d-flex align-items-center';
-    travelOptionsHeader.innerHTML = '<i class="fas fa-exchange-alt text-primary me-2"></i> Travel Options';
-    travelOptionsSection.appendChild(travelOptionsHeader);
-    
     // Create tabs for travel options
     const optionsTabs = document.createElement('div');
     optionsTabs.className = 'nav nav-tabs mb-3';
@@ -608,7 +603,7 @@ function renderTripCard(group, index, tripContext = {}) {
     const timelineHeader = document.createElement('div');
     timelineHeader.innerHTML = `
       <h5 class="mb-3 d-flex align-items-center">
-        <i class="fas fa-calendar-alt text-primary me-2"></i> Day-by-Day Itinerary
+        <i class="fas fa-calendar-alt text-primary me-2"></i> Trip Details
       </h5>
     `;
     details.appendChild(timelineHeader);
@@ -756,18 +751,24 @@ function initializeMatchesExpander() {
 }
 
 // Initialize mobile match preview expandable sections
+let matchPreviewExpanderInitialized = false;
+
 function initMatchPreviewExpanders() {
     // Only run on mobile
     if (window.innerWidth >= 768) return;
-    
+
+    // Prevent multiple listeners
+    if (matchPreviewExpanderInitialized) return;
+    matchPreviewExpanderInitialized = true;
+
     // Use event delegation for dynamically added match items
     document.addEventListener('click', function(event) {
         const matchItem = event.target.closest('.match-preview-item');
         if (!matchItem) return;
-        
+
         // Toggle expanded state
         matchItem.classList.toggle('details-expanded');
-        
+
         // Find the details section
         const detailsSection = matchItem.querySelector('.match-details-section');
         if (detailsSection) {
@@ -786,6 +787,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Also update on window resize to handle orientation changes
 window.addEventListener('resize', function() {
+    matchPreviewExpanderInitialized = false;
     initMatchPreviewExpanders();
 });
 
@@ -1171,7 +1173,7 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
                         <i class="fas fa-calendar-day me-1"></i>
                         <span>${date}</span>
                     </div> 
-                    <span class="badge bg-primary">${groupedGames[date].length}</span>
+                    <span class="badge bg-primary">${groupedGames[date].length} Games</span>
                 </div>
             </button>
         `;
@@ -1190,36 +1192,26 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
 
         groupedGames[date].forEach(game => {
             const location = formatCityForDisplay(game.location);
-            
+        
             // Extract teams - assuming game.match contains "Team A vs Team B" format
             const teams = game.match.split(' vs ');
             const homeTeam = teams[0] || '';
             const awayTeam = teams[1] || '';
-            
+        
             const gameItem = document.createElement('div');
-            gameItem.className = 'card game-card mb-2' + 
+            gameItem.className = 'card game-card mb-2' +
                 (game.has_must_team ? ' must-match' : '');
-            
-            // Fixed structure with proper mobile location dropdown
+        
+            // Use .match-teams-preview for mobile and desktop
             gameItem.innerHTML = `
                 <div class="card-body py-3">
                     <div class="match-main-content">
-                        <div class="match-teams-container">
-                            <div class="match-teams">
-                                <div class="home-team">
-                                    <span class="team-name">${homeTeam}</span>
-                                    <img src="${getTeamLogoUrl(homeTeam)}" alt="${homeTeam}" class="team-badge">
-                                </div>
-                                
-                                <div class="vs-container">
-                                    <span class="vs">vs</span>
-                                </div>
-                                
-                                <div class="away-team">
-                                    <img src="${getTeamLogoUrl(awayTeam)}" alt="${awayTeam}" class="team-badge">
-                                    <span class="team-name">${awayTeam}</span>
-                                </div>
-                            </div>
+                        <div class="match-teams-preview">
+                            <strong>${homeTeam}</strong>
+                            <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo-small" alt="${homeTeam} logo">
+                            <span class="vs-text">vs</span>
+                            <img src="${getTeamLogoUrl(awayTeam)}" class="team-logo-small" alt="${awayTeam} logo">
+                            <strong>${awayTeam}</strong>
                         </div>
                     </div>
                     <div class="desktop-location-display">
@@ -1228,8 +1220,7 @@ function renderTbdGames(tbdGames, mustTeams = [], noTripsFound = false) {
                             <span>${formatCityForDisplay(game.location || 'TBD')}</span>
                         </div>
                     </div>
-                    
-                    <!-- Mobile details section with location dropdown - FIXED -->
+                    <!-- Mobile details section with location dropdown -->
                     <div class="match-details-section">
                         <div class="match-details-content">
                             <div class="match-location-detail">
@@ -1771,22 +1762,35 @@ window.handleTripSave = async function(tripIndex) {
 // Export the functions so they can be used by other modules
 export { renderTripCard, initializeMatchesExpander, renderTbdGames, extractHotelSummary, renderTravelSegments, renderAirportDistances, renderItineraryForVariant };
 
-// Add mobile click handler for TBD location dropdown
-document.addEventListener('click', function(event) {
-    // Only handle clicks on mobile
+function initTbdGameCardMobileDropdown() {
+    // Only run on mobile
     if (window.innerWidth >= 768) return;
-    
-    // Check if clicked on a TBD game card
-    const gameCard = event.target.closest('#tbdGamesSection .game-card');
-    if (!gameCard) return;
-    
-    // Prevent event bubbling
-    event.preventDefault();
-    event.stopPropagation();
-    
-    // Find the details section
-    const detailsSection = gameCard.querySelector('.match-details-section');
-    if (detailsSection) {
-        detailsSection.classList.toggle('show');
-    }
+
+    // Prevent multiple listeners
+    if (window._tbdGameCardMobileDropdownInitialized) return;
+    window._tbdGameCardMobileDropdownInitialized = true;
+
+    document.addEventListener('click', function(event) {
+        // Only on mobile
+        if (window.innerWidth >= 768) return;
+
+        // Only toggle if clicking the card body (not a link, not a button)
+        const cardBody = event.target.closest('#tbdGamesSection .game-card .card-body');
+        if (!cardBody) return;
+
+        // Toggle the details section
+        const detailsSection = cardBody.querySelector('.match-details-section');
+        if (detailsSection) {
+            detailsSection.classList.toggle('show');
+        }
+    });
+}
+
+// Call this on DOMContentLoaded and on resize (reset the flag on resize)
+document.addEventListener('DOMContentLoaded', function() {
+    initTbdGameCardMobileDropdown();
+});
+window.addEventListener('resize', function() {
+    window._tbdGameCardMobileDropdownInitialized = false;
+    initTbdGameCardMobileDropdown();
 });

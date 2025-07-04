@@ -945,49 +945,49 @@ function createMobileFilterButton() {
         document.body.style.overflow = '';
     });
         
-    // Apply filters button - update to use Select2 values
-    document.getElementById('applyMobileFilters').addEventListener('click', () => {
-        // Update state with mobile filter values using Select2
-        const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
-        const mobileTeamFilter = document.getElementById('mobileTeamFilter');
-        
-        if (mobileLeagueFilter && $(mobileLeagueFilter).hasClass('select2-hidden-accessible')) {
-            state.filters.league = $(mobileLeagueFilter).val();
-        } else if (mobileLeagueFilter) {
-            state.filters.league = mobileLeagueFilter.value;
+document.getElementById('applyMobileFilters').addEventListener('click', () => {
+    // Update state with mobile filter values using Select2
+    const mobileLeagueFilter = document.getElementById('mobileLeagueFilter');
+    const mobileTeamFilter = document.getElementById('mobileTeamFilter');
+
+    // Always use .val() if Select2 is initialized
+    if (mobileLeagueFilter && $(mobileLeagueFilter).hasClass('select2-hidden-accessible')) {
+        state.filters.league = $(mobileLeagueFilter).val();
+    } else if (mobileLeagueFilter) {
+        state.filters.league = mobileLeagueFilter.value;
+    }
+
+    if (mobileTeamFilter && $(mobileTeamFilter).hasClass('select2-hidden-accessible')) {
+        state.filters.team = $(mobileTeamFilter).val();
+    } else if (mobileTeamFilter) {
+        state.filters.team = mobileTeamFilter.value;
+    }
+
+    // Sync with main filters
+    if (DOM.leagueFilter) {
+        DOM.leagueFilter.value = state.filters.league;
+        if ($(DOM.leagueFilter).hasClass('select2-hidden-accessible')) {
+            $(DOM.leagueFilter).trigger('change');
         }
-        
-        if (mobileTeamFilter && $(mobileTeamFilter).hasClass('select2-hidden-accessible')) {
-            state.filters.team = $(mobileTeamFilter).val();
-        } else if (mobileTeamFilter) {
-            state.filters.team = mobileTeamFilter.value;
+    }
+    if (DOM.teamFilter) {
+        DOM.teamFilter.value = state.filters.team;
+        if ($(DOM.teamFilter).hasClass('select2-hidden-accessible')) {
+            $(DOM.teamFilter).trigger('change');
         }
-        
-        // Sync with main filters
-        if (DOM.leagueFilter) {
-            DOM.leagueFilter.value = state.filters.league;
-            if ($(DOM.leagueFilter).hasClass('select2-hidden-accessible')) {
-                $(DOM.leagueFilter).trigger('change');
-            }
-        }
-        if (DOM.teamFilter) {
-            DOM.teamFilter.value = state.filters.team;
-            if ($(DOM.teamFilter).hasClass('select2-hidden-accessible')) {
-                $(DOM.teamFilter).trigger('change');
-            }
-        }
-        
-        // Apply filters
-        applyFilters();
-        
-        // Close drawer
-        drawer.classList.remove('open');
-        overlay.classList.remove('open');
-        document.body.style.overflow = '';
-        
-        // Update filter count
-        updateFilterCount();
-    });
+    }
+
+    // Apply filters
+    applyFilters();
+
+    // Close drawer
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+
+    // Update filter count
+    updateFilterCount();
+});
     
     // Clear filters button - update to work with Select2
     document.getElementById('clearMobileFilters').addEventListener('click', () => {
@@ -1255,8 +1255,10 @@ function filterGames(games) {
 // Apply current filters
 async function applyFilters() {
     // Update filter state
-    state.filters.league = DOM.leagueFilter.value;
-    state.filters.team = DOM.teamFilter.value;
+    if (window.innerWidth >= 768) {
+        state.filters.league = DOM.leagueFilter.value;
+        state.filters.team = DOM.teamFilter.value;
+    }
     
     // Show active filters if any
     updateClearButton();
@@ -1828,11 +1830,11 @@ function fetchGamesForDate(dateStr, container) {
 function createGameCard(game) {
     const card = document.createElement('div');
     card.className = 'card game-card mb-2';
-    
+
     // Extract team names
     let homeTeam = '';
     let awayTeam = '';
-    
+
     if (game.match) {
         const matchParts = game.match.split(' vs ');
         if (matchParts.length === 2) {
@@ -1840,100 +1842,102 @@ function createGameCard(game) {
             awayTeam = matchParts[1].trim();
         }
     }
-    
-    // Absolutely ensure game time is never undefined or null in display
+
+    // Ensure game time is never undefined or null in display
     let displayTime = 'TBD';
     if (game.time && game.time !== 'null' && game.time.trim() !== '') {
         displayTime = game.time;
     }
-    
-    // Add specific class for TBD games
+
     if (displayTime === 'TBD') {
         card.classList.add('tbd-game');
     }
-    
+
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body py-3';
-    
-    // Desktop view - show time in main content (will be hidden in mobile via CSS)
-    const desktopTimeDisplay = document.createElement('div');
-    desktopTimeDisplay.className = 'desktop-time-display';
-    desktopTimeDisplay.innerHTML = `
-        <div class="match-time ${displayTime === 'TBD' ? 'text-muted fst-italic' : ''}">
-            ${displayTime}
+
+    // --- FLEX ROW LAYOUT ---
+    const row = document.createElement('div');
+    row.className = 'game-row d-flex align-items-center';
+
+    // Time box (left, desktop only)
+    const timeBox = document.createElement('div');
+    timeBox.className = `match-time-box${displayTime === 'TBD' ? ' text-muted fst-italic' : ''} desktop-time-display`;
+    timeBox.textContent = displayTime;
+
+    // Teams (center)
+    const teams = document.createElement('div');
+    teams.className = 'match-teams flex-grow-1 d-flex align-items-center justify-content-center';
+    teams.innerHTML = `
+        <div class="home-team d-flex align-items-center">
+            <span class="team-name me-1">${homeTeam}</span>
+            <img src="${getTeamLogoUrl(homeTeam)}" alt="${homeTeam}" class="team-badge ms-1">
+        </div>
+        <div class="vs-container px-2">
+            <span class="vs">vs</span>
+        </div>
+        <div class="away-team d-flex align-items-center">
+            <img src="${getTeamLogoUrl(awayTeam)}" alt="${awayTeam}" class="team-badge me-1">
+            <span class="team-name ms-1">${awayTeam}</span>
         </div>
     `;
-    
-    // Main content - teams and match info
-    const mainContent = document.createElement('div');
-    mainContent.className = 'match-main-content';
-    
-    // Teams display (simplified for mobile)
-    mainContent.innerHTML = `
-        <div class="match-teams-container">
-            <div class="match-teams">
-                <div class="home-team">
-                    <span class="team-name">${homeTeam}</span>
-                    <img src="${getTeamLogoUrl(homeTeam)}" alt="${homeTeam}" class="team-badge">
-                </div>
-                
-                <div class="vs-container">
-                    <span class="vs">vs</span>
-                </div>
-                
-                <div class="away-team">
-                    <img src="${getTeamLogoUrl(awayTeam)}" alt="${awayTeam}" class="team-badge">
-                    <span class="team-name">${awayTeam}</span>
-                </div>
-            </div>
-        </div>
+
+    // Location (right, desktop only)
+    const locationBox = document.createElement('div');
+    locationBox.className = 'match-location-box text-end desktop-location-display';
+    locationBox.innerHTML = `
+        <i class="fas fa-map-marker-alt me-1"></i>
+        <span>${formatCityForDisplay(game.display_location || game.location)}</span>
     `;
-    
-    // Desktop location display - will be hidden on mobile
-    const desktopLocationDisplay = document.createElement('div');
-    desktopLocationDisplay.className = 'desktop-location-display';
-    desktopLocationDisplay.innerHTML = `
-        <div class="match-location text-end">
-            <i class="fas fa-map-marker-alt me-1"></i>
-            <span>${formatCityForDisplay(game.display_location || game.location)}</span>
-        </div>
-    `;
-    
-    // Collapsible details section
-    const detailsSection = document.createElement('div');
-    detailsSection.className = 'match-details-section collapse';
-    detailsSection.innerHTML = `
+
+    // Chevron for mobile expand/collapse
+    const chevron = document.createElement('div');
+    chevron.className = 'mobile-chevron d-md-none ms-2';
+    chevron.innerHTML = `<i class="fas fa-chevron-down"></i>`;
+
+    // Assemble row
+    row.appendChild(timeBox);
+    row.appendChild(teams);
+    row.appendChild(locationBox);
+    row.appendChild(chevron);
+
+    // Details dropdown (mobile only)
+    const details = document.createElement('div');
+    details.className = 'match-details-section';
+    details.innerHTML = `
         <div class="match-details-content">
             <div class="match-time-detail">
-                <i class="far fa-clock"></i> ${displayTime}
+                <i class="fas fa-clock me-2"></i>
+                <span>${displayTime}</span>
             </div>
             <div class="match-location-detail">
-                <i class="fas fa-map-marker-alt"></i> ${formatCityForDisplay(game.display_location || game.location)}
+                <i class="fas fa-map-marker-alt me-2"></i>
+                <span>${formatCityForDisplay(game.display_location || game.location)}</span>
             </div>
         </div>
     `;
-    
-    // Add click event to toggle details on mobile
-    mainContent.addEventListener('click', function(e) {
-        // Only handle clicks on mobile
-        if (window.innerWidth <= 767.98) {
-            detailsSection.classList.toggle('show');
-            card.classList.toggle('details-expanded');
-            e.preventDefault();
+
+    // Hide details by default on mobile
+    details.style.display = 'none';
+
+    // Toggle dropdown on row click (mobile only)
+    row.addEventListener('click', function (e) {
+        // Only trigger on mobile
+        if (window.innerWidth < 768) {
             e.stopPropagation();
+            const isOpen = details.style.display === 'block';
+            details.style.display = isOpen ? 'none' : 'block';
+            chevron.querySelector('i').classList.toggle('fa-chevron-down', isOpen);
+            chevron.querySelector('i').classList.toggle('fa-chevron-up', !isOpen);
         }
     });
-    
-    // Add elements to card
-    cardBody.appendChild(desktopTimeDisplay);
-    cardBody.appendChild(mainContent);
-    cardBody.appendChild(desktopLocationDisplay); // Add location display for desktop
-    cardBody.appendChild(detailsSection);
+
+    cardBody.appendChild(row);
+    cardBody.appendChild(details);
     card.appendChild(cardBody);
-    
+
     return card;
 }
-
 // Helper function to get league CSS class
 function getLeagueClass(league) {
     if (!league) return '';

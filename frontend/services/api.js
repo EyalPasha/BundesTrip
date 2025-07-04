@@ -1,5 +1,5 @@
 // API Base URL - adjust as needed for production
-const API_BASE_URL = 'http://10.0.0.67:8000';
+const API_BASE_URL = 'http://10.0.0.28:8000';
 
 /**
  * Get auth token for API requests
