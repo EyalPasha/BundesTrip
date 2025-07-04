@@ -4096,3 +4096,16 @@ body.mustteams-dropdown-open .select2-dropdown {
         font-size: 0.8rem;
     }
 }
+@media (max-width: 768px) {
+  .load-more-btn,
+  .btn-outline-primary.load-more-btn {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    font-size: 1rem !important;
+  }
+  .load-more-btn .badge {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    align-self: center !important;
+  }
+}

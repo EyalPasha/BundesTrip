@@ -737,11 +737,6 @@
     color: #dc3545 !important;
   }
   
-  /* Step 3 specific - same as mobile 768px */
-  .step-panel[data-step="3"] .step-title,
-  .step-panel[data-step="3"] .step-subtitle {
-    display: none !important;
-  }
   
   .step-panel[data-step="3"] .individual-team-selects {
     grid-template-columns: 1fr !important;
@@ -796,11 +791,6 @@
     margin: var(--space-sm) 0 var(--space-lg) 0 !important;
   }
   
-  /* Hide step titles and subtitles only on step 3 */
-  .step-panel[data-step="3"] .step-title,
-  .step-panel[data-step="3"] .step-subtitle {
-    display: none !important;
-  }
   
   /* League selection items - more polished */
   .select2-selection__choice {
