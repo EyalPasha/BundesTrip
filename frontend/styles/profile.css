@@ -1751,3 +1751,10 @@ body .btn-modern.btn-save,
 .fas.fa-sliders-h {
   color: var(--primary-color) !important;
 }
+
+.modal-header.modern-header { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); }
+.modal-footer.modern-footer {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+}

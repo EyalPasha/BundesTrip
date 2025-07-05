@@ -359,24 +359,6 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   border-top: 1px dashed var(--divider-color);
 }
 
-/* Update must-match styling */
-.must-match {
-  background-color: transparent;
-  border-left: none;
-  position: relative;
-}
-
-.must-match::before {
-  content: '';
-  position: absolute;
-  left: -0.85rem;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background-color: var(--warning-color);
-  border-radius: 1.5px;
-}
-
 /* Toggle details button */
 .toggle-details-button {
   background: var(--theme-background);
@@ -1113,10 +1095,6 @@ font-weight: 500;
   border-left: 4px solid var(--neutral-light);
 }
 
-.match-item.must-team::before {
-  background: none;
-}
-
 .match-location-container {
   display: flex;
   align-items: center;
@@ -1144,10 +1122,6 @@ font-weight: 500;
   transform: translateY(-2px) scale(1.01);
   box-shadow: 0 5px 15px rgba(4, 61, 124, 0.15);
   border-color: rgba(48, 104, 204, 0.3);
-}
-
-.match-item.must-team {
-  border-left: 4px solid var(--warning-color);
 }
 
 /* Match details components */
@@ -1224,22 +1198,6 @@ font-weight: 500;
 
 .match-travel i {
   color: var(--secondary-color);
-}
-
-.must-see-tag {
-  background: linear-gradient(135deg, var(--warning-color), #ffb74d);
-  border-radius: 20px;
-  padding: 0.3rem 0.8rem;
-  font-weight: 600;
-  box-shadow: 0 2px 5px rgba(255, 149, 0, 0.3);
-  color: #fff;
-  transform: translateY(0);
-  transition: all 0.2s ease;
-}
-
-.must-see-tag:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(255, 149, 0, 0.4);
 }
 
 /* Add new match time display styles */
@@ -1725,8 +1683,8 @@ font-weight: 500;
 .filter-drawer {
   position: fixed;
   top: 0;
-  right: -85%;
-  width: 65%;
+  right: -100%; /* Always fully off-screen when closed */
+  width: 90%;
   height: 100%;
   background-color: white;
   z-index: 1002;
@@ -2414,15 +2372,6 @@ font-weight: 500;
 .match-teams-preview .team-logo-small:last-of-type {
   grid-column: 4;
   justify-self: center;
-}
-
-.must-see-badge {
-  grid-column: 1 / span 5;
-  grid-row: 2;
-  font-size: 0.65rem;
-  padding: 0.1rem 0.3rem;
-  justify-self: center;
-  margin-top: 2px;
 }
 
 /* Team filter badges with logos */
@@ -3972,13 +3921,6 @@ body #results #tbdGamesSection.trip-card {
     font-size: 0.8rem;
     flex-shrink: 0; /* Icon doesn't shrink */
 }
-
-/* Must-see styling for TBD games */
-#tbdGamesSection .game-card.must-match {
-    border-left: 4px solid var(--warning-color);
-    background: linear-gradient(135deg, rgba(255, 183, 0, 0.02), var(--card-bg));
-}
-
 /* Remove any unwanted lines or pseudo-elements */
 #tbdGamesSection .match-teams > *::after,
 #tbdGamesSection .team-name::after,
@@ -3990,21 +3932,6 @@ body #results #tbdGamesSection.trip-card {
 .tbd-location i {
   color: var(--accent-color);
   font-size: var(--icon-size-small);
-}
-
-/* Must-see badge positioning */
-.tbd-must-see-badge {
-  grid-column: 1 / span 5;
-  grid-row: 2;
-  font-size: 0.65rem;
-  padding: 0.1rem 0.3rem;
-  background: #ffb700;
-  color: #000;
-  border-radius: 4px;
-  display: inline-block;
-  font-weight: 500;
-  margin-top: 4px;
-  justify-self: center;
 }
 
 /* Home team name */
@@ -4187,3 +4114,198 @@ body #results #tbdGamesSection.trip-card {
     }
 }
 
+@media (max-width: 768px) {
+/* Mobile Filter Drawer */
+  .filter-drawer {
+    width: 90%;
+    right: -100%; /* Always fully off-screen */
+    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+  }
+  
+  .drawer-header {
+    padding: var(--space-lg);
+    background: var(--primary-color);
+    color: var(--white);
+    border-radius: var(--radius-xl) 0 0 0;
+  }
+  
+  .drawer-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+  }
+  
+  .drawer-close {
+    color: var(--white);
+    font-size: var(--text-xl);
+  }
+  
+  .drawer-content {
+    padding: var(--space-lg);
+  }
+  
+  .drawer-filter-group {
+    margin-bottom: var(--space-xl);
+  }
+  
+  .drawer-filter-label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  
+  .drawer-filter-label i {
+    color: var(--primary-color);
+    width: 16px;
+  }
+  
+  .form-select {
+    padding: var(--space-md);
+    font-size: var(--text-base);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--gray-200);
+    min-height: 44px;
+  }
+  
+  .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+  
+  /* Mobile Active Filters */
+  .mobile-active-filters {
+    margin: var(--space-md) 0 var(--space-xl);
+  }
+  
+  .mobile-filter-badge {
+    background: var(--primary-light);
+    color: var(--primary-color);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    border: 1px solid var(--primary-color);
+  }
+  
+  .badge-remove {
+    color: var(--primary-color);
+    margin-left: var(--space-sm);
+  }
+    
+    /* Drawer Actions - Inverted button styling */
+    .drawer-actions {
+      padding: var(--space-md) var(--space-lg);
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      gap: var(--space-sm);
+    }
+    
+    .drawer-actions .btn {
+      padding: var(--space-sm) var(--space-md);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      min-height: 40px;
+      border: 2px solid var(--primary-color); /* Same border for both */
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      transition: all var(--duration-fast) ease;
+    }
+    
+    /* Clear All button - outlined style */
+    .btn-outline-secondary {
+      background: var(--white) !important;
+      border-color: var(--primary-color) !important;
+      color: var(--primary-color) !important;
+    }
+    
+    .btn-outline-secondary:hover {
+      background: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+      color: var(--white) !important;
+      transform: translateY(-1px);
+    }
+    
+    /* Apply Filters button - filled style */
+    .btn-primary {
+      background: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+      color: var(--white) !important;
+    }
+    
+    .btn-primary:hover {
+      background: var(--white) !important;
+      border-color: var(--primary-color) !important;
+      color: var(--primary-color) !important;
+      transform: translateY(-1px);
+    }
+        /* Hide all "Clear" badges with this style */
+    .badge.bg-secondary.text-white.ms-2[style*="cursor: pointer"] {
+      display: none !important;
+    }
+
+        /* Unify city/team badge sizing to prevent shifting */
+    .badge.bg-light.text-dark.border,
+    .badge.bg-primary.text-white,
+    .badge.bg-primary,
+    .badge.bg-light.text-dark {
+      min-width: 60px;
+      height: 24px !important;
+      padding: 0.2rem 0.5rem 0.2rem 0.5rem !important;
+      margin: 2px 8px 2px 0 !important;
+      font-size: 0.85rem !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+      border-radius: 0.25rem !important;
+      white-space: nowrap !important;
+      transition: none !important;
+      border-width: 1.5px !important;
+      border-style: solid !important;
+    }
+    
+    /* Ensure border color is always set for both active/inactive */
+    .badge.bg-light.text-dark.border {
+      border-color: #e0e7ef !important;
+    }
+    .badge.bg-primary,
+    .badge.bg-primary.text-white {
+      border-color: #043d7c !important;
+    }
+    
+}
+
+.modal-footer.modern-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.must-see-tag {
+  display: none !important;
+}
+
+.match-item.must-team {
+  border-left: 4px solid #ffc107 !important; /* Yellow accent */
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.08), 0 4px 16px rgba(255, 193, 7, 0.10);
+  position: relative;
+}
+
+.match-item.must-team .match-header,
+.match-item.must-team .match-meta {
+  position: relative;
+  z-index: 2;
+}
+
+.match-location-container > .fa-map-marker-alt {
+  margin-right: -10px !important; /* Adjusted for better alignment */
+}

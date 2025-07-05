@@ -1469,6 +1469,7 @@ main .fa,
   /* Mobile Filter Drawer */
   .filter-drawer {
     width: 90%;
+    right: -100%; /* Always fully off-screen */
     border-radius: var(--radius-xl) 0 0 var(--radius-xl);
   }
   
@@ -1722,5 +1723,117 @@ main .fa,
   
   .btn {
     min-height: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .d-flex.flex-wrap.gap-2.ms-md-auto.mt-2.mt-md-0.align-items-md-center {
+display: none !important;
+  }
+  .d-flex.flex-wrap.gap-2.ms-md-auto.mt-2.mt-md-0.align-items-md-center .badge {
+display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .team-header {
+    padding: 0.3rem 0 0.3rem 0 !important;
+    margin-bottom: 0.2rem !important;
+  }
+  .team-header .d-flex.align-items-center.mb-2.mb-md-0 {
+    margin-left: -5px !important; /* Move logo and team name 5px left */
+  }
+  .team-header img {
+    width: 32px !important;
+    height: 32px !important;
+    margin-right: 0.4rem !important;
+  }
+  .team-header .h3,
+  .team-header h2 {
+    font-size: 1.05rem !important;
+    margin-bottom: 0 !important;
+    line-height: 1.2 !important;
+  }
+  .team-header .d-flex.flex-wrap.gap-2.ms-md-auto.mt-2.mt-md-0.align-items-md-center {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    gap: 0.2rem !important;
+  }
+  .team-header .badge {
+    font-size: 0.62rem !important;
+    padding: 0.15em 0.35em !important;
+    height: 18px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  .team-header.mb-4 {
+    margin-bottom: 0.2rem !important;
+  }
+  .team-header.pb-2 {
+    padding-bottom: 0.1rem !important;
+  }
+  .team-header.border-bottom {
+    border-bottom-width: 1px !important;
+  }
+}
+
+/* Abstract, simple month section header for both PC and mobile */
+.month-section h3,
+.month-section .h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  background: none;
+  border-bottom: 1.5px solid var(--gray-200);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.01em;
+  text-align: left;
+  box-shadow: none;
+  border-radius: 0;
+  line-height: 1.2;
+}
+
+/* Mobile: slightly smaller and more compact */
+@media (max-width: 768px) {
+  .month-section h3,
+  .month-section .h4 {
+    font-size: 1.05rem;
+    padding-bottom: 0.35rem;
+    margin-bottom: 0.7rem;
+    border-bottom-width: 1px;
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .match-time-detail {
+    font-size: 0.85em !important;
+    margin-left: 10px !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+  }
+  .match-location-detail {
+    font-size: 0.85em !important;
+    margin-right: 10px !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+  }
+  .match-time-detail i,
+  .match-location-detail i {
+    margin-right: 3px !important;
+    font-size: 1em !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .match-details-section .match-details-content {
+    margin-top: 10px !important;
   }
 }

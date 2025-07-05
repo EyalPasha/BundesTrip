@@ -1,0 +1,1296 @@
+/* Form Components - Index Page Trip Search - Multi-Step Design */
+
+/* Modern Search Card - Compact Multi-Step */
+.search-card {
+  background: rgba(184, 186, 255, 0.3);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  position: relative;
+  transition: all var(--duration-normal) ease;
+  height: 460px; /* Changed from fixed height to min-height */
+}
+
+.search-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  opacity: 0;
+  transition: opacity var(--duration-normal) ease;
+}
+
+.search-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: rgba(48, 104, 204, 0.3);
+}
+
+.search-card:hover::before {
+  opacity: 1;
+}
+
+.search-card .card-body {
+  padding: var(--space-xl);
+  position: relative;
+  z-index: 1;
+}
+.step-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: var(--space-xs) 0 var(--space-md) 0 !important; /* Less space above and below */
+  position: relative;
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gray-200);
+  color: var(--gray-500);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  transition: all var(--duration-fast) ease;
+  position: relative;
+  z-index: 2;
+}
+
+.step-indicator.active {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--white);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.step-indicator.completed {
+  background: var(--success-color);
+  color: var(--white);
+}
+
+.step-connector {
+  flex: 1;
+  height: 2px;
+  background: var(--gray-200);
+  margin: 0 var(--space-sm);
+  transition: all var(--duration-normal) ease;
+  position: relative;
+  z-index: 1;
+}
+
+.step-connector.completed {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+/* Step Content Container */
+.step-content {
+  min-height: 250px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Step 3 specific adjustments */
+.step-panel[data-step="3"] {
+  min-height: 280px; /* Extra height for step 3 */
+}
+
+.step-panel {
+  display: none;
+  animation: fadeInSlide 0.4s ease-out;
+}
+
+.step-panel.active {
+  display: block;
+}
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Step Headers */
+.step-header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.step-title {
+  color: white;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+
+.step-subtitle {
+  color: whitesmoke;
+  font-size: var(--text-sm);
+  font-style: italic;
+}
+
+/* Compact Form Layout */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.form-row.two-cols {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Modern Form Labels - Compact */
+label.form-label-main > .fas.fa-futbol.icon {
+  color: #fff !important;
+}
+.form-label {
+  font-weight: 600;
+  color: whitesmoke;
+  margin-bottom: var(--space-xs);
+  font-size: var(--text-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-label::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: linear-gradient(135deg, var(--neutral-light), whitesmoke);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.form-label .icon {
+  color: white !important;
+  font-size: 1em;
+  width: 14px;
+  text-align: center;
+}
+
+.form-label .text-danger {
+  color: var(--error-color);
+  font-weight: 800;
+  margin-left: auto;
+}
+
+/* Modern Form Controls - Compact */
+.form-control,
+.form-select {
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--text-sm);
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--neutral-text);
+  background: var(--white);
+  transition: all var(--duration-fast) ease;
+  min-height: 42px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px var(--primary-light), inset 0 1px 2px rgba(0, 0, 0, 0.02);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.form-control::placeholder {
+  color: var(--gray-500);
+  font-weight: 400;
+}
+
+.form-text {
+  color: var(--gray-500);
+  font-size: 0.7rem;
+  margin-top: var(--space-xs);
+  font-style: italic;
+}
+
+/* Validation States */
+.is-invalid {
+    border-color: #dc3545 !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right calc(0.375em + 0.1875rem) center !important;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+}
+
+/* Select2 validation */
+.is-invalid + .select2-container .select2-selection {
+    border-color: #dc3545 !important;
+}
+
+/* Error message styling */
+.invalid-feedback {
+    display: block !important;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #dc3545;
+}
+
+/* Form field focus states */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(4, 61, 124, 0.25) !important;
+}
+
+/* Remove validation styling on focus */
+.form-control:focus.is-invalid,
+.form-select:focus.is-invalid {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(4, 61, 124, 0.25) !important;
+}
+
+/* Step Navigation Buttons - Fixed Layout */
+.step-navigation {
+  display: grid;
+  grid-template-columns: 1fr; /* Start with single column for step 1 */
+  justify-items: center; /* Center by default */
+  align-items: center;
+  margin-top: var(--space-lg);
+  gap: var(--space-md);
+  min-height: 50px; /* Fixed minimum height */
+}
+
+/* Step 2 and 3 - two column layout */
+.step-navigation.step-2,
+.step-navigation.step-3 {
+  grid-template-columns: 1fr 1fr; /* Two equal columns for steps 2 and 3 */
+  justify-items: stretch; /* Stretch buttons to fill columns */
+}
+
+.step-navigation.step-3 {
+  margin-top: -6px;
+}
+/* Special case for step 1 - center the next button */
+.step-navigation.step-1 {
+  grid-template-columns: 1fr; /* Single column for step 1 */
+  justify-items: center; /* Center the button */
+}
+
+.step-navigation.step-1 .btn-step-next {
+  grid-column: 1; /* Take the single column */
+  max-width: 200px; /* Limit width for better appearance */
+}
+
+/* For steps 2 and 3, reset the next button grid column */
+.step-navigation.step-2 .btn-step-next,
+.step-navigation.step-3 .btn-step-next {
+  grid-column: 2; /* Second column for steps 2 and 3 */
+  max-width: none; /* Remove width limit */
+}
+
+.btn-step {
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all var(--duration-fast) ease;
+  border: 2px solid;
+  height: 42px; /* Fixed height instead of min-height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  width: 100%; /* Full width of grid column */
+}
+
+.btn-step-prev {
+  background: transparent;
+  border-color: var(--gray-300);
+  color: var(--gray-600);
+  grid-column: 1; /* Always in first column */
+}
+
+.btn-step-prev.hidden-step-button {
+  display: none; /* Completely hide instead of visibility: hidden */
+}
+
+.btn-step-prev:hover:not(.hidden-step-button) {
+  background: transparent !important; /* Prevent background from turning white */
+  border-color: var(--gray-400);
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+
+.btn-step-next {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-color: var(--primary-color);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+  grid-column: 2; /* Always in second column */
+}
+
+.btn-step-next i,
+.btn-step-next .fas,
+.btn-step-next .fa-chevron-right {
+  color: white !important;
+}
+
+.btn-step-next::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-step-next:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-dark);
+}
+
+.btn-step-next:hover::before {
+  left: 100%;
+}
+
+.btn-step-submit {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-color: var(--primary-color);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+  grid-column: 2; /* Same position as next button */
+  grid-row: 1; /* Same row as next button */
+  height: 42px; /* Same height as other buttons */
+}
+.btn-step-prev {
+  background: transparent;
+  border-color: var(--gray-300);
+  color: #fff !important; /* Make text white */
+  grid-column: 1;
+}
+
+.btn-step-prev i,
+.btn-step-prev .fas,
+.btn-step-prev .fa-chevron-left {
+  color: #fff !important; /* Make icon white */
+}
+.btn-step-submit i,
+.btn-step-submit .fas {
+  color: white !important;
+}
+
+
+.btn-step-submit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-step-submit:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-step-submit:hover::before {
+  left: 100%;
+}
+
+.btn-step i {
+  font-size: 1em;
+}
+
+/* Special styling for specific inputs */
+#startDate {
+  min-height: 42px !important;
+}
+
+/* Multi-select styling for step 3 */
+.multi-select-container {
+  margin-bottom: var(--space-sm); /* Reduced from var(--space-md) */
+}
+
+/* Inline form text with labels */
+.form-label-with-help {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.form-label-main {
+  font-weight: 600;
+  color: whitesmoke;
+  font-size: var(--text-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.form-label-main::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: whitesmoke;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.form-label-help {
+  color: whitesmoke;
+  font-size: 0.65rem;
+  font-style: italic;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0;
+}
+
+/* Hide original form sections - we'll use steps instead */
+.form-section {
+  display: none;
+}
+
+/* Individual team selection boxes */
+.individual-team-selects {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+    margin-top: var(--space-xs);
+}
+
+.team-select-box {
+    position: relative;
+}
+
+.team-select-box .select2-container {
+    width: 100% !important;
+}
+
+.team-select-box .select2-selection--single {
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.8rem !important;
+    border: 2px solid var(--gray-200) !important;
+    border-radius: var(--radius-sm) !important;
+    background: var(--white) !important;
+    display: flex !important;
+    align-items: center !important;
+    transition: all var(--duration-fast) ease;
+}
+
+.team-select-box .select2-selection--single:focus,
+.team-select-box .select2-selection--single:hover {
+    border-color: var(--secondary-color) !important;
+    box-shadow: 0 0 0 2px var(--primary-light) !important;
+}
+
+.team-select-box .select2-selection__rendered {
+    color: var(--gray-700) !important;
+    font-size: 0.8rem !important;
+    line-height: 1.2 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--space-xs);
+}
+
+.team-select-box .select2-selection__arrow {
+    height: 34px !important;
+    width: 20px !important;
+    right: 6px !important;
+}
+
+.team-select-box .select2-selection__arrow b {
+    border-color: var(--gray-500) transparent transparent transparent !important;
+    border-width: 4px 4px 0 4px !important;
+}
+
+/* Selected state styling */
+.team-select-box .select2-selection--single.has-team {
+    border-color: whitesmoke !important;
+    background: var(--primary-light) !important;
+}.team-select-box .select2-selection--single.has-team .selected-item span {
+  color: #fff !important; /* Make selected team text white */
+}
+
+.team-select-box .select2-selection--single.has-team .select2-selection__clear {
+  color: #fff !important; /* Make the "x" button white */
+  opacity: 0.85;
+}.team-select-box .select2-selection--single.has-team .select2-selection__arrow b {
+  border-color: #fff transparent transparent transparent !important; /* White arrow when selected */
+}
+
+/* Loading and Animation States */
+.step-panel.entering {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.step-panel.leaving {
+  animation: slideOutLeft 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+}
+
+/* Accessibility improvements */
+.step-indicator:focus {
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 2px;
+}
+
+.btn-step:focus {
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .step-indicator {
+    border: 2px solid currentColor;
+  }
+  
+  .step-connector {
+    border-top: 2px solid currentColor;
+    height: 0;
+  }
+}
+
+.hidden-step-button {
+    visibility: hidden;
+}
+
+/* Mobile Responsive Design for Trip Form */
+@media (min-width: 768px) and (max-width: 1200px) {
+  .search-card {
+    height: auto !important;
+  }
+  .step-navigation.step-1 .btn-step-next,
+  .step-navigation.step-2 .btn-step-next,
+  .step-navigation.step-2 .btn-step-prev {
+    position: relative;
+    top: 6.5px;
+  }
+
+  .btn-step-submit {
+    font-size: 0.6rem !important;
+  }
+  .btn-step-submit i {
+    font-size: 1em !important;
+    margin-right: 4px;
+  }
+  .btn-step-submit {
+    letter-spacing: 0.01em;
+  }
+  
+  /* League selection improvements for tablet */
+  .select2-selection__choice {
+    padding: 3px 6px !important;
+    margin: 2px !important;
+    font-size: 0.7rem !important;
+    border-radius: var(--radius-sm) !important;
+    background: linear-gradient(135deg, var(--primary-light), rgba(255,255,255,0.9)) !important;
+    border: 1px solid var(--primary-color) !important;
+    max-width: 85px !important;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .select2-selection__choice__remove {
+    background: rgba(220, 53, 69, 0.1) !important;
+    border-radius: 50% !important;
+    width: 14px !important;
+    height: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 3px 0 0 !important;
+    font-size: 9px !important;
+    color: #dc3545 !important;
+    border: 1px solid rgba(220, 53, 69, 0.2) !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .select2-selection__choice__remove:hover {
+    background: #dc3545 !important;
+    color: white !important;
+    transform: scale(1.05) !important;
+  }
+  
+  .select2-selection__choice__display .selected-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .select2-selection__choice .league-logo-small,
+  .select2-selection__choice .team-logo-small {
+    width: 12px !important;
+    height: 12px !important;
+    min-width: 12px !important;
+    object-fit: contain !important;
+    border-radius: 2px !important;
+  }
+  
+  .select2-selection__choice span:last-child {
+    font-size: 0.65rem !important;
+    font-weight: 600 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 55px;
+    color: var(--primary-dark) !important;
+  }
+  
+  /* Container for preferred leagues - ensure proper spacing */
+  .select2-selection--multiple .select2-selection__rendered {
+    max-height: 80px !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 3px !important;
+    padding: 6px 30px 6px 6px !important;
+    min-height: 40px !important;
+  }
+  
+  /* Team selection dropdowns - same as mobile */
+  .team-select-box .select2-selection--single {
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    border: 2px solid var(--gray-200) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--white) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+  }
+  
+  .team-select-box .select2-selection--single:focus,
+  .team-select-box .select2-selection--single:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(48, 104, 204, 0.15) !important;
+    transform: translateY(-1px) !important;
+  }
+  
+  .team-select-box .select2-selection--single.has-team {
+    border-color: whitesmoke !important;
+    background: linear-gradient(135deg, var(--primary-light), var(--white)) !important;
+  }
+  
+  .select2-selection--single .selected-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  
+  .select2-selection--single .team-logo-small,
+  .select2-selection--single .league-logo-small {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    border-radius: 3px !important;
+  }
+  
+  .select2-selection--single .selected-item span:last-child {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+    color: var(--gray-800) !important;
+  }
+  
+  /* Clear button for single selects */
+  .select2-selection__clear {
+    color: #dc3545 !important;
+  }
+  
+  
+  .step-panel[data-step="3"] .individual-team-selects {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-md) !important;
+    margin-top: var(--space-md) !important;
+  }
+}
+
+@media (max-width: 767.99px) {
+  #startDate {
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  
+}
+
+/* Landscape Mobile */
+@media (max-width: 767.99px) and (orientation: landscape) {
+  .search-card {
+    height: 420px; /* Shorter for landscape */
+  }
+  
+  .step-content {
+    min-height: 200px;
+    max-height: 240px;
+  }
+  
+  .hero {
+    padding: var(--space-xl) 0;
+  }
+}
+
+/* Mobile optimizations for Select2 items */
+@media (max-width: 767.99px) {
+
+    .btn-step-submit {
+    font-size: 0.8rem !important;
+    padding: var(--space-sm) var(--space-md) !important;
+  }
+  .search-card {
+    height: auto !important;
+  }
+  
+  .search-card .card-body {
+    padding: var(--space-sm) 0;
+  }
+  
+  .step-progress {
+    margin: var(--space-sm) 0 var(--space-lg) 0 !important;
+  }
+  
+  
+  /* League selection items - more polished */
+  .select2-selection__choice {
+    padding: 4px 8px !important;
+    margin: 3px !important;
+    font-size: 0.75rem !important;
+    border-radius: var(--radius-md) !important;
+    background: linear-gradient(135deg, var(--primary-light), rgba(255,255,255,0.9)) !important;
+    border: 1px solid var(--primary-color) !important;
+    max-width: 100px !important;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .select2-selection__choice__remove {
+    background: rgba(220, 53, 69, 0.1) !important;
+    border-radius: 50% !important;
+    width: 16px !important;
+    height: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 4px 0 0 !important;
+    font-size: 10px !important;
+    color: #dc3545 !important;
+    border: 1px solid rgba(220, 53, 69, 0.2) !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .select2-selection__choice__remove:hover {
+    background: #dc3545 !important;
+    color: white !important;
+    transform: scale(1.1) !important;
+  }
+  
+  .select2-selection__choice__display .selected-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .select2-selection__choice .league-logo-small,
+  .select2-selection__choice .team-logo-small {
+    width: 14px !important;
+    height: 14px !important;
+    min-width: 14px !important;
+    object-fit: contain !important;
+    border-radius: 2px !important;
+  }
+  
+  .select2-selection__choice span:last-child {
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70px;
+    color: var(--primary-dark) !important;
+  }
+  
+  /* Team selection dropdowns - better spacing */
+  .individual-team-selects {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-md) !important;
+    margin-top: var(--space-md) !important;
+  }
+  
+  /* Single team selection - enhanced */
+  .team-select-box .select2-selection--single {
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    border: 2px solid var(--gray-200) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--white) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+  }
+  
+  .team-select-box .select2-selection--single:focus,
+  .team-select-box .select2-selection--single:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(48, 104, 204, 0.15) !important;
+    transform: translateY(-1px) !important;
+  }
+  
+  .team-select-box .select2-selection--single.has-team {
+    border-color: whitesmoke !important;
+    background: linear-gradient(135deg, var(--primary-light), var(--white)) !important;
+  }
+  
+  .select2-selection--single .selected-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  
+  .select2-selection--single .team-logo-small,
+  .select2-selection--single .league-logo-small {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    border-radius: 3px !important;
+  }
+  
+  .select2-selection--single .selected-item span:last-child {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+    color: var(--gray-800) !important;
+  }
+  
+  /* Clear button for single selects */
+  .select2-selection__clear {
+    color: #dc3545 !important;
+  }
+  
+  /* Container for preferred leagues */
+  .select2-selection--multiple .select2-selection__rendered {
+    max-height: 100px !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    padding: 8px !important;
+    min-height: 44px !important;
+  }
+  
+  /* Form improvements */
+  .form-row {
+    gap: var(--space-md) !important;
+    margin-bottom: var(--space-lg) !important;
+  }
+  
+  .multi-select-container {
+    margin-bottom: var(--space-md) !important;
+  }
+  
+  /* Button improvements */
+  .step-navigation {
+    margin-top: var(--space-xl) !important;
+    gap: var(--space-lg) !important;
+  }
+  
+}
+/* Extra small mobile - even more compact */
+@media (max-width: 576px) {
+  .select2-selection__choice {
+    max-width: 80px !important;
+    padding: 1px 4px !important;
+  }
+  
+  .select2-selection__choice span:last-child {
+    max-width: 50px !important;
+    font-size: 0.6rem !important;
+  }
+  
+  .select2-selection--single .selected-item span:last-child {
+    max-width: 100px !important;
+    font-size: 0.65rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 990px) {
+  .search-card {
+    height: auto !important;
+    max-width: 120% !important; /* Reduced from 150% to fit better */
+    width: 120% !important;
+    margin-left: -15% !important; /* Shift left to compensate */
+    margin-right: auto !important;
+  }
+  
+  .search-card .card-body {
+    max-width: none !important;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+
+  /* Make headline text smaller to fit */
+  .display-4.fw-bold {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  
+  .lead {
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
+  }
+
+  label[for="maxTravelTime"].form-label {
+    font-size: 0.7rem !important;
+  }
+}}
+
+/* On the problematic breakpoint, force auto height */
+@media (min-width: 576px) and (max-width: 767.99px) {
+  .search-card,
+  .step-content,
+  .step-panel {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+.visual-league-selector {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5em;
+    margin-bottom: 0.5rem;
+}
+
+.league-box {
+    position: relative;
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.4rem 0.1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-user-select: none;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 50px;
+    justify-content: center;
+}
+
+.league-box:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(4, 61, 124, 0.15);
+}
+
+.league-box.selected {
+    border-color: whitesmoke;
+    background: none;
+    transform: translateY(-2px);
+}
+
+.league-box.selected .league-name {
+    font-weight: 600;
+    color: whitesmoke;
+}
+
+.league-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.league-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+}
+
+.league-box.selected .league-icon img {
+    filter: brightness(1.2) drop-shadow(0 1px 2px rgba(255,255,255,0.3));
+}
+
+/* Combined icon styling for European Cups */
+.combined-icon {
+    position: relative;
+    width: 40px;
+    height: 32px;
+}
+
+.combined-icon .icon-1,
+.combined-icon .icon-2 {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: white;
+    padding: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.combined-icon .icon-1 {
+    left: 0;
+    top: 0;
+    z-index: 2;
+}
+
+.combined-icon .icon-2 {
+    right: 0;
+    top: 4px;
+    z-index: 1;
+}
+
+.league-name {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: #374151;
+    line-height: 1.2;
+    text-align: center;
+}
+
+/* Animation for selection feedback */
+@keyframes selectPulse {
+    0% { transform: scale(1) translateY(-2px); }
+    50% { transform: scale(1.05) translateY(-2px); }
+    100% { transform: scale(1) translateY(-2px); }
+}
+
+.league-box.just-selected {
+    animation: selectPulse 0.3s ease;
+}
+
+/* iPad/tablet: 4 in a row, smaller text */
+@media (min-width: 768px) and (max-width: 990px) {
+  .league-name {
+    font-size: 0.4rem;
+  }
+  .league-icon,
+  .combined-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Phone: 3 in a row */
+@media (max-width: 767.99px) {
+  .visual-league-selector {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .league-name {
+    font-size: 0.5rem;
+  }
+}
+/* Always reserve space for the recommendation tip */
+.step-recommendation-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 60px; /* Adjust to match your tip's height */
+  height: 60px;     /* Or use min-height if you want it to grow */
+  display: block;
+}
+
+/* Absolutely position the tip inside the wrapper */
+.step-recommendation-wrapper .step-recommendation.recommendation-tip {
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  margin: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* For 566px to 766px: let the recommendation tip push content down (normal flow) */
+@media (min-width: 566px) and (max-width: 767.99px) {
+  .step-recommendation-wrapper {
+    min-height: 0;
+    height: auto;
+  }
+  .step-recommendation-wrapper .step-recommendation.recommendation-tip {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100%;
+    margin: 1.2rem auto 1rem auto !important;
+    pointer-events: auto;
+  }
+}
+/* Step Recommendation Tip Styling */
+.step-recommendation.recommendation-tip {
+    border: 1.5px solid #e0e7ef;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(4,61,124,0.06);
+    padding: 0.7rem 1.1rem;
+    margin: 0.5rem auto 0.5rem auto; /* Reduced margin */
+    color: whitesmoke !important;
+    font-size: 1.02rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    transition: background 0.2s, box-shadow 0.2s;
+    position: absolute;
+    left: 50%;
+    top:70%; /* adjust as needed for vertical placement */
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 90%;
+    max-width: 500px;
+    margin: 0; /* override previous margin */
+    pointer-events: none; /* so it doesn't block form fields */
+}
+
+.step-recommendation.recommendation-tip i {
+    font-size: 1.3rem;
+    color: #fff !important; /* Make icon white */
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 2px rgba(251,191,36,0.12));
+}
+
+.step-recommendation.recommendation-tip span {
+    display: inline-block;
+    vertical-align: middle;
+    color: whitesmoke !important;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+@media (max-width: 767.99px) {
+    .step-recommendation.recommendation-tip {
+        padding: 0.7rem 0.7rem !important;
+        font-size: 0.95rem !important;
+        margin: 1.2rem auto 1rem auto;
+        border-radius: 10px !important;
+    }
+    .step-recommendation.recommendation-tip i {
+        font-size: 1rem !important;
+    }
+    .step-recommendation.recommendation-tip span {
+    display: inline-block;
+    vertical-align: middle;
+    color: #2d3a4a;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+}
+
+/* For 566px to 766px: let the recommendation tip push content down (normal flow) */
+@media (min-width: 566px) and (max-width: 767.99px) {
+  .step-panel[data-step="2"] .step-recommendation.recommendation-tip {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100%;
+    margin: 1.2rem auto 1rem auto !important;
+    pointer-events: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .step-recommendation-wrapper .step-recommendation.recommendation-tip,
+  .step-recommendation.recommendation-tip {
+    top: 85% !important;
+    font-size: 0.75rem !important;
+  }
+  .step-recommendation.recommendation-tip span {
+    font-size: 0.65rem !important;
+  }
+}
+
+@media (max-width: 767.99px) {
+  .invalid-feedback {
+    font-size: 0.7rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .invalid-feedback {
+    font-size: 0.6rem !important;
+  }
+}

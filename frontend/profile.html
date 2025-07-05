@@ -273,30 +273,35 @@
 
     <!-- Modal (outside of main) -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-        <!-- Keep your existing modal content -->
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-danger text-white border-0">
-                    <h5 class="modal-title" id="deleteConfirmModalLabel">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        Confirm Delete
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center py-4">
-                    <div class="mb-3">
-                        <i class="fas fa-trash-alt text-danger modal-delete-icon"></i>
+            <div class="modal-content modern-modal">
+                <div class="modal-header modern-header">
+                    <div class="header-content">
+                        <div class="header-icon">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                        <div class="header-text">
+                            <h4 class="modal-title" id="deleteConfirmModalLabel">Remove Saved Trip</h4>
+                            <p class="modal-subtitle">This action cannot be undone</p>
+                        </div>
                     </div>
-                    <h6 class="mb-3">Are you sure you want to delete this trip?</h6>
-                    <p class="text-muted mb-0" id="deleteConfirmTripName">Trip name will appear here</p>
-                    <small class="text-muted">This action cannot be undone.</small>
-                </div>
-                <div class="modal-footer border-0 justify-content-center">
-                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-2"></i>Cancel
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i>
                     </button>
-                    <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
-                        <i class="fas fa-trash me-2"></i>Delete Trip
+                </div>
+                <div class="modal-footer modern-footer">
+                    <button type="button" class="btn-modern btn-cancel" data-bs-dismiss="modal">
+                        <div class="btn-content">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Keep Trip</span>
+                        </div>
+                    </button>
+                    <button type="button" class="btn-modern btn-danger" id="confirmDeleteBtn">
+                        <div class="btn-content">
+                            <i class="fas fa-trash-alt"></i>
+                            <span>Remove Trip</span>
+                        </div>
+                        <div class="btn-glow"></div>
                     </button>
                 </div>
             </div>
@@ -1297,15 +1302,17 @@
                 console.error('❌ Failed to toggle favorite:', error);
             }
         }
-    
-        function showDeleteConfirm(tripId, tripName) {
-            document.getElementById('deleteConfirmTripName').textContent = tripName;
-            document.getElementById('confirmDeleteBtn').onclick = () => deleteTripConfirmed(tripId);
             
+        function showDeleteConfirm(tripId, tripName) {
+            // If you still show the trip name in the modal, set it here:
+            const tripNameElem = document.getElementById('deleteConfirmTripName');
+            if (tripNameElem) tripNameElem.textContent = tripName || '';
+        
+            document.getElementById('confirmDeleteBtn').onclick = () => deleteTripConfirmed(tripId);
             const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
             modal.show();
         }
-    
+            
         async function deleteTripConfirmed(tripId) {
             try {
                 const response = await window.apiService.deleteSavedTrip(tripId);

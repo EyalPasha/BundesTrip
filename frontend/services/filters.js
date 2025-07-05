@@ -1262,25 +1262,6 @@ function renderFilters(tripGroups) {
         cityFiltersContainer.appendChild(badge);
     });
     
-    // Add clear filters option
-    if (teams.length > 0) {
-        const clearTeamFilters = document.createElement('span');
-        clearTeamFilters.className = 'badge bg-secondary text-white ms-2';
-        clearTeamFilters.innerHTML = '<i class="fas fa-times"></i> Clear';
-        clearTeamFilters.onclick = clearFiltersEnhanced;
-        clearTeamFilters.style.cursor = 'pointer';
-        teamFiltersContainer.appendChild(clearTeamFilters);
-    }
-    
-    if (cities.length > 0) {
-        const clearCityFilters = document.createElement('span');
-        clearCityFilters.className = 'badge bg-secondary text-white ms-2';
-        clearCityFilters.innerHTML = '<i class="fas fa-times"></i> Clear';
-        clearCityFilters.onclick = clearFiltersEnhanced;
-        clearCityFilters.style.cursor = 'pointer';
-        cityFiltersContainer.appendChild(clearCityFilters);
-    }
-    
     // Find max number of games across all trips to set slider range
     let maxGamesFound = 1;
     let maxHotelChangesFound = 0;

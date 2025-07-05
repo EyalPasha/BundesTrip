@@ -112,15 +112,9 @@ async function loadLeagues() {
         // Force the placeholder to appear
         $(window.DOM.preferredLeaguesSelect).val(null).trigger('change');
         
-        // Set up event listener for league changes - but only if team selects exist
+        // Set up event listener for league changes - now always load all teams
         $(window.DOM.preferredLeaguesSelect).on('change', function() {
-            // Check if any individual team selects exist before calling updateTeamsByLeague
-            const teamSelectsExist = ['mustTeam1', 'mustTeam2', 'mustTeam3', 'mustTeam4']
-                .some(id => document.getElementById(id));
-                
-            if (teamSelectsExist) {
-                updateTeamsByLeague();
-            }
+            loadAllTeams();
         });
         
     } catch (error) {
@@ -149,82 +143,9 @@ async function loadTeams() {
     }
 }
 
+// Remove the updateTeamsByLeague logic and just call loadAllTeams
 async function updateTeamsByLeague() {
-    const selectedLeagues = $(window.DOM.preferredLeaguesSelect).val();
-    
-    // If no leagues selected, load all (German) teams
-    if (!selectedLeagues || selectedLeagues.length === 0) {
-        await loadAllTeams();
-        return;
-    }
-    
-    // Get all individual team selects
-    const teamSelects = ['mustTeam1', 'mustTeam2', 'mustTeam3', 'mustTeam4'];
-    const currentSelections = {};
-    
-    // Remember currently selected teams
-    teamSelects.forEach(selectId => {
-        const select = document.getElementById(selectId);
-        if (select) {
-            currentSelections[selectId] = select.value;
-        }
-    });
-    
-    try {
-        // Call API to get teams for selected leagues
-        const results = await Promise.all(selectedLeagues.map(league => getTeams(league)));
-        
-        // Combine teams from all selected leagues
-        const teams = [];
-        results.forEach(result => {
-            if (result && result.teams) {
-                teams.push(...result.teams);
-            }
-        });
-        
-        // Deduplicate teams
-        const uniqueTeams = [...new Set(teams)];
-        
-        // FILTER: Only keep German teams
-        const germanTeams = uniqueTeams.filter(team => GERMAN_TEAMS.includes(team));
-        
-        // Update all individual team dropdowns
-        teamSelects.forEach(selectId => {
-            const select = document.getElementById(selectId);
-            if (select) {
-                // Clear existing options except placeholder
-                const placeholder = select.querySelector('option[value=""]');
-                select.innerHTML = '';
-                
-                // Re-add placeholder if it existed
-                if (placeholder) {
-                    select.appendChild(placeholder);
-                }
-                
-                // Add teams
-                germanTeams.forEach(team => {
-                    const option = document.createElement('option');
-                    option.value = team;
-                    option.textContent = team;
-                    option.dataset.team = team;
-                    select.appendChild(option);
-                });
-                
-                // Restore previous selection if still valid
-                if (currentSelections[selectId] && germanTeams.includes(currentSelections[selectId])) {
-                    select.value = currentSelections[selectId];
-                }
-                
-                // Trigger Select2 update if initialized
-                if ($(select).hasClass('select2-hidden-accessible')) {
-                    $(select).trigger('change');
-                }
-            }
-        });
-        
-    } catch (error) {
-        showErrorToast(`Failed to update teams: ${error.message}`);
-    }
+    await loadAllTeams();
 }
 
 // Update the loadAllTeams function
