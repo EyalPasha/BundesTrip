@@ -135,11 +135,10 @@
 }
 
 .trip-card:not(:last-child)::before {
-  content: '\f072'; /* Airplane icon (Font Awesome) */
   font-family: 'Font Awesome 5 Free';
   font-weight: 900;
   position: absolute;
-  bottom: -2.65rem;
+  bottom: calc(-3.25rem + 10px);
   left: 50%;
   font-size: 0.9rem;
   color: var(--secondary-color);
@@ -2791,7 +2790,7 @@ body.mustteams-dropdown-open .select2-dropdown {
   }
   
   .trip-card:not(:last-child)::before {
-    bottom: -1.75rem;
+    bottom: calc(-1.75rem + 10px);
     font-size: 1.1rem;
     padding: 0 12px;
   }
@@ -4308,4 +4307,14 @@ body #results #tbdGamesSection.trip-card {
 
 .match-location-container > .fa-map-marker-alt {
   margin-right: -10px !important; /* Adjusted for better alignment */
+}
+
+/* Make badges inside timeline-end-text smaller on mobile only */
+@media (max-width: 768px) {
+  .timeline-end-text .badge.bg-light.text-dark {
+    font-size: 0.6rem !important;
+    padding: 0.15rem 0.6rem !important;
+    min-width: 40px !important;
+    height: 22px !important;
+  }
 }

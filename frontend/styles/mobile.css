@@ -644,7 +644,6 @@
     }
 
     .trip-card:not(:last-child)::before {
-    content: '\f072'; /* Airplane icon (Font Awesome) */
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     position: absolute;
