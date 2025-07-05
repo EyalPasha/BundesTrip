@@ -54,3 +54,4 @@ logs/
 *.tmp
 *.temp
 node_modules
+frontend/services/supabase-config.js

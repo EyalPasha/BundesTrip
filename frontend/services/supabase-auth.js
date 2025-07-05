@@ -1,5 +1,9 @@
-const supabaseUrl = 'https://ouurqpbwidicivdysdnq.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91dXJxcGJ3aWRpY2l2ZHlzZG5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNTcxMDcsImV4cCI6MjA2MzkzMzEwN30.uieOMYz4Rvzxt5O-_YRg2EvUreu859bJvp14jtUYCSw'
+// Supabase credentials are injected at build time via `supabase-config.js`
+const { url: supabaseUrl, anonKey: supabaseAnonKey } = window.supabaseConfig || {}
+
+if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing. Did you generate supabase-config.js?')
+}
 
 // Initialize Supabase client
 const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey)
