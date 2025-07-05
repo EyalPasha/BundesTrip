@@ -60,8 +60,7 @@ Supabase credentials are injected at build time to avoid committing secrets.
 Generate `frontend/services/supabase-config.js` by running:
 
 ```bash
-SUPABASE_URL=<your url> SUPABASE_ANON_KEY=<your key> \
-    python scripts/generate_frontend_config.py
+$env:SUPABASE_URL="<your url>"; $env:SUPABASE_ANON_KEY="<your key>"; python scripts/generate_frontend_config.py
 ```
 
 The generated file is gitignored and will be used by the frontend at runtime.
