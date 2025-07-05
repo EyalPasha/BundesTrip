@@ -54,6 +54,18 @@ The **BundesTrip** is a full-stack web application designed for football enthusi
 * **Moment.js** – Date and time handling
 * **Custom Algorithms** – Proprietary trip optimization and route planning logic
 
+### Configuration
+
+Supabase credentials are injected at build time to avoid committing secrets.
+Generate `frontend/services/supabase-config.js` by running:
+
+```bash
+SUPABASE_URL=<your url> SUPABASE_ANON_KEY=<your key> \
+    python scripts/generate_frontend_config.py
+```
+
+The generated file is gitignored and will be used by the frontend at runtime.
+
 ---
 
 ## 🏗️ Architecture & Design Patterns
