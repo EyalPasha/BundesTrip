@@ -38,21 +38,13 @@ SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 JWT_SECRET = os.getenv("JWT_SECRET")
 
 # Server settings
-API_HOST = os.getenv("HOST", "10.0.0.28")
-API_PORT = int(os.getenv("PORT", "8000"))
-ENVIRONMENT = os.getenv("ENVIRONMENT", "production")
+API_HOST = os.getenv("HOST", "0.0.0.0")
+API_PORT = int(os.getenv("PORT"))
+ENVIRONMENT = os.getenv("ENVIRONMENT")
 
-# CORS settings - updated with all development URLs
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", 
-    "http://localhost:5500,http://127.0.0.1:5500,"
-    "http://localhost:8001,http://127.0.0.1:8001,"
-    "http://172.30.2.216:8001,http://172.30.2.216:8000,"
-    "http://10.0.0.28:8001,http://10.0.0.28:5500,"
-    "http://10.0.0.67:5500,http://10.0.0.67:8001,http://10.0.0.67:8000,"
-    "http://localhost:3000,http://127.0.0.1:3000,"
-    "http://localhost:8000,http://127.0.0.1:8000,"
-    "null"
-).split(",")
+
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "")
+CORS_ORIGINS = [origin.strip() for origin in CORS_ORIGINS.split(",") if origin.strip()]
 
 # Validation - Fail fast if critical config is missing
 def validate_config():
@@ -100,4 +92,5 @@ def validate_config():
 validate_config()
 
 # Default cities
-DEFAULT_CITIES = ["Berlin", "Frankfurt", "Munich"]
+DEFAULT_CITIES = os.getenv("DEFAULT_CITIES", "")
+DEFAULT_CITIES = [city.strip() for city in DEFAULT_CITIES.split(",") if city.strip()]

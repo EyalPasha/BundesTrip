@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://127.0.0.1:8000 http://10.0.0.28:8000 http://10.0.0.67:8000 https://*.supabase.co;">
+    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - BundesTrip</title>
     <link rel="icon" href="./logos/logo.png" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="styles/login.css">
-    <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://localhost:8000 http://0.0.0.0:8000 http://127.0.0.1:8000 http://10.0.0.28:8000 http://10.0.0.67:8000 http://172.30.2.216:8000 https://*.ngrok-free.app https://*.ngrok.io https://*.supabase.co;">
     
 </head>
 <body>
@@ -230,6 +229,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./services/supabase-config.js"></script>
     <script src="./services/supabase-auth.js"></script>
+    <script src="./services/api-config.js"></script>
     <script>
         // Wait for auth service to be ready
         function waitForAuthService() {

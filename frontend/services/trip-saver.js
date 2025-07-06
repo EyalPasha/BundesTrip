@@ -19,7 +19,7 @@ class TripSaver {
 
         // Check if we have the original request
         if (!this.lastSearchRequest) {
-            console.warn('⚠️ No search request found - using basic data');
+            //console.warn('⚠️ No search request found - using basic data');
             this.lastSearchRequest = {
                 start_location: tripData.start_location || 'Unknown',
                 trip_duration: tripData.trip_duration || 3,
@@ -588,7 +588,7 @@ class TripSaver {
             return dateObj.toISOString().split('T')[0];
             
         } catch (error) {
-            console.warn('Could not normalize date:', date);
+            //console.warn('Could not normalize date:', date);
             return String(date).toLowerCase().trim();
         }
     }

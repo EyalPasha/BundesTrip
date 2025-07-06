@@ -178,7 +178,7 @@ async function handleSearch(e) {
                 filtersModule.resetFilterDrawerReferences();
             }
         } catch (err) {
-            console.warn('Could not reset filter drawer references:', err);
+            //console.warn('Could not reset filter drawer references:', err);
         }
         
         // IMPORTANT: Reset the active filters GLOBALLY to prevent persistence between searches
@@ -204,7 +204,7 @@ async function handleSearch(e) {
                 filtersModule.resetFilters();
             }
         } catch (err) {
-            console.warn('Could not reset filters module state:', err);
+            //console.warn('Could not reset filters module state:', err);
         }
 
         // Hide trip options header
@@ -471,7 +471,7 @@ function updateMinGamesOptions() {
     const minGamesSelect = document.getElementById('minGames');
     
     if (!tripDurationSelect || !minGamesSelect) {
-        console.warn('Trip duration or min games select not found');
+        //console.warn('Trip duration or min games select not found');
         return;
     }
     

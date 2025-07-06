@@ -131,7 +131,7 @@ class AuthService {
             }
             
         } catch (error) {
-            console.warn('⚠️ Supabase logout failed, performing manual logout:', error);
+            //console.warn('⚠️ Supabase logout failed, performing manual logout:', error);
             
             // Method 2: Manual logout - clear everything locally
             try {
@@ -225,7 +225,7 @@ class AuthService {
                 const now = Math.floor(Date.now() / 1000);
                 
                 if (payload.exp && payload.exp < now) {
-                    console.warn('⚠️ Token appears to be expired');
+                    //console.warn('⚠️ Token appears to be expired');
                     this.refreshToken();
                     return null;
                 }
@@ -233,12 +233,12 @@ class AuthService {
                 // console.log('✅ Token validation passed, expires at:', new Date(payload.exp * 1000));
                 return this.authToken;
             } catch (e) {
-                console.warn('⚠️ Token validation failed:', e);
+                //console.warn('⚠️ Token validation failed:', e);
                 return this.authToken; // Return anyway, let server validate
             }
         }
         
-        console.warn('⚠️ No auth token available');
+        //console.warn('⚠️ No auth token available');
         return null;
     }
 
@@ -256,7 +256,7 @@ class AuthService {
                 // console.log('✅ Token refreshed successfully');
                 return session.access_token;
             } else {
-                console.warn('⚠️ No session found during refresh');
+                //console.warn('⚠️ No session found during refresh');
                 this.currentUser = null;
                 this.authToken = null;
                 return null;

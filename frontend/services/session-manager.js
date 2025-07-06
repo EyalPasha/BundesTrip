@@ -12,7 +12,7 @@ class SessionManager {
         try {
             // Validate inputs
             if (!searchParams || !results || !Array.isArray(results)) {
-                console.warn('⚠️ Invalid session data provided to saveSearchSession');
+                //console.warn('⚠️ Invalid session data provided to saveSearchSession');
                 return;
             }
             
@@ -39,11 +39,11 @@ class SessionManager {
             sessionStorage.setItem(this.storageKey, JSON.stringify(sessionData));
             //console.log(`✅ Search session saved successfully (${renderedCount} trips rendered)`);
         } catch (error) {
-            console.warn('⚠️ Failed to save search session:', error);
+            //console.warn('⚠️ Failed to save search session:', error);
             try {
                 sessionStorage.removeItem(this.storageKey);
             } catch (e) {
-                console.warn('⚠️ Failed to clear corrupted search session');
+                //console.warn('⚠️ Failed to clear corrupted search session');
             }
         }
     }
@@ -53,7 +53,7 @@ class SessionManager {
         try {
             // Validate formData before saving
             if (!formData || typeof formData !== 'object') {
-                console.warn('⚠️ Invalid form data provided to saveFormState');
+                //console.warn('⚠️ Invalid form data provided to saveFormState');
                 return;
             }
             
@@ -76,12 +76,12 @@ class SessionManager {
             localStorage.setItem(this.formStateKey, JSON.stringify(formState));
             //console.log('✅ Form state saved successfully (excluding league/team selections)');
         } catch (error) {
-            console.warn('⚠️ Failed to save form state:', error);
+            //console.warn('⚠️ Failed to save form state:', error);
             // Clear corrupted data
             try {
                 localStorage.removeItem(this.formStateKey);
             } catch (e) {
-                console.warn('⚠️ Failed to clear corrupted form state');
+                //console.warn('⚠️ Failed to clear corrupted form state');
             }
         }
     }
@@ -107,7 +107,7 @@ class SessionManager {
 
             return parsed;
         } catch (error) {
-            console.warn('⚠️ Failed to get search session:', error);
+            //console.warn('⚠️ Failed to get search session:', error);
             this.clearSearchSession(); // Clear corrupted data
             return null;
         }
@@ -124,13 +124,13 @@ class SessionManager {
             // Form state now expires after 30 minutes (same as search session)
             if (Date.now() - parsed.timestamp > this.formStateTimeout) {
                 this.clearFormState();
-                console.log('🔄 Form state expired after 30 minutes - cleared');
+                //console.log('🔄 Form state expired after 30 minutes - cleared');
                 return null;
             }
 
             return parsed;
         } catch (error) {
-            console.warn('⚠️ Failed to get form state:', error);
+            //console.warn('⚠️ Failed to get form state:', error);
             this.clearFormState(); // Clear corrupted data
             return null;
         }
@@ -141,7 +141,7 @@ class SessionManager {
         try {
             sessionStorage.removeItem(this.storageKey);
         } catch (error) {
-            console.warn('⚠️ Failed to clear search session:', error);
+            //console.warn('⚠️ Failed to clear search session:', error);
         }
     }
 
@@ -150,7 +150,7 @@ class SessionManager {
         try {
             localStorage.removeItem(this.formStateKey);
         } catch (error) {
-            console.warn('⚠️ Failed to clear form state:', error);
+            //console.warn('⚠️ Failed to clear form state:', error);
         }
     }
 
@@ -184,7 +184,7 @@ class SessionManager {
             
             sessionStorage.setItem(this.storageKey, JSON.stringify(parsed));
         } catch (error) {
-            console.warn('⚠️ Failed to update scroll position:', error);
+            //console.warn('⚠️ Failed to update scroll position:', error);
         }
     }
 
@@ -213,7 +213,7 @@ class SessionManager {
             sessionStorage.setItem('navigation_away', 'true');
             //console.log('🔄 Navigation away marked');
         } catch (error) {
-            console.warn('⚠️ Failed to mark navigation:', error);
+            //console.warn('⚠️ Failed to mark navigation:', error);
         }
     }
 
@@ -241,7 +241,7 @@ class SessionManager {
                     }
                 } catch (error) {
                     // Handle invalid URLs
-                    console.warn('Invalid URL detected:', target.href);
+                    //console.warn('Invalid URL detected:', target.href);
                 }
             }
         });
@@ -283,7 +283,7 @@ class SessionManager {
             
             sessionStorage.setItem(this.storageKey, JSON.stringify(parsed));
         } catch (error) {
-            console.warn('⚠️ Failed to update rendered count:', error);
+            //console.warn('⚠️ Failed to update rendered count:', error);
         }
     }
 }

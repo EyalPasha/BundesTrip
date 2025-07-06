@@ -1,6 +1,5 @@
-// API Base URL - adjust as needed for production
-const API_BASE_URL = 'http://10.0.0.67:8000';
-
+// API Base URL - loaded from api-config.js
+const API_BASE_URL = window.apiConfig?.apiUrl;
 /**
  * Get auth token for API requests
  */
@@ -97,7 +96,7 @@ async function fetchApi(endpoint, options = {}, retries = 2) {
             
             // Retry logic for server errors (5xx)
             if (response.status >= 500 && retries > 0) {
-                console.warn(`Retrying request to ${endpoint} (${retries} retries left)`);
+                //console.warn(`Retrying request to ${endpoint} (${retries} retries left)`);
                 return fetchApi(endpoint, options, retries - 1);
             }
             
@@ -372,7 +371,7 @@ async function refreshData(apiKey) {
  */
 async function cancelTripRequest(requestId) {
     if (!requestId) {
-        console.warn("No request ID to cancel");
+        //console.warn("No request ID to cancel");
         return { success: false, message: "No request ID provided" };
     }
     
@@ -457,13 +456,13 @@ class ApiService {
                         // console.log('🔍 Could not parse token expiry');
                     }
                 } else {
-                    console.warn('⚠️ No session found - user may need to log in again');
+                    //console.warn('⚠️ No session found - user may need to log in again');
                 }
             } catch (error) {
                 console.error('❌ Error getting fresh session:', error);
             }
         } else {
-            console.warn('⚠️ Auth service not ready');
+            //console.warn('⚠️ Auth service not ready');
         }
 
         return headers;
@@ -789,7 +788,7 @@ class ApiService {
             // console.log(`📊 User activity logged: ${activityType}`, details);
             
         } catch (error) {
-            console.warn('⚠️ Failed to log user activity:', error);
+            //console.warn('⚠️ Failed to log user activity:', error);
             // Don't throw - activity logging shouldn't break main functionality
         }
     }

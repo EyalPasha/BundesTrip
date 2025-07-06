@@ -3,7 +3,8 @@
     <head>
         <!-- Add this in the HEAD section of your HTML -->
         <!-- Replace the existing CSP meta tag with this: -->
-        <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://localhost:8000 http://0.0.0.0:8000 http://127.0.0.1:8000 http://10.0.0.28:8000 http://10.0.0.67:8000 http://172.30.2.216:8000 https://*.ngrok-free.app https://*.ngrok.io https://*.supabase.co;">        <meta charset="UTF-8">
+        <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://127.0.0.1:8000 http://10.0.0.28:8000 http://10.0.0.67:8000 https://*.supabase.co;">
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>BundesTrip - Football Match Trip Planner</title>
         <!-- Add favicon -->
@@ -557,6 +558,8 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <!-- Load modules with type="module" -->
+<!-- Load config before API -->
+<script src="./services/api-config.js"></script>
 <script src="./services/api.js" type="module"></script>
 <script src="./services/trip-service.js" type="module"></script>
 

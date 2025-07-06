@@ -29,7 +29,7 @@ class SessionRestore {
             
             return this.restoredFromSession;
         } catch (error) {
-            console.warn('⚠️ Failed to restore page:', error);
+            //console.warn('⚠️ Failed to restore page:', error);
             return false;
         }
     }
@@ -84,7 +84,7 @@ class SessionRestore {
             //console.log('✅ Form state restored');
             return true;
         } catch (error) {
-            console.warn('⚠️ Failed to restore form state:', error);
+            //console.warn('⚠️ Failed to restore form state:', error);
             return false;
         }
     }
@@ -213,7 +213,7 @@ class SessionRestore {
             //console.log('✅ Search results restored');
             return true;
         } catch (error) {
-            console.warn('⚠️ Failed to restore search results:', error);
+            //console.warn('⚠️ Failed to restore search results:', error);
             return false;
         } finally {
             this.isRestoring = false;

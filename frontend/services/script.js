@@ -63,7 +63,7 @@ function initDOMReferences() {
         } else {
             // Only log warnings for required elements
             if (!['viewListBtn', 'teamFiltersContainer', 'cityFiltersContainer', 'sortResults'].includes(id)) {
-                console.warn(`DOM element not found: ${id}`);
+                //console.warn(`DOM element not found: ${id}`);
             }
             window.DOM[key] = null; // Set to null to allow safe checks
         }
@@ -443,7 +443,7 @@ async function checkApiHealth() {
         const health = await checkHealth();
         // console.log("API Health:", health);
         if (health.status !== 'ok') {
-            console.warn("API not fully operational - some features may be limited");
+            //console.warn("API not fully operational - some features may be limited");
         }
         return health;
     } catch (error) {
@@ -771,11 +771,11 @@ function returnToSearch() {
                     // console.log("Trip request cancelled successfully");
                     // Remove any notification code here
                 } else {
-                    console.warn("Failed to cancel trip request:", result.message);
+                    //console.warn("Failed to cancel trip request:", result.message);
                 }
             })
             .catch(err => {
-                console.warn("Error during cancellation:", err);
+                //console.warn("Error during cancellation:", err);
             })
             .finally(() => {
                 // Clear the request ID regardless of outcome
@@ -1278,7 +1278,7 @@ async function attemptPageRestore() {
                 //console.log('✅ Page state restored from session');
             }
         } catch (error) {
-            console.warn('⚠️ Page restoration failed:', error);
+            //console.warn('⚠️ Page restoration failed:', error);
         }
     }
 }

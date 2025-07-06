@@ -933,7 +933,7 @@ function filterTripOptions(tripCard) {
                 }
             }
         } catch (error) {
-            console.warn('Error extracting travel time:', error);
+            //console.warn('Error extracting travel time:', error);
         }
         
         // Track if this option is valid under current filter
@@ -1013,7 +1013,7 @@ function extractHotelChanges(optionPane) {
             }
         }
     } catch (e) {
-        console.warn('Error extracting hotel changes from trip data', e);
+        //console.warn('Error extracting hotel changes from trip data', e);
     }
     
     return 0; // Default if we can't find the information
@@ -1172,7 +1172,7 @@ function clearFiltersEnhanced() {
         if (typeof renderNextBatch === 'function') {
             renderNextBatch();
         } else {
-            console.warn('renderNextBatch function not found');
+            //console.warn('renderNextBatch function not found');
         }
     } else {
         // Legacy mode: show all cards and reset option tabs

@@ -201,7 +201,7 @@ async function loadTeams() {
         state.teams = germanTeams;
         
         if (germanTeams.length === 0) {
-            console.warn('No German teams found in the data');
+            //console.warn('No German teams found in the data');
         }
         
         // Clear and populate the select
@@ -246,7 +246,7 @@ async function loadLeagues() {
         state.leagues = leagues;
         
         if (leagues.length === 0) {
-            console.warn('No leagues found in the data');
+            //console.warn('No leagues found in the data');
         }
         
         // Clear and populate the select
@@ -1128,7 +1128,7 @@ document.getElementById('applyMobileFilters').addEventListener('click', () => {
                 mobileLeagueFilter.appendChild(option);
             });
         } else {
-            console.warn('No leagues in state to populate mobile filter');
+            //console.warn('No leagues in state to populate mobile filter');
         }
         
         if (state.teams && state.teams.length > 0) {
@@ -1140,7 +1140,7 @@ document.getElementById('applyMobileFilters').addEventListener('click', () => {
                 mobileTeamFilter.appendChild(option);
             });
         } else {
-            console.warn('No teams in state to populate mobile filter');
+            //console.warn('No teams in state to populate mobile filter');
         }
         
         //console.log(`Mobile filters populated. League options: ${mobileLeagueFilter.options.length}, Team options: ${mobileTeamFilter.options.length}`);

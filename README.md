@@ -70,11 +70,16 @@ BundesTrip is a full-stack web application that helps users explore and plan cus
 ### Configuration
 
 Supabase credentials are injected at build time to avoid committing secrets.
-Generate `frontend/services/supabase-config.js` by running:
+Generate `frontend/services/supabase-config.js` and `frontend/services/api-config.js` by running:
 
 ```bash
-$env:SUPABASE_URL="<your url>"; $env:SUPABASE_ANON_KEY="<your key>"; python scripts/generate_frontend_config.py
+$env:SUPABASE_URL="<your url>"; \
+    $env:SUPABASE_ANON_KEY="<your key>"; \
+    $env:API_URL="https://api.example.com"; \
+    python scripts/generate_frontend_config.py
 ```
+
+Set `API_URL` to the base URL of your production backend so the frontend knows where to send requests.
 
 The generated file is gitignored and will be used by the frontend at runtime.
 

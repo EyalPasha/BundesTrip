@@ -63,7 +63,7 @@ async function logoutUser() {
             signOutSuccess = result?.success || false;
             // console.log('Supabase sign out result:', result);
         } catch (supabaseError) {
-            console.warn('Supabase sign out failed (but continuing with local logout):', supabaseError);
+            //console.warn('Supabase sign out failed (but continuing with local logout):', supabaseError);
         }
         
         // Clear any stored tokens in localStorage
@@ -71,7 +71,7 @@ async function logoutUser() {
             localStorage.removeItem('supabase.auth.token');
             sessionStorage.removeItem('supabase.auth.token');
         } catch (storageError) {
-            console.warn('Error clearing storage:', storageError);
+            //console.warn('Error clearing storage:', storageError);
         }
         
         // Redirect to home if on protected page

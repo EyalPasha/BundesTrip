@@ -87,7 +87,7 @@ const DEFAULT_LOGO = 'soccer-1.png'; // Fallback logo
 function getTeamLogoUrl(teamName) {
     const logoFile = TEAM_LOGO_MAPPING[teamName];
     if (!logoFile) {
-        console.warn(`No logo found for team: ${teamName}`);
+        //console.warn(`No logo found for team: ${teamName}`);
         return `${LOGO_BASE_PATH}${DEFAULT_LOGO}`;
     }
     return `${LOGO_BASE_PATH}${logoFile}`;
@@ -106,7 +106,7 @@ function getLeagueLogoUrl(leagueName) {
     
     const logoFile = LEAGUE_LOGO_MAPPING[leagueName];
     if (!logoFile) {
-        console.warn(`No logo found for league: ${leagueName}`);
+        //console.warn(`No logo found for league: ${leagueName}`);
         return `${LOGO_BASE_PATH}${DEFAULT_LOGO}`;
     }
     return `${LOGO_BASE_PATH}${logoFile}`;
@@ -167,7 +167,7 @@ function formatLeagueOptionWithLogo(league) {
     
     // Fix this check to use the correct default logo
     if (logoUrl.includes(DEFAULT_LOGO)) {
-        console.warn(`No logo found for league: ${league.id}`);
+        //console.warn(`No logo found for league: ${league.id}`);
     }
     
     return $(
