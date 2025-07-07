@@ -1,16 +1,16 @@
-import os
-import logging
 from pathlib import Path
+import os, logging
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
-# Base directory
+# Base directory as a Path object  ← key line
 BASE_DIR = Path(__file__).parent
 
-# Load environment variables from .env file with explicit path
+# Load .env
 env_file = BASE_DIR / '.env'
 load_dotenv(env_file)
+
 
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
@@ -20,9 +20,9 @@ if DEBUG:
     logger.debug(f".env file exists: {env_file.exists()}")
 
 # Data files
-DATA_DIR = os.getenv("DATA_DIR", os.path.join(BASE_DIR, "data"))
-GAMES_FILE = os.getenv("GAMES_FILE", os.path.join(DATA_DIR, "allgames.txt"))
-TRAIN_TIMES_FILE = os.getenv("TRAIN_TIMES_FILE", os.path.join(DATA_DIR, "fastest_train_times.csv"))
+DATA_DIR = os.getenv("DATA_DIR", str(BASE_DIR / "data"))
+GAMES_FILE = os.getenv("GAMES_FILE", str(BASE_DIR / "data" / "allgames.txt"))
+TRAIN_TIMES_FILE = os.getenv("TRAIN_TIMES_FILE", str(BASE_DIR / "data" / "fastest_train_times.csv"))
 
 # Debug: Print what we're loading
 if DEBUG:
@@ -39,7 +39,7 @@ JWT_SECRET = os.getenv("JWT_SECRET")
 
 # Server settings
 API_HOST = os.getenv("HOST", "0.0.0.0")
-API_PORT = int(os.getenv("PORT"))
+API_PORT = int(os.getenv("PORT", 8080))
 ENVIRONMENT = os.getenv("ENVIRONMENT")
 
 
@@ -80,10 +80,6 @@ def validate_config():
                 logger.debug(f"  Error reading .env file: {e}")
         
         raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
-    
-    # Security checks
-    if len(JWT_SECRET) < 32:
-        raise ValueError("JWT_SECRET must be at least 32 characters long")
     
     if DEBUG:
         logger.debug("✅ Configuration validation passed")

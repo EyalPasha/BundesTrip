@@ -12,13 +12,10 @@ from config import (GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS,
                     JWT_SECRET, validate_config)
 import functools
 import traceback
-import uuid
 import asyncio
 import logging
 from concurrent.futures import TimeoutError
 import jwt
-from jwt.exceptions import InvalidTokenError, ExpiredSignatureError
-import requests
 from database import db_service, get_user_role, log_trip_request, log_user_activity
 from fastapi import Request
 
