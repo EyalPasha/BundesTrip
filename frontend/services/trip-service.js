@@ -288,8 +288,12 @@ async function handleSearch(e) {
             
             // SAVE SEARCH SESSION AFTER SUCCESSFUL RESPONSE
             if (response && response.trip_groups && window.sessionManager) {
-                window.sessionManager.saveSearchSession(payload, response.trip_groups, requestId);
-            }
+                window.sessionManager.saveSearchSession(
+                    payload,
+                    response.trip_groups,
+                    requestId,
+                    response.tbd_games || response.TBD_Games || []
+                );            }
             
             // STEP 7: PROCESS RESPONSE
             // Show results container if we got results

@@ -8,26 +8,22 @@ class SessionManager {
     }
 
     // Save search results to session storage
-    saveSearchSession(searchParams, results, requestId) {
+    saveSearchSession(searchParams, results, requestId, tbdGames = []) {
         try {
             // Validate inputs
             if (!searchParams || !results || !Array.isArray(results)) {
-                //console.warn('⚠️ Invalid session data provided to saveSearchSession');
                 return;
             }
-            
-            // Get current rendered count if available
             const renderedCount = window.tripResults ? window.tripResults.renderedCount : 5;
-            
             const sessionData = {
                 searchParams,
                 results,
                 requestId,
+                tbdGames, // <-- Save tbdGames here
                 timestamp: Date.now(),
                 url: window.location.pathname,
                 scrollPosition: window.pageYOffset || document.documentElement.scrollTop || 0,
-                renderedCount: renderedCount, // Save how many trips were rendered
-                // Save UI state
+                renderedCount: renderedCount,
                 uiState: {
                     resultsVisible: true,
                     filterCardVisible: results.length > 0,
@@ -35,16 +31,9 @@ class SessionManager {
                     resultsCount: results.length
                 }
             };
-            
             sessionStorage.setItem(this.storageKey, JSON.stringify(sessionData));
-            //console.log(`✅ Search session saved successfully (${renderedCount} trips rendered)`);
         } catch (error) {
-            //console.warn('⚠️ Failed to save search session:', error);
-            try {
-                sessionStorage.removeItem(this.storageKey);
-            } catch (e) {
-                //console.warn('⚠️ Failed to clear corrupted search session');
-            }
+            try { sessionStorage.removeItem(this.storageKey); } catch (e) {}
         }
     }
 

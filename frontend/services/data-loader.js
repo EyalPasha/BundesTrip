@@ -49,37 +49,90 @@ const LEAGUE_DISPLAY_NAMES = {
     "Conference League": "Conference League"
 };
 
+const AIRPORT_CITIES = [
+    "München",
+    "Berlin", 
+    "Frankfurt",
+    "Düsseldorf",
+    "Stuttgart",
+    "Karlsruhe"
+];
+
 // Update this function in data-loader.js
 async function loadCities() {
     try {
         showComponentLoading(window.DOM.startLocationSelect.parentElement);
         const data = await getCities();
-        
+
         // Save the placeholder option
         const placeholderOption = document.createElement('option');
         placeholderOption.value = "";
         placeholderOption.textContent = "Select a city";
         placeholderOption.selected = true;
         placeholderOption.disabled = true;
-        
+
         // Clear existing options
         window.DOM.startLocationSelect.innerHTML = '';
-        
+
         // Add the placeholder option back first
         window.DOM.startLocationSelect.appendChild(placeholderOption);
-        
-        // Add cities from the backend response
-        data.cities.forEach(city => {
-            const option = document.createElement('option');
-            option.value = city.id; // Keep original ID for backend
-            option.textContent = formatCityForDisplay(city.name); // Display only first word
-            option.dataset.originalName = city.name; // Store original name for backend
-            window.DOM.startLocationSelect.appendChild(option);
-        });
-        
+
+        // Find which airport cities are present in the fetched data
+        const fetchedCityNames = data.cities.map(city => city.name);
+        const allAirportsPresent = AIRPORT_CITIES.every(ac => fetchedCityNames.includes(ac));
+
+        let airportCities = [];
+        let otherCities = [];
+
+        if (allAirportsPresent) {
+            // Ensure order matches AIRPORT_CITIES
+            airportCities = AIRPORT_CITIES.map(ac => data.cities.find(city => city.name === ac));
+            otherCities = data.cities.filter(city => !AIRPORT_CITIES.includes(city.name));
+        } else {
+            // If not all airports present, just show all cities as usual
+            otherCities = data.cities;
+        }
+
+        // Add airport cities group if all present
+        if (airportCities.length > 0 && airportCities.every(Boolean)) {
+            const airportGroup = document.createElement('optgroup');
+            airportGroup.label = "International Airports";
+            airportCities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.id;
+                // Show "Karlsruhe (Baden-Baden)" as placeholder, but keep original name for backend
+                if (city.name === "Karlsruhe") {
+                    option.textContent = "Karlsruhe (Baden-Baden)";
+                } else {
+                    option.textContent = formatCityForDisplay(city.name);
+                }
+                option.dataset.originalName = city.name;
+                airportGroup.appendChild(option);
+            });
+            window.DOM.startLocationSelect.appendChild(airportGroup);
+        }
+
+        // Add the rest of the cities
+        if (otherCities.length > 0) {
+            const otherGroup = document.createElement('optgroup');
+            otherGroup.label = "Other Cities";
+            otherCities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.id;
+                if (city.name === "Any") {
+                    option.textContent = "Any Start Location";
+                } else {
+                    option.textContent = formatCityForDisplay(city.name);
+                }
+                option.dataset.originalName = city.name;
+                otherGroup.appendChild(option);
+            });
+            window.DOM.startLocationSelect.appendChild(otherGroup);
+        }
+
         // Ensure the placeholder is selected
         window.DOM.startLocationSelect.value = "";
-        
+
     } catch (error) {
         showErrorToast(`Failed to load cities: ${error.message}`);
     } finally {

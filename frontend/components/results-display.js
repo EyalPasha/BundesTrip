@@ -12,7 +12,11 @@ function renderResults(response, isRestore = false) {
     if (response.cancelled) {
         return;
     }
-    
+
+    // --- Move this up! ---
+    const tbdGames = response.tbd_games || response.TBD_Games || [];
+    // ---------------------
+
     const tripResults = document.getElementById('tripResults');
     
     // Clear previous results
@@ -60,7 +64,9 @@ function renderResults(response, isRestore = false) {
         window.tripContext = {
             tripDuration: response.trip_duration,
             startLocation: response.start_location,
-            startDate: response.start_date
+            startDate: response.start_date,
+            tbdGames: tbdGames, // now safe!
+            mustTeams: response.must_teams || [] // <-- add this
         };
     } else {
         window.tripResults = null;
@@ -69,7 +75,6 @@ function renderResults(response, isRestore = false) {
     
     // Check if we have both no trips AND TBD games
     const noTrips = !response.trip_groups || response.trip_groups.length === 0;
-    const tbdGames = response.tbd_games || response.TBD_Games || [];
     const hasTbdGames = tbdGames && tbdGames.length > 0;
 
     // Show TBD games if available
@@ -383,13 +388,21 @@ function renderMultipleBatches(targetCount) {
     // Reset current state
     state.renderedCount = 0;
     resultsContainer.innerHTML = '';
-    
+
+    // --- FIX: Re-render TBD games if present and no trips ---
+    if (
+        window.tripContext &&
+        window.tripContext.tbdGames &&
+        window.tripContext.tbdGames.length > 0 &&
+        state.allTrips.length === 0
+    ) {
+        // Call renderTbdGames directly (already imported at top)
+        renderTbdGames(window.tripContext.tbdGames, window.tripContext.mustTeams || [], true);
+    }
+
     // Render trips up to the target count
     const totalToRender = Math.min(targetCount, state.allTrips.length);
-    
-    //console.log(`Restoring ${totalToRender} trips from session`);
-    
-    // Render all trips at once for restoration (no batching during restore)
+
     for (let i = 0; i < totalToRender; i++) {
         const trip = state.allTrips[i];
         renderTripCard(trip, i + 1, window.tripContext);

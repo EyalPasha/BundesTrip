@@ -173,17 +173,19 @@ async function initializeUIComponents() {
                 }
             },
             onDayCreate: function(dObj, dStr, fp, dayElem) {
+                // Use local date, not UTC
+                const y = dayElem.dateObj.getFullYear();
+                const m = String(dayElem.dateObj.getMonth() + 1).padStart(2, '0');
+                const d = String(dayElem.dateObj.getDate()).padStart(2, '0');
+                const dateStr = `${y}-${m}-${d}`;
+            
                 if (availableDates && availableDates.length > 0) {
-                    const dateStr = dayElem.dateObj.toISOString().split('T')[0];
                     const matchDate = availableDates.find(d => d.date === dateStr);
-                    
-                    if (matchDate && matchDate.count) {
+                    if (matchDate && matchDate.matches) {
                         dayElem.classList.add('has-matches');
-                        
-                        const badge = document.createElement('span');
-                        badge.className = 'date-badge';
-                        badge.textContent = matchDate.count;
-                        dayElem.appendChild(badge);
+                        const dot = document.createElement('span');
+                        dot.className = 'date-dot';
+                        dayElem.appendChild(dot);
                     }
                 }
             },
@@ -1282,3 +1284,60 @@ async function attemptPageRestore() {
         }
     }
 }
+
+// Add this after your initializeUIComponents function or inside it if you prefer
+function setupAnyStartLocationLimits() {
+    const startLocation = document.getElementById('startLocation');
+    const tripDuration = document.getElementById('tripDuration');
+    const maxTravelTime = document.getElementById('maxTravelTime');
+
+    function enforceLimits() {
+        const selectedOption = startLocation.options[startLocation.selectedIndex];
+        const isAny = selectedOption && selectedOption.dataset.originalName === "Any";
+
+        if (isAny) {
+            // Limit days to max 6
+            Array.from(tripDuration.options).forEach(opt => {
+                opt.disabled = Number(opt.value) > 6;
+            });
+            if (Number(tripDuration.value) > 6) {
+                tripDuration.value = "6";
+                $(tripDuration).trigger('change');
+            }
+
+            // Limit max travel time to max 2 hours (120)
+            Array.from(maxTravelTime.options).forEach(opt => {
+                opt.disabled = Number(opt.value) > 120;
+            });
+            if (Number(maxTravelTime.value) > 120) {
+                maxTravelTime.value = "120";
+                $(maxTravelTime).trigger('change');
+            }
+        } else {
+            // Enable all options
+            Array.from(tripDuration.options).forEach(opt => {
+                opt.disabled = false;
+            });
+            Array.from(maxTravelTime.options).forEach(opt => {
+                opt.disabled = false;
+            });
+        }
+        // Refresh Select2 if used
+        if ($(tripDuration).hasClass('select2-hidden-accessible')) {
+            $(tripDuration).trigger('change.select2');
+        }
+        if ($(maxTravelTime).hasClass('select2-hidden-accessible')) {
+            $(maxTravelTime).trigger('change.select2');
+        }
+    }
+
+    if (startLocation) {
+        startLocation.addEventListener('change', enforceLimits);
+        // For Select2
+        $(startLocation).on('select2:select', enforceLimits);
+        enforceLimits(); // <-- Add this line
+    }
+}
+
+// Call this after UI components are initialized
+setupAnyStartLocationLimits();

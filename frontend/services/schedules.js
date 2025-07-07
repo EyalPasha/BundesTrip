@@ -36,34 +36,43 @@ const state = {
 function initializeFlatpickr() {
     // Skip if we're on mobile
     if (window.innerWidth < 768 || !DOM.dateFilter) {
-        // console.log('Skipping flatpickr initialization for desktop filters on mobile');
         return;
     }
-    
-    // console.log('Initializing flatpickr for desktop date filter');
-    
-    // Initialize flatpickr on the date filter
+
     flatpickr(DOM.dateFilter, {
         dateFormat: "F j, Y",
         altInput: true,
         altFormat: "F j, Y",
         minDate: "today",
-        maxDate: new Date().fp_incr(120), // 120 days from now
+        maxDate: new Date().fp_incr(120),
         onChange: function(selectedDates) {
             if (selectedDates.length > 0) {
                 jumpToDate(selectedDates[0]);
             }
         },
         disableMobile: "true",
-        locale: {
-            firstDayOfWeek: 1 // Start with Monday
-        },
+        locale: { firstDayOfWeek: 1 },
         onClose: function(selectedDates, dateStr, instance) {
-            // Reset the selected date when calendar closes
-            setTimeout(() => {
-                instance.clear();
-            }, 100);
+            setTimeout(() => { instance.clear(); }, 100);
+        },
+        // --- ADD THIS BLOCK ---
+        onDayCreate: function(dObj, dStr, fp, dayElem) {
+            const y = dayElem.dateObj.getFullYear();
+            const m = String(dayElem.dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dayElem.dateObj.getDate()).padStart(2, '0');
+            const dateStr = `${y}-${m}-${d}`;
+        
+            if (state.games && state.games.length > 0) {
+                const matchDate = state.games.find(g => g.date === dateStr);
+                if (matchDate && matchDate.matches) {
+                    dayElem.classList.add('has-matches');
+                    const dot = document.createElement('span');
+                    dot.className = 'date-dot';
+                    dayElem.appendChild(dot);
+                }
+            }
         }
+        // --- END BLOCK ---
     });
 }
 
@@ -113,13 +122,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         //console.log(`Successfully loaded ${teams.length} teams and ${leagues.length} leagues`);
         
-        // Initialize flatpickr after data is loaded
-        initializeFlatpickr();
-        
-        // Load initial games
         await loadAllGames();
         
-        // Now show all filters since everything is loaded
+        initializeFlatpickr();
+        createCalendarButton(); // <-- add this here
+        
         showAllFilters();
         
     } catch (error) {
@@ -672,40 +679,52 @@ function createCalendarButton() {
     if (window.innerWidth >= 768) {
         return; // Skip creation on desktop
     }
-    
+
     const calendarButton = document.createElement('button');
     calendarButton.className = 'calendar-btn';
     calendarButton.innerHTML = '<i class="fas fa-calendar-alt"></i>';
     calendarButton.setAttribute('aria-label', 'Jump to date');
-    
+
     // Append to document
     document.body.appendChild(calendarButton);
-    
+
     // Setup calendar functionality with reset on close
     flatpickr(calendarButton, {
         dateFormat: "F j, Y",
         inline: false,
         minDate: "today",
-        maxDate: new Date().fp_incr(120), // 120 days from now
+        maxDate: new Date().fp_incr(120),
         onChange: function(selectedDates) {
             if (selectedDates.length > 0) {
                 jumpToDate(selectedDates[0]);
             }
         },
         disableMobile: "true",
-        locale: {
-            firstDayOfWeek: 1 // Start with Monday
-        },
+        locale: { firstDayOfWeek: 1 },
         onReady: function(dateObj, dateStr, instance) {
-            // Add custom class for styling
             instance.calendarContainer.classList.add('floating-calendar');
         },
         onClose: function(selectedDates, dateStr, instance) {
-            // Reset the selected date when calendar closes
-            setTimeout(() => {
-                instance.clear();
-            }, 100);
+            setTimeout(() => { instance.clear(); }, 100);
+        },
+        // --- ADD THIS BLOCK ---
+        onDayCreate: function(dObj, dStr, fp, dayElem) {
+            const y = dayElem.dateObj.getFullYear();
+            const m = String(dayElem.dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dayElem.dateObj.getDate()).padStart(2, '0');
+            const dateStr = `${y}-${m}-${d}`;
+
+            if (state.games && state.games.length > 0) {
+                const matchDate = state.games.find(g => g.date === dateStr);
+                if (matchDate && matchDate.matches) {
+                    dayElem.classList.add('has-matches');
+                    const dot = document.createElement('span');
+                    dot.className = 'date-dot';
+                    dayElem.appendChild(dot);
+                }
+            }
         }
+        // --- END BLOCK ---
     });
 }
 

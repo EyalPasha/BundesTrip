@@ -492,3 +492,22 @@ body.no-scroll {
     width: 36px; /* Smaller shadow */
   }
 }
+
+/* Static loading message above the animated messages */
+.loading-static-message {
+  font-weight: 600;
+  color: #043d7c; /* Your main blue */
+  font-size: 1.08rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.loading-static-message i {
+  color: #043d7c; /* Match icon color to text */
+  font-size: 1.1em;
+  margin-right: 0.3em;
+}

@@ -175,7 +175,8 @@ class SessionRestore {
                     max_travel_time: session.searchParams.max_travel_time,
                     preferred_leagues: session.searchParams.preferred_leagues,
                     must_teams: session.searchParams.must_teams,
-                    min_games: session.searchParams.min_games
+                    min_games: session.searchParams.min_games,
+                    tbd_games: session.tbdGames || [] // <-- Restore tbd_games here
                 };
                 
                 await window.renderResults(mockResponse, true); // true = isRestore
