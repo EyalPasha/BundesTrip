@@ -1,5 +1,20 @@
 #dev
-backend\config.py
+
+# i did:
+# git update-index --assume-unchanged backend/config.py
+# to undo:
+# git update-index --no-assume-unchanged backend/config.py
+
+# added new csp meta tag in all html files.
+# need to uncomment THE BOTTOM ONE AND COMMENT THE UPPER ONE
+
+# api.config - change url, uncomment the line with the url.
+
+# supabase-config - unchanged
+
+
+
+# This is a sample .gitignore file for a project
 
 # Environment files
 .env
