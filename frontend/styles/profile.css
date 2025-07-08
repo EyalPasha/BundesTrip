@@ -1758,3 +1758,9 @@ body .btn-modern.btn-save,
   justify-content: center;
   gap: var(--space-md);
 }
+
+.ticket-link-btn,
+.ticket-link-btn i{
+  color: var(--primary-color) !important;
+  fill: var(--primary-color) !important;
+}

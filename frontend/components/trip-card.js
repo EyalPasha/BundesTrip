@@ -1,5 +1,6 @@
 import { getTeamLogoUrl } from '../services/team-logos.js';
 import { formatCityForDisplay, formatCityForBackend } from '../services/city-formatter.js';
+import { TEAM_TICKET_LINKS } from '../services/data-loader.js';
 /**
  * Date formatting helper functions
  */
@@ -278,7 +279,7 @@ function renderTripCard(group, index, tripContext = {}) {
     header.innerHTML = `
     <div class="trip-header-main">
         <h3>Trip ${index}</h3>
-        <span class="match-count-badge">${defaultVariant.num_games || 0} matches</span>
+        <span class="match-count-badge">${defaultVariant.num_games || 0} Matches</span>
     </div>
     
     <div class="trip-header-meta">
@@ -292,7 +293,7 @@ function renderTripCard(group, index, tripContext = {}) {
         </div>
         <div class="trip-meta-item">
             <i class="fas fa-sliders-h"></i>
-            <span>${group.variation_details.length} travel options</span>
+            <span>${group.variation_details.length} Travel options</span>
         </div>
     </div>
     
@@ -520,25 +521,26 @@ function renderTripCard(group, index, tripContext = {}) {
                 }
             }
 
-            // Add complete travel option info with modern styling
+// ...inside renderTripCard, where you set contentPane.innerHTML...
             contentPane.innerHTML = `
                 <div class="variant-summary">
                     <!-- Main Summary Header - Combined Stats -->
                     <div class="trip-summary-header">
-                            <div class="trip-summary-icon">
-                                <i class="fas fa-route"></i>
-                            </div>
+                        <div class="trip-summary-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
                         <div class="trip-summary-details">
                             <div class="trip-time-info">
-                                <i class="fas fa-clock"></i> ${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m total travel
+                                <i class="fas fa-clock"></i> ${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m Total travel
                             </div>
+                            <div class="travel-note text-muted" style="font-size:0.8rem;">
+                                    We recommend factoring in the train ride from the Hbf to the stadium, which typically takes around 10–20 minutes. We consider it part of the overall experience!                </div>
                             <div class="trip-meta-info">
-                                <span><i class="fas fa-map-marker-alt"></i> ${variant.cities?.length || 0} cities</span>
-                                <span><i class="fas fa-hotel"></i> ${variant.hotel_changes || 0} hotel changes</span>
+                                <span><i class="fas fa-map-marker-alt"></i> ${variant.cities?.length || 0} Cities</span>
+                                <span><i class="fas fa-hotel"></i> ${variant.hotel_changes || 0} Hotel changes</span>
                             </div>
                         </div>
-                    </div>
-                    
+                    </div>                    
                     <!-- Organized Content Grid -->
                     <div class="summary-content-grid">
                         <!-- Hotels Section -->
@@ -1410,11 +1412,28 @@ function renderItineraryForVariant(container, group, variantIndex) {
             });
 
             // Render before-game segments
+            // ...inside renderItineraryForVariant, inside the day_itinerary.forEach loop...
+            
+            // Render before-game segments
             if (beforeGameSegments.length > 0) {
                 const travelContainer = document.createElement('div');
                 travelContainer.className = 'travel-container ms-4 ps-2 mb-3';
-                
-                beforeGameSegments.forEach(segment => renderTravelSegmentItem(segment, travelContainer));
+            
+                // --- PATCH: Add (To game) label if a match follows this travel segment ---
+                // If this day has matches, add (To game) to the last beforeGameSegment
+                beforeGameSegments.forEach((segment, idx) => {
+                    // Clone the segment so we don't mutate original data
+                    const seg = { ...segment };
+                    // If this is the last travel segment before matches and there are matches
+                    if (
+                        idx === beforeGameSegments.length - 1 &&
+                        dayInfo.matches &&
+                        dayInfo.matches.length > 0
+                    ) {
+                        seg.context = seg.context ? seg.context + ', To game' : 'To game';
+                    }
+                    renderTravelSegmentItem(seg, travelContainer);
+                });
                 itinerary.appendChild(travelContainer);
             }
             
@@ -1438,10 +1457,11 @@ function renderItineraryForVariant(container, group, variantIndex) {
                         ? 'match-item must-team' 
                         : 'match-item';
                     
-                        matchItem.innerHTML = `
+                    const homeTeamTicketUrl = TEAM_TICKET_LINKS?.[homeTeam] || null;
+
+                    matchItem.innerHTML = `
                         <div class="match-header">
                             <div class="match-teams">
-                                <!-- Updated format: team name, logo, vs, logo, team name -->
                                 ${homeTeam}
                                 <img src="${getTeamLogoUrl(homeTeam)}" class="team-logo" alt="${homeTeam} logo">
                                 <span class="vs-text">vs</span>
@@ -1459,6 +1479,13 @@ function renderItineraryForVariant(container, group, variantIndex) {
                                     <i class="fas fa-clock"></i>
                                     ${time}
                                 </span>` : ''}
+                                ${homeTeamTicketUrl ? `
+                                    <a href="${homeTeamTicketUrl}" target="_blank" rel="noopener" class="ticket-link-btn ms-auto d-inline-flex align-items-center" title="Buy tickets for ${homeTeam}" style="margin-left:auto;float:right;gap:4px;">
+                                        <i class="fas fa-ticket-alt"></i>
+                                        <span>Tickets</span>
+                                        <i class="fas fa-arrow-up-right-from-square" style="font-size:0.95em;margin-left:2px;"></i>
+                                    </a>
+                                ` : ''}
                             </div>
                         </div>
                     `;
@@ -1529,7 +1556,7 @@ function renderItineraryForVariant(container, group, variantIndex) {
         <p>Your ${variant.day_itinerary.length}-day journey through Germany is all set. Enjoy the matches, stunning cities, and vibrant atmosphere of German football!</p>
         <div class="mt-3">
             <span class="badge bg-light text-dark me-2 mb-2">${variant.num_games || 0} matches</span>
-            <span class="badge bg-light text-dark me-2 mb-2">${variant.cities?.length || 0} cities</span>
+            <span class="badge bg-light text-dark me-2 mb-2">${variant.cities?.length || 0} Cities</span>
             <span class="badge bg-light text-dark me-2 mb-2">${variant.travel_hours || 0}h ${variant.travel_minutes || 0}m travel</span>
         </div>
     `;
@@ -1599,31 +1626,45 @@ function renderHotelStayItem(stay) {
   // Parse dates
   const startDate = parseDate(stay.startDate);
   const endDate = parseDate(stay.endDate);
-  
+
   // Get day names
   const startDay = startDate ? getDayName(startDate) : '';
   const endDay = endDate ? getDayName(endDate) : '';
-  
+
   // Format dates with day names
   let dateDisplay = '';
   if (startDate && endDate) {
     if (startDay === endDay) {
-      // Same day
       dateDisplay = `${startDay}, ${formatShortDate(startDate)}`;
     } else {
-      // Date range with day names
       dateDisplay = `${startDay}-${endDay}, ${formatDateRange(startDate, endDate)}`;
     }
   }
-  
+
+  // Format Booking.com search URL with "less than 3km" and "8+ rating" filters
+  function pad(n) { return n < 10 ? '0' + n : n; }
+  let bookingUrl = "#";
+  if (startDate) {
+    let checkoutDate = endDate && endDate > startDate ? endDate : new Date(startDate.getTime() + 86400000);
+    bookingUrl = `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(stay.hotel)}`
+      + `&checkin_year=${startDate.getFullYear()}&checkin_month=${pad(startDate.getMonth() + 1)}&checkin_monthday=${pad(startDate.getDate())}`
+      + `&checkout_year=${checkoutDate.getFullYear()}&checkout_month=${pad(checkoutDate.getMonth() + 1)}&checkout_monthday=${pad(checkoutDate.getDate())}`
+      + `&nflt=distance%3D3000%3Breview_score%3D80`;
+  }
+
+  // Use correct path for logo
+  const logoPath = "logos/book.png";
+
   return `
-    <div class="hotel-stay-item">
-      <div class="hotel-stay-left">${formatCityForDisplay(stay.hotel)}</div>
+    <a href="${bookingUrl}" target="_blank" rel="noopener" class="hotel-stay-item booking-link" title="Find hotels in ${formatCityForDisplay(stay.hotel)} on Booking.com" style="text-decoration:none;color:inherit;">
+      <div class="hotel-stay-left">
+        <span class="hotel-city">${formatCityForDisplay(stay.hotel)}</span>
+        <img src="${logoPath}" alt="Booking.com" class="booking-logo" style="height:15px;vertical-align:middle;margin-left:6px;">
+      </div>
       <div class="hotel-stay-dates">${dateDisplay}</div>
-    </div>
+    </a>
   `;
 }
-
 // Update the day header in renderItineraryForVariant function to include day name
 function formatDayHeader(dayInfo, dayIndex) {
   const hotel = formatCityForDisplay(dayInfo.hotel || '');

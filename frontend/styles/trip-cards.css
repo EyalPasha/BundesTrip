@@ -569,7 +569,7 @@ body.has-filter-drawer #resultsContainer .col-lg-8 {
   color: var(--primary-dark);
   font-weight: 600;
   font-size: 1.15rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: -0.5rem !important;
   background: transparent !important; /* Ensure no background */
 }
 
@@ -1902,7 +1902,7 @@ font-weight: 500;
 }
 
 .hotel-stay-dates {
-  font-size: 0.75rem;
+  font-size: 0.80em;
   color: var(--neutral-text);
   opacity: 0.85;
 }
@@ -4317,4 +4317,63 @@ body #results #tbdGamesSection.trip-card {
     min-width: 40px !important;
     height: 22px !important;
   }
+}
+
+/* Make hotel-stay-dates and booking logo smaller on mobile */
+@media (max-width: 768px) {
+  .booking-logo {
+    height: 12px !important;
+    min-height: 12px !important;
+    max-height: 14px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hotel-stay-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .hotel-stay-dates {
+    display: block;
+    margin-top: 2px;
+    word-break: break-word;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .travel-note {
+    font-size: 0.6rem !important;
+  }
+}
+
+.ticket-link-btn {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+.ticket-link-btn:visited {
+  color: inherit !important;
+}
+.ticket-link-btn:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+  .ticket-link-btn i.fa-ticket-alt {
+  position: relative;
+  top: 1px !important;
+}
+
+.ticket-link-btn i.fa-arrow-up-right-from-square {
+  margin-left: -1px !important;
+  position: relative;
+  top: -0.5px !important;
+    font-size: 0.8rem !important;
+}
+
+.ticket-link-btn i.fa-ticket-alt {
+  margin-right: -1.5px !important; /* Remove any extra space */
+  position: relative;
+  top: 1px !important;
 }

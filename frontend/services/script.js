@@ -152,7 +152,17 @@ async function initializeApp() {
 // Replace the initPreferredLeaguesSelect() call with this:
 async function initializeUIComponents() {
     // Initialize basic Select2 dropdowns
-    $('#startLocation, #tripDuration, #maxTravelTime, #minGames').select2({
+    $('#tripDuration, #maxTravelTime, #minGames').select2({
+        width: '100%',
+        minimumResultsForSearch: Infinity,
+        selectionCssClass: 'select2-selection--clean',
+        dropdownCssClass: 'select2-dropdown--clean'
+    });
+
+        // ...inside initializeUIComponents()...
+    $('#startLocation').select2({
+        placeholder: "Select a city",
+        allowClear: false,
         width: '100%',
         minimumResultsForSearch: Infinity,
         selectionCssClass: 'select2-selection--clean',

@@ -472,3 +472,23 @@ select::-webkit-scrollbar-button:decrement {
     border-radius: 2px !important;
     background-clip: content-box !important;
 }
+
+/* Blue background for Select2 optgroup labels */
+.select2-results__group {
+    background-color: #043d7c !important; /* Your main blue */
+    color: #fff !important;
+    font-weight: 600 !important;
+    padding: 0.45rem 0.75rem !important;
+    border-radius: 0.25rem !important;
+    font-size: 0.97rem !important;
+    letter-spacing: 0.01em;
+    margin-top: 0 !important;
+}
+
+/* Responsive: smaller font for optgroup labels on mobile */
+@media (max-width: 768px) {
+  .select2-results__group {
+    font-size: 0.85rem !important;
+    padding: 0.35rem 0.6rem !important;
+  }
+}

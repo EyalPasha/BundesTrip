@@ -2,6 +2,7 @@ import { applyTeamLogoStyles, preloadLogos, formatTeamOptionWithLogo, formatLeag
 import { fetchAllTeams, fetchLeagues, fetchAvailableDates, fetchGamesByDate, fetchTeamSchedule } from './schedule-service.js';
 import { GERMAN_TEAMS } from './data-loader.js';
 import { formatCityForDisplay, formatCityForBackend } from './city-formatter.js';
+import { TEAM_TICKET_LINKS } from './data-loader.js';
 
 // DOM Elements
 const DOM = {
@@ -1901,6 +1902,17 @@ function createGameCard(game) {
         </div>
     `;
 
+    // Ticket link for home team
+    const homeTeamTicketUrl = TEAM_TICKET_LINKS?.[homeTeam] || null;
+    const ticketBtnHTML = homeTeamTicketUrl ? `
+        <a href="${homeTeamTicketUrl}" target="_blank" rel="noopener" class="ticket-link-btn ms-2 d-inline-flex align-items-center"
+            title="Buy tickets for ${homeTeam}" style="gap:4px;text-decoration:none;color:inherit;">
+            <i class="fas fa-ticket-alt"></i>
+            <span>Tickets</span>
+            <i class="fas fa-arrow-up-right-from-square" style="font-size:0.95em;margin-left:2px;"></i>
+        </a>
+    ` : '';
+
     // Location (right, desktop only)
     const locationBox = document.createElement('div');
     locationBox.className = 'match-location-box text-end desktop-location-display';
@@ -1914,12 +1926,26 @@ function createGameCard(game) {
     chevron.className = 'mobile-chevron d-md-none ms-2';
     chevron.innerHTML = `<i class="fas fa-chevron-down"></i>`;
 
-    // Assemble row
+    // Ticket link for home team (desktop only)
+    const ticketBtnDesktop = document.createElement('div');
+    ticketBtnDesktop.className = 'ticket-link-desktop d-none d-md-flex align-items-center ms-2';
+    if (homeTeamTicketUrl) {
+        ticketBtnDesktop.innerHTML = `
+            <a href="${homeTeamTicketUrl}" target="_blank" rel="noopener" class="ticket-link-btn d-inline-flex align-items-center"
+                title="Buy tickets for ${homeTeam}" style="gap:4px;text-decoration:none;color:inherit;">
+                <i class="fas fa-ticket-alt"></i>
+                <span>Tickets</span>
+                <i class="fas fa-arrow-up-right-from-square" style="font-size:0.95em;margin-left:2px;"></i>
+            </a>
+        `;
+    }
+    
+    // Assemble row: time, ticket, teams, location, chevron
     row.appendChild(timeBox);
+    if (homeTeamTicketUrl) row.appendChild(ticketBtnDesktop);
     row.appendChild(teams);
     row.appendChild(locationBox);
     row.appendChild(chevron);
-
     // Details dropdown (mobile only)
     const details = document.createElement('div');
     details.className = 'match-details-section';
@@ -1933,6 +1959,16 @@ function createGameCard(game) {
                 <i class="fas fa-map-marker-alt me-2"></i>
                 <span>${formatCityForDisplay(game.display_location || game.location)}</span>
             </div>
+            ${homeTeamTicketUrl ? `
+            <div class="match-ticket-detail mt-2">
+                <a href="${homeTeamTicketUrl}" target="_blank" rel="noopener" class="ticket-link-btn d-inline-flex align-items-center"
+                    title="Buy tickets for ${homeTeam}" style="gap:4px;text-decoration:none;color:inherit;">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Tickets</span>
+                    <i class="fas fa-arrow-up-right-from-square" style="font-size:0.95em;margin-left:2px;"></i>
+                </a>
+            </div>
+            ` : ''}
         </div>
     `;
 

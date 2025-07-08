@@ -214,23 +214,28 @@ class SessionManager {
         // Listen for any navigation events (links, form submissions, etc.)
         document.addEventListener('click', (event) => {
             const target = event.target.closest('a');
-            if (target && target.href && !target.href.includes('#')) {
-                // Check if it's an external link or different page
+            if (
+                target &&
+                target.href &&
+                !target.href.includes('#') &&
+                // Only mark navigation if NOT opening in new tab/window
+                !target.target && // target="_blank" or similar will skip
+                // Only mark navigation for same-origin links
+                (new URL(target.href, window.location.origin)).origin === window.location.origin
+            ) {
                 const currentOrigin = window.location.origin;
                 const currentPath = window.location.pathname;
-                
+
                 try {
                     const targetUrl = new URL(target.href, currentOrigin);
-                    
+
                     // If it's a different page, mark navigation
                     if (targetUrl.pathname !== currentPath) {
                         userNavigating = true;
                         this.markNavigatingAway();
-                        //console.log('🔄 User clicked navigation link - marking away');
                     }
                 } catch (error) {
                     // Handle invalid URLs
-                    //console.warn('Invalid URL detected:', target.href);
                 }
             }
         });

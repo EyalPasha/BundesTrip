@@ -1847,3 +1847,86 @@ input[type="text"].form-control[readonly] {
     background-size: 1.2em 1.2em;
     padding-right: 2.2em; /* Make space for the icon */
 }
+
+@media (max-width: 768px) {
+  .match-ticket-detail {
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    font-size: 0.85em !important;
+    margin-left: 10px !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+  }
+  .match-ticket-detail .ticket-link-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    font-size: inherit !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .match-ticket-detail .ticket-link-btn i {
+    font-size: 1em !important;
+    margin: 0 2px 0 0 !important;
+    position: relative;
+    top: 1px;
+  }
+  .match-ticket-detail .ticket-link-btn span {
+    font-size: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+  }
+  .match-ticket-detail .ticket-link-btn i.fa-arrow-up-right-from-square {
+    font-size: 0.95em !important;
+    margin-left: 2px !important;
+    top: 1px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .match-details-content {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 12px !important; /* Equal space between all three */
+    margin-top: 10px !important;
+    width: 100%;
+    margin-left: -8px !important;
+  }
+  .match-time-detail,
+  .match-location-detail,
+  .match-ticket-detail {
+    flex: 1 1 0;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0.85em !important;
+  }
+  .match-ticket-detail {
+    margin-top: 0 !important;
+  }
+  .match-ticket-detail .ticket-link-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 769px) {
+  .ticket-link-btn i.fa-ticket-alt {
+    position: relative;
+    top: 0.5px;
+  }
+}

@@ -28,6 +28,77 @@ const GERMAN_TEAMS = [
     "TSG Hoffenheim II", "MSV Duisburg", "TSV Havelse", "1. FC Schweinfurt 05"
 ];
 
+const TEAM_TICKET_LINKS = {
+  // Bundesliga
+  "Bayern Munich": "https://tickets.fcbayern.com",
+  "Borussia Dortmund": "https://www.ticket-onlineshop.com/ols/bvb/de/home/",
+  "Bayer Leverkusen": "https://www.bayer04.de/en-us/shop/tickets",
+  "RB Leipzig": "https://rbleipzig.com/en/tickets/",
+  "VfB Stuttgart": "https://tickets.vfb.de/shop/103",
+  "Eintracht Frankfurt": "https://stores.eintracht.de/tickets/",
+  "SC Freiburg": "https://www.scfreiburg.com/tickets/",
+  "1. FC Union Berlin": "https://tickets.union-zeughaus.de",
+  "TSG Hoffenheim": "https://tickets.tsg-hoffenheim.de",
+  "1. FSV Mainz 05": "https://www.ticket-onlineshop.com/ols/mainz05/en/dauerkarte",
+  "VfL Wolfsburg": "https://www.vfl-wolfsburg.de/onlineshop-geschlossen",
+  "Borussia Mönchengladbach": "https://www.ticket-onlineshop.com/ols/borussia-tickets/",
+  "Werder Bremen": "https://www.werder.de/tickets/heimspiele/",
+  "FC Augsburg": "https://www.fcaugsburg.de/en/page/tickets-15",
+  "1. FC Heidenheim": "https://www.fc-heidenheim.de/tickets-overview",
+  "FC St. Pauli": "https://www.ticket-onlineshop.com/ols/fcstpauli/de",
+  "1. FC Köln": "https://fc.de/en/fc-tickets/",
+  "Hamburger SV": "https://www.ticket-onlineshop.com/ols/hsv/",
+
+  // 2. Bundesliga
+  "Arminia Bielefeld": "https://shop.arminia.de/arminia-bielefeld/eintrittskarten.htm",
+  "VfL Bochum": "https://www.ticket-onlineshop.com/ols/vflbochum1848/",
+  "Holstein Kiel": "https://www.ticket-onlineshop.com/ols/holstein-kiel/",
+  "SV Darmstadt 98": "https://tickets.sv98.de/",
+  "Fortuna Düsseldorf": "https://tickets.f95.de",
+  "Karlsruher SC": "https://tickets.ksc.de",
+  "Hannover 96": "https://www.ticket-onlineshop.com/ols/h96/",
+  "SC Paderborn 07": "https://www.ticket-onlineshop.com/ols/scp07/",
+  "SpVgg Greuther Fürth": "https://shop.sgf1903.de/sgf1903/SynwayWarengruppen/data/shop/cf9dd53c-5f1c-4f63-915b-992c5d4c2e32",
+  "Hertha BSC": "https://www.herthabsc.com/en/tickets/matchday-tickets",
+  "FC Schalke 04": "https://tickets.schalke04.de",
+  "SV Elversberg": "https://www.ticket-onlineshop.com/ols/sv07elversberg/de",
+  "1. FC Nürnberg": "https://www.fcn.de/tickets/",
+  "1. FC Kaiserslautern": "https://shop.fck.de/tickets/",
+  "1. FC Magdeburg": "https://1fcm.de/tickets/",
+  "Eintracht Braunschweig": "https://www.ticket-onlineshop.com/ols/eintracht-braunschweig/",
+  "Preußen Münster": "https://www.ticket-onlineshop.com/ols/scpreussen/",
+  "Dynamo Dresden": "https://www.dynamo-dresden.de/fans/ticketinfos/tickets/",
+
+  // 3. Liga
+  "SSV Ulm 1846": "https://www.ssv-ticketshop.de/",
+  "SSV Jahn Regensburg": "https://www.ssv-jahnshop.de/ssv-jahn/tageskarten_2.htm",
+  "Alemannia Aachen": "https://www.alemannia-aachen.de/tivoli/tickets/",
+  "Energie Cottbus": "https://tickets.egocentric.systems/tickets.asp?o=9026&page=subscription",
+  "Erzgebirge Aue": "https://tickets.fc-erzgebirge.de",
+  "Hansa Rostock": "https://tickets.fc-hansa.de",
+  "FC Ingolstadt 04": "https://tickets.fcingolstadt.de/shop?wes=102ab5e4110&shopid=110&nextstate=2&lpShortcutId=27",
+  "TSV 1860 Munich": "https://www.tsv1860-ticketing.de/tsv1860/",
+  "VfL Osnabrück": "https://www.ticket-onlineshop.com/ols/vflosnabrueck/",
+  "Rot-Weiss Essen": "https://www.rot-weiss-essen.de/fans/eintrittskarten/tickets-termine-news/",
+  "FC Saarbrücken": "https://fc-saarbruecken.reservix.de/",
+  "VfB Stuttgart II": "https://tickets.vfb.de/shop/103",
+  "SC Verl": "https://www.ticket-onlineshop.com/ols/sportclub-verl/de",
+  "Viktoria Köln": "https://www.viktoria1904.de/tickets",
+  "Waldhof Mannheim": "https://tickets.svw07.de",
+  "SV Wehen Wiesbaden": "https://svww.de/tickets",
+  "TSG Hoffenheim II": "https://tickets.tsg-hoffenheim.de",
+  "MSV Duisburg": "https://www.msv-duisburg.de/aktuelles/tickets/",
+  "TSV Havelse": "https://shop.snapticket.de/seller/tsv-havelse-acfe",
+  "1. FC Schweinfurt 05": "https://tickets-fcschweinfurt1905.reservix.de/",
+
+  // Other
+  "Borussia Dortmund II": "https://www.ticket-onlineshop.com/ols/bvb/de/home/",
+  "Hannover 96 II": "https://www.ticket-onlineshop.com/ols/h96/",
+  "SV Sandhausen": "https://tickets.svs1916.de",
+  "SpVgg Unterhaching": "https://tickets.snec.de/shops/176"
+};
+
+
 // This should match the priority in your backend's league_priority
 const LEAGUE_PRIORITY = {
     "bundesliga": 1,
@@ -290,5 +361,6 @@ export {
     loadTeams,
     updateTeamsByLeague,
     loadAvailableDates,
-    GERMAN_TEAMS
+    GERMAN_TEAMS,
+    TEAM_TICKET_LINKS
 };
