@@ -75,3 +75,6 @@ logs/
 node_modules
 frontend/services/supabase-config.js
 frontend/services/api-config.js
+.firebase/hosting.ZnJvbnRlbmQ.cache
+firebase.json
+.firebaserc
