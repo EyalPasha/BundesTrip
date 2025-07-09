@@ -130,9 +130,9 @@
                                                 <label for="startLocation" class="form-label">
                                                     <i class="fas fa-map-marker-alt icon"></i> Starting City <span class="text-danger">*</span>
                                                 </label>
-                                                <select class="form-select" id="startLocation" required>
-                                                    <!-- No <option value="" ...> here -->
-                                                </select>
+                                                    <select class="form-select styled-input" id="startLocation" required>
+                                                        <option value="" disabled selected hidden>Select a city</option>
+                                                    </select>
                                             </div>
                                         </div>
                                         
@@ -147,8 +147,7 @@
                                                 <label for="tripDuration" class="form-label">
                                                     <i class="fas fa-clock icon"></i> Duration
                                                 </label>
-                                                <select class="form-select" id="tripDuration">
-                                                    <option value="2">2 Days</option>
+                                                    <select class="form-select styled-input" id="tripDuration">                                                   <option value="2">2 Days</option>
                                                     <option value="3" selected>3 Days</option>
                                                     <option value="4">4 Days</option>
                                                     <option value="5">5 Days</option>

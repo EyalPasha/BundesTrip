@@ -761,3 +761,191 @@ footer .social-links a:hover .far {
     margin-bottom: 0.5rem;
   }
 }
+/* --- Native select styling to match Select2 single dropdowns exactly --- */
+.form-select.styled-input,
+select.form-select.styled-input {
+  border: 1px solid #ced4da !important;
+  border-radius: 0.375rem !important;
+  background-color: #fff !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 0.9rem !important;
+  color: #6c757d !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  transition: border-color 0.2s;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='16' height='16' fill='gray' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.25em 1.25em;
+}
+
+.form-select.styled-input:focus {
+  border-color: #80bdff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15) !important;
+  outline: none !important;
+}
+
+.form-select.styled-input::placeholder {
+  color: #6c757d !important;
+  opacity: 1 !important;
+}
+
+/* Remove default arrow for consistency with Select2 */
+.form-select.styled-input::-ms-expand {
+  display: none;
+}
+.form-select.styled-input::-webkit-input-placeholder { color: #6c757d !important; }
+.form-select.styled-input:-moz-placeholder { color: #6c757d !important; }
+.form-select.styled-input::-moz-placeholder { color: #6c757d !important; }
+.form-select.styled-input:-ms-input-placeholder { color: #6c757d !important; }
+
+
+.form-select.styled-input::-webkit-search-decoration,
+.form-select.styled-input::-webkit-search-cancel-button,
+.form-select.styled-input::-webkit-search-results-button,
+.form-select.styled-input::-webkit-search-results-decoration {
+  display: none !important;
+}
+
+/* For Firefox */
+.form-select.styled-input:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #6c757d;
+}
+
+/* For IE */
+.form-select.styled-input::-ms-value {
+  color: #6c757d;
+  background: none;
+}
+
+/* Ensure the dropdown arrow does not overlap text */
+.form-select.styled-input {
+  padding-right: 2.5rem !important;
+}
+
+/* Match Select2 disabled style */
+.form-select.styled-input:disabled,
+.form-select.styled-input[disabled] {
+  background-color: #e9ecef !important;
+  color: #6c757d !important;
+  opacity: 1 !important;
+  cursor: not-allowed !important;
+}
+
+/* Match Select2 invalid state */
+.form-select.styled-input.is-invalid {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.2rem rgba(220,53,69,.10) !important;
+}
+
+
+/* --- Make native select arrow match Select2 exactly --- */
+.form-select.styled-input {
+  /* Remove default arrow */
+  background-image: none !important;
+  position: relative;
+  padding-right: 2.5rem !important;
+}
+
+/* Custom arrow using ::after pseudo-element */
+.form-select.styled-input::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 4px 4px 0 4px;
+  border-color: var(--gray-500) transparent transparent transparent;
+  display: block;
+  z-index: 2;
+}
+
+/* Ensure parent is positioned for ::after */
+.form-select.styled-input,
+select.form-select.styled-input {
+  position: relative;
+  background-color: #fff !important;
+}
+
+/* Remove default arrow in IE/Edge */
+.form-select.styled-input::-ms-expand {
+  display: none;
+}
+
+/* Remove default arrow in Chrome/Safari/Edge */
+.form-select.styled-input::-webkit-appearance {
+  display: none !important;
+}
+
+/* --- Make start date input look exactly like Select2 single dropdown --- */
+#startDate.form-control {
+  border: 1px solid #ced4da !important;
+  border-radius: 0.375rem !important;
+  background-color: #fff !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 0.9rem !important;
+  color: #212529 !important;
+  box-shadow: none !important;
+  transition: border-color 0.2s;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#startDate.form-control:focus {
+  border-color: #80bdff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15) !important;
+  outline: none !important;
+}
+
+#startDate.form-control::placeholder {
+  color: #6c757d !important;
+  opacity: 1 !important;
+}
+
+/* Remove any browser default calendar icon */
+#startDate.form-control::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
+/* Remove extra padding/height from flatpickr */
+#startDate.form-control.flatpickr-input {
+  background-image: none !important;
+  padding-right: 2.5rem !important;
+}
+
+/* Add a calendar icon to match Select2 arrow position */
+#startDate.form-control {
+  position: relative;
+}
+
+#startDate.form-control::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg fill='gray' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 2a1 1 0 0 1 1-1h1V0h2v1h2V0h2v1a1 1 0 0 1 1 1v1H3V2zm10 2V2a2 2 0 0 0-2-2h-1V0h-2v1H6V0H4a2 2 0 0 0-2 2v2h12zm1 1H2a1 1 0 0 0-1 1v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a1 1 0 0 0-1-1zm-1 9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5h12v8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  pointer-events: none;
+  z-index: 2;
+}
+

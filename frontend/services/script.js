@@ -27,6 +27,7 @@ import { cancelTripRequest } from './api.js';
 // Add this import at the top with your other imports
 import { initializeMatchesExpander } from '../components/trip-card.js';
 
+
 // Create a global DOM object to share references between modules
 window.DOM = {};
 
@@ -72,12 +73,11 @@ function initDOMReferences() {
 
 // Modify the initialization code to prevent double-initialization
 
-// CONSOLIDATED APP INITIALIZATION
-document.addEventListener('DOMContentLoaded', function() {
-    // Don't call initializeMobileLayout here anymore
-    // It will only be called once during the app initialization
-    
-    // Continue with the rest of the app initialization
+document.addEventListener('DOMContentLoaded', async function() {
+    initDOMReferences(); // <-- set up window.DOM first!
+    await earlyInitTripForm(); // <-- FIRST: load and initialize selects
+
+    // Now continue with the rest of your initialization
     initializeApp()
         .catch(error => {
             console.error("App initialization error:", error);
@@ -85,6 +85,101 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     initializeMatchesExpander();
 });
+
+async function earlyInitTripForm() {
+    // 1. Load and render cities first
+    const cities = await loadCities();
+
+    // Populate startLocation
+    const startLocation = document.getElementById('startLocation');
+    if (startLocation && cities && cities.length) {
+        startLocation.innerHTML = '';
+        cities.forEach(city => {
+            const opt = document.createElement('option');
+            opt.value = city.id || city.name || city;
+            opt.textContent = city.name || city;
+            startLocation.appendChild(opt);
+        });
+    }
+
+    // Initialize Select2 for startLocation
+    $('#startLocation').select2({
+        placeholder: "Select a city",
+        allowClear: false,
+        width: '100%',
+        minimumResultsForSearch: Infinity,
+        selectionCssClass: 'select2-selection--clean',
+        dropdownCssClass: 'select2-dropdown--clean'
+    });
+
+    // Initialize Select2 for tripDuration (if not already in HTML)
+    $('#tripDuration').select2({
+        width: '100%',
+        minimumResultsForSearch: Infinity,
+        selectionCssClass: 'select2-selection--clean',
+        dropdownCssClass: 'select2-dropdown--clean'
+    });
+
+    // 2. Now load available dates and initialize flatpickr
+    const availableDates = await loadAvailableDates();
+
+    const startDateInput = document.getElementById('startDate');
+    if (startDateInput) {
+        flatpickr(startDateInput, {
+            dateFormat: "d F Y",
+            minDate: "today",
+            disableMobile: true,
+            allowInput: false,
+            onChange: function(selectedDates, dateStr) {
+                if (dateStr) {
+                    startDateInput.classList.remove('is-invalid');
+                }
+            },
+            onDayCreate: function(dObj, dStr, fp, dayElem) {
+                // Use local date, not UTC
+                const y = dayElem.dateObj.getFullYear();
+                const m = String(dayElem.dateObj.getMonth() + 1).padStart(2, '0');
+                const d = String(dayElem.dateObj.getDate()).padStart(2, '0');
+                const dateStr = `${y}-${m}-${d}`;
+                if (availableDates && availableDates.length > 0) {
+                    const matchDate = availableDates.find(d => d.date === dateStr);
+                    if (matchDate && matchDate.matches) {
+                        dayElem.classList.add('has-matches');
+                        const dot = document.createElement('span');
+                        dot.className = 'date-dot';
+                        dayElem.appendChild(dot);
+                    }
+                }
+            },
+            onOpen: function(selectedDates, dateStr, instance) {
+                // Fix mobile positioning on calendar open
+                if (window.innerWidth < 768) {
+                    const calendarElement = instance.calendarContainer;
+                    setTimeout(() => {
+                        calendarElement.style.position = 'fixed';
+                        calendarElement.style.top = '50%';
+                        calendarElement.style.left = '50%';
+                        calendarElement.style.transform = 'translate(-50%, -50%)';
+                        setTimeout(() => {
+                            calendarElement.classList.add('proper-position');
+                        }, 50);
+                    }, 0);
+                }
+            },
+            onClose: function(selectedDates, dateStr, instance) {
+                const calendarElement = instance.calendarContainer;
+                calendarElement.classList.remove('proper-position');
+            },
+            onReady: function() {
+                setTimeout(function() {
+                    if (startDateInput) {
+                        startDateInput.classList.add('flatpickr-ready');
+                    }
+                }, 100);
+            }
+        });
+    }
+}
 
 // Main application initialization flow
 async function initializeApp() {
@@ -108,11 +203,8 @@ async function initializeApp() {
     // Step 4: Load required data from API
     // console.log("Step 4: Loading data from API");
     try {
-        const [cities, leagues, teams, availableDates] = await Promise.all([
-            loadCities(),
-            loadLeagues(),
+        const [teams] = await Promise.all([
             loadTeams(),
-            loadAvailableDates(),
             checkApiHealth() // Also check API health in parallel
         ]);
         // console.log("Data loading complete");
@@ -152,87 +244,12 @@ async function initializeApp() {
 // Replace the initPreferredLeaguesSelect() call with this:
 async function initializeUIComponents() {
     // Initialize basic Select2 dropdowns
-    $('#tripDuration, #maxTravelTime, #minGames').select2({
+    $('#maxTravelTime, #minGames').select2({
         width: '100%',
         minimumResultsForSearch: Infinity,
         selectionCssClass: 'select2-selection--clean',
         dropdownCssClass: 'select2-dropdown--clean'
     });
-
-        // ...inside initializeUIComponents()...
-    $('#startLocation').select2({
-        placeholder: "Select a city",
-        allowClear: false,
-        width: '100%',
-        minimumResultsForSearch: Infinity,
-        selectionCssClass: 'select2-selection--clean',
-        dropdownCssClass: 'select2-dropdown--clean'
-    });
-    
-    // Initialize flatpickr date picker once with improved mobile positioning
-    const availableDates = await loadAvailableDates();
-    if(window.DOM.startDateInput) {
-        flatpickr(window.DOM.startDateInput, {
-            dateFormat: "d F Y",
-            minDate: "today",
-            disableMobile: true,
-            allowInput: false,
-            onChange: function(selectedDates, dateStr) {
-                if (dateStr) {
-                    window.DOM.startDateInput.classList.remove('is-invalid');
-                }
-            },
-            onDayCreate: function(dObj, dStr, fp, dayElem) {
-                // Use local date, not UTC
-                const y = dayElem.dateObj.getFullYear();
-                const m = String(dayElem.dateObj.getMonth() + 1).padStart(2, '0');
-                const d = String(dayElem.dateObj.getDate()).padStart(2, '0');
-                const dateStr = `${y}-${m}-${d}`;
-            
-                if (availableDates && availableDates.length > 0) {
-                    const matchDate = availableDates.find(d => d.date === dateStr);
-                    if (matchDate && matchDate.matches) {
-                        dayElem.classList.add('has-matches');
-                        const dot = document.createElement('span');
-                        dot.className = 'date-dot';
-                        dayElem.appendChild(dot);
-                    }
-                }
-            },
-            onOpen: function(selectedDates, dateStr, instance) {
-                // Fix mobile positioning on calendar open
-                if (window.innerWidth < 768) {
-                    const calendarElement = instance.calendarContainer;
-                    
-                    // Force correct day grid layout
-                    setTimeout(() => {
-                        // Position the calendar in the center of the screen first
-                        calendarElement.style.position = 'fixed';
-                        calendarElement.style.top = '50%';
-                        calendarElement.style.left = '50%';
-                        calendarElement.style.transform = 'translate(-50%, -50%)';
-                        
-                        // Apply proper positioning class after a brief delay
-                        setTimeout(() => {
-                            calendarElement.classList.add('proper-position');
-                        }, 50);
-                    }, 0);
-                }
-            },
-            onClose: function(selectedDates, dateStr, instance) {
-                // Remove positioning classes when calendar closes
-                const calendarElement = instance.calendarContainer;
-                calendarElement.classList.remove('proper-position');
-            },
-            onReady: function() {
-                setTimeout(function() {
-                    if(document.querySelector('#startDate')) {
-                        document.querySelector('#startDate').classList.add('flatpickr-ready');
-                    }
-                }, 100);
-            }
-        });
-    }
     
     // Initialize Visual League Selector (REPLACE the old initPreferredLeaguesSelect)
     initVisualLeagueSelector();
