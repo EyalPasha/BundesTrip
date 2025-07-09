@@ -33,9 +33,8 @@
         </script>
         
         <!-- CSS files -->
-        <link rel="stylesheet" href="styles/animations.css">
-        <link rel="stylesheet" href="styles/calendar.css">
         <link rel="stylesheet" href="styles/trip-cards.css">
+        <link rel="stylesheet" href="styles/calendar.css">
         <link rel="stylesheet" href="styles/loading-animation.css">
         <link rel="stylesheet" href="styles/mobile.css">
         <link rel="stylesheet" href="styles/footer.css">
@@ -131,7 +130,7 @@
                                                 <label for="startLocation" class="form-label">
                                                     <i class="fas fa-map-marker-alt icon"></i> Starting City <span class="text-danger">*</span>
                                                 </label>
-                                                <select class="form-select select-hidden" id="startLocation" required>
+                                                <select class="form-select" id="startLocation" required>
                                                     <!-- No <option value="" ...> here -->
                                                 </select>
                                             </div>
@@ -142,13 +141,13 @@
                                                 <label for="startDate" class="form-label">
                                                     <i class="fas fa-calendar-alt icon"></i> Start Date <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="text" class="form-control select-hidden" id="startDate" placeholder="Select date" required>
+                                                    <input type="text" class="form-control" id="startDate" placeholder="Select date" required>
                                             </div>
                                             <div>
                                                 <label for="tripDuration" class="form-label">
                                                     <i class="fas fa-clock icon"></i> Duration
                                                 </label>
-                                                <select class="form-select select-hidden" id="tripDuration">
+                                                <select class="form-select" id="tripDuration">
                                                     <option value="2">2 Days</option>
                                                     <option value="3" selected>3 Days</option>
                                                     <option value="4">4 Days</option>

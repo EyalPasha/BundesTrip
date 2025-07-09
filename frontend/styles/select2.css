@@ -3,7 +3,6 @@
 /* Base container */
 .select2-container {
     width: 100% !important;
-    transition: opacity 0.25s ease-in;
 }
 
 /* Selection area styling */
@@ -108,7 +107,6 @@
     font-weight: bold !important;
     cursor: pointer !important;
     opacity: 0.7 !important;
-    transition: all 0.2s ease !important;
     z-index: 10 !important;
     width: 20px !important;
     height: 20px !important;
@@ -293,11 +291,6 @@ body.loading-select2 {
     overflow-y: scroll !important; /* Prevent layout shift by always showing scrollbar */
 }
 
-/* Add this class to the body to indicate when the page is fully loaded */
-body.select2-ready .select-hidden {
-    visibility: visible !important;
-    transition: visibility 0s;
-}
 
 /* Add these fixes to select2.css */
 
@@ -318,14 +311,6 @@ body.select2-ready .select-hidden {
     background-color: white !important;
 }
 
-/* Fix any inherited backdrop filters */
-.select2-dropdown,
-.select2-results,
-.select2-results__options {
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
-}
-
 /* Add this to ensure dropdowns open on top of the form */
 body.select2-dropdown-open {
     position: relative;
@@ -333,14 +318,6 @@ body.select2-dropdown-open {
 }
 
 /* Smoother transitions for Select2 elements */
-body:not(.select2-ready) .select2-container {
-    opacity: 0;
-}
-
-/* Show immediately once ready */
-body.select2-ready .select2-container {
-    opacity: 1;
-}
 
 /* Remove delay from showing select2 elements */
 body.select2-ready .select-hidden {
@@ -348,11 +325,6 @@ body.select2-ready .select-hidden {
     transition: none !important;
 }
 
-
-/* Fix dropdown rendering under other elements */
-.select2-container--open .select2-dropdown {
-  z-index: 9999 !important;
-}
 
 /* Ensure the dropdown container itself has high z-index */
 .select2-container--open {
@@ -492,3 +464,4 @@ select::-webkit-scrollbar-button:decrement {
     padding: 0.35rem 0.6rem !important;
   }
 }
+

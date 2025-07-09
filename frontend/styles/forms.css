@@ -1270,3 +1270,18 @@
     font-size: 0.6rem !important;
   }
 }
+
+/* Remove animation and transition from the date input only */
+#startDate {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+#startDate {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: none !important;
+    animation: none !important;
+}
