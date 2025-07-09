@@ -186,14 +186,7 @@
     font-size: var(--mobile-icon-size-sm);
     width: 16px;
   }
-  
-  .search-card .form-select, 
-  .search-card .form-control {
-    font-size: var(--mobile-font-size-sm);
-    height: 36px;
-    padding: 0.4rem 0.6rem;
-  }
-  
+
   .search-card .btn-primary {
     font-size: var(--mobile-font-size-md);
     padding: 0.5rem 1rem;
@@ -261,13 +254,6 @@
   .form-label {
     font-size: var(--mobile-font-size-xs);
     margin-bottom: 0.2rem;
-  }
-  
-  .form-select, .form-control {
-    font-size: var(--mobile-font-size-sm);
-    padding: 0.3rem 0.5rem;
-    height: 34px;
-    font-size: 16px; /* Prevents iOS zoom on focus */
   }
   
   /* Make date filter more accessible */
