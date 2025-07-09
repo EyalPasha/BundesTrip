@@ -293,7 +293,6 @@ span.flatpickr-weekday {
     opacity: 0.5;
 }
 
-
 /* Disabled and out of month days - completely remove hover effects and make them non-interactive */
 .flatpickr-day.flatpickr-disabled.has-matches {
     color: #999;
@@ -315,15 +314,6 @@ span.flatpickr-weekday {
     border-color: #80bdff !important; /* Match Select2 focus border */
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important; /* Match Select2 focus shadow */
     outline: 0;
-}
-
-/* Add these styles to handle initial loading, similar to Select2 */
-.flatpickr-input.select-hidden {
-    visibility: hidden !important;
-}
-
-body.select2-ready .flatpickr-input.select-hidden {
-    visibility: visible !important;
 }
 
 /* Adjust overall calendar dimensions */
@@ -348,16 +338,6 @@ body.select2-ready .flatpickr-input.select-hidden {
     animation: flatpickrFadeInDown 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Match the transitions with Select2 */
-.flatpickr-input {
-    opacity: 0;
-    transition: opacity 0.25s ease-in;
-}
-
-body.select2-ready .flatpickr-input,
-.flatpickr-input.flatpickr-ready {
-    opacity: 1;
-}
 
 /* Ensure consistent timing during initialization */
 .flatpickr-calendar {

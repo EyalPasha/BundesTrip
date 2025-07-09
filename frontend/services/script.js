@@ -88,39 +88,123 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Main application initialization flow
 async function initializeApp() {
-    // console.log("Starting application initialization...");
-    
-    // Step 1: Initialize DOM references first
-    // console.log("Step 1: Initializing DOM references");
     initDOMReferences();
-    
-    // Step 2: Apply visual styles and preload resources
-    // console.log("Step 2: Applying visual styles");
+
+    // Start loading cities and available dates immediately
+    const citiesPromise = loadCities();
+    const availableDatesPromise = loadAvailableDates();
+
+    // Apply visual styles and preload resources
     document.body.classList.add('loading-select2');
-    applyTeamLogoStyles();
-    preloadLogos();
-    
-    // Step 3: Initialize form handlers and basic event listeners
-    // console.log("Step 3: Setting up form handlers");
+
+    // Initialize form handlers and basic event listeners
     initFormHandlers();
     updateMinGamesOptions();
-    
-    // Step 4: Load required data from API
-    // console.log("Step 4: Loading data from API");
+
+    // As soon as cities are loaded, initialize startLocation
+    citiesPromise
+    .then(cities => {
+        $('#startLocation').select2({
+            placeholder: "Select a city",
+            allowClear: false,
+            width: '100%',
+            minimumResultsForSearch: Infinity,
+            selectionCssClass: 'select2-selection--clean',
+            dropdownCssClass: 'select2-dropdown--clean'
+        });
+        // Optionally: populate #startLocation with city options here if not already in HTML
+    })
+    .catch(error => {
+        showErrorToast('Failed to load cities. Please refresh the page.');
+        console.error('Cities loading error:', error);
+    });
+
+    // As soon as availableDates are loaded, initialize flatpickr
+    availableDatesPromise
+    .then(availableDates => {
+        if(window.DOM.startDateInput) {
+            flatpickr(window.DOM.startDateInput, {
+                dateFormat: "d F Y",
+                minDate: "today",
+                disableMobile: true,
+                allowInput: false,
+                onChange: function(selectedDates, dateStr) {
+                    if (dateStr) {
+                        window.DOM.startDateInput.classList.remove('is-invalid');
+                    }
+                },
+                onDayCreate: function(dObj, dStr, fp, dayElem) {
+                    // Use local date, not UTC
+                    const y = dayElem.dateObj.getFullYear();
+                    const m = String(dayElem.dateObj.getMonth() + 1).padStart(2, '0');
+                    const d = String(dayElem.dateObj.getDate()).padStart(2, '0');
+                    const dateStr = `${y}-${m}-${d}`;
+                
+                    if (availableDates && availableDates.length > 0) {
+                        const matchDate = availableDates.find(d => d.date === dateStr);
+                        if (matchDate && matchDate.matches) {
+                            dayElem.classList.add('has-matches');
+                            const dot = document.createElement('span');
+                            dot.className = 'date-dot';
+                            dayElem.appendChild(dot);
+                        }
+                    }
+                },
+                onOpen: function(selectedDates, dateStr, instance) {
+                    // Fix mobile positioning on calendar open
+                    if (window.innerWidth < 768) {
+                        const calendarElement = instance.calendarContainer;
+                        
+                        // Force correct day grid layout
+                        setTimeout(() => {
+                            // Position the calendar in the center of the screen first
+                            calendarElement.style.position = 'fixed';
+                            calendarElement.style.top = '50%';
+                            calendarElement.style.left = '50%';
+                            calendarElement.style.transform = 'translate(-50%, -50%)';
+                            
+                            // Apply proper positioning class after a brief delay
+                            setTimeout(() => {
+                                calendarElement.classList.add('proper-position');
+                            }, 50);
+                        }, 0);
+                    }
+                },
+                onClose: function(selectedDates, dateStr, instance) {
+                    // Remove positioning classes when calendar closes
+                    const calendarElement = instance.calendarContainer;
+                    calendarElement.classList.remove('proper-position');
+                },
+                onReady: function() {
+                    setTimeout(function() {
+                        if(document.querySelector('#startDate')) {
+                            document.querySelector('#startDate').classList.add('flatpickr-ready');
+                        }
+                    }, 100);
+                }
+            });
+        }
+    applyTeamLogoStyles();
+    preloadLogos();
+    })
+    .catch(error => {
+        showErrorToast('Failed to load available dates. Please refresh the page.');
+        console.error('Available dates loading error:', error);
+    });
+
+    // Meanwhile, load the rest of the data in parallel
     try {
-        const [cities, leagues, teams, availableDates] = await Promise.all([
-            loadCities(),
+        const [leagues, teams, health] = await Promise.all([
             loadLeagues(),
             loadTeams(),
-            loadAvailableDates(),
-            checkApiHealth() // Also check API health in parallel
+            checkApiHealth()
         ]);
         // console.log("Data loading complete");
     } catch (error) {
         console.error("Error loading initial data:", error);
         // Continue with initialization even if some data fails to load
     }
-    
+
     // Step 5: Initialize UI components
     // console.log("Step 5: Initializing UI components");
     await initializeUIComponents();
@@ -158,81 +242,6 @@ async function initializeUIComponents() {
         selectionCssClass: 'select2-selection--clean',
         dropdownCssClass: 'select2-dropdown--clean'
     });
-
-        // ...inside initializeUIComponents()...
-    $('#startLocation').select2({
-        placeholder: "Select a city",
-        allowClear: false,
-        width: '100%',
-        minimumResultsForSearch: Infinity,
-        selectionCssClass: 'select2-selection--clean',
-        dropdownCssClass: 'select2-dropdown--clean'
-    });
-    
-    // Initialize flatpickr date picker once with improved mobile positioning
-    const availableDates = await loadAvailableDates();
-    if(window.DOM.startDateInput) {
-        flatpickr(window.DOM.startDateInput, {
-            dateFormat: "d F Y",
-            minDate: "today",
-            disableMobile: true,
-            allowInput: false,
-            onChange: function(selectedDates, dateStr) {
-                if (dateStr) {
-                    window.DOM.startDateInput.classList.remove('is-invalid');
-                }
-            },
-            onDayCreate: function(dObj, dStr, fp, dayElem) {
-                // Use local date, not UTC
-                const y = dayElem.dateObj.getFullYear();
-                const m = String(dayElem.dateObj.getMonth() + 1).padStart(2, '0');
-                const d = String(dayElem.dateObj.getDate()).padStart(2, '0');
-                const dateStr = `${y}-${m}-${d}`;
-            
-                if (availableDates && availableDates.length > 0) {
-                    const matchDate = availableDates.find(d => d.date === dateStr);
-                    if (matchDate && matchDate.matches) {
-                        dayElem.classList.add('has-matches');
-                        const dot = document.createElement('span');
-                        dot.className = 'date-dot';
-                        dayElem.appendChild(dot);
-                    }
-                }
-            },
-            onOpen: function(selectedDates, dateStr, instance) {
-                // Fix mobile positioning on calendar open
-                if (window.innerWidth < 768) {
-                    const calendarElement = instance.calendarContainer;
-                    
-                    // Force correct day grid layout
-                    setTimeout(() => {
-                        // Position the calendar in the center of the screen first
-                        calendarElement.style.position = 'fixed';
-                        calendarElement.style.top = '50%';
-                        calendarElement.style.left = '50%';
-                        calendarElement.style.transform = 'translate(-50%, -50%)';
-                        
-                        // Apply proper positioning class after a brief delay
-                        setTimeout(() => {
-                            calendarElement.classList.add('proper-position');
-                        }, 50);
-                    }, 0);
-                }
-            },
-            onClose: function(selectedDates, dateStr, instance) {
-                // Remove positioning classes when calendar closes
-                const calendarElement = instance.calendarContainer;
-                calendarElement.classList.remove('proper-position');
-            },
-            onReady: function() {
-                setTimeout(function() {
-                    if(document.querySelector('#startDate')) {
-                        document.querySelector('#startDate').classList.add('flatpickr-ready');
-                    }
-                }, 100);
-            }
-        });
-    }
     
     // Initialize Visual League Selector (REPLACE the old initPreferredLeaguesSelect)
     initVisualLeagueSelector();
@@ -244,7 +253,7 @@ async function initializeUIComponents() {
     setTimeout(function() {
         // Remove the old leagues update since we're using visual selector now
         // Remove the old mustTeams update since we're using individual selects now
-    }, 300);
+    }, 50);
     
     // Return a promise that resolves when everything is initialized
     return new Promise(resolve => {
@@ -252,7 +261,7 @@ async function initializeUIComponents() {
         setTimeout(() => {
             hidePreloaders();
             resolve();
-        }, 300);
+        }, 50);
     });
 }
 

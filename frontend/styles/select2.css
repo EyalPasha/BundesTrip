@@ -37,7 +37,6 @@
 .select2-results__option {
     padding: 0.5rem 0.75rem !important;
     font-size: 0.9rem !important;
-    transition: background-color 0.15s ease-in-out;
 }
 
 .select2-results__option--highlighted[aria-selected] {
