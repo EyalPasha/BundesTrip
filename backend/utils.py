@@ -3,7 +3,7 @@ import functools
 import pandas as pd
 from datetime import datetime, timedelta
 from models import Game
-from scrapers.synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, third_liga_stadiums
+from data.synonyms import bundesliga_1_stadiums, bundesliga_2_stadiums, third_liga_stadiums
 from typing import Optional, List, Dict, Tuple
 import copy
 from config import TRAIN_TIMES_FILE, DEFAULT_CITIES

@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
 from models import TripRequest, FormattedResponse, TripGroup, TravelSegment, TripVariation, SaveTripRequest
-from scrapers.synonyms import AIRPORT_CITIES, league_priority
+from data.synonyms import AIRPORT_CITIES, league_priority
 from config import (GAMES_FILE, TRAIN_TIMES_FILE, CORS_ORIGINS, 
                     SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_ANON_KEY,
                     JWT_SECRET, validate_config)
@@ -2451,9 +2451,7 @@ def get_league_schedule(
          description="Returns information about airports and their connections to cities",
          tags=["Travel Data"])
 def get_airport_information(city: Optional[str] = Query(None, description="Filter for connections to a specific city")):
-    """Get airport information and their connections to cities."""
-    from scrapers.synonyms import AIRPORT_CITIES
-    
+    """Get airport information and their connections to cities."""    
     airports = []
     for airport in AIRPORT_CITIES:
         airport_clean = airport.replace(" hbf", "")

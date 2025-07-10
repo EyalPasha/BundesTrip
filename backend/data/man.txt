@@ -1,3 +1,0 @@
-League, Date, Time, Day, Home Team, Away Team
-DFB-Pokal, 23 May 2026, 21:00, Saturday, TBD, TBD, Berlin hbf
-Conference League, 27 May 2026, 21:00, Wednesday, TBD, TBD, Leipzig hbf
