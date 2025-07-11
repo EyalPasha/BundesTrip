@@ -1310,4 +1310,13 @@
       color: #212529 !important;
   }
 
-  
+    /* Make selected day with matches dark blue */
+  .flatpickr-day.selected.has-matches {
+    background: #043d7c !important;
+    color: #fff !important;
+    border-color: #043d7c !important;
+  }
+
+  .flatpickr-day.selected.has-matches .date-dot {
+  background: #fff !important;
+}
