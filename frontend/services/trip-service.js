@@ -2,6 +2,7 @@ import { validateForm } from './validators.js';
 import { planTrip, cancelTripRequest, API_BASE_URL } from './api.js';
 import { renderResults } from '../components/results-display.js';
 import { renderTripCard } from '../components/trip-card.js';
+import { LEAGUE_NAME_MAP } from '../services/data-loader.js';
 
 // Make renderTripCard globally available for API service
 window.renderTripCard = renderTripCard;
@@ -233,8 +234,8 @@ async function handleSearch(e) {
         // STEP 5: BUILD PAYLOAD WITH THE REQUEST ID
         try {
             // Use Select2's API to get selected values
-            const selectedLeagues = $(window.DOM.preferredLeaguesSelect).val() || [];
-            
+            const selectedLeagues = getSelectedLeagues();
+            console.log("DEBUG: selectedLeagues from league-boxes:", selectedLeagues);            
             // NEW: Get teams from individual selects instead of multi-select
             const selectedTeams = getSelectedTeams(); // Use the new function from script.js
             
@@ -569,6 +570,11 @@ function resetLoadingUI(show = false) {
         // Don't hide the child elements, just the container
     }
 }
-
+function getSelectedLeagues() {
+    // Map displayed league names to backend keys
+    return Array.from(document.querySelectorAll('.league-box.selected'))
+        .map(box => LEAGUE_NAME_MAP[box.getAttribute('data-league')] || box.getAttribute('data-league'))
+        .filter(Boolean);
+}
 // Export the new function
 export { handleSearch, initFormHandlers, updateMinGamesOptions, resetLoadingUI };
