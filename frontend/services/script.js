@@ -1309,29 +1309,38 @@ function setupAnyStartLocationLimits() {
     const startLocation = document.getElementById('startLocation');
     const tripDuration = document.getElementById('tripDuration');
     const maxTravelTime = document.getElementById('maxTravelTime');
+    const oneCityOnlyCheckbox = document.getElementById('oneCityOnly');
+    const oneCityOnlyLabel = document.querySelector('label[for="oneCityOnly"]');
+    const oneCityOnlyTooltip = document.querySelector('.custom-tooltip-trigger');
 
     function enforceLimits() {
         const selectedOption = startLocation.options[startLocation.selectedIndex];
         const isAny = selectedOption && selectedOption.dataset.originalName === "Any";
 
         if (isAny) {
-            // Limit days to max 6
+            // Limit days to max 5
             Array.from(tripDuration.options).forEach(opt => {
-                opt.disabled = Number(opt.value) > 6;
+                opt.disabled = Number(opt.value) > 5;
             });
-            if (Number(tripDuration.value) > 6) {
-                tripDuration.value = "6";
+            if (Number(tripDuration.value) > 5) {
+                tripDuration.value = "5";
                 $(tripDuration).trigger('change');
             }
 
-            // Limit max travel time to max 2 hours (120)
+            // Limit max travel time to max 90 minutes (1h 30m)
             Array.from(maxTravelTime.options).forEach(opt => {
-                opt.disabled = Number(opt.value) > 120;
+                opt.disabled = Number(opt.value) > 90;
             });
-            if (Number(maxTravelTime.value) > 120) {
-                maxTravelTime.value = "120";
+            // Select 60 (1h) as default if current value is above 90 or not set
+            if (Number(maxTravelTime.value) > 90 || !maxTravelTime.value) {
+                maxTravelTime.value = "60";
                 $(maxTravelTime).trigger('change');
             }
+
+            // Hide "Stay in one city" checkbox, label, and tooltip
+            if (oneCityOnlyCheckbox) oneCityOnlyCheckbox.style.display = 'none';
+            if (oneCityOnlyLabel) oneCityOnlyLabel.style.display = 'none';
+            if (oneCityOnlyTooltip) oneCityOnlyTooltip.style.display = 'none';
         } else {
             // Enable all options
             Array.from(tripDuration.options).forEach(opt => {
@@ -1340,6 +1349,11 @@ function setupAnyStartLocationLimits() {
             Array.from(maxTravelTime.options).forEach(opt => {
                 opt.disabled = false;
             });
+
+            // Show "Stay in one city" checkbox, label, and tooltip
+            if (oneCityOnlyCheckbox) oneCityOnlyCheckbox.style.display = '';
+            if (oneCityOnlyLabel) oneCityOnlyLabel.style.display = '';
+            if (oneCityOnlyTooltip) oneCityOnlyTooltip.style.display = '';
         }
         // Refresh Select2 if used
         if ($(tripDuration).hasClass('select2-hidden-accessible')) {
@@ -1357,6 +1371,5 @@ function setupAnyStartLocationLimits() {
         enforceLimits(); // <-- Add this line
     }
 }
-
 // Call this after UI components are initialized
 setupAnyStartLocationLimits();

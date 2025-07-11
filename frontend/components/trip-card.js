@@ -1419,19 +1419,22 @@ function renderItineraryForVariant(container, group, variantIndex) {
                 const travelContainer = document.createElement('div');
                 travelContainer.className = 'travel-container ms-4 ps-2 mb-3';
             
-                // --- PATCH: Add (To game) label if a match follows this travel segment ---
-                // If this day has matches, add (To game) to the last beforeGameSegment
                 beforeGameSegments.forEach((segment, idx) => {
                     // Clone the segment so we don't mutate original data
                     const seg = { ...segment };
-                    // If this is the last travel segment before matches and there are matches
-                    if (
-                        idx === beforeGameSegments.length - 1 &&
-                        dayInfo.matches &&
-                        dayInfo.matches.length > 0
-                    ) {
-                        seg.context = seg.context ? seg.context + ', To game' : 'To game';
+            
+                    // If this is the last beforeGameSegment and there are matches
+                    // AND the first afterGameSegment contains "After Game" in its context,
+                    // add "To game" to the context
+                    const isLastBefore = idx === beforeGameSegments.length - 1;
+                    const hasMatches = dayInfo.matches && dayInfo.matches.length > 0;
+                    const hasAfterGame = afterGameSegments.length > 0 &&
+                        (afterGameSegments[0].context || '').toLowerCase().includes('after game');
+            
+                    if (isLastBefore && hasMatches && hasAfterGame) {
+                        seg.context = seg.context ? seg.context + ', To Game' : 'To Game';
                     }
+            
                     renderTravelSegmentItem(seg, travelContainer);
                 });
                 itinerary.appendChild(travelContainer);

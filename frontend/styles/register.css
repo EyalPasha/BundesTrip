@@ -963,3 +963,21 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
         padding: var(--space-xs) 0; /* Better touch targets for links */
     }
 }
+.form-check-input.is-invalid ~ .form-check-label {
+    display: inline !important;
+    white-space: nowrap !important;
+    vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .form-check-label[for="agreeTerms"] {
+    position: relative;
+    top: 4px;
+  }
+}
+
+#registrationSuccess,
+#registrationSuccess .alert,
+#registrationSuccessMessage {
+    font-size: 0.7em;
+}

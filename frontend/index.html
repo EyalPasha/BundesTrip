@@ -160,7 +160,23 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                        
+                                        <div class="form-row mt-2">
+                                          <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="oneCityOnly">
+                                            <label class="form-check-label form-label label-flex-gap position-relative" for="oneCityOnly">
+                                              Stay in this city throughout the trip
+                                              <span class="custom-tooltip-trigger">
+                                                <i class="fas fa-info-circle text-primary ms-2"></i>
+                                                <span class="custom-tooltip">
+                                                  Check to always stay in your chosen city and hotel.<br>
+                                                  <b>For many more trip options, including lots of one-city trips in nearby places, leave this unchecked!</b>
+                                                </span>
+                                              </span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        </div>
 
                                     <!-- Step 2: Travel Preferences -->
                                     <div class="step-panel" data-step="2">
@@ -190,15 +206,13 @@
                                                     <option value="45">45 Min</option>
                                                     <option value="60">1 Hour</option>
                                                     <option value="75">1h 15m</option>
-                                                    <option value="90">1h 30m</option>
+                                                    <option value="90" selected>1h 30m</option>
                                                     <option value="105">1h 45m</option>
-                                                    <option value="120" selected>2 Hours</option>
+                                                    <option value="120">2 Hours</option>
                                                     <option value="135">2h 15m</option>
                                                     <option value="150">2h 30m</option>
                                                     <option value="165">2h 45m</option>
                                                     <option value="180">3 Hours</option>
-                                                    <option value="210">3h 30m</option>
-                                                    <option value="240">4 Hours</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -618,5 +632,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+    new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+});
+</script>
+
 </body>
 </html>

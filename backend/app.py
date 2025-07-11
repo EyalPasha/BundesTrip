@@ -1510,7 +1510,7 @@ async def get_trip(request: TripRequest,
         # Log request parameters
         logger.info(f"Request {request_id} parameters: start={request.start_location}, "
                    f"duration={request.trip_duration}, max_travel={request.max_travel_time}, "
-                   f"user={user['email']}")
+                   f"user={user['email']}. one_city_only={request.one_city_only}")
         
         # Filter games by preferred leagues
         if request.preferred_leagues:
@@ -1587,7 +1587,9 @@ async def get_trip(request: TripRequest,
                 preferred_leagues=request.preferred_leagues,
                 start_date=request.start_date,
                 must_teams=request.must_teams,
-                min_games=min_games
+                min_games=min_games,
+                one_city_only=request.one_city_only
+
             )
         else:
             logger.info(f"Request {request_id} using specific start location: {request.start_location}")
@@ -1602,7 +1604,9 @@ async def get_trip(request: TripRequest,
                 preferred_leagues=request.preferred_leagues,
                 start_date=request.start_date,
                 must_teams=request.must_teams,
-                min_games=min_games
+                min_games=min_games,
+                one_city_only=request.one_city_only
+
             )
         
         # Check if the request was cancelled

@@ -888,3 +888,8 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
         height: 20px;
     }
 }
+
+.form-check-label[for="rememberMe"] {
+    position: relative;
+    top: 1px;
+}
