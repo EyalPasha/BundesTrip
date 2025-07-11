@@ -120,6 +120,17 @@ const LEAGUE_DISPLAY_NAMES = {
     "Conference League": "Conference League"
 };
 
+const LEAGUE_NAME_MAP = {
+    "Bundesliga": "bundesliga",
+    "2. Bundesliga": "2bundesliga",
+    "3. Liga": "3-liga",
+    "DFB-Pokal": "dfb-pokal",
+    "Champions League": "champions league",
+    "Europa League": "europa league",
+    "Conference League": "conference league",
+    "European Cups": "european cups" // If you use this in your backend
+};
+
 const AIRPORT_CITIES = [
     "München",
     "Berlin", 
@@ -362,5 +373,6 @@ export {
     updateTeamsByLeague,
     loadAvailableDates,
     GERMAN_TEAMS,
-    TEAM_TICKET_LINKS
+    TEAM_TICKET_LINKS,
+    LEAGUE_NAME_MAP
 };
