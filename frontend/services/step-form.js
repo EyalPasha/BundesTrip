@@ -267,7 +267,35 @@ function setupMinGamesLogic() {
 }
 
 // Call this after your existing initialization
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Initialize immediately, don't wait
     initStepForm();
+
+    // Set step subtitles based on login status
+    let loggedIn = false;
+    if (window.authService && typeof window.authService.getCurrentUser === 'function') {
+        try {
+            const user = await window.authService.getCurrentUser();
+            loggedIn = !!user;
+        } catch (e) {
+            loggedIn = false;
+        }
+    }
+
+    const subtitles = [
+        { id: 'stepSubtitle1', loggedIn: 'Start your journey', loggedOut: 'You must <a href="login.html" class="text-primary" style="text-decoration:underline;cursor:pointer;">log in</a> or <a href="register.html" class="text-primary" style="text-decoration:underline;cursor:pointer;">sign up</a> to search trips!' },
+        { id: 'stepSubtitle2', loggedIn: 'How many games and travel time', loggedOut: 'You must <a href="login.html" class="text-primary" style="text-decoration:underline;cursor:pointer;">log in</a> or <a href="register.html" class="text-primary" style="text-decoration:underline;cursor:pointer;">sign up</a> to search trips!' },
+        { id: 'stepSubtitle3', loggedIn: 'Leagues and teams (optional)', loggedOut: 'You must <a href="login.html" class="text-primary" style="text-decoration:underline;cursor:pointer;">log in</a> or <a href="register.html" class="text-primary" style="text-decoration:underline;cursor:pointer;">sign up</a> to search trips!' }
+    ];
+
+    subtitles.forEach(sub => {
+        const el = document.getElementById(sub.id);
+        if (el) {
+            if (loggedIn) {
+                el.textContent = sub.loggedIn;
+            } else {
+                el.innerHTML = sub.loggedOut;
+            }
+        }
+    });
 });
