@@ -31,12 +31,13 @@ const state = {
         team: 'all',
         date: null
     },
+    currentMonthPage: 0 // <-- add this line
 };
 
 // Restore the desktop date filter functionality
 function initializeFlatpickr() {
     // Skip if we're on mobile
-    if (window.innerWidth < 768 || !DOM.dateFilter) {
+    if (window.innerWidth < 981 || !DOM.dateFilter) {
         return;
     }
 
@@ -45,7 +46,6 @@ function initializeFlatpickr() {
         altInput: true,
         altFormat: "F j, Y",
         minDate: "today",
-        maxDate: new Date().fp_incr(120),
         onChange: function(selectedDates) {
             if (selectedDates.length > 0) {
                 jumpToDate(selectedDates[0]);
@@ -59,18 +59,48 @@ function initializeFlatpickr() {
         // --- ADD THIS BLOCK ---
         onDayCreate: function(dObj, dStr, fp, dayElem) {
             const y = dayElem.dateObj.getFullYear();
-            const m = String(dayElem.dateObj.getMonth() + 1).padStart(2, '0');
-            const d = String(dayElem.dateObj.getDate()).padStart(2, '0');
-            const dateStr = `${y}-${m}-${d}`;
+            const m = dayElem.dateObj.getMonth() + 1;
+            const d = dayElem.dateObj.getDate();
         
-            if (state.games && state.games.length > 0) {
-                const matchDate = state.games.find(g => g.date === dateStr);
-                if (matchDate && matchDate.matches) {
-                    dayElem.classList.add('has-matches');
-                    const dot = document.createElement('span');
-                    dot.className = 'date-dot';
-                    dayElem.appendChild(dot);
-                }
+            let hasGame = false;
+        
+            if (state.filters.team !== 'all' && window.currentTeamData) {
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+                const allMatches = [
+                    ...(window.currentTeamData.matches || []),
+                    ...(window.currentTeamData.tbd_matches || [])
+                ];
+                hasGame = allMatches.some(match => {
+                    const parts = match.date.split(' ');
+                    if (parts.length !== 3) return false;
+                    // Compare as numbers for day and year, and string for month
+                    return parseInt(parts[0], 10) === d &&
+                           parts[1] === monthNames[m - 1] &&
+                           parseInt(parts[2], 10) === y;
+                });
+            } else {
+                const filteredGames = filterGames(state.games);
+                hasGame = filteredGames.some(g => {
+                    if (!g.date) return false;
+                    const parts = g.date.split('-');
+                    if (parts.length !== 3) return false;
+                    return Number(parts[0]) === y &&
+                           Number(parts[1]) === m &&
+                           Number(parts[2]) === d;
+                });
+            }
+        
+            // Remove any existing dot before adding a new one
+            const existingDot = dayElem.querySelector('.date-dot');
+            if (existingDot) existingDot.remove();
+            dayElem.classList.remove('has-matches');
+        
+            if (hasGame) {
+                dayElem.classList.add('has-matches');
+                const dot = document.createElement('span');
+                dot.className = 'date-dot';
+                dayElem.appendChild(dot);
             }
         }
         // --- END BLOCK ---
@@ -336,7 +366,7 @@ function addStickyStyles() {
     const styleElement = document.createElement('style');
     styleElement.textContent = `
         /* Desktop filters - keep sticky behavior */
-        @media (min-width: 768px) {
+        @media (min-width: 980px) {
             .sticky-filters {
                 position: sticky;
                 top: 56px; /* Add navbar height here (56px is standard Bootstrap navbar height) */
@@ -392,7 +422,7 @@ function addStickyStyles() {
         }
         
         /* Mobile filter button and drawer */
-        @media (max-width: 767.98px) {
+        @media (max-width: 980px) {
             /* Hide the original filter bar */
             .filter-bar {
                 display: none !important;
@@ -613,7 +643,7 @@ function addStickyStyles() {
                 0%, 30% { background-color: rgba(13, 110, 253, 0.15); }
                 100% { background-color: transparent; }
         /* Mobile team header fixes */
-        @media (max-width: 767.98px) {
+        @media (max-width: 980px) {
             .team-header {
                 padding: 0.75rem !important;
             }
@@ -644,7 +674,7 @@ function addStickyStyles() {
     createCalendarButton();
     
     // Only create mobile filter button on mobile screens
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 981) {
         createMobileFilterButton();
     }
     
@@ -677,7 +707,7 @@ function addStickyStyles() {
 // Create floating calendar button - mobile only
 function createCalendarButton() {
     // Only create for mobile devices
-    if (window.innerWidth >= 768) {
+    if (window.innerWidth >= 981) {
         return; // Skip creation on desktop
     }
 
@@ -694,7 +724,6 @@ function createCalendarButton() {
         dateFormat: "F j, Y",
         inline: false,
         minDate: "today",
-        maxDate: new Date().fp_incr(120),
         onChange: function(selectedDates) {
             if (selectedDates.length > 0) {
                 jumpToDate(selectedDates[0]);
@@ -711,18 +740,48 @@ function createCalendarButton() {
         // --- ADD THIS BLOCK ---
         onDayCreate: function(dObj, dStr, fp, dayElem) {
             const y = dayElem.dateObj.getFullYear();
-            const m = String(dayElem.dateObj.getMonth() + 1).padStart(2, '0');
-            const d = String(dayElem.dateObj.getDate()).padStart(2, '0');
-            const dateStr = `${y}-${m}-${d}`;
-
-            if (state.games && state.games.length > 0) {
-                const matchDate = state.games.find(g => g.date === dateStr);
-                if (matchDate && matchDate.matches) {
-                    dayElem.classList.add('has-matches');
-                    const dot = document.createElement('span');
-                    dot.className = 'date-dot';
-                    dayElem.appendChild(dot);
-                }
+            const m = dayElem.dateObj.getMonth() + 1;
+            const d = dayElem.dateObj.getDate();
+        
+            let hasGame = false;
+        
+            if (state.filters.team !== 'all' && window.currentTeamData) {
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+                const allMatches = [
+                    ...(window.currentTeamData.matches || []),
+                    ...(window.currentTeamData.tbd_matches || [])
+                ];
+                hasGame = allMatches.some(match => {
+                    const parts = match.date.split(' ');
+                    if (parts.length !== 3) return false;
+                    // Compare as numbers for day and year, and string for month
+                    return parseInt(parts[0], 10) === d &&
+                           parts[1] === monthNames[m - 1] &&
+                           parseInt(parts[2], 10) === y;
+                });
+            } else {
+                const filteredGames = filterGames(state.games);
+                hasGame = filteredGames.some(g => {
+                    if (!g.date) return false;
+                    const parts = g.date.split('-');
+                    if (parts.length !== 3) return false;
+                    return Number(parts[0]) === y &&
+                           Number(parts[1]) === m &&
+                           Number(parts[2]) === d;
+                });
+            }
+        
+            // Remove any existing dot before adding a new one
+            const existingDot = dayElem.querySelector('.date-dot');
+            if (existingDot) existingDot.remove();
+            dayElem.classList.remove('has-matches');
+        
+            if (hasGame) {
+                dayElem.classList.add('has-matches');
+                const dot = document.createElement('span');
+                dot.className = 'date-dot';
+                dayElem.appendChild(dot);
             }
         }
         // --- END BLOCK ---
@@ -850,7 +909,6 @@ function createMobileFilterButton() {
         flatpickr(mobileDateFilter, {
             dateFormat: "F j, Y",
             minDate: "today",
-            maxDate: new Date().fp_incr(120),
             disableMobile: "true"
         });
     }
@@ -1245,47 +1303,47 @@ async function loadAllGames() {
 // Filter games based on current filter state
 function filterGames(games) {
     const { league, team, date } = state.filters;
-    
-    // Start with all games
+
     let filteredGames = [...games];
-    
-    // Apply league filter
+
     if (league !== 'all') {
-        filteredGames = filteredGames.filter(game => 
+        filteredGames = filteredGames.filter(game =>
             game.leagues && game.leagues.includes(league)
         );
     }
-    
-    // Apply team filter (will require additional API calls)
+
     if (team !== 'all') {
-        // This needs to be implemented with the team schedule API
-        // For now, we'll just return games and handle team filtering during rendering
+        filteredGames = filteredGames.filter(game => {
+            if (!game.match) return false;
+            const matchParts = game.match.split(' vs ');
+            if (matchParts.length !== 2) return false;
+            const homeTeam = matchParts[0].trim();
+            const awayTeam = matchParts[1].trim();
+            return homeTeam === team || awayTeam === team;
+        });
     }
-    
-    // Apply date filter if set
+
     if (date) {
-        // Format the target date as YYYY-MM-DD for comparison
         const targetDateStr = date.toISOString().split('T')[0];
         filteredGames = filteredGames.filter(game => game.date === targetDateStr);
     }
-    
+
     return filteredGames;
 }
 
-// Apply current filters
 async function applyFilters() {
     // Update filter state
-    if (window.innerWidth >= 768) {
+    if (window.innerWidth >= 981) {
         state.filters.league = DOM.leagueFilter.value;
         state.filters.team = DOM.teamFilter.value;
     }
-    
+
+    // Reset to first month when filters change
+    state.currentMonthPage = 0; // <-- add this line
+
     // Show active filters if any
     updateClearButton();
-    
-    // Remove this line:
-    // state.pagination.currentPage = 1;
-    
+
     // Show loading
     DOM.scheduleLoading.classList.remove('d-none');
     DOM.scheduleResults.classList.add('d-none');
@@ -1344,8 +1402,11 @@ async function applyFilters() {
         console.error('Error applying filters:', error);
         showNoGames();
     }
+    // After rendering games and updating UI:
+    if (DOM.dateFilter && DOM.dateFilter._flatpickr) {
+        DOM.dateFilter._flatpickr.redraw();
+    }
 }
-
 // Update clear button visibility and active filters display
 function updateClearButton() {
     const clearButton = document.getElementById('clearFilters');
@@ -1403,58 +1464,60 @@ function clearFilters() {
     // Reload all games
     loadAllGames();
 }
+
 // Jump to a specific date
-// Jump to a specific date in the existing schedule view
 function jumpToDate(date) {
     // Create consistent date string format for ID lookup and comparison
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const monthNum = date.getMonth();
+    const month = String(monthNum + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const apiDateStr = `${year}-${month}-${day}`;
-    
-    // console.log(`Jumping to date: ${apiDateStr} - Year: ${year}, Month: ${month}, Day: ${day}`);
-    
-    // Format date for display
-    const formattedDate = date.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-    
-    // First check if we have this exact date in our schedule
-    const dateElement = document.getElementById(`date-${apiDateStr}`);
-    
-    if (dateElement) {
-        // console.log(`Found exact match for date: ${apiDateStr}`);
-        // We found the exact date - scroll to it
-        dateElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
+
+    // Find the month-year string for the selected date
+    const monthYear = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+    // Get all months from current filtered games
+    const filteredGames = filterGames(state.games);
+    const gamesByMonth = groupGamesByMonth(filteredGames);
+    const months = Object.keys(gamesByMonth);
+
+    // If not on the correct month, switch page and re-render, then scroll after render
+    const targetMonthIndex = months.indexOf(monthYear);
+    if (targetMonthIndex !== -1 && state.currentMonthPage !== targetMonthIndex) {
+        state.currentMonthPage = targetMonthIndex;
+        renderGames(filteredGames);
+
+        // Wait for DOM to update, then scroll to date
+        setTimeout(() => {
+            jumpToDate(date); // Call again, now on correct month
+        }, 100);
         return;
     }
-    
-    // console.log(`No exact match found for ${apiDateStr}, looking for closest date`);
-    
+
+    // First check if we have this exact date in our schedule
+    const dateElement = document.getElementById(`date-${apiDateStr}`);
+
+    if (dateElement) {
+        dateElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+    }
+
     // If we don't have the exact date, find the closest date
     const allDateSections = document.querySelectorAll('.date-section[id^="date-"]');
     if (allDateSections.length === 0) {
-        // No dates available, show a message
         return;
     }
-    
+
     // Get all date sections with their date values
     const dates = [];
     allDateSections.forEach(section => {
         const dateStr = section.id.replace('date-', '');
-        
-        // Create date parts to avoid timezone issues
         const [dateYear, dateMonth, dateDay] = dateStr.split('-').map(Number);
-        
         dates.push({
             element: section,
             date: new Date(dateYear, dateMonth - 1, dateDay),
             dateStr: dateStr,
-            // For easier debugging
             dateParts: {
                 year: dateYear,
                 month: dateMonth,
@@ -1462,15 +1525,12 @@ function jumpToDate(date) {
             }
         });
     });
-    
-    // console.log(`Looking for closest date to ${apiDateStr} among ${dates.length} available dates`);
-    
+
     // Find the closest date to our target
-    // First try to find dates before or equal to target
     let closest = null;
     let minDiff = Infinity;
     const targetTime = new Date(year, parseInt(month) - 1, parseInt(day)).getTime();
-    
+
     // First priority: find dates before or equal to target
     for (const d of dates) {
         const dTime = d.date.getTime();
@@ -1482,7 +1542,7 @@ function jumpToDate(date) {
             }
         }
     }
-    
+
     // If we couldn't find a previous date, look for the closest future date
     if (!closest) {
         for (const d of dates) {
@@ -1493,26 +1553,22 @@ function jumpToDate(date) {
             }
         }
     }
-    
+
     if (!closest) {
         return;
     }
-    
-    // console.log(`Closest date found: ${closest.dateStr} (${closest.dateParts.year}-${closest.dateParts.month}-${closest.dateParts.day})`);
-    
+
     // Scroll to the closest date
     closest.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    
 
-    // Show a message if it's not the exact date
-    if (closest.dateStr !== apiDateStr) {
-        const closestFormatted = closest.date.toLocaleDateString('en-US', {
-            weekday: 'long',
-            month: 'long', 
-            day: 'numeric'
-        });
-        
-    }
+    // Show a message if it's not the exact date (optional)
+    // if (closest.dateStr !== apiDateStr) {
+    //     const closestFormatted = closest.date.toLocaleDateString('en-US', {
+    //         weekday: 'long',
+    //         month: 'long', 
+    //         day: 'numeric'
+    //     });
+    // }
 }
 
 // Render games in the selected view
@@ -1521,77 +1577,139 @@ function renderGames(games) {
     renderListView(games);
 }
 
-// Render games in list view grouped by date
 function renderListView(games) {
-    // Clear the container
     DOM.scheduleContent.innerHTML = '';
-    
-    // Sort games by date
-    const sortedGames = [...games].sort((a, b) => {
-        return a.date.localeCompare(b.date);
-    });
-    
-    // Group games by month for better organization
+
+    // Sort and group games by month
+    const sortedGames = [...games].sort((a, b) => a.date.localeCompare(b.date));
     const gamesByMonth = groupGamesByMonth(sortedGames);
-    
-    // Create container for all months
-    const container = document.createElement('div');
-    container.className = 'schedule-feed';
-    
-    // Process each month
-    for (const [month, monthGames] of Object.entries(gamesByMonth)) {
-        // Create month section
-        const monthSection = document.createElement('div');
-        monthSection.className = 'month-section mb-4';
-        
-        // Add month header
-        const monthHeader = document.createElement('h2');
-        monthHeader.className = 'h4 mb-3 pb-2 border-bottom';
-        monthHeader.textContent = month;
-        monthSection.appendChild(monthHeader);
-        
-        // Process each date in this month
-        for (const gameDate of monthGames) {
-            // Create date section
-            const dateSection = document.createElement('div');
-            dateSection.className = 'date-section mb-4';
-            dateSection.id = `date-${gameDate.date}`; // For jump-to functionality
-            
-            // Add date header
-            const dateHeader = document.createElement('h3');
-            dateHeader.className = 'h5 mb-3 d-flex align-items-center';
-            
-            // Format date for display
-            const dateParts = gameDate.date.split('-');
-            const dateObj = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
-            const formattedDate = dateObj.toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric'
-            });
-            
-            dateHeader.innerHTML = `
-                <i class="fas fa-calendar-day me-2"></i>
-                ${formattedDate}
-                <span class="badge bg-primary rounded-pill ms-2">${gameDate.matches} Games</span>
-            `;
-            dateSection.appendChild(dateHeader);
-            
-            // Create games container
-            const gamesContainer = document.createElement('div');
-            gamesContainer.className = 'games-container';
-            
-            // Now fetch and display actual games for this date
-            fetchGamesForDate(gameDate.date, gamesContainer);
-            
-            dateSection.appendChild(gamesContainer);
-            monthSection.appendChild(dateSection);
-        }
-        
-        container.appendChild(monthSection);
+    const months = Object.keys(gamesByMonth);
+
+    // Clamp currentMonthPage to valid range
+    if (state.currentMonthPage < 0) state.currentMonthPage = 0;
+    if (state.currentMonthPage >= months.length) state.currentMonthPage = months.length - 1;
+
+    // Only show the current month
+    const month = months[state.currentMonthPage];
+    if (!month) {
+        DOM.scheduleContent.innerHTML = `<div class="alert alert-info">No games found for this month.</div>`;
+        return;
     }
-    
-    DOM.scheduleContent.appendChild(container);
+    const monthGames = gamesByMonth[month];
+
+    // --- Create month section ---
+    const monthSection = document.createElement('div');
+    monthSection.className = 'month-section mb-4';
+
+    // --- Create month header row with pagination controls ---
+    const monthHeaderRow = document.createElement('div');
+    monthHeaderRow.className = 'd-flex align-items-center justify-content-between mb-3 pb-2 border-bottom';
+
+    // Month header
+    const monthHeader = document.createElement('h2');
+    monthHeader.className = 'h4 mb-0';
+    monthHeader.textContent = month;
+
+    // Pagination controls (top)
+    const paginationDivTop = document.createElement('div');
+    paginationDivTop.className = 'pagination-controls d-flex gap-2';
+
+    if (state.currentMonthPage > 0) {
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'btn btn-outline-primary btn-sm';
+        prevBtn.textContent = 'Previous';
+        prevBtn.onclick = () => {
+            state.currentMonthPage--;
+            renderGames(filterGames(state.games));
+        };
+        paginationDivTop.appendChild(prevBtn);
+    }
+
+    if (state.currentMonthPage < months.length - 1) {
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'btn btn-outline-primary btn-sm';
+        nextBtn.textContent = 'Next';
+        nextBtn.onclick = () => {
+            state.currentMonthPage++;
+            renderGames(filterGames(state.games));
+        };
+        paginationDivTop.appendChild(nextBtn);
+    }
+
+    // Assemble header row
+    monthHeaderRow.appendChild(monthHeader);
+    monthHeaderRow.appendChild(paginationDivTop);
+    monthSection.appendChild(monthHeaderRow);
+
+    // Process each date in this month
+    for (const gameDate of monthGames) {
+        // ...existing code for creating dateSection, dateHeader, gamesContainer...
+        const dateSection = document.createElement('div');
+        dateSection.className = 'date-section mb-4';
+        dateSection.id = `date-${gameDate.date}`;
+
+        const dateHeader = document.createElement('h3');
+        dateHeader.className = 'h5 mb-3 d-flex align-items-center';
+
+        const dateParts = gameDate.date.split('-');
+        const dateObj = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
+        const formattedDate = dateObj.toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        dateHeader.innerHTML = `
+            <i class="fas fa-calendar-day me-2"></i>
+            ${formattedDate}
+            <span class="badge bg-primary rounded-pill ms-2">${gameDate.matches} Games</span>
+        `;
+        dateSection.appendChild(dateHeader);
+
+        const gamesContainer = document.createElement('div');
+        gamesContainer.className = 'games-container';
+        fetchGamesForDate(gameDate.date, gamesContainer);
+
+        dateSection.appendChild(gamesContainer);
+        monthSection.appendChild(dateSection);
+    }
+
+    DOM.scheduleContent.appendChild(monthSection);
+
+    // --- Add pagination controls at the bottom ---
+    renderMonthPaginationControls(months);
+}
+
+function renderMonthPaginationControls(months) {
+    const container = DOM.scheduleContent;
+    const paginationDiv = document.createElement('div');
+    paginationDiv.className = 'pagination-controls mt-3 d-flex justify-content-center gap-2';
+
+    if (state.currentMonthPage > 0) {
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'btn btn-outline-primary';
+        prevBtn.textContent = 'Previous';
+        prevBtn.onclick = () => {
+            state.currentMonthPage--;
+            renderGames(filterGames(state.games));
+        };
+        paginationDiv.appendChild(prevBtn);
+    }
+
+    if (state.currentMonthPage < months.length - 1) {
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'btn btn-outline-primary';
+        nextBtn.textContent = 'Next';
+        nextBtn.onclick = () => {
+            state.currentMonthPage++;
+            renderGames(filterGames(state.games));
+        };
+        paginationDiv.appendChild(nextBtn);
+    }
+
+    // Removed the month info span here
+
+    container.appendChild(paginationDiv);
 }
 
 // Fetch and render games for a specific date
@@ -1978,7 +2096,7 @@ function createGameCard(game) {
     // Toggle dropdown on row click (mobile only)
     row.addEventListener('click', function (e) {
         // Only trigger on mobile
-        if (window.innerWidth < 768) {
+        if (window.innerWidth < 981) {
             e.stopPropagation();
             const isOpen = details.style.display === 'block';
             details.style.display = isOpen ? 'none' : 'block';

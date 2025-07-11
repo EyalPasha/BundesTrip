@@ -4377,3 +4377,32 @@ body #results #tbdGamesSection.trip-card {
   position: relative;
   top: 1px !important;
 }
+
+/* Move .toggle-details-button about 15px to the right */
+.toggle-details-button {
+    margin-left: 18px !important;
+}
+
+@media (max-width: 768px) {
+  .toggle-details-button {
+    margin-left: 15.3px !important;
+  }
+}
+
+@media (min-width: 612px) and (max-width: 768px) {
+  .match-preview {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+    max-width: 500px !important; /* or your preferred width */
+  }
+  .match-list {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+    max-width: 100% !important;
+  }
+  .match-count-badge {
+  margin-left: 10px !important;
+}
+}

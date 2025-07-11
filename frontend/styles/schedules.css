@@ -1090,7 +1090,7 @@ main .fa,
 }
 
 /* Mobile Responsive Design - Clean & Professional */
-@media (max-width: 768px) {
+@media (max-width: 990px) {
 
     .desktop-time-display,
   .desktop-location-display {
@@ -1654,8 +1654,8 @@ main .fa,
   }
 }
 
-/* iPad/tablet screens (portrait/landscape: 768px–996px) */
-@media (min-width: 768px) and (max-width: 996px) {
+/* iPad/tablet screens (portrait/landscape: 990px–996px) */
+@media (min-width: 990px) and (max-width: 996px) {
   .game-card .card-body {
     padding: var(--space-md);
   }
@@ -1682,7 +1682,7 @@ main .fa,
 }
 
 /* Landscape Mobile */
-@media (max-width: 768px) and (orientation: landscape) {
+@media (max-width: 990px) and (orientation: landscape) {
   .bg-light {
     padding: var(--space-lg) 0;
   }
@@ -1726,7 +1726,7 @@ main .fa,
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 990px) {
   .d-flex.flex-wrap.gap-2.ms-md-auto.mt-2.mt-md-0.align-items-md-center {
 display: none !important;
   }
@@ -1735,7 +1735,7 @@ display: none !important;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 990px) {
   .team-header {
     padding: 0.3rem 0 0.3rem 0 !important;
     margin-bottom: 0.2rem !important;
@@ -1795,7 +1795,7 @@ display: none !important;
 }
 
 /* Mobile: slightly smaller and more compact */
-@media (max-width: 768px) {
+@media (max-width: 990px) {
   .month-section h3,
   .month-section .h4 {
     font-size: 1.05rem;
@@ -1806,7 +1806,7 @@ display: none !important;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 990px) {
   .match-time-detail {
     font-size: 0.85em !important;
     margin-left: 10px !important;
@@ -1832,7 +1832,7 @@ display: none !important;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 990px) {
   .match-details-section .match-details-content {
     margin-top: 10px !important;
   }
@@ -1848,7 +1848,7 @@ input[type="text"].form-control[readonly] {
     padding-right: 2.2em; /* Make space for the icon */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 990px) {
   .match-ticket-detail {
     display: flex !important;
     align-items: center !important;
@@ -1891,7 +1891,7 @@ input[type="text"].form-control[readonly] {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 990px) {
   .match-details-content {
     display: flex !important;
     flex-direction: row !important;
@@ -1929,4 +1929,91 @@ input[type="text"].form-control[readonly] {
     position: relative;
     top: 0.5px;
   }
+}
+
+/* Bundesliga-style pagination buttons */
+.pagination-controls .btn-outline-primary,
+.pagination-controls .btn-outline-primary.btn-sm {
+    border-radius: 20px;
+    border-width: 2px;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 6px 22px;
+    color: #043d7c;
+    background: #fff;
+    border-color: #043d7c;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 8px rgba(4,61,124,0.06);
+    letter-spacing: 0.03em;
+}
+
+.pagination-controls .btn-outline-primary:hover,
+.pagination-controls .btn-outline-primary:focus {
+    background: #043d7c;
+    color: #fff;
+    border-color: #043d7c;
+    box-shadow: 0 4px 16px rgba(4,61,124,0.12);
+    text-decoration: none;
+}
+
+.pagination-controls .btn-outline-primary:active {
+    background: #021e3a;
+    color: #fff;
+    border-color: #021e3a;
+}
+
+.pagination-controls {
+    gap: 1rem !important;
+    margin-bottom: 0.5rem;
+}
+
+/* Even smaller pagination buttons on mobile */
+@media (max-width: 990px) {
+    .pagination-controls .btn-outline-primary,
+    .pagination-controls .btn-outline-primary.btn-sm {
+        font-size: 0.78rem !important;
+        padding: 3px 10px !important;
+        border-radius: 12px !important;
+        min-width: 0 !important;
+        min-height: 28px !important;
+        height: 28px !important;
+        line-height: 1.1 !important;
+    }
+    .pagination-controls {
+        gap: 0.5rem !important;
+        margin-bottom: 0.2rem !important;
+    }
+}
+
+/* Show mobile filter and calendar buttons up to 980px */
+@media (max-width: 980px) {
+    .filter-bar {
+        display: none !important;
+    }
+    .filter-btn,
+    .calendar-btn {
+        display: flex !important;
+    }
+}
+@media (min-width: 981px) {
+    .filter-btn,
+    .calendar-btn {
+        display: none !important;
+    }
+}
+
+.no-games-month {
+    min-height: 320px;
+    text-align: center;
+    opacity: 0.95;
+}
+.no-games-month img {
+    filter: grayscale(0.2);
+}
+.no-games-month h3 {
+    font-weight: 600;
+    font-size: 1.35rem;
+}
+.no-games-month p {
+    font-size: 1rem;
 }
