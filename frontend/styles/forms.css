@@ -1320,3 +1320,136 @@
   .flatpickr-day.selected.has-matches .date-dot {
   background: #fff !important;
 }
+
+/* Info icon inside form labels */
+.form-label .fa-info-circle {
+  font-size: 1em;
+  margin-left: 0rem !important;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/* One City Only label styling */
+label[for="oneCityOnly"].form-check-label {
+  position: relative;
+  top: -1px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Checkbox checked state */
+#oneCityOnly.form-check-input:checked {
+  background-color: #043d7c;
+  border-color: #043d7c;
+}
+
+/* Move the info icon 2px up inside the oneCityOnly label */
+label[for="oneCityOnly"].form-check-label .fa-info-circle {
+  position: relative;
+  top: -2px;
+}
+
+/* Always keep the label text 2px from the checkbox */
+#oneCityOnly.form-check-input + label[for="oneCityOnly"].form-check-label {
+  margin-left: -2px !important;
+}
+
+/* Tooltip trigger and icon styling */
+.custom-tooltip-trigger {
+  position: relative;
+  display: inline-block;
+}
+.custom-tooltip-trigger .fa-info-circle {
+  cursor: pointer;
+  font-size: 1em;
+  margin-left: 0.4em;
+  vertical-align: middle;
+}
+
+/* Custom tooltip styling */
+.custom-tooltip {
+  display: none;
+  position: absolute;
+  left: -500% !important;
+  bottom: 125%; /* Show above the icon */
+  transform: translateX(-50%);
+  min-width: 240px;
+  max-width: 320px;
+  background: #fff;
+  color: #043d7c;
+  border: 1.5px solid #e0e7ef;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(4,61,124,0.13);
+  padding: 0.85em 1.1em;
+  font-size: 0.97em;
+  font-weight: 500;
+  z-index: 100;
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s;
+  line-height: 1.4;
+}
+.custom-tooltip-trigger:hover .custom-tooltip,
+.custom-tooltip-trigger:focus-within .custom-tooltip {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+.custom-tooltip b {
+  color: #043d7c;
+  font-weight: 700;
+  font-size: 0.98em;
+}
+
+/* Utility */
+.position-relative { position: relative; }
+
+/* Mobile styles */
+@media (max-width: 767.99px) {
+  .form-row .form-check {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.1em !important;
+    margin-bottom: 0 !important;
+  }
+  label[for="oneCityOnly"].form-check-label {
+    margin-left: 0 !important;
+    gap: 0.35em !important;
+    top: 3px; /* Move text and icon 3px down on mobile */
+  }
+  #oneCityOnly.form-check-input {
+    margin-right: 0.4em !important;
+  }
+  .custom-tooltip {
+    min-width: 60vw;
+    max-width: 66vw;
+    font-size: 0.77rem;
+    padding: 0.8em 0.7em;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(4,61,124,0.13);
+    margin-top: 0.5em;
+    word-break: break-word;
+    white-space: normal;
+      left: -700% !important;
+        line-height: 1.2!important;
+
+
+  }
+  .custom-tooltip b {
+    font-size: 0.6rem;
+      line-height: 0.5!important;
+
+  }
+  .step-navigation.step-1 #nextStep {
+  position: relative;
+  top: -38px !important;
+}
+}
+
+
+
+.step-navigation.step-1 #nextStep {
+  position: relative;
+  top: -26px;
+}

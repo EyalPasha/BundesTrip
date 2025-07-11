@@ -60,7 +60,8 @@ async function handleSearch(e) {
         
         // Reset loading UI to visible state
         resetLoadingUI(true);
-        
+        const staticLoadingMsg = document.querySelector('.loading-static-message');
+        if (staticLoadingMsg) staticLoadingMsg.classList.remove('d-none');
         // Clean up any previous search state
         document.body.classList.remove('has-filter-drawer');
         
@@ -245,9 +246,10 @@ async function handleSearch(e) {
                 trip_duration: parseInt(window.DOM.tripDurationInput.value),
                 max_travel_time: parseInt(window.DOM.maxTravelTimeInput.value),
                 preferred_leagues: selectedLeagues.length > 0 ? selectedLeagues : null,
-                must_teams: selectedTeams.length > 0 ? selectedTeams : [], // Updated to use new function
+                must_teams: selectedTeams.length > 0 ? selectedTeams : [],
                 min_games: parseInt(window.DOM.minGamesInput.value || "2"),
-                request_id: requestId
+                request_id: requestId,
+                one_city_only: document.getElementById('oneCityOnly')?.checked || false // <-- Add this line
             };
             
             // Ensure the date has a year
@@ -353,7 +355,8 @@ async function handleSearch(e) {
                 if (noResultsMessage) noResultsMessage.classList.remove('d-none');
                 
                 // Keep the loading overlay visible to show the no results message
-                // Skip hiding the loading indicator in the finally block
+                const staticLoadingMsg = document.querySelector('.loading-static-message');
+                if (staticLoadingMsg) staticLoadingMsg.classList.add('d-none');
                 noResultsShown = true;
             }
             

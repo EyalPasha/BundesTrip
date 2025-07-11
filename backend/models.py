@@ -82,6 +82,7 @@ class TripRequest(BaseModel):
     must_teams: Optional[List[str]] = None
     min_games: Optional[int] = 2
     request_id: Optional[str] = None
+    one_city_only: Optional[bool] = False  # <-- Add this line
     
 class SaveTripRequest(BaseModel):
     trip_data: Dict[Any, Any] = Field(..., description="Complete trip data from search results")
