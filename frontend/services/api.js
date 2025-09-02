@@ -1,31 +1,5 @@
 // API Base URL - loaded from api-config.js
 const API_BASE_URL = window.apiConfig?.apiUrl;
-
-// Cache for API responses
-const apiCache = new Map();
-const cacheExpiry = 10 * 60 * 1000; // 10 minutes
-
-/**
- * Get cached response if available and not expired
- */
-function getCachedResponse(key) {
-    const cached = apiCache.get(key);
-    if (cached && (Date.now() - cached.timestamp) < cacheExpiry) {
-        return cached.data;
-    }
-    return null;
-}
-
-/**
- * Cache API response
- */
-function setCachedResponse(key, data) {
-    apiCache.set(key, {
-        data: data,
-        timestamp: Date.now()
-    });
-}
-
 /**
  * Get auth token for API requests
  */
@@ -148,13 +122,7 @@ async function fetchApi(endpoint, options = {}, retries = 2) {
  * @returns {Promise<Array>} List of cities
  */
 async function getCities() {
-    const cacheKey = 'cities';
-    const cached = getCachedResponse(cacheKey);
-    if (cached) return cached;
-    
-    const result = await fetchApi('/available-cities');
-    if (result) setCachedResponse(cacheKey, result);
-    return result;
+    return fetchApi('/available-cities');
 }
 
 /**
@@ -162,13 +130,7 @@ async function getCities() {
  * @returns {Promise<Array>} List of leagues
  */
 async function getLeagues() {
-    const cacheKey = 'leagues';
-    const cached = getCachedResponse(cacheKey);
-    if (cached) return cached;
-    
-    const result = await fetchApi('/available-leagues');
-    if (result) setCachedResponse(cacheKey, result);
-    return result;
+    return fetchApi('/available-leagues');
 }
 
 /**
@@ -177,14 +139,8 @@ async function getLeagues() {
  * @returns {Promise<Array>} List of teams
  */
 async function getTeams(league = null) {
-    const cacheKey = `teams_${league || 'all'}`;
-    const cached = getCachedResponse(cacheKey);
-    if (cached) return cached;
-    
     const endpoint = league ? `/available-teams?league=${encodeURIComponent(league)}` : '/available-teams';
-    const result = await fetchApi(endpoint);
-    if (result) setCachedResponse(cacheKey, result);
-    return result;
+    return fetchApi(endpoint);
 }
 
 /**
