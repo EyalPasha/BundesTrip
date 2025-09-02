@@ -236,7 +236,6 @@ async function handleSearch(e) {
         try {
             // Use Select2's API to get selected values
             const selectedLeagues = getSelectedLeagues();
-            console.log("DEBUG: selectedLeagues from league-boxes:", selectedLeagues);            
             // NEW: Get teams from individual selects instead of multi-select
             const selectedTeams = getSelectedTeams(); // Use the new function from script.js
             
