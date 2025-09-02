@@ -3,6 +3,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from fastapi import FastAPI, Query, Path, BackgroundTasks, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from contextlib import asynccontextmanager
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
 from models import TripRequest, FormattedResponse, TripGroup, TravelSegment, TripVariation, SaveTripRequest
@@ -37,11 +38,60 @@ from common import (is_request_cancelled, register_request, cleanup_request, cle
 from supabase import create_client
 supabase_admin = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
+# Store the background task reference
+cleanup_task_ref = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Handle startup and shutdown events"""
+    global cleanup_task_ref
+    
+    # Startup
+    try:
+        validate_config()
+        logger.info("✅ Production configuration validated successfully")
+    except ValueError as e:
+        logger.error(f"❌ Configuration validation failed: {e}")
+        raise
+    
+    async def cleanup_task():
+        while True:
+            await asyncio.sleep(60 * 60)  # Run every hour
+            cleanup_old_requests()
+            
+            # Clear date-sensitive cache entries once per day at midnight to prevent stale dates
+            # This saves costs while ensuring data freshness
+            global _query_cache
+            current_time = time()
+            # Clear cache once every 24 hours (86400 seconds)
+            if current_time % (24 * 60 * 60) < 60:  # Once per day
+                _query_cache.clear()
+                logger.info("🔄 Daily cache clear: Cleared query cache to prevent stale date entries")
+            
+    logger.info("🚀 BundesTrip API starting in production mode")
+    logger.info(f"📊 Loaded {len(games)} games and {len(tbd_games)} TBD games")
+    logger.info(f"🚆 Loaded {len(train_times)} train connections")
+    logger.info("🔐 Supabase authentication enabled")
+    
+    cleanup_task_ref = asyncio.create_task(cleanup_task())
+    
+    yield  # This is where the app runs
+    
+    # Shutdown
+    if cleanup_task_ref and not cleanup_task_ref.done():
+        logger.info("Cancelling periodic cleanup task")
+        cleanup_task_ref.cancel()
+        try:
+            await cleanup_task_ref
+        except asyncio.CancelledError:
+            logger.info("Periodic cleanup task cancelled successfully")
+
 # Initialize FastAPI with metadata
 app = FastAPI(
     title="Multi-Game Trip Planner API",
     description="API for planning trips to multiple soccer/football games",
     version="1.0.0",
+    lifespan=lifespan
 )
 
 # Configure CORS
@@ -147,6 +197,88 @@ app.add_middleware(TripRequestLoggingMiddleware)
 # Load data using config paths
 train_times = load_train_times(TRAIN_TIMES_FILE)
 games, tbd_games = load_games(GAMES_FILE)
+
+# Pre-compute static data for faster API responses
+def precompute_static_data():
+    """Pre-compute static data that doesn't change between requests"""
+    global _cached_cities, _cached_leagues, _cached_teams, _cached_dates_index
+    
+    # Pre-compute cities from train_times
+    cities = set()
+    for key_pair in train_times.keys():
+        cities.add(key_pair[0])
+        cities.add(key_pair[1])
+    cities_list = ["Any"] + sorted([city for city in cities if city != "Any"])
+    display_cities = [(city, city.replace(" hbf", "")) for city in cities_list]
+    _cached_cities = [{"id": city[0], "name": city[1]} for city in display_cities]
+    
+    # Pre-compute leagues and teams
+    leagues = set()
+    teams = set()
+    for game in games + tbd_games:
+        if hasattr(game, 'league'):
+            leagues.add(game.league)
+        if hasattr(game, 'home_team'):
+            teams.add(game.home_team)
+        if hasattr(game, 'away_team'):
+            teams.add(game.away_team)
+    
+    _cached_leagues = sorted(list(leagues))
+    _cached_teams = sorted(list(teams))
+    
+    # Pre-compute date index for faster date filtering
+    _cached_dates_index = {}
+    # NOTE: We don't filter by "today" here - we'll do that dynamically
+    # to avoid stale dates when server runs for multiple days
+    
+    for game in games + tbd_games:
+        if hasattr(game, 'date'):
+            game_date = game.date.date()
+            date_str = game_date.strftime("%Y-%m-%d")
+            if date_str not in _cached_dates_index:
+                _cached_dates_index[date_str] = {
+                    "date": game_date.strftime("%d %B"),
+                    "count": 0,
+                    "leagues": set(),
+                    "games": [],
+                    "game_date": game_date  # Store actual date for filtering
+                }
+            _cached_dates_index[date_str]["count"] += 1
+            if hasattr(game, 'league'):
+                _cached_dates_index[date_str]["leagues"].add(game.league)
+            _cached_dates_index[date_str]["games"].append(game)
+    
+    # Convert sets to lists for JSON serialization
+    for date_str in _cached_dates_index:
+        _cached_dates_index[date_str]["leagues"] = list(_cached_dates_index[date_str]["leagues"])
+
+# Initialize cached data
+_cached_cities = []
+_cached_leagues = []
+_cached_teams = []
+_cached_dates_index = {}
+
+# Pre-compute all static data at startup
+precompute_static_data()
+
+# Cache for dynamic queries (with TTL)
+from time import time
+_query_cache = {}
+_cache_ttl = 300  # 5 minutes
+
+def get_cached_result(cache_key):
+    """Get cached result if still valid"""
+    if cache_key in _query_cache:
+        cached_data, timestamp = _query_cache[cache_key]
+        if time() - timestamp < _cache_ttl:
+            return cached_data
+        else:
+            del _query_cache[cache_key]
+    return None
+
+def set_cached_result(cache_key, data):
+    """Cache result with timestamp"""
+    _query_cache[cache_key] = (data, time())
 
 # ────────────────────────────────
 # 🔐 Authentication Functions
@@ -715,49 +847,6 @@ def register_new_request(user = Depends(verify_supabase_token)):
 # ────────────────────────────────
 # 🛠️ Helper Functions
 # ────────────────────────────────
-
-# Store the background task reference
-cleanup_task_ref = None
-
-@app.on_event("startup")
-async def setup_cleanup():
-    """Set up periodic cleanup task on startup."""
-    global cleanup_task_ref
-    
-    # Validate configuration on startup
-    try:
-        validate_config()
-        logger.info("✅ Production configuration validated successfully")
-    except ValueError as e:
-        logger.error(f"❌ Configuration validation failed: {e}")
-        raise
-    
-    async def cleanup_task():
-        while True:
-            await asyncio.sleep(60 * 60)  # Run every hour
-            cleanup_old_requests()
-            
-    logger.info("🚀 BundesTrip API starting in production mode")
-    logger.info(f"📊 Loaded {len(games)} games and {len(tbd_games)} TBD games")
-    logger.info(f"🚆 Loaded {len(train_times)} train connections")
-    logger.info("🔐 Supabase authentication enabled")
-    
-    cleanup_task_ref = asyncio.create_task(cleanup_task())
-
-@app.on_event("shutdown")
-async def cleanup_on_shutdown():
-    """Cancel background tasks on shutdown."""
-    global cleanup_task_ref
-    
-    if cleanup_task_ref and not cleanup_task_ref.done():
-        logger.info("Cancelling periodic cleanup task")
-        cleanup_task_ref.cancel()
-        try:
-            await cleanup_task_ref
-        except asyncio.CancelledError:
-            logger.info("Periodic cleanup task cancelled successfully")
-    
-    logger.info("🛑 BundesTrip API shutting down")
 
 def has_special_suffix(location_name: str) -> bool:
     """Check if location has a special suffix that shouldn't have hbf appended"""
@@ -1894,15 +1983,14 @@ async def get_trip(request: TripRequest,
 def get_leagues():
     """Get available leagues - no authentication required."""
     try:
-        leagues = set()
-        for game in games:  
-            if hasattr(game, 'league'):
-                leagues.add(game.league)
+        # Return pre-computed and sorted leagues with cache headers
+        sorted_leagues = sorted(_cached_leagues, key=lambda x: league_priority.get(x, 999))
+        result = {"leagues": sorted_leagues}
         
-        sorted_leagues = sorted(list(leagues), 
-                               key=lambda x: league_priority.get(x, 999))
-        
-        return {"leagues": sorted_leagues}
+        response = JSONResponse(content=result)
+        response.headers["Cache-Control"] = "public, max-age=3600"  # Cache for 1 hour
+        response.headers["ETag"] = f'"{hash(str(result))}"'
+        return response
     except Exception as e:
         return JSONResponse(
             content={"error": f"Failed to retrieve leagues: {str(e)}"},
@@ -1916,22 +2004,46 @@ def get_leagues():
          tags=["Reference Data"])
 def get_teams(league: Optional[str] = Query(None, description="Filter teams by league")):
     """Get all available teams, optionally filtered by league."""
+    
+    # For unfiltered requests, return pre-computed teams
+    if not league:
+        result = {"teams": _cached_teams}
+        response = JSONResponse(content=result)
+        response.headers["Cache-Control"] = "public, max-age=3600"  # Cache for 1 hour
+        response.headers["ETag"] = f'"{hash(str(result))}"'
+        return response
+    
+    # For filtered requests, check cache first
+    cache_key = f"teams_{league}"
+    cached_result = get_cached_result(cache_key)
+    if cached_result:
+        response = JSONResponse(content=cached_result)
+        response.headers["Cache-Control"] = "public, max-age=600"  # 10 minutes for filtered
+        return response
+    
+    # Filter teams by league efficiently using pre-computed data
     teams = set()
-    
     for game in games:
-        if league and hasattr(game, 'league') and game.league != league:
-            continue
-            
-        if hasattr(game, 'home_team'):
-            teams.add(game.home_team)
-        if hasattr(game, 'away_team'):
-            teams.add(game.away_team)
+        if hasattr(game, 'league') and game.league == league:
+            if hasattr(game, 'home_team'):
+                teams.add(game.home_team)
+            if hasattr(game, 'away_team'):
+                teams.add(game.away_team)
     
-    # Sort teams alphabetically
-    sorted_teams = sorted(list(teams))
+    result = {"teams": sorted(list(teams))}
     
-    return {"teams": sorted_teams}
+    # Cache the filtered result
+    set_cached_result(cache_key, result)
+    
+    response = JSONResponse(content=result)
+    response.headers["Cache-Control"] = "public, max-age=600"  # 10 minutes for filtered results
+    return response
 
+
+@app.get("/test-fast")
+def test_fast():
+    """Minimal test endpoint to check performance"""
+    return {"message": "Hello World", "timestamp": "2025-09-02"}
 
 @app.get("/available-cities",
          summary="Get all available cities",
@@ -1939,24 +2051,11 @@ def get_teams(league: Optional[str] = Query(None, description="Filter teams by l
          tags=["Reference Data"])
 def get_cities():
     """Get all available cities for the start location selection."""
-    # Extract unique cities from train_times keys
-    cities = set()
-    
-    for key_pair in train_times.keys():
-        cities.add(key_pair[0])
-        cities.add(key_pair[1])
-    
-    # Add "Any" as first option
-    cities_list = ["Any"] + sorted([city for city in cities if city != "Any"])
-    
-    # Clean city names for display (removing 'hbf' suffix)
-    display_cities = [(city, city.replace(" hbf", "")) for city in cities_list]
-    
-    return {
-        "cities": [
-            {"id": city[0], "name": city[1]} for city in display_cities
-        ]
-    }
+    # Return pre-computed cities with cache headers
+    response = JSONResponse(content={"cities": _cached_cities})
+    response.headers["Cache-Control"] = "public, max-age=3600"  # Cache for 1 hour
+    response.headers["ETag"] = f'"{hash(str(_cached_cities))}"'
+    return response
 
 
 @app.get("/available-dates",
@@ -1968,97 +2067,93 @@ def get_available_dates(
     team: Optional[str] = Query(None, description="Filter dates by team")
 ):
     """Get all future dates with available matches for the date picker."""
-    date_matches = {}
-    today = datetime.now().date()
     
-    # Process regular games
-    for game in games:
-        if not hasattr(game, 'date'):
+    # Create cache key for filtered queries
+    cache_key = f"dates_{league or 'all'}_{team or 'all'}"
+    
+    # Check cache first for filtered results
+    if league or team:
+        cached_result = get_cached_result(cache_key)
+        if cached_result:
+            response = JSONResponse(content=cached_result)
+            response.headers["Cache-Control"] = "public, max-age=300"  # 5 minutes for filtered
+            return response
+    
+    # For unfiltered requests, use pre-computed data but filter by current date
+    if not league and not team:
+        today = datetime.now().date()  # Get current date each time
+        result = {
+            "dates": [
+                {
+                    "date": date_str,
+                    "display": _cached_dates_index[date_str]["date"],
+                    "matches": _cached_dates_index[date_str]["count"],
+                    "leagues": _cached_dates_index[date_str]["leagues"]
+                }
+                for date_str in sorted(_cached_dates_index.keys())
+                if _cached_dates_index[date_str]["game_date"] >= today  # Filter by current date
+            ]
+        }
+        response = JSONResponse(content=result)
+        response.headers["Cache-Control"] = "public, max-age=1800"  # Reduced to 30 minutes for date-sensitive data
+        response.headers["ETag"] = f'"{hash(str(result))}"'
+        return response
+    
+    # For filtered requests, use the pre-computed index for efficiency
+    filtered_dates = {}
+    today = datetime.now().date()  # Get current date for filtering
+    
+    for date_str, date_data in _cached_dates_index.items():
+        # Skip past dates
+        if date_data["game_date"] < today:
             continue
             
-        game_date = game.date.date()
+        matching_games = []
         
-        # Skip dates that have passed
-        if game_date < today:
-            continue
-            
-        # Apply league filter if specified
-        if league and hasattr(game, 'league') and game.league != league:
-            continue
-            
-        # Apply team filter if specified
-        if team:
-            team_lower = team.lower()
-            if not ((hasattr(game, 'home_team') and game.home_team.lower() == team_lower) or
-                   (hasattr(game, 'away_team') and game.away_team.lower() == team_lower)):
+        for game in date_data["games"]:
+            # Apply league filter
+            if league and hasattr(game, 'league') and game.league != league:
                 continue
+                
+            # Apply team filter
+            if team:
+                team_lower = team.lower()
+                if not ((hasattr(game, 'home_team') and game.home_team.lower() == team_lower) or
+                       (hasattr(game, 'away_team') and game.away_team.lower() == team_lower)):
+                    continue
+            
+            matching_games.append(game)
         
-        # Format date as string
-        date_str = game_date.strftime("%Y-%m-%d")
-        
-        if date_str not in date_matches:
-            date_matches[date_str] = {
-                "date": game_date.strftime("%d %B"),
-                "count": 0,
-                "leagues": set()
+        if matching_games:
+            leagues_for_date = set()
+            for game in matching_games:
+                if hasattr(game, 'league'):
+                    leagues_for_date.add(game.league)
+            
+            filtered_dates[date_str] = {
+                "date": date_data["date"],
+                "count": len(matching_games),
+                "leagues": list(leagues_for_date)
             }
-            
-        date_matches[date_str]["count"] += 1
-        if hasattr(game, 'league'):
-            date_matches[date_str]["leagues"].add(game.league)
     
-    # Process TBD games
-    for game in tbd_games:
-        if not hasattr(game, 'date'):
-            continue
-            
-        game_date = game.date.date()
-        
-        # Skip dates that have passed
-        if game_date < today:
-            continue
-            
-        # Apply league filter if specified
-        if league and hasattr(game, 'league') and game.league != league:
-            continue
-            
-        # Apply team filter if specified
-        if team:
-            team_lower = team.lower()
-            if not ((hasattr(game, 'home_team') and game.home_team.lower() == team_lower) or
-                   (hasattr(game, 'away_team') and game.away_team.lower() == team_lower)):
-                continue
-        
-        # Format date as string
-        date_str = game_date.strftime("%Y-%m-%d")
-        
-        if date_str not in date_matches:
-            date_matches[date_str] = {
-                "date": game_date.strftime("%d %B"),
-                "count": 0,
-                "leagues": set()
-            }
-            
-        date_matches[date_str]["count"] += 1
-        if hasattr(game, 'league'):
-            date_matches[date_str]["leagues"].add(game.league)
-    
-    # Convert sets to lists for JSON serialization
-    for date_str in date_matches:
-        date_matches[date_str]["leagues"] = list(date_matches[date_str]["leagues"])
-    
-    # Return dates sorted chronologically
-    return {
+    result = {
         "dates": [
             {
                 "date": date_str,
-                "display": date_matches[date_str]["date"],
-                "matches": date_matches[date_str]["count"],
-                "leagues": date_matches[date_str]["leagues"]
+                "display": filtered_dates[date_str]["date"],
+                "matches": filtered_dates[date_str]["count"],
+                "leagues": filtered_dates[date_str]["leagues"]
             }
-            for date_str in sorted(date_matches.keys())
+            for date_str in sorted(filtered_dates.keys())
         ]
     }
+    
+    # Cache filtered results
+    set_cached_result(cache_key, result)
+    
+    response = JSONResponse(content=result)
+    response.headers["Cache-Control"] = "public, max-age=300"  # 5 minutes for filtered results
+    return response
 
 
 @app.get("/city-connections/{city}",
@@ -2744,6 +2839,11 @@ async def refresh_data(admin_user = Depends(verify_admin_user)):
         train_times = new_train_times
         games = new_games
         tbd_games = new_tbd_games
+        
+        # Clear cache and recompute static data
+        global _query_cache
+        _query_cache.clear()
+        precompute_static_data()
         
         new_counts = {
             'games': len(games),

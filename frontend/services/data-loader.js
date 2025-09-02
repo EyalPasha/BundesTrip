@@ -143,9 +143,35 @@ const AIRPORT_CITIES = [
 // Update this function in data-loader.js
 async function loadCities() {
     try {
+        // Check if cities are already cached
+        const cachedCities = sessionStorage.getItem('cities_cache');
+        const cacheTimestamp = sessionStorage.getItem('cities_cache_timestamp');
+        const cacheExpiry = 10 * 60 * 1000; // 10 minutes
+        
+        if (cachedCities && cacheTimestamp && 
+            (Date.now() - parseInt(cacheTimestamp)) < cacheExpiry) {
+            const data = JSON.parse(cachedCities);
+            populateCitiesSelect(data);
+            return;
+        }
+
         showComponentLoading(window.DOM.startLocationSelect.parentElement);
         const data = await getCities();
+        
+        // Cache the results
+        sessionStorage.setItem('cities_cache', JSON.stringify(data));
+        sessionStorage.setItem('cities_cache_timestamp', Date.now().toString());
+        
+        populateCitiesSelect(data);
+    } catch (error) {
+        console.error('Error loading cities:', error);
+        showErrorToast('Failed to load cities. Please refresh the page.');
+    } finally {
+        hideComponentLoading(window.DOM.startLocationSelect.parentElement);
+    }
+}
 
+function populateCitiesSelect(data) {
         // Save the placeholder option
         const placeholderOption = document.createElement('option');
         placeholderOption.value = "";
@@ -214,13 +240,8 @@ async function loadCities() {
 
         // Ensure the placeholder is selected
         window.DOM.startLocationSelect.value = "";
-
-    } catch (error) {
-        showErrorToast(`Failed to load cities: ${error.message}`);
-    } finally {
-        hideComponentLoading(window.DOM.startLocationSelect.parentElement);
-    }
 }
+
 async function loadLeagues() {
     try {
         showComponentLoading(window.DOM.preferredLeaguesSelect.parentElement);

@@ -90,9 +90,10 @@ document.addEventListener('DOMContentLoaded', function() {
 async function initializeApp() {
     initDOMReferences();
 
-    // Start loading cities and available dates immediately
+    // Start loading critical data in parallel for faster loading
     const citiesPromise = loadCities();
     const availableDatesPromise = loadAvailableDates();
+    const leaguesPromise = loadLeagues();
 
     // Apply visual styles and preload resources
     document.body.classList.add('loading-select2');
@@ -101,23 +102,39 @@ async function initializeApp() {
     initFormHandlers();
     updateMinGamesOptions();
 
-    // As soon as cities are loaded, initialize startLocation
-    citiesPromise
-    .then(cities => {
-        $('#startLocation').select2({
-            placeholder: "Select a city",
-            allowClear: false,
-            width: '100%',
-            minimumResultsForSearch: Infinity,
-            selectionCssClass: 'select2-selection--clean',
-            dropdownCssClass: 'select2-dropdown--clean'
-        });
-        // Optionally: populate #startLocation with city options here if not already in HTML
-    })
-    .catch(error => {
-        showErrorToast('Failed to load cities. Please refresh the page.');
-        console.error('Cities loading error:', error);
-    });
+    try {
+        // Wait for all critical data to load in parallel
+        const [cities, availableDates, leagues] = await Promise.allSettled([
+            citiesPromise,
+            availableDatesPromise, 
+            leaguesPromise
+        ]);
+
+        // Initialize cities select as soon as cities are ready
+        if (cities.status === 'fulfilled') {
+            $('#startLocation').select2({
+                placeholder: "Select a city",
+                allowClear: false,
+                width: '100%',
+                minimumResultsForSearch: Infinity,
+                selectionCssClass: 'select2-selection--clean',
+                dropdownCssClass: 'select2-dropdown--clean'
+            });
+        } else {
+            console.error('Cities loading failed:', cities.reason);
+            showErrorToast('Failed to load cities. Please refresh the page.');
+        }
+
+        // Initialize leagues select
+        if (leagues.status === 'fulfilled') {
+            // Leagues are already initialized by loadLeagues function
+        } else {
+            console.error('Leagues loading failed:', leagues.reason);
+        }
+    } catch (error) {
+        console.error('Critical data loading error:', error);
+        showErrorToast('Failed to load essential data. Please refresh the page.');
+    }
 
     // As soon as availableDates are loaded, initialize flatpickr
     availableDatesPromise
