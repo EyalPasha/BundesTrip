@@ -1,4 +1,4 @@
-# BundesTrip - www.bundestrip.com
+# BundesTrip
 
 **Plan multi-city Bundesliga football trips with optimized train routes, live match data, and personalized itineraries.**
 
